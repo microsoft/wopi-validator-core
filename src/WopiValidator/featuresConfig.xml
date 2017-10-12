@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WopiValidation>
+  <Resources>
+    <!-- Contains files that can be used by test cases -->
+    <File Id="WordBlankDocument" Name="WordBlankDocument.docx" FilePath="Resources\WordBlankDocument.docx" />
+    <File Id="WordSimpleDocument" Name="WordSimpleDocument.docx" FilePath="Resources\WordSimpleDocument.docx" />
+    <File Id="WordZeroByteDocument" Name="WordZeroBytesDocument.docx" FilePath="Resources\WordZeroBytesDocument.docx" />
+    <File Id="ExcelBlankWorkbook" Name="ExcelBlankWorkbook.xlsx" FilePath="Resources\ExcelBlankWorkbook.xlsx" />
+  </Resources>
+  <PrereqCases>
+    <TestCase Name="BusinessFlowPrereqs" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        The prereq BusinessFlowPrereqs must pass prior to running the feature validations related to business flows.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="LicenseCheckForEditIsEnabled" IsRequired="true" ExpectedValue="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+  </PrereqCases>
+
+  <TestGroup Name="Features">
+    <TestCases>
+      <TestCase
+        Name="Feature.FileSharing"
+        Document="WordBlankDocument"
+        UiScreenshot="Feature.FileSharing.png"
+        DocumentationLink="https://wopi.readthedocs.org/en/latest/wopi/files/CheckFileInfo.html?highlight=sharing#term-filesharingurl"
+        FailMessage="File sharing not available."
+        Category="WopiCore">
+        <Description>Checks the support for the file sharing feature</Description>
+        <Requests>
+          <CheckFile>
+            <Validators>
+              <Or>
+                <JsonResponseContentValidator>
+                  <AbsoluteUrlProperty Name="FileSharingUrl" IsRequired="true" />
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <BooleanProperty Name="FileSharingPostMessage" ExpectedValue="true" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </CheckFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase
+        Name="Feature.Download"
+        Document="WordBlankDocument"
+        UiScreenshot="Feature.Download.png"
+        DocumentationLink="https://wopi.readthedocs.org/en/latest/wopi/files/CheckFileInfo.html?highlight=downloadurl#term-downloadurl"
+        FailMessage="Download is not available."
+        Category="WopiCore">
+        <Description>Checks the support for the download functionality (Download a Copy, Download as PDF and Download as ODT features).</Description>
+        <Requests>
+          <CheckFile>
+            <Validators>
+              <JsonResponseContentValidator>
+                <AbsoluteUrlProperty Name="DownloadUrl" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase
+        Name="Feature.Rename"
+        Document="WordBlankDocument"
+        UiScreenshot="Feature.Rename.png"
+        DocumentationLink="https://wopi.readthedocs.org/en/latest/wopi/files/RenameFile.html#renamefile"
+        FailMessage="Rename not available."
+        Category="WopiCore">
+        <Description>Checks the support for the 'Rename' functionality.</Description>
+        <Requests>
+          <CheckFile>
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsRename" IsRequired="true" />
+                <BooleanProperty Name="UserCanRename" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase
+        Name="Feature.PostMessage"
+        Document="WordBlankDocument"
+        DocumentationLink="https://wopi.readthedocs.org/en/latest/scenarios/postmessage.html#postmessage"
+        FailMessage="PostMessage not available."
+        Category="WopiCore">
+        <Description>
+          Checks whether the host can integrate with Office Online by using the HTML5 Web Messaging Protocol.
+          Enabling PostMessage allows hosts to use their own UI for specific actions on Office Online.
+        </Description>
+        <Requests>
+          <CheckFile>
+            <Validators>
+              <JsonResponseContentValidator>
+                <AbsoluteUrlProperty Name="PostMessageOrigin" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase
+        Name="Feature.ExcelSaveAs"
+        Document="ExcelBlankWorkbook"
+        UiScreenshot="Feature.ExcelSaveAs.png"
+        DocumentationLink="https://wopi.readthedocs.org/en/latest/wopi/files/PutRelativeFile.html?highlight=excel"
+        FailMessage="Save As in Excel not available."
+        Category="WopiCore">
+        <Description>
+          Checks whether host supports the Save As feature in Excel.
+        </Description>
+        <Requests>
+          <CheckFile>
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCannotWriteRelative" ExpectedValue="false" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+          <PutRelativeFile Type="Relative" Name="SuggestedName.xlsx" ResourceId="ExcelBlankWorkbook">
+            <SaveState>
+              <State Name="NewFileUrl1" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="SuggestedName.xlsx" IsRequired="true"/>
+                <StringProperty Name="Url" IsRequired="true"/>
+                <StringProperty Name="HostViewUrl" IsRequired="true"/>
+                <StringProperty Name="HostEditUrl" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewFileUrl1"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase
+        Name="Feature.AllowExternalSpellCheckService"
+        Document="WordBlankDocument"
+        UiScreenshot="Feature.AllowOneSpellerProofing.png"
+        DocumentationLink="https://wopi.readthedocs.org/en/latest/wopi/files/AllowExternalSpellCheckService.html"
+        FailMessage="AllowExternalSpellCheckService is not available."
+        Category="WopiCore">
+        <Description>Checks the support to AllowExternalSpellCheckService functionality. Currently this service is the Bing proofing service.</Description>
+        <Requests>
+          <CheckFile>
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="AllowExternalSpellCheckService" ExpectedValue="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+        </Requests>
+      </TestCase>
+
+    </TestCases>
+  </TestGroup>
+
+  <!-- Business Flow test cases -->
+  <TestGroup Name="Features.BusinessFlow">
+    <PrereqTests>
+      <PrereqTest>BusinessFlowPrereqs</PrereqTest>
+    </PrereqTests>
+
+    <TestCases>
+      <TestCase
+        Name="Feature.BusinessFlow"
+        Document="WordBlankDocument"
+        UiScreenshot="Feature.BusinessFlow.png"
+        DocumentationLink="https://wopi.readthedocs.org/en/latest/scenarios/business.html?highlight=business"
+        FailMessage="Document editing for business users not available."
+        Category="WopiCore">
+        <Description>Checks the support for Document editing for business users.</Description>
+        <Requests>
+          <CheckFile>
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="LicenseCheckForEditIsEnabled" ExpectedValue="true" IsRequired="true" />
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase
+        Name="Feature.SupportsUserInfo"
+        Document="WordBlankDocument"
+        DocumentationLink="https://wopi.readthedocs.org/en/latest/scenarios/business.html?highlight=business#tracking-users-subscription-status"
+        FailMessage="PutUserInfo not available"
+        Category="WopiCore">
+        <Description>Checks the support PutUserInfo WOPI operations in business documents.</Description>
+        <Requests>
+          <CheckFile>
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="LicenseCheckForEditIsEnabled" ExpectedValue="true" IsRequired="true" />
+                <BooleanProperty Name="SupportsUserInfo" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+        </Requests>
+      </TestCase>
+
+    </TestCases>
+  </TestGroup>
+
+</WopiValidation>

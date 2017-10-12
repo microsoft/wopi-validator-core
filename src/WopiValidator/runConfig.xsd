@@ -1,0 +1,527 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ValidatorsType: type definition for the Validators elements -->
+  <xs:complexType name="ValidatorsType">
+    <xs:group id="Validators" ref="ValidatorsGroup" />
+  </xs:complexType>
+
+  <xs:complexType name="ValidatorBaseType">
+    <xs:attribute name="ValidationMessage" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:group name="ValidatorsGroup">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="JsonResponseContentValidator">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="ValidatorBaseType">
+                <xs:sequence>
+                  <xs:choice maxOccurs="unbounded">
+                    <xs:element name="BooleanProperty">
+                      <xs:complexType>
+                        <xs:attribute name="Name" type="xs:string" use="required" />
+                        <xs:attribute name="ExpectedStateKey" type="xs:string" use="optional" />
+                        <xs:attribute name="ExpectedValue" type="xs:boolean" use="optional" />
+                        <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="false" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="IntegerProperty">
+                      <xs:complexType>
+                        <xs:attribute name="Name" type="xs:string" use="required" />
+                        <xs:attribute name="ExpectedStateKey" type="xs:string" use="optional" />
+                        <xs:attribute name="ExpectedValue" type="xs:int" use="optional" />
+                        <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="false" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="LongProperty">
+                      <xs:complexType>
+                        <xs:attribute name="Name" type="xs:string" use="required" />
+                        <xs:attribute name="ExpectedStateKey" type="xs:string" use="optional" />
+                        <xs:attribute name="ExpectedValue" type="xs:long" use="optional" />
+                        <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="false" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="StringProperty">
+                      <xs:complexType>
+                        <xs:attribute name="Name" type="xs:string" use="required" />
+                        <xs:attribute name="EndsWith" type="xs:string" use="optional" />
+                        <xs:attribute name="ExpectedStateKey" type="xs:string" use="optional" />
+                        <xs:attribute name="ExpectedValue" type="xs:string" use="optional" />
+                        <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="false" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="AbsoluteUrlProperty">
+                      <xs:complexType>
+                        <xs:attribute name="Name" type="xs:string" use="required" />
+                        <xs:attribute name="ExpectedStateKey" type="xs:string" use="optional" />
+                        <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="false" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ArrayProperty">
+                      <xs:complexType>
+                        <xs:attribute name="Name" type="xs:string" use="required" />
+                        <xs:attribute name="ExpectedStateKey" type="xs:string" use="optional" />
+                        <xs:attribute name="ContainsValue" type="xs:string" use="optional" />
+                        <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="false" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:choice>
+                </xs:sequence>
+              </xs:extension>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="LockMismatchValidator">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="ValidatorBaseType">
+                <xs:attribute name="ExpectedLock" type="xs:string" use="required" />
+              </xs:extension>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="JsonSchemaValidator">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="ValidatorBaseType">
+                <xs:attribute name="Schema" type="xs:string" use="required" />
+              </xs:extension>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="LockedByAnotherInterfaceValidator">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="ValidatorBaseType" />
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="FileUnknownValidator">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="ValidatorBaseType" />
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ResponseCodeValidator">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="ValidatorBaseType">
+                <xs:attribute name="ExpectedCode" type="xs:int" use="required" />
+              </xs:extension>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ResponseContentValidator">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="ValidatorBaseType">
+                <xs:attribute name="ExpectedDocumentId" type="xs:string" use="required" />
+              </xs:extension>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ResponseHeaderValidator">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="ValidatorBaseType">
+                <xs:attribute name="Header" type="xs:string" use="required" />
+                <xs:attribute name="ExpectedStateKey" type="xs:string" use="optional" />
+                <xs:attribute name="ExpectedValue" type="xs:string" use="optional" />
+                <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="true" />
+                <xs:attribute name="ShouldMatch" type="xs:boolean" use="optional" default="true" />
+              </xs:extension>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Or" type="OrType">
+        </xs:element>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+  <xs:complexType name="OrType">
+    <xs:choice>
+      <xs:group ref="ValidatorsGroup" />
+    </xs:choice>
+  </xs:complexType>
+
+  <!-- SaveStateType: type definition for the SaveState elements -->
+  <xs:complexType name="SaveStateType">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element name="State">
+        <xs:complexType>
+          <xs:attribute name="Name" />
+          <xs:attribute name="Source" />
+          <xs:attribute name="SourceType" type="SaveStateSourceType" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- MutatorsType: type definition for the Mutators elements -->
+  <xs:complexType name="MutatorsType">
+    <xs:choice>
+      <xs:element name="ProofKey">
+        <xs:complexType>
+          <xs:attribute name="MutateCurrent" />
+          <xs:attribute name="MutateOld" />
+          <xs:attribute name="KeyRelation">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="Synced" />
+                <xs:enumeration value="Ahead" />
+                <xs:enumeration value="Behind" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="Timestamp" type="xs:dateTime" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AccessToken">
+        <xs:complexType>
+          <xs:attribute name="Mutation" />
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+
+  <!-- PutRelativeFileModeType: type definition for the PutRelativeFileMode attributes -->
+  <xs:simpleType name="PutRelativeFileModeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Suggested" />
+      <xs:enumeration value="ExactName" />
+      <xs:enumeration value="Conflicting" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- SaveStateSourceType: type definition for the SourceType attributes -->
+  <xs:simpleType name="SaveStateSourceType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="JsonBody" />
+      <xs:enumeration value="Header" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- TestCaseType: type definition for the TestCase elements -->
+  <xs:complexType name="TestCaseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Description" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Requests">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="CheckFile">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="SaveState" type="SaveStateType" minOccurs="0"/>
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
+                    <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
+                  </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Lock">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                  <xs:attribute name="Lock" type="xs:string" use="required" />
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Unlock">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                  <xs:attribute name="Lock" type="xs:string" use="required" />
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="RefreshLock">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                  <xs:attribute name="Lock" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="UnlockAndRelock">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                  <xs:attribute name="OldLock" type="xs:string" use="required" />
+                  <xs:attribute name="NewLock" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="GetFile">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
+                    <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
+                  </xs:sequence>
+                  <xs:attribute name="Lock" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="PutFile">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="SaveState" type="SaveStateType" minOccurs="0"/>
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                  <xs:attribute name="Lock" type="xs:string" />
+                  <xs:attribute name="ResourceId" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="PutRelativeFile">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="SaveState" type="SaveStateType" minOccurs="0"/>
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0"/>
+                    <xs:element name="Validators" type="ValidatorsType" minOccurs="0"/>
+                  </xs:sequence>
+                  <xs:attribute name="Name" type="xs:string" use="required" />
+                  <xs:attribute name="ResourceId" type="xs:string" use="required" />
+                  <xs:attribute name="PutRelativeFileMode" type="PutRelativeFileModeType" use="required" />
+                  <xs:attribute name="OverwriteRelative" type="xs:boolean" use="optional"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="GetLock">
+                <xs:complexType>
+                  <xs:attribute name="Lock" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="EnumerateAncestors">
+              </xs:element>
+              <xs:element name="GetEcosystem">
+                <xs:complexType>
+                  <xs:choice>
+                    <xs:element name="SaveState" type="SaveStateType" />
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:choice>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="CheckContainer">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="SaveState" type="SaveStateType" minOccurs="0" />
+                    <xs:element name="Validators" type="ValidatorsType" minOccurs="0"/>
+                  </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="CheckEcosystem">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                  <xs:attribute name="EcosystemUrl" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="CreateChildContainer">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="SaveState" type="SaveStateType" />
+                    <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
+                  </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                  <xs:attribute name="PutRelativeFileMode" type="PutRelativeFileModeType" use="required" />
+                  <xs:attribute name="FolderName" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="CreateChildFile">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="SaveState" type="SaveStateType" minOccurs="0" />
+                    <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
+                  </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                  <xs:attribute name="PutRelativeFileMode" type="PutRelativeFileModeType" use="required" />
+                  <xs:attribute name="OverwriteRelative" type="xs:boolean" />
+                  <xs:attribute name="Name" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="EnumerateChildren">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Validators" type="ValidatorsType" minOccurs="0"/>
+                  </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                  <xs:attribute name="FileExtensionFilterList" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="DeleteContainer">
+                <xs:complexType>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="DeleteFile">
+                <xs:complexType>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="GetNewAccessToken">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                  <xs:attribute name="WopiSrc" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="GetRootContainer">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                  <xs:attribute name="WopiSrc" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="RenameContainer">
+                <xs:complexType>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                  <xs:attribute name="Name" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="RenameFile">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
+                  </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                  <xs:attribute name="Name" type="xs:string" />
+                  <xs:attribute name="Lock" type="xs:string" use="optional"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="GetFromFileUrl">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="PutToFileUrl">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                  <xs:attribute name="ResourceId" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="GetShareUrl">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                  <xs:attribute name="UrlType" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="AddActivities">
+                <xs:complexType>
+                  <xs:sequence minOccurs="1">
+                    <xs:element minOccurs="1" maxOccurs="1" name="RequestBodyJson" type="xs:string" />
+                    <xs:element minOccurs="0" maxOccurs="1" name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="CleanupRequests">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="Unlock">
+                <xs:complexType>
+                  <xs:attribute name="Lock" type="xs:string" use="required" />
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="DeleteContainer">
+                <xs:complexType>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="DeleteFile">
+                <xs:complexType>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Name" type="xs:string" use="required" />
+    <xs:attribute name="Document" type="xs:string" use="required" />
+    <xs:attribute name="Category" type="xs:string" use="optional" />
+    <xs:attribute name="UiScreenshot" type="xs:string" use="optional" />
+    <xs:attribute name="DocumentationLink" type="xs:string" use="optional" />
+    <xs:attribute name="FailMessage" type="xs:string" use="optional" />
+    <xs:attribute name="UploadDocumentOnSetup" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="DeleteDocumentOnTeardown" type="xs:boolean" use="optional" default="false" />
+  </xs:complexType>
+
+  <!-- Concrete definition of the entire WopiValidation -->
+  <xs:element name="WopiValidation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Resources">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="unbounded" name="File">
+                <xs:complexType>
+                  <xs:attribute name="Name" type="xs:string" use="required" />
+                  <xs:attribute name="Id" type="xs:string" use="required" />
+                  <xs:attribute name="FilePath" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="PrereqCases" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TestCase" maxOccurs="unbounded" type="TestCaseType" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="TestGroup" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PrereqTests" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="PrereqTest" maxOccurs="unbounded" type="xs:string" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="TestCases">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="TestCase" maxOccurs="unbounded" type="TestCaseType" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Name" type="xs:string" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

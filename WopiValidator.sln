@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WopiValidator.Core", "src\WopiValidator.Core\WopiValidator.Core.csproj", "{1B2EA310-87C2-4FCA-A7A3-4B7D7EC9C972}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WopiValidator", "src\WopiValidator\WopiValidator.csproj", "{DB1035D9-B8AB-4F12-865A-E238940B097F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1B2EA310-87C2-4FCA-A7A3-4B7D7EC9C972} = {1B2EA310-87C2-4FCA-A7A3-4B7D7EC9C972}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{106DC536-7B3C-4A64-930A-B54D1130C7EE}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		src\WopiValidatorSigningKey.snk = src\WopiValidatorSigningKey.snk
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1B2EA310-87C2-4FCA-A7A3-4B7D7EC9C972}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B2EA310-87C2-4FCA-A7A3-4B7D7EC9C972}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B2EA310-87C2-4FCA-A7A3-4B7D7EC9C972}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B2EA310-87C2-4FCA-A7A3-4B7D7EC9C972}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB1035D9-B8AB-4F12-865A-E238940B097F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB1035D9-B8AB-4F12-865A-E238940B097F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB1035D9-B8AB-4F12-865A-E238940B097F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB1035D9-B8AB-4F12-865A-E238940B097F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9F3D12F0-B801-459B-833E-B0EC07BA8055}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,223 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Full WOPI CheckFileInfo JSON Schema",
+  "description": "A WOPI CheckFileInfo JSON response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "BaseFileName",
+    "OwnerId",
+    "Size",
+    "UserId",
+    "Version"
+  ],
+  "properties": {
+    "AllowAdditionalMicrosoftServices": {
+      "type": "boolean"
+    },
+    "AllowEarlyFeatures": {
+      "type": "boolean"
+    },
+    "AllowExternalMarketplace": {
+      "type": "boolean"
+    },
+    "BaseFileName": {
+      "type": "string"
+    },
+    "BreadcrumbBrandName": {
+      "type": "string"
+    },
+    "BreadcrumbBrandUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "BreadcrumbDocName": {
+      "type": "string"
+    },
+    "BreadcrumbFolderName": {
+      "type": "string"
+    },
+    "BreadcrumbFolderUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "CloseButtonClosesWindow": {
+      "type": "boolean"
+    },
+    "ClosePostMessage": {
+      "type": "boolean"
+    },
+    "CloseUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "DisablePrint": {
+      "type": "boolean"
+    },
+    "DisableTranslation": {
+      "type": "boolean"
+    },
+    "DownloadUrl": {
+      "type": "string"
+    },
+    "EditModePostMessage": {
+      "type": "boolean"
+    },
+    "EditNotificationPostMessage": {
+      "type": "boolean"
+    },
+    "FileExtension": {
+      "type": "string"
+    },
+    "FileNameMaxLength": {
+      "type": "integer"
+    },
+    "FileSharingPostMessage": {
+      "type": "boolean"
+    },
+    "FileSharingUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "FileUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "HostEditUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "HostEmbeddedViewUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "HostViewUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "IsAnonymousUser": {
+      "type": "boolean"
+    },
+    "IsEduUser": {
+      "type": "boolean"
+    },
+    "LastModifiedTime": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "LicenseCheckForEditIsEnabled": {
+      "type": "boolean"
+    },
+    "OwnerId": {
+      "type": "string"
+    },
+    "PostMessageOrigin": {
+      "format": "uri",
+      "type": "string"
+    },
+    "ReadOnly": {
+      "type": "boolean"
+    },
+    "RestrictedWebViewOnly": {
+      "type": "boolean"
+    },
+    "SHA256": {
+      "type": "string"
+    },
+    "SignoutUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "Size": {
+      "type": "number"
+    },
+    "SupportedShareUrlTypes": {
+      "enum": [
+        "ReadOnly",
+        "ReadWrite"
+      ]
+    },
+    "SupportsAddActivities": {
+      "type": "boolean"
+    },
+    "SupportsCobalt": {
+      "type": "boolean"
+    },
+    "SupportsContainers": {
+      "type": "boolean"
+    },
+    "SupportsDeleteFile": {
+      "type": "boolean"
+    },
+    "SupportsEcosystem": {
+      "type": "boolean"
+    },
+    "SupportsExtendedLockLength": {
+      "type": "boolean"
+    },
+    "SupportsFolders": {
+      "type": "boolean"
+    },
+    "SupportsGetActivities": {
+      "type": "boolean"
+    },
+    "SupportsGetLock": {
+      "type": "boolean"
+    },
+    "SupportsLocks": {
+      "type": "boolean"
+    },
+    "SupportsRename": {
+      "type": "boolean"
+    },
+    "SupportsUpdate": {
+      "type": "boolean"
+    },
+    "SupportsUserAccess": {
+      "type": "boolean"
+    },
+    "SupportsUserInfo": {
+      "type": "boolean"
+    },
+    "UniqueContentId": {
+      "type": "string"
+    },
+    "UserCanAttend": {
+      "type": "boolean"
+    },
+    "UserCanNotWriteRelative": {
+      "type": "boolean"
+    },
+    "UserCanPresent": {
+      "type": "boolean"
+    },
+    "UserCanRename": {
+      "type": "boolean"
+    },
+    "UserCanWrite": {
+      "type": "boolean"
+    },
+    "UserFriendlyName": {
+      "type": "string"
+    },
+    "UserId": {
+      "type": "string"
+    },
+    "UserInfo": {
+      "type": "string"
+    },
+    "Version": {
+      "type": "string"
+    },
+    "WorkflowType": {
+      "enum": [
+        "Assign",
+        "Submit"
+      ]
+    },
+    "WorkflowUrl": {
+      "format": "uri",
+      "type": "string"
+    }
+  }
+}

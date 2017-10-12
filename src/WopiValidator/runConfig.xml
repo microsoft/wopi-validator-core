@@ -1,0 +1,4200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WopiValidation>
+  <Resources>
+    <!-- Contains files that can be used by test cases -->
+    <File Id="WordBlankDocument" Name="WordBlankDocument.docx" FilePath="Resources\WordBlankDocument.docx" />
+    <File Id="WordSimpleDocument" Name="WordSimpleDocument.docx" FilePath="Resources\WordSimpleDocument.docx" />
+    <File Id="WordComplexDocument" Name="WordComplexDocument.docx" FilePath="Resources\WordComplexDocument.docx" />
+    <File Id="WordZeroByteDocument" Name="WordZeroBytesDocument.docx" FilePath="Resources\WordZeroBytesDocument.docx" />
+    <File Id="ExcelBlankWorkbook" Name="ExcelBlankWorkbook.xlsx" FilePath="Resources\ExcelBlankWorkbook.xlsx" />
+    <File Id="ZeroByteFile" Name="ZeroByteFile.wopitest" FilePath="Resources\ZeroByteFile.wopitest" />
+  </Resources>
+  <PrereqCases>
+    <TestCase Name="WopiValidatorPrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        The prereq WOPI validation that must pass prior to running the (potentially destructive) test suite.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <StringProperty Name="BaseFileName" EndsWith=".wopitest" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="UserCanWritePrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the user has permission to perform Write operation.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="UserCanWrite" ExpectedValue="true" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="UserCanNotWriteRelativePrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the user is denied permission to call PutRelativeFile.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="UserCanNotWriteRelative" ExpectedValue="true" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="UserCanWriteRelativePrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the user has permission to call PutRelativeFile.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="UserCanNotWriteRelative" ExpectedValue="false" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="ContainersPrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the host declares support for Containers operations.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="SupportsContainers" ExpectedValue="true" IsRequired="true"/>
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="ContainersUnsupportedPrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check that the host does NOT support Containers operations.
+        This can be used in cases where a test group should be skipped if the host DOES support Containers
+        operations.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="SupportsContainers" ExpectedValue="false" IsRequired="false" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="EcosystemPrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the host declares support for Ecosystem operations.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="SupportsEcosystem" ExpectedValue="true" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="LocksPrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the host declares support for Lock/Unlock/RefreshLock/UnlockAndRefreshLock
+        operations.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="SupportsLocks" ExpectedValue="true" IsRequired="true"/>
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="FileEditingPrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if host declares support for PutFile/PutRelativeFile operations.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="SupportsUpdate" ExpectedValue="true" IsRequired="true"/>
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="GetLockPrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if host declares support for GetLock operation.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="SupportsGetLock" ExpectedValue="true" IsRequired="true"/>
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="ExtendedLockLengthPrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if host declares support for extended lock lengths.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="SupportsExtendedLockLength" ExpectedValue="true" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="BusinessFlowPrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        The prereq BusinessFlowPrereq must pass prior to running the feature validations related to business flows.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="LicenseCheckForEditIsEnabled" IsRequired="true" ExpectedValue="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="DeleteFilePrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        The host must support /files/DeleteFile.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="SupportsDeleteFile" ExpectedValue="true" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="FileUrlUsagePrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        The host uses FileUrl for direct file access.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <AbsoluteUrlProperty Name="FileUrl" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="ShareUrlTypeReadOnlyForFilePrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the host declares support for the "ReadOnly" Share Url type for the file.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <ArrayProperty Name="SupportedShareUrlTypes" ContainsValue="ReadOnly" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="ShareUrlTypeReadWriteForFilePrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the host declares support for the "ReadWrite" Share Url type for the file.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <ArrayProperty Name="SupportedShareUrlTypes" ContainsValue="ReadWrite" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="ShareUrlTypeReadOnlyForContainerPrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the host declares support for the "ReadOnly" Share Url type for the container.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="SupportsContainers" ExpectedValue="true" IsRequired="true"/>
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+        <EnumerateAncestors>
+          <SaveState>
+            <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+            <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+          </SaveState>
+        </EnumerateAncestors>
+        <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+          <Validators>
+            <JsonResponseContentValidator>
+              <ArrayProperty Name="SupportedShareUrlTypes" ContainsValue="ReadOnly" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckContainer>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="ShareUrlTypeReadWriteForContainerPrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the host declares support for the "ReadWrite" Share Url type for the container.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="SupportsContainers" ExpectedValue="true" IsRequired="true"/>
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+        <EnumerateAncestors>
+          <SaveState>
+            <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+            <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+          </SaveState>
+        </EnumerateAncestors>
+        <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+          <Validators>
+            <JsonResponseContentValidator>
+              <ArrayProperty Name="SupportedShareUrlTypes" ContainsValue="ReadWrite" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckContainer>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="RenameFilePrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if host declares support for RenameFile operation.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="UserCanCreateChildFilePrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the user has permission to call CreateChildFile operation.
+      </Description>
+      <Requests>
+        <EnumerateAncestors>
+          <SaveState>
+            <!-- Get the Url property of the last child of AncestorsWithRootFirst -->
+            <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+          </SaveState>
+        </EnumerateAncestors>
+        <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckContainer>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="AddActivitiesPrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        The host must support /files/AddActivities.
+      </Description>
+      <Requests>
+        <CheckFile>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="SupportsAddActivities" ExpectedValue="true" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFile>
+      </Requests>
+    </TestCase>
+
+  </PrereqCases>
+
+  <TestGroup Name="BaseWopiViewing">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+    </PrereqTests>
+    <!-- Full Viewer app sequences -->
+    <TestCases>
+      <TestCase Name="CheckFileInfoFieldsNotToBeSetByHosts" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that the WOPI host is setting (or not setting) some CheckFileInfo properties correctly.
+        </Description>
+        <Requests>
+          <CheckFile>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="UserId" IsRequired="true" />
+                <StringProperty Name="HostAuthenticationId" ExpectedValue="" IsRequired="false" />
+                <StringProperty Name="PresenceUserId" ExpectedValue="" IsRequired="false" />
+                <StringProperty Name="TenantId" ExpectedValue="" IsRequired="false" />
+                <StringProperty Name="UserPrincipalName" ExpectedValue="" IsRequired="false" />
+                <StringProperty Name="AADUserObjectId" ExpectedValue="" IsRequired="false" />
+
+                <!-- FileExtension, if provided, should start with a "."; using this as a shortcut to test for that. -->
+                <StringProperty Name="FileExtension" ExpectedValue=".wopitest" IsRequired="false" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="ViewOnlySupport" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Standard sequence of requests made by a WOPI client to render a document.
+        </Description>
+        <Requests>
+          <CheckFile>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="BaseFileName" IsRequired="true" />
+                <StringProperty Name="OwnerId" IsRequired="true" />
+                <LongProperty Name="Size" IsRequired="true" />
+                <StringProperty Name="Version" IsRequired="true" />
+
+                <AbsoluteUrlProperty Name="BreadcrumbBrandUrl" />
+                <AbsoluteUrlProperty Name="BreadcrumbDocUrl" />
+                <AbsoluteUrlProperty Name="BreadcrumbFolderUrl" />
+                <AbsoluteUrlProperty Name="DownloadUrl" />
+                <AbsoluteUrlProperty Name="CloseUrl" />
+                <AbsoluteUrlProperty Name="HostEditUrl" />
+                <AbsoluteUrlProperty Name="HostViewUrl" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+          <GetFile />
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="GetUnlockedFile" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          GetFile requests on a file that wasn't locked before - necessary for Viewing and Editing.
+        </Description>
+        <Requests>
+          <GetFile />
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="CheckFileInfoSchema">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+    </PrereqTests>
+    <!-- Full Viewer app sequences -->
+    <TestCases>
+      <TestCase Name="FullCheckFileInfoSchema" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          This tests that hosts' CheckFileInfo responses conform to the JSON schema.
+        </Description>
+        <Requests>
+          <CheckFile>
+            <Validators>
+              <JsonSchemaValidator Schema="CheckFileInfoSchema" />
+            </Validators>
+          </CheckFile>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="EditFlows">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>UserCanWritePrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="BasicEdit" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Standard sequence of requests made by an edit-capable WOPI client as part of application boot and successful saves when user interacts with the document.
+        </Description>
+        <Requests>
+          <CheckFile>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="BaseFileName" IsRequired="true" />
+                <StringProperty Name="OwnerId" IsRequired="true" />
+                <LongProperty Name="Size" IsRequired="true" />
+                <StringProperty Name="Version" IsRequired="true" />
+
+                <AbsoluteUrlProperty Name="BreadcrumbBrandUrl" />
+                <AbsoluteUrlProperty Name="BreadcrumbDocUrl" />
+                <AbsoluteUrlProperty Name="BreadcrumbFolderUrl" />
+                <AbsoluteUrlProperty Name="DownloadUrl" />
+                <AbsoluteUrlProperty Name="CloseUrl" />
+                <AbsoluteUrlProperty Name="HostEditUrl" />
+                <AbsoluteUrlProperty Name="HostViewUrl" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+          <Lock Lock="LockString" />
+          <GetFile Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="EditNoChange" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          Simulates an editor boot and save with no changes to a file.
+        </Description>
+        <Requests>
+          <CheckFile>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="BaseFileName" IsRequired="true" />
+                <StringProperty Name="OwnerId" IsRequired="true" />
+                <LongProperty Name="Size" IsRequired="true" />
+                <StringProperty Name="Version" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+          <Lock Lock="LockString" />
+          <GetFile Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- Requests to unlocked file -->
+      <TestCase Name="PutUnlockedFile" Document="WordZeroByteDocument" Category="WopiCore">
+        <Description>
+          Simulates creating a new file on the host, which requires PutFile requests to an unlocked 0-byte file to succeed.
+        </Description>
+        <Requests>
+          <!-- Set up the test -->
+          <Lock Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="ZeroByteFile" />
+          <Unlock Lock="LockString" />
+
+          <!-- Execute the actual test -->
+          <PutFile ResourceId="WordBlankDocument" />
+          <GetFile>
+            <Validators>
+              <ResponseContentValidator ExpectedDocumentId="WordBlankDocument" />
+            </Validators>
+          </GetFile>
+        </Requests>
+        <CleanupRequests>
+          <!-- If any of the setup steps fail, subsequent requests won't be issued, leaving the file potentially locked, so unlock it here in a cleanup request. -->
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="Locks">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <!-- Lock length validation -->
+      <TestCase Name="LockLengthValidation" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that the WOPI host is capable of handling WOPI Lock IDs of 256 characters.
+        </Description>
+        <Requests>
+          <Lock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
+          <Unlock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- Lock format validation -->
+      <TestCase Name="LockFormatValidation" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that Office locks, which happen to be JSON-formatted strings today, are handled properly by the host.
+        </Description>
+        <Requests>
+          <Lock Lock="{&quot;S&quot;:&quot;0136ad16-9725-43c3-9ea0-5e01d2dbc162&quot;,&quot;E&quot;:2,&quot;M&quot;:&quot;DE997C5AC4E6&quot;,&quot;P&quot;:&quot;6058AF1E-A36F-4691-9003-B8E2C7F50937&quot;}" />
+          <Unlock Lock="{&quot;S&quot;:&quot;0136ad16-9725-43c3-9ea0-5e01d2dbc162&quot;,&quot;E&quot;:2,&quot;M&quot;:&quot;DE997C5AC4E6&quot;,&quot;P&quot;:&quot;6058AF1E-A36F-4691-9003-B8E2C7F50937&quot;}" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="{&quot;S&quot;:&quot;0136ad16-9725-43c3-9ea0-5e01d2dbc162&quot;,&quot;E&quot;:2,&quot;M&quot;:&quot;DE997C5AC4E6&quot;,&quot;P&quot;:&quot;6058AF1E-A36F-4691-9003-B8E2C7F50937&quot;}" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- Lock requests -->
+      <TestCase Name="SuccessfulLockSequence" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          Simulates a successful sequence of lock-related requests: Lock, RefreshLock, UnlockAndRelock, Unlock.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <RefreshLock Lock="LockString" />
+          <UnlockAndRelock NewLock="NewLockString" OldLock="LockString" />
+          <Unlock Lock="NewLockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+          <Unlock Lock="NewLockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="LockMismatchAfterUnlockAndRelockRequest" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Simulates a successful UnlockAndRelock followed by Unlock with old lock. This tests that UnlockAndRelock actually changes the lock string
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <UnlockAndRelock OldLock="LockString" NewLock="NewLockString" />
+          <Unlock Lock="LockString">
+            <Validators>
+              <LockMismatchValidator ExpectedLock="NewLockString" />
+            </Validators>
+          </Unlock>
+          <Unlock Lock="NewLockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+          <Unlock Lock="NewLockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="DoubleLockSequence" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          Two Lock calls in a row with the same Lock ID should work.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <Lock Lock="LockString" />
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="UnlockUnlockedFile" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Responses to Unlock requests on an unlocked file should include the X-WOPI-Lock header set to the empty string.
+        </Description>
+        <Requests>
+          <Unlock Lock="LockString">
+            <Validators>
+              <LockMismatchValidator ExpectedLock="" />
+            </Validators>
+          </Unlock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- LockMismatch -->
+      <TestCase Name="LockMismatchOnLockRequest" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Simulates a lock mismatch when trying to refresh the lock.
+          Validates that the current lock ID is returned as response header.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <Lock Lock="IncorrectLockString">
+            <Validators>
+              <LockMismatchValidator ExpectedLock="LockString" />
+            </Validators>
+          </Lock>
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+          <Unlock Lock="IncorrectLockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="LockMismatchOnUnlockRequest" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Simulates a lock mismatch when trying to unlock the file.
+          Validates that the current lock ID is returned as response header.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <Unlock Lock="IncorrectLockString">
+            <Validators>
+              <LockMismatchValidator ExpectedLock="LockString" />
+            </Validators>
+          </Unlock>
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+          <Unlock Lock="IncorrectLockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="LockMismatchOnRefreshLockRequest" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Simulates a lock mismatch when trying to refresh the lock.
+          Validates that the current lock ID is returned as response header.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <RefreshLock Lock="IncorrectLockString">
+            <Validators>
+              <LockMismatchValidator ExpectedLock="LockString" />
+            </Validators>
+          </RefreshLock>
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+          <Unlock Lock="IncorrectLockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="LockMismatchOnUnlockAndRelockRequest" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Simulates a lock mismatch when trying to unlock and relock the file.
+          Validates that the current lock ID is returned as response header.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <UnlockAndRelock OldLock="IncorrectLockString" NewLock="NewLockString">
+            <Validators>
+              <LockMismatchValidator ExpectedLock="LockString" />
+            </Validators>
+          </UnlockAndRelock>
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+          <Unlock Lock="IncorrectLockString" />
+          <Unlock Lock="NewLockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="LockMismatchOnPutFileRequest" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Simulates a lock mismatch when trying to refresh the lock.
+          Validates that the current lock ID is returned as response header.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <PutFile Lock="IncorrectLockString" ResourceId="WordBlankDocument">
+            <Validators>
+              <LockMismatchValidator ExpectedLock="LockString" />
+            </Validators>
+          </PutFile>
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+          <Unlock Lock="IncorrectLockString" />
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="AccessTokens">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <!-- Access token related testcases -->
+      <TestCase Name="CheckFileWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          Simulates a CheckFileInfo request with invalid access token and expects a 401 or 404 response.
+        </Description>
+        <Requests>
+          <CheckFile>
+            <Mutators>
+              <AccessToken Mutation="INVALID" />
+            </Mutators>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
+            </Validators>
+          </CheckFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="GetPutFileWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          Simulates Get and PutFile requests with invalid access token and expects a 401 or 404 response.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <Lock Lock="LockString" />
+          <GetFile Lock="LockString">
+            <Mutators>
+              <AccessToken Mutation="INVALID" />
+            </Mutators>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
+            </Validators>
+          </GetFile>
+          <GetFile Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
+            <Mutators>
+              <AccessToken Mutation="INVALID" />
+            </Mutators>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
+            </Validators>
+          </PutFile>
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="LockFileWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          Simulates Lock and Unlock request with invalid access token and expects a 401 or 404 response.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <Lock Lock="LockString">
+            <Mutators>
+              <AccessToken Mutation="INVALID" />
+            </Mutators>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
+            </Validators>
+          </Lock>
+          <Lock Lock="LockString" />
+          <Unlock Lock="LockString">
+            <Mutators>
+              <AccessToken Mutation="INVALID" />
+            </Mutators>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
+            </Validators>
+          </Unlock>
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <!-- Contains test cases that verify PutRelativeFile operation -->
+  <TestGroup Name="PutRelativeFile">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+      <PrereqTest>DeleteFilePrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="PutRelativeFile.SuggestedExtension" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the basic PutRelativeFile scenario where a suggested extension is specified.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="Suggested" Name=".foox" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" EndsWith=".foox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewFileUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFile.SuggestedName" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the basic PutRelativeFile scenario where a suggested name is specified.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="Suggested" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" EndsWith="wopitest" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewFileUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFile.SuggestedNameConflict" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the PutRelativeFile scenario where a suggested name is specified but
+          a file with the target name already exists. Expects the request to succeed with the host
+          choosing a suitable name.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="Suggested" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewUrl1" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" EndsWith="wopitest" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <PutRelativeFile PutRelativeFileMode="Suggested" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewUrl2" Source="Url"/>
+            </SaveState>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200"/>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" EndsWith="wopitest" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewUrl1"/>
+          <DeleteFile OverrideUrl="$State:NewUrl2"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFile.RelativeName" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the PutRelativeFile scenario where a Relative name is specified. Expects the created file to have
+          the exact name specified.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFile.RelativeNameOverwriteTrueNoEffect" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the PutRelativeFile scenario where a Relative name is specified and OverwriteRelative
+          is set to true. Since no file with target name exists in this scenario, the header should have
+          no effect.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument" OverwriteRelative="true">
+            <SaveState>
+              <State Name="NewUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFile.RelativeNameOverwriteFalseNoEffect" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the PutRelativeFile scenario where a Relative name is specified and OverwriteRelative
+          is set to false. Since no file with target name exists in this scenario, the header should have
+          no effect.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument" OverwriteRelative="false">
+            <SaveState>
+              <State Name="NewUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFile.RelativeNameConflictNoOverwrite" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the PutRelativeFile scenario where a Relative name is specified and OverwriteRelative
+          is not specified. Since a file with target name exists in this scenario, this should return a 409.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="409"/>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFile.RelativeNameConflictOverwriteFalse" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the PutRelativeFile scenario where a Relative name is specified and OverwriteRelative
+          is set to false. Since a file with target name exists in this scenario, this should return a 409.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument" OverwriteRelative="false">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="409"/>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFile.RelativeNameConflictOverwriteTrue" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the PutRelativeFile scenario where a Relative name is specified and OverwriteRelative is set to true.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewUrl1" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument" OverwriteRelative="true">
+            <SaveState>
+              <State Name="NewUrl2" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" EndsWith=".wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <CheckFile OverrideUrl="$State:NewUrl2">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+            </Validators>
+          </CheckFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewUrl1"/>
+          <DeleteFile OverrideUrl="$State:NewUrl2"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFile.ConflictingHeaders" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the PutRelativeFile scenario where both a suggested name and a relative name are specified.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="Conflicting" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="501"/>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFile.RelativeNameConflictOverwriteTrueLocked" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the PutRelativeFile scenario where a relative name is specified along with OverwriteRelative
+          set to true, but a file with the same target name already exists and is locked.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <Lock Lock="LockString" OverrideUrl="$State:NewUrl"/>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument" OverwriteRelative="true">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="409"/>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" OverrideUrl="$State:NewUrl"/>
+          <DeleteFile OverrideUrl="$State:NewUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFile.FileNameReturnedIsCorrectlyEncoded" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that the host returns a UTF-8 encoded version of the FileName after a PutRelativeFile operation.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeup_name.wopitestfoox" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeup_name.wopitestfoox" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFile.FileNameLongerThan512Chars" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that the host handles long file names appropriately by either supporting them or returning a 400.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="longwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilename.wopitestfoox" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="UrlWithFileNameLongerThan512Chars" Source="Url" />
+            </SaveState>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="200"/>
+                <ResponseCodeValidator ExpectedCode="400"/>
+              </Or>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:UrlWithFileNameLongerThan512Chars"/>
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <!-- Contains test cases that verify correct responses to PutRelativeFile operations when it is unsupported by the host -->
+  <TestGroup Name="PutRelativeFileUnsupported">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+      <PrereqTest>UserCanNotWriteRelativePrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="PutRelativeFileUnsupported.SuggestedExtension" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the basic PutRelativeFile scenario where a suggested extension is specified.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="Suggested" Name=".foox" ResourceId="WordSimpleDocument">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="501"/>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFileUnsupported.SuggestedName" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the basic PutRelativeFile scenario where a suggested name is specified.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="Suggested" Name="PutRelativeFileUnsupported_SuggestedName.wopitest" ResourceId="WordSimpleDocument">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="501"/>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFileUnsupported.RelativeName" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the PutRelativeFile scenario where a Relative name is specified.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="PutRelativeFileUnsupported_RelativeName.wopitest" ResourceId="WordSimpleDocument">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="501"/>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFileUnsupported.RelativeNameOverwriteTrueNoEffect" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the PutRelativeFile scenario where a Relative name is specified and OverwriteRelative is set to true.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="PutRelativeFileUnsupported_RelativeNameOverwriteTrueNoEffect.wopitest" ResourceId="WordSimpleDocument" OverwriteRelative="true">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="501"/>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFileUnsupported.RelativeNameOverwriteFalseNoEffect" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the PutRelativeFile scenario where a Relative name is specified and OverwriteRelative is set to false.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="PutRelativeFileUnsupported_RelativeNameOverwriteFalseNoEffect.wopitest" ResourceId="WordSimpleDocument" OverwriteRelative="false">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="501"/>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFileUnsupported.ConflictingHeaders" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the PutRelativeFile scenario where both a suggested name and a relative name are specified.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <PutRelativeFile PutRelativeFileMode="Conflicting" Name="PutRelativeFileUnsupported_ConflictingHeaders.wopitest" ResourceId="WordSimpleDocument">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="501"/>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <!-- Contains GetLock test cases -->
+  <TestGroup Name="GetLock">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+      <PrereqTest>GetLockPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <!-- /files/GetLock -->
+      <TestCase Name="files.GetLock" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the standard GetLock flow; Lock, GetLock, then Unlock.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <GetLock>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="LockString" IsRequired="true" ShouldMatch="true" />
+            </Validators>
+          </GetLock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="files.GetLockAfterChange" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that the lock ID GetLock returns changes after it's changed by UnlockAndRelock.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <UnlockAndRelock NewLock="NewLockString" OldLock="LockString" />
+          <GetLock>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="NewLockString" IsRequired="true" ShouldMatch="true" />
+            </Validators>
+          </GetLock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="NewLockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="files.GetLockOnUnlockedFile" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests GetLock after a file has been locked and unlocked.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <Unlock Lock="LockString" />
+          <GetLock>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="" IsRequired="true" ShouldMatch="true" />
+            </Validators>
+          </GetLock>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="ExtendedLockLength">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+      <PrereqTest>GetLockPrereq</PrereqTest>
+      <PrereqTest>ExtendedLockLengthPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <!-- /files/Lock: test new 1024 character lock length -->
+      <TestCase Name="files.ExtendedLockLengthValidation" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that the WOPI host is capable of handling WOPI Lock IDs of 1024 characters.
+        </Description>
+        <Requests>
+          <CheckFile>
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsExtendedLockLength" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+          <Lock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
+          <GetLock />
+          <Unlock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <!-- Contains test cases that verify RenameFile and will only be executed if the host does not support the CreateChildFile operation -->
+  <TestGroup Name="RenameFileIfCreateChildFileIsNotSupported">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+      <PrereqTest>DeleteFilePrereq</PrereqTest>
+      <PrereqTest>ContainersUnsupportedPrereq</PrereqTest>
+      <PrereqTest>RenameFilePrereq</PrereqTest>
+      <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="PutRelativeAndRenameFile.RenameShouldSucceed" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Perform a PutRelativeFile operation, then rename and delete it. The rename operation should succeed.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <CheckFile OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
+                <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+          <RenameFile OverrideUrl="$State:NewFileUrl" Name="ValidatorTestFileRenamed">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFileRenamed" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </RenameFile>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeAndRenameFile.FileNameAfterRenameIsCorrectlyEncoded" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Perform a PutRelativeFile operation, then rename it with a file name containing a special character and delete it.
+          The rename operation should succeed and the server should return the name as a UTF-8 encoded string.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeup_name.wopitestfoox" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeup_name.wopitestfoox" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <CheckFile OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
+                <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+          <RenameFile OverrideUrl="$State:NewFileUrl" Name="madeup_renamed">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeup_renamed" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </RenameFile>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeAndRenameFile.RenamingALockedFileWithACorrectLockHeaderValueShouldSucceed" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Perform a PutRelativeFile operation, then lock it and try to rename it with the correct lock ID. The rename operation should succeed.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <CheckFile OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
+                <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+          <Lock OverrideUrl="$State:NewFileUrl" Lock="LockString" />
+          <RenameFile OverrideUrl="$State:NewFileUrl" Lock="LockString" Name="ValidatorTestFileRenamed">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFileRenamed" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </RenameFile>
+          <Unlock OverrideUrl="$State:NewFileUrl" Lock="LockString" />
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock OverrideUrl="$State:NewFileUrl" Lock="LockString" />
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeAndRenameFile.RenamingALockedFileWithAnIncorrectLockHeaderValueShouldReturnA409" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Perform a PutRelativeFile operation, then lock it and try to rename it with an incorrect lock ID.
+          The rename operation should fail with a Conflict - 409 status code.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <CheckFile OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
+                <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+          <Lock OverrideUrl="$State:NewFileUrl" Lock="LockString" />
+          <RenameFile OverrideUrl="$State:NewFileUrl" Lock="IncorrectLockString" Name="ValidatorTestFileRenamed">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="409" />
+            </Validators>
+          </RenameFile>
+          <Unlock OverrideUrl="$State:NewFileUrl" Lock="LockString" />
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock OverrideUrl="$State:NewFileUrl" Lock="LockString" />
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeAndRenameFile.RenamingADeletedFileShouldReturnA404" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Perform a PutRelativeFile operation, then delete it and try to rename it. The rename operation should fail with a 404 status code.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <CheckFile OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
+                <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+          <RenameFile OverrideUrl="$State:NewFileUrl" Name="ValidatorTestFileRenamed">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="404" />
+            </Validators>
+          </RenameFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <!-- Contains test cases that verify RenameFile and will only be executed if the host supports the CreateChildFile operation -->
+  <TestGroup Name="RenameFileIfCreateChildFileIsSupported">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+      <PrereqTest>ContainersPrereq</PrereqTest>
+      <PrereqTest>DeleteFilePrereq</PrereqTest>
+      <PrereqTest>RenameFilePrereq</PrereqTest>
+      <PrereqTest>UserCanCreateChildFilePrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="CreateChildFileAndRenameFile.RenameShouldSucceed" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Create a file, then rename and delete it. The rename operation should succeed.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+          <CheckFile OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
+                <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+          <RenameFile OverrideUrl="$State:NewFileUrl" Name="ValidatorTestFileRenamed">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFileRenamed" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </RenameFile>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="CreateChildFileAndRenameFile.FileNameAfterRenameIsCorrectlyEncoded" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Create a file, then rename it with a file name containing a special character and delete it.
+          The rename operation should succeed and the server should return the name as a UTF-8 encoded string.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeup_name.wopitestfoox">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeup_name.wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+          <CheckFile OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
+                <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+          <RenameFile OverrideUrl="$State:NewFileUrl" Name="madeup_renamed">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeup_renamed" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </RenameFile>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="CreateChildFileAndRenameFile.RenamingALockedFileWithACorrectLockHeaderValueShouldSucceed" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Create a file, then lock it and try to rename it with the correct lock ID. The rename operation should succeed.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+          <CheckFile OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
+                <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+          <Lock OverrideUrl="$State:NewFileUrl" Lock="LockString" />
+          <RenameFile OverrideUrl="$State:NewFileUrl" Lock="LockString" Name="ValidatorTestFileRenamed">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFileRenamed" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </RenameFile>
+          <Unlock OverrideUrl="$State:NewFileUrl" Lock="LockString" />
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock OverrideUrl="$State:NewFileUrl" Lock="LockString" />
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="CreateChildFileAndRenameFile.RenamingALockedFileWithAnIncorrectLockHeaderValueShouldReturnA409" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Create a file, then lock it and try to rename it with an incorrect lock ID.
+          The rename operation should fail with a Conflict - 409 status code.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+          <CheckFile OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
+                <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+          <Lock OverrideUrl="$State:NewFileUrl" Lock="LockString" />
+          <RenameFile OverrideUrl="$State:NewFileUrl" Lock="IncorrectLockString" Name="ValidatorTestFileRenamed">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="409" />
+            </Validators>
+          </RenameFile>
+          <Unlock OverrideUrl="$State:NewFileUrl" Lock="LockString" />
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock OverrideUrl="$State:NewFileUrl" Lock="LockString" />
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="CreateChildFileAndRenameFile.RenamingADeletedFileShouldReturnA404" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Create a file, then delete it and try to rename it. The rename operation should fail with a 404 status code.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Get the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+          <CheckFile OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
+                <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+          <RenameFile OverrideUrl="$State:NewFileUrl" Name="ValidatorTestFileRenamed">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="404" />
+            </Validators>
+          </RenameFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <!-- Contains FileVersion test cases to verify X-WOPI-ItemVersion value -->
+  <TestGroup Name="FileVersion">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+
+      <!-- /files/GetFile returns X-WOPI-ItemVersion -->
+      <TestCase Name="files.GetFileReturnsVersion" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          /files/GetFile should return the current version of the file
+        </Description>
+        <Requests>
+          <GetFile>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
+            </Validators>
+          </GetFile>
+        </Requests>
+      </TestCase>
+
+      <!-- /files/Lock and /files/Unlock return X-WOPI-ItemVersion -->
+      <TestCase Name="files.LockReturnsVersion" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          /files/Lock should return the current version of the file
+        </Description>
+        <Requests>
+          <Lock Lock="LockString">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
+            </Validators>
+          </Lock>
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="files.UnlockReturnsVersion" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          /files/Unlock should return the current version of the file
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <Unlock Lock="LockString">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
+            </Validators>
+          </Unlock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- /files/PutFile returns X-WOPI-ItemVersion -->
+      <TestCase Name="files.PutFileReturnsVersion" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          /files/PutFile should return the current version of the file
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
+            </Validators>
+          </PutFile>
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- /files/PutFile returns a different X-WOPI-ItemVersion -->
+      <TestCase Name="files.PutFileReturnsDifferentVersion" Document="WordBlankDocument" Category="OfficeNativeClient">
+        <Description>
+          Performs consecutive PutFile operations to verify that the X-WOPI-ItemVersion header value is changed with every PutFile operation.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <CheckFile>
+            <SaveState>
+              <State Name="OriginalVersion" Source="Version" />
+            </SaveState>
+          </CheckFile>
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="SecondVersion" Source="X-WOPI-ItemVersion" SourceType="Header" />
+            </SaveState>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" ShouldMatch="false" />
+            </Validators>
+          </PutFile>
+          <PutFile Lock="LockString" ResourceId="WordComplexDocument">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="SecondVersion" ShouldMatch="false" />
+            </Validators>
+          </PutFile>
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- /files/GetFile, /files/Lock and /files/Unlock returns the same X-WOPI-ItemVersion -->
+      <TestCase Name="files.LockAndUnlockAfterGetFileReturnsSameVersion" Document="WordBlankDocument" Category="OfficeNativeClient">
+        <Description>
+          Performs Lock and Unlock operations after a GetFile operation to verify that the X-WOPI-ItemVersion header value is unchanged.
+        </Description>
+        <Requests>
+          <CheckFile>
+            <SaveState>
+              <State Name="OriginalVersion" Source="Version" />
+            </SaveState>
+          </CheckFile>
+          <GetFile>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" />
+            </Validators>
+          </GetFile>
+          <Lock Lock="LockString">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" />
+            </Validators>
+          </Lock>
+          <Unlock Lock="LockString">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" />
+            </Validators>
+          </Unlock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <!-- Contains Ecosystem test cases -->
+  <TestGroup Name="Ecosystem">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>ContainersPrereq</PrereqTest>
+      <PrereqTest>EcosystemPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <!-- /files/GetEcosystem -->
+      <TestCase Name="files.GetEcosystem" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that GetEcosystem returns a valid response.
+        </Description>
+        <Requests>
+          <GetEcosystem>
+            <Validators>
+              <JsonResponseContentValidator>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </GetEcosystem>
+        </Requests>
+      </TestCase>
+
+      <!-- /ecosystem/CheckEcosystem -->
+      <TestCase Name="ecosystem.CheckEcosystem" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that CheckEcosystem returns a valid response.
+        </Description>
+        <Requests>
+          <GetEcosystem>
+            <SaveState>
+              <State Name="EcosystemUrl" Source="Url" />
+            </SaveState>
+          </GetEcosystem>
+          <CheckEcosystem EcosystemUrl="$State:EcosystemUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsContainers" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckEcosystem>
+        </Requests>
+      </TestCase>
+
+      <!-- /ecosystem/GetWopiSrc -->
+      <!-- No tests -->
+
+      <!-- /ecosystem/GetRootContainer -->
+      <TestCase Name="ecosystem.GetRootContainer" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that GetRootContainer returns a valid response.
+        </Description>
+        <Requests>
+          <GetEcosystem>
+            <SaveState>
+              <State Name="EcosystemUrl" Source="Url" />
+            </SaveState>
+          </GetEcosystem>
+          <GetRootContainer OverrideUrl="$State:EcosystemUrl" WopiSrc="$State:OriginalWopiEndpoint">
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ContainerPointer.Name" IsRequired="true" />
+                <AbsoluteUrlProperty Name="ContainerPointer.Url" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </GetRootContainer>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="ecosystem.GetRootContainerInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that GetRootContainer denies requests with invalid access tokens.
+        </Description>
+        <Requests>
+          <GetEcosystem>
+            <SaveState>
+              <State Name="EcosystemUrl" Source="Url" />
+            </SaveState>
+          </GetEcosystem>
+          <GetRootContainer OverrideUrl="$State:EcosystemUrl" WopiSrc="$State:OriginalWopiEndpoint">
+            <Mutators>
+              <AccessToken Mutation="INVALID" />
+            </Mutators>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
+            </Validators>
+          </GetRootContainer>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <!-- Contains Containers test cases -->
+  <TestGroup Name="Container">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>UserCanWritePrereq</PrereqTest>
+      <PrereqTest>ContainersPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <!-- /containers/CheckContainerInfo -->
+      <TestCase Name="containers.CheckContainerInfo" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that CheckContainerInfo returns a valid response.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" IsRequired="true" />
+                <AbsoluteUrlProperty Name="HostUrl" />
+                <AbsoluteUrlProperty Name="SharingUrl" />
+                <BooleanProperty Name="UserCanCreateChildFile" />
+                <BooleanProperty Name="UserCanCreateChildContainer" />
+                <BooleanProperty Name="UserCanDelete" />
+                <BooleanProperty Name="UserCanRename" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+        </Requests>
+      </TestCase>
+
+      <!-- /containers/CreateChildContainer -->
+      <!-- /containers/DeleteContainer -->
+      <TestCase Name="containers.CreateAndDeleteChildContainer" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests creating a child container and deleting it.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildContainer" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildContainer OverrideUrl="$State:ParentContainerUrl" FolderName="CreateChildContainerTest" PutRelativeFileMode="Suggested">
+            <SaveState>
+              <State Name="NewFolderUrl" Source="ContainerPointer.Url" />
+            </SaveState>
+          </CreateChildContainer>
+          <DeleteContainer OverrideUrl="$State:NewFolderUrl" />
+        </Requests>
+        <CleanupRequests>
+          <DeleteContainer OverrideUrl="$State:NewFolderUrl" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="containers.CreateAndDeleteChildContainerDupe" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that CreateChildContainer handles 'suggested mode' properly.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildContainer" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildContainer OverrideUrl="$State:ParentContainerUrl" FolderName="CreateChildContainerTest" PutRelativeFileMode="Suggested">
+            <SaveState>
+              <State Name="NewFolderUrl" Source="ContainerPointer.Url" />
+            </SaveState>
+          </CreateChildContainer>
+          <CreateChildContainer OverrideUrl="$State:ParentContainerUrl" FolderName="CreateChildContainerTest" PutRelativeFileMode="Suggested">
+            <SaveState>
+              <State Name="NewFolder2Url" Source="ContainerPointer.Url" />
+            </SaveState>
+          </CreateChildContainer>
+          <DeleteContainer OverrideUrl="$State:NewFolderUrl" />
+          <DeleteContainer OverrideUrl="$State:NewFolder2Url" />
+        </Requests>
+        <CleanupRequests>
+          <DeleteContainer OverrideUrl="$State:NewFolderUrl" />
+          <DeleteContainer OverrideUrl="$State:NewFolder2Url" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="containers.CreateAndDeleteChildContainerExactName" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that CreateChildContainer handles 'specific mode' properly.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildContainer" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildContainer OverrideUrl="$State:ParentContainerUrl" FolderName="CreateChildContainerTest" PutRelativeFileMode="ExactName">
+            <SaveState>
+              <State Name="NewFolderUrl" Source="ContainerPointer.Url" />
+            </SaveState>
+          </CreateChildContainer>
+          <DeleteContainer OverrideUrl="$State:NewFolderUrl" />
+        </Requests>
+        <CleanupRequests>
+          <DeleteContainer OverrideUrl="$State:NewFolderUrl" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="containers.CreateAndDeleteChildContainerExactNameDupe" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that CreateChildContainer handles conflicting container names when in 'specific mode' properly.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildContainer" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildContainer OverrideUrl="$State:ParentContainerUrl" FolderName="CreateChildContainerTest" PutRelativeFileMode="ExactName">
+            <SaveState>
+              <State Name="NewFolderUrl" Source="ContainerPointer.Url" />
+            </SaveState>
+          </CreateChildContainer>
+          <CreateChildContainer OverrideUrl="$State:ParentContainerUrl" FolderName="CreateChildContainerTest" PutRelativeFileMode="ExactName">
+            <SaveState>
+              <State Name="NewFolder2Url" Source="ContainerPointer.Url" />
+            </SaveState>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="409"/>
+            </Validators>
+          </CreateChildContainer>
+          <DeleteContainer OverrideUrl="$State:NewFolderUrl" />
+        </Requests>
+        <CleanupRequests>
+          <DeleteContainer OverrideUrl="$State:NewFolderUrl" />
+          <DeleteContainer OverrideUrl="$State:NewFolder2Url" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- /containers/RenameContainer -->
+      <TestCase Name="containers.CreateAndRenameChildContainer" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that RenameContainer is handled properly.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildContainer" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildContainer OverrideUrl="$State:ParentContainerUrl" FolderName="CreateChildContainerTest" PutRelativeFileMode="Suggested">
+            <SaveState>
+              <State Name="NewFolderUrl" Source="ContainerPointer.Url" />
+            </SaveState>
+          </CreateChildContainer>
+          <RenameContainer OverrideUrl="$State:NewFolderUrl" Name="RenameContainerTest" />
+          <CheckContainer OverrideUrl="$State:NewFolderUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="RenameContainerTest" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <DeleteContainer OverrideUrl="$State:NewFolderUrl" />
+        </Requests>
+        <CleanupRequests>
+          <DeleteContainer OverrideUrl="$State:NewFolderUrl" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="containers.CreateAndRenameChildContainerAndVerifyReturnedContainerNameIsCorrectlyEncoded" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the Containers.RenameChildContainer scenario where a Relative name is specified. Expect the host to rename
+          the container with the exact name as specified. Also ensure that the host returns a UTF-8 encoded version of the ContainerName.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildContainer" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildContainer OverrideUrl="$State:ParentContainerUrl" FolderName="CreateChildContainerTest" PutRelativeFileMode="Suggested">
+            <SaveState>
+              <State Name="NewFolderUrl" Source="ContainerPointer.Url" />
+            </SaveState>
+          </CreateChildContainer>
+          <RenameContainer OverrideUrl="$State:NewFolderUrl" Name="container_name" />
+          <CheckContainer OverrideUrl="$State:NewFolderUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="container_name" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <DeleteContainer OverrideUrl="$State:NewFolderUrl" />
+        </Requests>
+        <CleanupRequests>
+          <DeleteContainer OverrideUrl="$State:NewFolderUrl" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- /containers/GetEcosystem -->
+      <TestCase Name="containers.GetEcosystem" Document="WordBlankDocument" Category="WopiCore">
+        <Description>/files/EnumerateAncestors then /containers/GetEcosystem on each element</Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <GetEcosystem OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </GetEcosystem>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="containers.LicensingPropertiesOnChildFolderMatchWithParentFolder" Document="WordBlankDocument" Category="OfficeNativeClient">
+        <Description>
+          Verify that some CheckContainerInfo user properties match between a child container and its parent.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <SaveState>
+              <State Name="LicenseCheckForEditIsEnabledParentContainer" Source="LicenseCheckForEditIsEnabled" />
+              <State Name="IsEduUserParentContainer" Source="IsEduUser" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" />
+                <BooleanProperty Name="UserCanCreateChildContainer" ExpectedValue="true" />
+                <BooleanProperty Name="LicenseCheckForEditIsEnabled" IsRequired="true" />
+                <BooleanProperty Name="IsEduUser" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildContainer OverrideUrl="$State:ParentContainerUrl" FolderName="testfolder" PutRelativeFileMode="ExactName">
+            <SaveState>
+              <State Name="TestChildFolder" Source="ContainerPointer.Url" />
+            </SaveState>
+          </CreateChildContainer>
+          <CheckContainer OverrideUrl="$State:TestChildFolder">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="LicenseCheckForEditIsEnabled" ExpectedStateKey="LicenseCheckForEditIsEnabledParentContainer" IsRequired="true" />
+                <BooleanProperty Name="IsEduUser" ExpectedStateKey="IsEduUserParentContainer" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+        </Requests>
+        <CleanupRequests>
+          <DeleteContainer OverrideUrl="$State:TestChildFolder" />
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <!-- Contains EnumerateAncestors and EnumerateChildren test cases -->
+  <TestGroup Name="EnumerateAncestorsAndChildren">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>ContainersPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <!-- /files/EnumerateAncestors -->
+      <TestCase Name="files.EnumerateAncestors" Document="WordBlankDocument" Category="WopiCore">
+        <Description>just EnumerateAncestors</Description>
+        <Requests>
+          <EnumerateAncestors>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="AncestorsWithRootFirst[0].Name" IsRequired="true" />
+                <AbsoluteUrlProperty Name="AncestorsWithRootFirst[0].Url" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </EnumerateAncestors>
+        </Requests>
+      </TestCase>
+
+      <!-- /containers/EnumerateChildren -->
+      <TestCase Name="containers.EnumerateChildren" Document="WordBlankDocument" Category="WopiCore">
+        <Description>/files/EnumerateAncestors then /containers/EnumerateChildren on the parent folder</Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <EnumerateChildren OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ChildFiles[0].Name" IsRequired="true" />
+                <AbsoluteUrlProperty Name="ChildFiles[0].Url" IsRequired="true" />
+                <StringProperty Name="ChildFiles[0].Version" IsRequired="true" />
+                <LongProperty Name="ChildFiles[0].Size" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </EnumerateChildren>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="containers.EnumerateChildrenOnRoot" Document="WordBlankDocument" Category="WopiCore">
+        <Description>/files/EnumerateAncestors then /containers/EnumerateChildren on the root folder</Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[0].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <EnumerateChildren OverrideUrl="$State:ParentContainerUrl">
+            <!-- We can't know whether there will be files or folders in an arbitrary host's root, so we can't validate. -->
+          </EnumerateChildren>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="containers.EnumerateChildrenWithOneFilter" Document="WordBlankDocument" Category="WopiCore">
+        <Description>/files/EnumerateAncestors then /containers/EnumerateChildren on the parent folder with a file extension filter</Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <EnumerateChildren OverrideUrl="$State:ParentContainerUrl" FileExtensionFilterList=".wopitest">
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ChildFiles[0].Name" IsRequired="true" />
+                <AbsoluteUrlProperty Name="ChildFiles[0].Url" IsRequired="true" />
+                <StringProperty Name="ChildFiles[0].Version" IsRequired="true" />
+                <LongProperty Name="ChildFiles[0].Size" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </EnumerateChildren>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="containers.EnumerateChildrenWithMultipleFilters" Document="WordBlankDocument" Category="WopiCore">
+        <Description>/files/EnumerateAncestors then /containers/EnumerateChildren on the parent folder with multiple file extensions filtered</Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <EnumerateChildren OverrideUrl="$State:ParentContainerUrl" FileExtensionFilterList=".wopitest,.docx,.xlsx">
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ChildFiles[0].Name" IsRequired="true" />
+                <AbsoluteUrlProperty Name="ChildFiles[0].Url" IsRequired="true" />
+                <StringProperty Name="ChildFiles[0].Version" IsRequired="true" />
+                <LongProperty Name="ChildFiles[0].Size" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </EnumerateChildren>
+        </Requests>
+      </TestCase>
+
+      <!-- /containers/EnumerateAncestors -->
+      <TestCase Name="containers.EnumerateAncestorsOnRoot" Document="WordBlankDocument" Category="WopiCore">
+        <Description>/files/EnumerateAncestors then /containers/EnumerateAncestors on a container which is a root container</Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[0].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <EnumerateAncestors OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200"/>
+            </Validators>
+          </EnumerateAncestors>
+        </Requests>
+      </TestCase>
+
+      <!-- /containers/EnumerateAncestors -->
+      <TestCase Name="containers.EnumerateAncestorsOnChildren" Document="WordBlankDocument" Category="WopiCore">
+        <Description>/files/EnumerateAncestors then /containers/EnumerateAncestors on a container which is not a root container</Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildContainer" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildContainer OverrideUrl="$State:ParentContainerUrl" FolderName="CreateChildContainerTest" PutRelativeFileMode="Suggested">
+            <SaveState>
+              <State Name="NewFolderUrl" Source="ContainerPointer.Url" />
+            </SaveState>
+          </CreateChildContainer>
+          <EnumerateAncestors OverrideUrl="$State:NewFolderUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="AncestorsWithRootFirst[0].Name" IsRequired="true" />
+                <AbsoluteUrlProperty Name="AncestorsWithRootFirst[0].Url" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </EnumerateAncestors>
+        </Requests>
+        <CleanupRequests>
+          <DeleteContainer OverrideUrl="$State:NewFolderUrl" />
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <!-- Contains test cases that verify CreateChildFile and DeleteFile -->
+  <TestGroup Name="CreateChildFileAndDeleteFile">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>UserCanWritePrereq</PrereqTest>
+      <PrereqTest>ContainersPrereq</PrereqTest>
+      <PrereqTest>DeleteFilePrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <!-- /containers/CreateChildFile -->
+      <!-- /files/DeleteFile -->
+      <TestCase Name="CreateChildFileAndDelete" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          /files/EnumerateAncestors then go to a container that has UserCanCreateChildFile=true.
+          create a file.  delete it.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="Suggested" Name="CreateChildFileTestFile.docx">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+          </CreateChildFile>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="CreateChildFile.SuggestedName" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the Containers.CreateChildFile scenario where a suggested name is specified.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="Suggested" Name="madeupname.wopitest">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" EndsWith="wopitest" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewFileUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="CreateChildFile.SuggestedNameConflict" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the Containers.CreateChildFile scenario where a suggested name is specified but
+          a file with the target name already exists. Expect the request to succeed with the host
+          choosing a suitable name.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="Suggested" Name="madeupname.wopitest">
+            <SaveState>
+              <State Name="NewUrl1" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" EndsWith="wopitest" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="Suggested" Name="madeupname.wopitest">
+            <SaveState>
+              <State Name="NewUrl2" Source="Url"/>
+            </SaveState>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200"/>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" EndsWith="wopitest" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewUrl1"/>
+          <DeleteFile OverrideUrl="$State:NewUrl2"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="CreateChildFile.RelativeName" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the Containers.CreateChildFile scenario where a Relative name is specified. Expect the host to create
+          a new file with the exact name as specified.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox">
+            <SaveState>
+              <State Name="NewUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="CreateChildFile.RelativeNameOverwriteTrueNoEffect" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the Containers.CreateChildFile scenario where a Relative name is specified and OverwriteRelative
+          is set to true. Since no file with target name exists in this scenario, the header should have
+          no effect. Expect the host to create a new file with the exact name as specified.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" OverwriteRelative="true">
+            <SaveState>
+              <State Name="NewUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="CreateChildFile.RelativeNameOverwriteFalseNoEffect" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the Containers.CreateChildFile scenario where a Relative name is specified and OverwriteRelative
+          is set to false. Since no file with target name exists in this scenario, the header should have
+          no effect. Expect the host to create a new file with the exact name as specified.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" OverwriteRelative="false">
+            <SaveState>
+              <State Name="NewUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="CreateChildFile.RelativeNameConflictNoOverwrite" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the Containers.CreateChildFile scenario where a Relative name is specified and OverwriteRelative
+          is not specified. Since a file with target name exists in this scenario, expect the host to
+          return 409 status code as conflict.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox">
+            <SaveState>
+              <State Name="NewUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="409"/>
+            </Validators>
+          </CreateChildFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="CreateChildFile.RelativeNameConflictOverwriteFalse" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the Containers.CreateChildFile scenario where a Relative name is specified and OverwriteRelative
+          is set to false. Since a file with target name exists in this scenario, expect the host to
+          return 409 status code as conflict.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox">
+            <SaveState>
+              <State Name="NewUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" OverwriteRelative="false">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="409"/>
+            </Validators>
+          </CreateChildFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="CreateChildFile.RelativeNameConflictOverwriteTrue" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the Containers.CreateChildFile scenario where a Relative name is specified and OverwriteRelative
+          is set to true. Since a file with target name exists in this scenario, expect the host to
+          succeed by choosing a suitable name.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox">
+            <SaveState>
+              <State Name="NewUrl1" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" OverwriteRelative="true">
+            <SaveState>
+              <State Name="NewUrl2" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" EndsWith=".wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+          <CheckFile OverrideUrl="$State:NewUrl2">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+            </Validators>
+          </CheckFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewUrl1"/>
+          <DeleteFile OverrideUrl="$State:NewUrl2"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="CreateChildFile.ConflictingHeaders" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the Containers.CreateChildFile scenario where both a suggested name and a relative name are specified.
+          Expect the host to fail the request as bad request.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="Conflicting" Name="madeupname.wopitestfoox">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="501"/>
+            </Validators>
+          </CreateChildFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="CreateChildFile.RelativeNameConflictOverwriteTrueLocked" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the Containers.CreateChildFile scenario where a relative name is specified along with OverwriteRelative
+          set to true, but a file with the same target name already exists and is locked. Expect the host
+          to fail the request with a 409 conflict code.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox">
+            <SaveState>
+              <State Name="NewUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+          <Lock Lock="LockString" OverrideUrl="$State:NewUrl"/>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" OverwriteRelative="true">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="409"/>
+            </Validators>
+          </CreateChildFile>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" OverrideUrl="$State:NewUrl"/>
+          <DeleteFile OverrideUrl="$State:NewUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="CreateChildFile.FileNameReturnedIsCorrectlyEncoded" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the Containers.CreateChildFile scenario where a Relative name is specified. Expect the host to create
+          a new file with the exact name as specified. Also ensure that the host returns a UTF-8 encoded version of the FileName.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeup_name.wopitestfoox">
+            <SaveState>
+              <State Name="NewUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeup_name.wopitestfoox" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="CreateChildFile.FileNameLongerThan512Characters" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the Containers.CreateChildFile scenario where a file name is longer than 512 characters, then the host should return a 400 or 200.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="longwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilename.wopitestfoox">
+            <SaveState>
+              <State Name="UrlWithFileNameLongerThan512Chars" Source="Url" />
+            </SaveState>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="400"/>
+                <ResponseCodeValidator ExpectedCode="200"/>
+              </Or>
+            </Validators>
+          </CreateChildFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:UrlWithFileNameLongerThan512Chars"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="CreateChildFile.LicensingPropertiesOnChildFileMatchWithParentFolder" Document="WordBlankDocument" Category="OfficeNativeClient">
+        <Description>
+          Verify that some CheckContainerInfo and CheckFileInfo user properties match between a child file and its parent container.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl">
+            <SaveState>
+              <State Name="LicenseCheckForEditIsEnabledParentContainer" Source="LicenseCheckForEditIsEnabled" />
+              <State Name="IsEduUserParentContainer" Source="IsEduUser" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" IsRequired="true" />
+                <BooleanProperty Name="LicenseCheckForEditIsEnabled" IsRequired="true" />
+                <BooleanProperty Name="IsEduUser" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainer>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox">
+            <SaveState>
+              <State Name="NewUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+          <CheckFile OverrideUrl="$State:NewUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="LicenseCheckForEditIsEnabled" ExpectedStateKey="LicenseCheckForEditIsEnabledParentContainer" IsRequired="true" />
+                <BooleanProperty Name="IsEduUser" ExpectedStateKey="IsEduUserParentContainer" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewUrl"/>
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="FileUrlUsage">
+    <PrereqTests>
+      <PrereqTest>FileUrlUsagePrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="GetFromFileUrl" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Use FileUrl if supported by host to directly retrieve the contents of a file instead of using GetFile.
+        </Description>
+        <Requests>
+          <CheckFile>
+            <SaveState>
+              <State Name="FileUrl" Source="FileUrl" />
+            </SaveState>
+          </CheckFile>
+          <Lock Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
+          <Unlock Lock="LockString" />
+          <GetFromFileUrl OverrideUrl="$State:FileUrl">
+            <Validators>
+              <ResponseContentValidator ExpectedDocumentId="WordSimpleDocument" />
+            </Validators>
+          </GetFromFileUrl>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString"/>
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="GetSharingUrlForFileWithTypeReadOnly">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>ShareUrlTypeReadOnlyForFilePrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="files.GetShareUrlForReadOnlyUrlType" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the GetShareUrl operation for a file where the requested share url type is "ReadOnly".
+        </Description>
+        <Requests>
+          <CheckFile />
+          <GetShareUrl UrlType="ReadOnly">
+            <Validators>
+              <JsonResponseContentValidator>
+                <AbsoluteUrlProperty Name="ShareUrl" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </GetShareUrl>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="GetSharingUrlForFileWithTypeReadWrite">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>ShareUrlTypeReadWriteForFilePrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="files.GetShareUrlForReadWriteUrlType" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the GetShareUrl operation for a file where the requested share url type is "ReadWrite".
+        </Description>
+        <Requests>
+          <CheckFile />
+          <GetShareUrl UrlType="ReadWrite">
+            <Validators>
+              <JsonResponseContentValidator>
+                <AbsoluteUrlProperty Name="ShareUrl" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </GetShareUrl>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="GetSharingUrlForFileWithUnknownType">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="files.GetShareUrlForUnknownUrlType" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the GetShareUrl operation for a file where the requested share url type is unknown.
+        </Description>
+        <Requests>
+          <CheckFile />
+          <GetShareUrl UrlType="UnknownType">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="501"/>
+            </Validators>
+          </GetShareUrl>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="GetSharingUrlForContainerWithTypeReadOnly">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>ShareUrlTypeReadOnlyForContainerPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="containers.GetShareUrlForReadOnlyUrlType" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the GetShareUrl operation for a container where the requested share url type is "ReadOnly".
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl" />
+          <GetShareUrl OverrideUrl="$State:ParentContainerUrl" UrlType="ReadOnly">
+            <Validators>
+              <JsonResponseContentValidator>
+                <AbsoluteUrlProperty Name="ShareUrl" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </GetShareUrl>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="GetSharingUrlForContainerWithTypeReadWrite">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>ShareUrlTypeReadWriteForContainerPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="containers.GetShareUrlForReadWriteUrlType" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the GetShareUrl operation for a container where the requested share url type is "ReadWrite".
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl" />
+          <GetShareUrl OverrideUrl="$State:ParentContainerUrl" UrlType="ReadWrite">
+            <Validators>
+              <JsonResponseContentValidator>
+                <AbsoluteUrlProperty Name="ShareUrl" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </GetShareUrl>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="GetSharingUrlForContainerWithUnknownType">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>ContainersPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="containers.GetShareUrlForUnknownUrlType" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the GetShareUrl operation for a container where the requested share url type is unknown.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainer OverrideUrl="$State:ParentContainerUrl" />
+          <GetShareUrl OverrideUrl="$State:ParentContainerUrl" UrlType="UnknownType">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="501"/>
+            </Validators>
+          </GetShareUrl>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <!-- Contains AddActivities test cases -->
+  <TestGroup Name="AddActivities">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>AddActivitiesPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <!-- /files/AddActivities -->
+      <TestCase Name="files.AddActivitiesSingleMinimalComment" Document="WordBlankDocument" Category="WopiCore">
+        <Description>one comment, minimal properties</Description>
+        <Requests>
+          <AddActivities>
+            <RequestBodyJson>
+              <![CDATA[{ "Activities": [
+              {
+                "Type": "comment",
+                "Id": "00000014-0000-0000-0000-000000000000",
+                "Timestamp": "2017-03-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "cid123",
+                  "ContentAction": "created"
+                }
+              }
+              ] }]]>
+            </RequestBodyJson>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000014-0000-0000-0000-000000000000" />
+              </JsonResponseContentValidator>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </AddActivities>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.AddActivitiesSingleFullComment" Document="WordBlankDocument" Category="WopiCore">
+        <Description>one comment with all data properties set</Description>
+        <Requests>
+          <AddActivities>
+            <RequestBodyJson>
+              <![CDATA[{ "Activities": [
+              {
+                "Type": "comment",
+                "Id": "00000001-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "CommentText": "basic text",
+                  "ContentId": "cid123",
+                  "NavigationId": "nid123",
+                  "ContentAction": "created",
+                  "IsReply": true
+                }
+              }
+              ] }]]>
+            </RequestBodyJson>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000001-0000-0000-0000-000000000000" />
+              </JsonResponseContentValidator>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </AddActivities>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.AddActivitiesAllCapsID" Document="WordBlankDocument" Category="WopiCore">
+        <Description>one comment with all-caps ID GUID</Description>
+        <Requests>
+          <AddActivities>
+            <RequestBodyJson>
+              <![CDATA[{ "Activities": [
+              {
+                "Type": "comment",
+                "Id": "00000002-ABCD-ABCD-ABCD-ABCDEFABCDEF",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "cid123",
+                  "ContentAction": "created"
+                }
+              }
+              ] }]]>
+            </RequestBodyJson>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000002-ABCD-ABCD-ABCD-ABCDEFABCDEF" />
+              </JsonResponseContentValidator>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </AddActivities>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.AddActivitiesMaxLengthContentID" Document="WordBlankDocument" Category="WopiCore">
+        <Description>one comment with max-length ContentID</Description>
+        <Requests>
+          <AddActivities>
+            <RequestBodyJson>
+              <![CDATA[{ "Activities": [
+              {
+                "Type": "comment",
+                "Id": "00000004-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+                  "ContentAction": "created"
+                }
+              }
+              ] }]]>
+            </RequestBodyJson>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000004-0000-0000-0000-000000000000" />
+              </JsonResponseContentValidator>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </AddActivities>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.AddActivitiesMaxLengthNavigationId" Document="WordBlankDocument" Category="WopiCore">
+        <Description>one comment with max-length NavigationId</Description>
+        <Requests>
+          <AddActivities>
+            <RequestBodyJson>
+              <![CDATA[{ "Activities": [
+              {
+                "Type": "comment",
+                "Id": "00000005-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "cid123",
+                  "NavigationId": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+                  "ContentAction": "created"
+                }
+              }
+              ] }]]>
+            </RequestBodyJson>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000005-0000-0000-0000-000000000000" />
+              </JsonResponseContentValidator>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </AddActivities>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.AddActivitiesCommentUpdate" Document="WordBlankDocument" Category="WopiCore">
+        <Description>one comment with ContentAction=update</Description>
+        <Requests>
+          <AddActivities>
+            <RequestBodyJson>
+              <![CDATA[{ "Activities": [
+              {
+                "Type": "comment",
+                "Id": "00000006-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "cid123",
+                  "ContentAction": "updated"
+                }
+              }
+              ] }]]>
+            </RequestBodyJson>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000006-0000-0000-0000-000000000000" />
+              </JsonResponseContentValidator>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </AddActivities>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.AddActivitiesCommentDelete" Document="WordBlankDocument" Category="WopiCore">
+        <Description>one comment with ContentAction=delete</Description>
+        <Requests>
+          <AddActivities>
+            <RequestBodyJson>
+              <![CDATA[{ "Activities": [
+              {
+                "Type": "comment",
+                "Id": "00000007-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "cid123",
+                  "ContentAction": "deleted"
+                }
+              }
+              ] }]]>
+            </RequestBodyJson>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000007-0000-0000-0000-000000000000" />
+              </JsonResponseContentValidator>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </AddActivities>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.AddActivitiesWithBonusToplevelProperty" Document="WordBlankDocument" Category="WopiCore">
+        <Description>one comment with bogus additional toplevel property</Description>
+        <Requests>
+          <AddActivities>
+            <RequestBodyJson>
+              <![CDATA[{ "Activities": [
+              {
+                "Type": "comment",
+                "Id": "00000008-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "cid123",
+                  "ContentAction": "created"
+                },
+                "BonusTopLevelProperty": "future compatibility!"
+              }
+              ] }]]>
+            </RequestBodyJson>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000008-0000-0000-0000-000000000000" />
+              </JsonResponseContentValidator>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </AddActivities>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.AddActivitiesWithBonusDataProperty" Document="WordBlankDocument" Category="WopiCore">
+        <Description>one comment with bogus additional data property</Description>
+        <Requests>
+          <AddActivities>
+            <RequestBodyJson>
+              <![CDATA[{ "Activities": [
+              {
+                "Type": "comment",
+                "Id": "00000003-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "cid123",
+                  "ContentAction": "created",
+                  "BonusProperty": "future compatibility!"
+                }
+              }
+              ] }]]>
+            </RequestBodyJson>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000003-0000-0000-0000-000000000000" />
+              </JsonResponseContentValidator>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </AddActivities>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.AddActivitiesCommentAndPerson" Document="WordBlankDocument" Category="WopiCore">
+        <Description>one comment, one person</Description>
+        <Requests>
+          <AddActivities>
+            <RequestBodyJson>
+              <![CDATA[{ "Activities": [
+              {
+                "Type": "comment",
+                "Id": "00000009-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "cid123",
+                  "ContentAction": "created"
+                },
+                "People": [
+                  {
+                    "Name": "John Able",
+                    "Id": "111",
+                    "Provider": "wopi-contoso",
+                    "Mentioned": true
+                  }
+                ]
+              }
+              ] }]]>
+            </RequestBodyJson>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000009-0000-0000-0000-000000000000" />
+              </JsonResponseContentValidator>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </AddActivities>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.AddActivitiesCommentWithThreePeople" Document="WordBlankDocument" Category="WopiCore">
+        <Description>one comment, three people</Description>
+        <Requests>
+          <AddActivities>
+            <RequestBodyJson>
+              <![CDATA[{ "Activities": [
+              {
+                "Type": "comment",
+                "Id": "0000000a-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "cid123",
+                  "ContentAction": "created"
+                },
+                "People": [
+                  {
+                    "Name": "John Able",
+                    "Id": "111",
+                    "Provider": "wopi-contoso",
+                    "Mentioned": true
+                  },
+                  {
+                    "Name": "Jane Baker",
+                    "Id": "222",
+                    "Provider": "wopi-contoso",
+                    "InThread": true
+                  },
+                  {
+                    "Name": "Pat Charlie",
+                    "Id": "333",
+                    "Provider": "wopi-contoso",
+                    "InThread": true,
+                    "RepliedTo": true
+                  }
+                ]
+              }
+              ] }]]>
+            </RequestBodyJson>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="0000000a-0000-0000-0000-000000000000" />
+              </JsonResponseContentValidator>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </AddActivities>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.AddActivitiesCommentWithPersonBonusProperty" Document="WordBlankDocument" Category="WopiCore">
+        <Description>one comment, one person with bogus additional property</Description>
+        <Requests>
+          <AddActivities>
+            <RequestBodyJson>
+              <![CDATA[{ "Activities": [
+              {
+                "Type": "comment",
+                "Id": "0000000b-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "cid123",
+                  "ContentAction": "created"
+                },
+                "People": [
+                  {
+                    "Name": "John Able",
+                    "Id": "111",
+                    "Provider": "wopi-contoso",
+                    "Mentioned": true,
+                    "BonusProperty": "future compatibility!"
+                  }
+                ]
+              }
+              ] }]]>
+            </RequestBodyJson>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="0000000b-0000-0000-0000-000000000000" />
+              </JsonResponseContentValidator>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </AddActivities>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.AddActivitiesCommentWithNonWopiPerson" Document="WordBlankDocument" Category="WopiCore">
+        <Description>one comment, one person with non-wopi provider and ID</Description>
+        <Requests>
+          <AddActivities>
+            <RequestBodyJson>
+              <![CDATA[{ "Activities": [
+              {
+                "Type": "comment",
+                "Id": "0000000c-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "cid123",
+                  "ContentAction": "created"
+                },
+                "People": [
+                  {
+                    "Name": "Don Delta",
+                    "Id": "{00000000-0000-0000-0000-000000000000}",
+                    "Provider": "Windows Live",
+                    "Mentioned": true
+                  }
+                ]
+              }
+              ] }]]>
+            </RequestBodyJson>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="0000000c-0000-0000-0000-000000000000" />
+              </JsonResponseContentValidator>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </AddActivities>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.AddActivitiesUnknownActivityType" Document="WordBlankDocument" Category="WopiCore">
+        <Description>one activity with bogus type</Description>
+        <Requests>
+          <AddActivities>
+            <RequestBodyJson>
+              <![CDATA[{ "Activities": [
+              {
+                "Type": "unsupported",
+                "Id": "0000000d-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "cid123",
+                  "ContentAction": "created"
+                }
+              }
+              ] }]]>
+            </RequestBodyJson>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="0000000d-0000-0000-0000-000000000000" />
+              </JsonResponseContentValidator>
+              <JsonResponseContentValidator>
+                <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="3" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </AddActivities>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.AddActivitiesUnknownNoDataActivity" Document="WordBlankDocument" Category="WopiCore">
+        <Description>one activity with bogus type and no data</Description>
+        <Requests>
+          <AddActivities>
+            <RequestBodyJson>
+              <![CDATA[{ "Activities": [
+              {
+                "Type": "unsupported",
+                "Id": "0000000e-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z"
+              }
+              ] }]]>
+            </RequestBodyJson>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="0000000e-0000-0000-0000-000000000000" />
+              </JsonResponseContentValidator>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </AddActivities>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.AddActivitiesTwoActivitiesOneUnknown" Document="WordBlankDocument" Category="WopiCore">
+        <Description>one comment and one activity with bogus type</Description>
+        <Requests>
+          <AddActivities>
+            <RequestBodyJson>
+              <![CDATA[{ "Activities": [
+              {
+                "Type": "comment",
+                "Id": "0000000f-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "cid123",
+                  "ContentAction": "created"
+                }
+              },
+              {
+                "Type": "unsupported",
+                "Id": "00000010-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "cid123",
+                  "ContentAction": "created"
+                }
+              }
+              ] }]]>
+            </RequestBodyJson>
+            <Validators>
+              <Or>
+                <!-- We don't know what order they'll come back in so we need to OR and check both ways -->
+                <JsonResponseContentValidator>
+                  <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="0000000f-0000-0000-0000-000000000000" />
+                  <StringProperty Name="ActivityResponses[1].Id" IsRequired="true" ExpectedValue="00000010-0000-0000-0000-000000000000" />
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000010-0000-0000-0000-000000000000" />
+                  <StringProperty Name="ActivityResponses[1].Id" IsRequired="true" ExpectedValue="0000000f-0000-0000-0000-000000000000" />
+                </JsonResponseContentValidator>
+              </Or>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[1].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[1].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </AddActivities>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.AddActivitiesThreeComments" Document="WordBlankDocument" Category="WopiCore">
+        <Description>three comments</Description>
+        <Requests>
+          <AddActivities>
+            <RequestBodyJson>
+              <![CDATA[{ "Activities": [
+              {
+                "Type": "comment",
+                "Id": "00000011-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "cid123",
+                  "ContentAction": "created"
+                }
+              },
+              {
+                "Type": "comment",
+                "Id": "00000012-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "cid123",
+                  "ContentAction": "created"
+                }
+              },
+              {
+                "Type": "comment",
+                "Id": "00000013-0000-0000-0000-000000000000",
+                "Created": "2017-02-15T13:47:13000000Z",
+                "Data": {
+                  "ContentId": "cid123",
+                  "ContentAction": "created"
+                }
+              }
+              ] }]]>
+            </RequestBodyJson>
+            <Validators>
+              <!-- We don't know what order they'll come back in and checking each possibility is too much so we'll just make sure that we got three replies -->
+              <JsonResponseContentValidator>
+                <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" />
+                <StringProperty Name="ActivityResponses[1].Id" IsRequired="true" />
+                <StringProperty Name="ActivityResponses[2].Id" IsRequired="true" />
+              </JsonResponseContentValidator>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[0].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[1].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[1].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+              <Or>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[2].Status" ExpectedValue="0"/>
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <IntegerProperty Name="ActivityResponses[2].Status" ExpectedValue="3" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </AddActivities>
+        </Requests>
+      </TestCase>
+
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="Features">
+    <TestCases>
+      <TestCase
+        Name="Feature.FileSharing"
+        Document="WordBlankDocument"
+        UiScreenshot="Feature.FileSharing.png"
+        DocumentationLink="https://wopi.readthedocs.org/en/latest/wopi/files/CheckFileInfo.html?highlight=sharing#term-filesharingurl"
+        FailMessage="File sharing not available."
+        Category="OfficeOnline">
+        <Description>Checks the support for the file sharing feature</Description>
+        <Requests>
+          <CheckFile>
+            <Validators>
+              <Or>
+                <JsonResponseContentValidator>
+                  <AbsoluteUrlProperty Name="FileSharingUrl" IsRequired="true" />
+                </JsonResponseContentValidator>
+                <JsonResponseContentValidator>
+                  <BooleanProperty Name="FileSharingPostMessage" ExpectedValue="true" />
+                </JsonResponseContentValidator>
+              </Or>
+            </Validators>
+          </CheckFile>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <!-- Proof key related test cases -->
+  <TestGroup Name="ProofKeys">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="ProofKeyCurrentValid" Document="WordBlankDocument" Category="OfficeOnline">
+        <Description>
+          The base case - sends the current proof key with no manipulation.
+        </Description>
+        <Requests>
+          <CheckFile/>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="ProofKeyCurrentOldGarbage" Document="WordBlankDocument" Category="OfficeOnline">
+        <Description>
+          Tests that hosts don't accept invalid current and old proof keys. This
+          scenario should not happen and is an invalid WOPI request and should
+          be rejected.
+        </Description>
+        <Requests>
+          <CheckFile>
+            <Mutators>
+              <ProofKey MutateCurrent="true" MutateOld="true" />
+            </Mutators>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="500" />
+            </Validators>
+          </CheckFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="ProofKeyCurrentValidOldGarbage" Document="WordBlankDocument" Category="OfficeOnline">
+        <Description>
+          Tests that hosts do accept invalid old proof key. This scenario should not
+          happen, but it is still a valid WOPI request and should be accepted.
+        </Description>
+        <Requests>
+          <CheckFile>
+            <Mutators>
+              <ProofKey MutateOld="true" />
+            </Mutators>
+          </CheckFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="ProofKeyWacAheadOfHost" Document="WordBlankDocuemnt" Category="OfficeOnline">
+        <Description>
+          Tests that hosts do accept current WOPI proof key signed with old public key.
+          This can happen when a client has updated proof keys but the host hasn't rerun discovery yet.
+        </Description>
+        <Requests>
+          <CheckFile>
+            <Mutators>
+              <ProofKey KeyRelation="Ahead" />
+            </Mutators>
+          </CheckFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="ProofKeyWacBehindHost" Document="WordBlankDocument" Category="OfficeOnline">
+        <Description>
+          Tests that hosts do accept when current proof key is invalid but old proof
+          key is signed with current public key. This can happen when a client has updated proof keys, host has
+          rerun discovery and has the updated proof keys, but the datacenter machine making the WOPI
+          request does not have the updated proof keys yet.
+        </Description>
+        <Requests>
+          <CheckFile>
+            <Mutators>
+              <ProofKey KeyRelation="Behind" />
+            </Mutators>
+          </CheckFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="WopiTimestampOlderThan20Min" Document="WordBlankDocument" Category="OfficeOnline">
+        <Description>
+          Tests that hosts don't accept a timestamp older than 20 minutes.
+        </Description>
+        <Requests>
+          <CheckFile>
+            <Mutators>
+              <ProofKey Timestamp="2015-08-17T00:00:00Z" />
+            </Mutators>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="500" />
+            </Validators>
+          </CheckFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="ProofKeyCurrentGarbageValidOldFromOldKey" Document="WordBlankDocument" Category="OfficeOnline">
+        <Description>
+          Tests that hosts do not accept an invalid current proof key although the old proof key
+          is valid, but with the old public key. This scenario should not happen and WOPI
+          requests should be rejected.
+        </Description>
+        <Requests>
+          <CheckFile>
+            <Mutators>
+              <ProofKey MutateCurrent="true" />
+            </Mutators>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="500" />
+            </Validators>
+          </CheckFile>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+</WopiValidation>
