@@ -35,30 +35,28 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			return resourceManager.GetContentStream(ResourceId);
 		}
 
-		protected override IEnumerable<KeyValuePair<string, string>> DefaultHeaders
+		protected override IEnumerable<KeyValuePair<string, string>> GetCustomHeaders(Dictionary<string, string> savedState, IResourceManager resourceManager)
 		{
-			get
+			Dictionary<string, string> headers = new Dictionary<string, string>();
+			headers.Add(Constants.Headers.Size, GetRequestContent(resourceManager).Length.ToString());
+			switch (RequestType)
 			{
-				Dictionary<string, string> headers = new Dictionary<string, string>();
-				switch (RequestType)
-				{
-					case PutRelativeFileMode.Suggested:
-						headers.Add(Constants.Headers.SuggestedTarget, UrlHelper.GetUTF7EncodedUnescapedDataString(RequestedName));
-						break;
-					case PutRelativeFileMode.ExactName:
-						headers.Add(Constants.Headers.RelativeTarget, UrlHelper.GetUTF7EncodedUnescapedDataString(RequestedName));
-						if (OverwriteRelative.HasValue)
-							headers.Add(Constants.Headers.OverwriteRelative, OverwriteRelative.Value.ToString());
-						break;
-					case PutRelativeFileMode.Conflicting:
-						headers.Add(Constants.Headers.SuggestedTarget, UrlHelper.GetUTF7EncodedUnescapedDataString(RequestedName));
-						headers.Add(Constants.Headers.RelativeTarget, UrlHelper.GetUTF7EncodedUnescapedDataString(RequestedName));
-						break;
-					default:
-						throw new ArgumentOutOfRangeException("RequestType", string.Format("Unknown PutRelativeFileMode specified: {0}", RequestType));
-				}
-				return headers;
+				case PutRelativeFileMode.Suggested:
+					headers.Add(Constants.Headers.SuggestedTarget, UrlHelper.GetUTF7EncodedUnescapedDataString(RequestedName));
+					break;
+				case PutRelativeFileMode.ExactName:
+					headers.Add(Constants.Headers.RelativeTarget, UrlHelper.GetUTF7EncodedUnescapedDataString(RequestedName));
+					if (OverwriteRelative.HasValue)
+						headers.Add(Constants.Headers.OverwriteRelative, OverwriteRelative.Value.ToString());
+					break;
+				case PutRelativeFileMode.Conflicting:
+					headers.Add(Constants.Headers.SuggestedTarget, UrlHelper.GetUTF7EncodedUnescapedDataString(RequestedName));
+					headers.Add(Constants.Headers.RelativeTarget, UrlHelper.GetUTF7EncodedUnescapedDataString(RequestedName));
+					break;
+				default:
+					throw new ArgumentOutOfRangeException("RequestType", string.Format("Unknown PutRelativeFileMode specified: {0}", RequestType));
 			}
+			return headers;
 		}
 	}
 }
