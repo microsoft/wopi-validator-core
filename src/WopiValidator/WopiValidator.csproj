@@ -4,15 +4,16 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\WopiValidatorSigningKey.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>../WopiValidatorSigningKey.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
     <StartupObject>Microsoft.Office.WopiValidator.Program</StartupObject>
-    <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
     <AssemblyName>Microsoft.Office.WopiValidator</AssemblyName>
     <RootNamespace>Microsoft.Office.WopiValidator</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Company>Microsoft</Company>
-    <Product>Microsoft.Office.WopiValidator</Product>
     <Authors>Microsoft</Authors>
     <Description>Validates WOPI server implementations</Description>
     <PackageTags>wopi</PackageTags>
@@ -26,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <Folder Include="Properties/" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WopiValidator.Core\WopiValidator.Core.csproj" />
+    <ProjectReference Include="../WopiValidator.Core/WopiValidator.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

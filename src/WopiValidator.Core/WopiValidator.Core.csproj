@@ -5,9 +5,13 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../WopiValidatorSigningKey.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
-    <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
     <AssemblyName>Microsoft.Office.WopiValidator.Core</AssemblyName>
     <RootNamespace>Microsoft.Office.WopiValidator.Core</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
