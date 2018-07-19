@@ -28,6 +28,7 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const string RelativeTarget = "X-WOPI-RelativeTarget"; // UTF7 encoded
 			public const string RequestedName = "X-WOPI-RequestedName"; // UTF7 encoded
 			public const string FileExtensionFilterList = "X-WOPI-FileExtensionFilterList";
+			public const string Size = "X-WOPI-Size";
 			public const string ProofKey = "X-WOPI-Proof";
 			public const string ProofKeyOld = "X-WOPI-ProofOld";
 			public const string WopiTimestamp = "X-WOPI-TimeStamp";

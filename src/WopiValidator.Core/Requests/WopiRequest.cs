@@ -85,7 +85,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			// At this point we have the final uri and accessTokenToUse values.  We'll use them later in proof key signing
 
 			List<KeyValuePair<string, string>> headers = DefaultHeaders.ToList();
-			IEnumerable<KeyValuePair<string, string>> customHeaders = GetCustomHeaders(savedState);
+			IEnumerable<KeyValuePair<string, string>> customHeaders = GetCustomHeaders(savedState, resourceManager);
 			if (customHeaders != null)
 				headers.AddRange(customHeaders);
 
@@ -130,7 +130,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			return uri;
 		}
 
-		protected virtual IEnumerable<KeyValuePair<string, string>> GetCustomHeaders(Dictionary<string, string> savedState)
+		protected virtual IEnumerable<KeyValuePair<string, string>> GetCustomHeaders(Dictionary<string, string> savedState, IResourceManager resourceManager)
 		{
 			return null;
 		}

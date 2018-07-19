@@ -16,7 +16,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		public override string Name { get { return Constants.Requests.GetNewAccessToken; } }
 		protected override string WopiOverrideValue { get { return Constants.Overrides.GetNewAccessToken; } }
 
-		protected override IEnumerable<KeyValuePair<string, string>> GetCustomHeaders(Dictionary<string, string> savedState)
+		protected override IEnumerable<KeyValuePair<string, string>> GetCustomHeaders(Dictionary<string, string> savedState, IResourceManager resourceManager)
 		{
 			return new Dictionary<string, string>
 				{
