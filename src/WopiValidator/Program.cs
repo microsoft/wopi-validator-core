@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 
 using CommandLine;
+using Microsoft.Extensions.Logging;
 using Microsoft.Office.WopiValidator.Core;
+using Microsoft.Office.WopiValidator.Core.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,7 +23,9 @@ namespace Microsoft.Office.WopiValidator
 
 	internal class Program
 	{
-		private static TestCaseExecutor GetTestCaseExecutor(TestExecutionData testExecutionData, Options options, TestCategory inputTestCategory)
+		private static readonly ILogger logger = ApplicationLogging.CreateLogger<Program>();
+
+		private static TestCaseExecutor GetTestCaseExecutor(TestExecutionData testExecutionData, Options options, TestCategory inputTestCategory, ILogger logger)
 		{
 			TestCategory testCategory;
 			if (!Enum.TryParse(testExecutionData.TestCase.Category, true /* ignoreCase */, out testCategory))
@@ -48,13 +52,13 @@ namespace Microsoft.Office.WopiValidator
 			}
 			catch (Exception ex)
 			{
-				WriteToConsole(ex.ToString(), ConsoleColor.Red);
+				ConsoleWriter.Write(ex.ToString(), ConsoleColor.Red);
 				exitCode = ExitCode.Failure;
 			}
 
 			if (Debugger.IsAttached)
 			{
-				WriteToConsole("Press any key to exit", ConsoleColor.White);
+				ConsoleWriter.Write("Press any key to exit", ConsoleColor.White);
 				Console.ReadLine();
 			}
 			return (int)exitCode;
@@ -62,17 +66,40 @@ namespace Microsoft.Office.WopiValidator
 
 		private static ExitCode Execute(Options options)
 		{
+			// Configure logging
+			var minLevel = options.MinLogLevel;
+			if (minLevel != LogLevel.None)
+			{
+				if (options.VerboseLogging)
+				{
+					ConsoleWriter.Write("Verbose is being ignored since --level was specified.", ConsoleColor.Yellow);
+				}
+			}
+			else if (options.VerboseLogging)
+			{
+				minLevel = LogLevel.Debug;
+			}
+
+			if (minLevel != LogLevel.None)
+			{
+				ApplicationLogging.LoggerFactory.AddConsole(minLevel);
+			}
+
+			logger.LogInformation("Logger initialized.");
+
 			// get run configuration from XML
-			IEnumerable<TestExecutionData> testData = ConfigParser.ParseExecutionData(options.RunConfigurationFilePath, options.TestCategory);
+			IEnumerable<TestExecutionData> testData = ConfigParser.ParseExecutionData(options.RunConfigurationFilePath, options.TestCategory, ApplicationLogging.LoggerFactory);
 
 			if (!String.IsNullOrEmpty(options.TestGroup))
 			{
+				logger.Log($"Restricting to tests in group '{options.TestGroup}'.");
 				testData = testData.Where(d => d.TestGroupName == options.TestGroup);
 			}
 
 			IEnumerable<TestExecutionData> executionData;
 			if (!String.IsNullOrWhiteSpace(options.TestName))
 			{
+				logger.Log($"Restricting to tests with name '{options.TestName}'.");
 				executionData = new TestExecutionData[] { TestExecutionData.GetDataForSpecificTest(testData, options.TestName) };
 			}
 			else
@@ -85,68 +112,74 @@ namespace Microsoft.Office.WopiValidator
 				.Select(g => new
 				{
 					Name = g.Key,
-					Executors = g.Select(x => GetTestCaseExecutor(x, options, options.TestCategory))
+					Executors = g.Select(x => GetTestCaseExecutor(x, options, options.TestCategory, logger))
 				});
 
 			ConsoleColor baseColor = ConsoleColor.White;
 			HashSet<ResultStatus> resultStatuses = new HashSet<ResultStatus>();
 			foreach (var group in executorGroups)
 			{
-				WriteToConsole($"\nTest group: {group.Name}\n", ConsoleColor.White);
+				if (!String.IsNullOrWhiteSpace(options.TestName))
+				{
+					ConsoleWriter.Write($"\nTest group: {group.Name}", ConsoleColor.White);
+				}
 
 				// define execution query - evaluation is lazy; test cases are executed one at a time
 				// as you iterate over returned collection
-				var results = group.Executors.Select(x => x.Execute());
+				var results = group.Executors.Select(x => x.Execute(logger));
 
-				// iterate over results and print success/failure indicators into console
-				foreach (TestCaseResult testCaseResult in results)
+				using (logger.BeginScope(2))
 				{
-					resultStatuses.Add(testCaseResult.Status);
-					switch (testCaseResult.Status)
+					// iterate over results and print success/failure indicators into console
+					foreach (TestCaseResult testCaseResult in results)
 					{
-						case ResultStatus.Pass:
-							baseColor = ConsoleColor.Green;
-							WriteToConsole($"Pass: {testCaseResult.Name}\n", baseColor, 1);
-							break;
-
-						case ResultStatus.Skipped:
-							baseColor = ConsoleColor.Yellow;
-							if (!options.IgnoreSkipped)
-							{
-								WriteToConsole($"Skipped: {testCaseResult.Name}\n", baseColor, 1);
-							}
-							break;
-
-						case ResultStatus.Fail:
-						default:
-							baseColor = ConsoleColor.Red;
-							WriteToConsole($"Fail: {testCaseResult.Name}\n", baseColor, 1);
-							break;
-					}
-
-					if (testCaseResult.Status == ResultStatus.Fail ||
-						(testCaseResult.Status == ResultStatus.Skipped && !options.IgnoreSkipped))
-					{
-						foreach (var request in testCaseResult.RequestDetails)
+						resultStatuses.Add(testCaseResult.Status);
+						switch (testCaseResult.Status)
 						{
-							var responseStatus = (HttpStatusCode)request.ResponseStatusCode;
-							var color = request.ValidationFailures.Count == 0 ? ConsoleColor.DarkGreen : baseColor;
-							WriteToConsole($"{request.Name}, response code: {request.ResponseStatusCode} {responseStatus}\n", color, 2);
-							foreach (var failure in request.ValidationFailures)
-							{
-								foreach (var error in failure.Errors)
-									WriteToConsole($"{error.StripNewLines()}\n", baseColor, 3);
-							}
+							case ResultStatus.Pass:
+								baseColor = ConsoleColor.Green;
+								ConsoleWriter.Write($"Pass: {testCaseResult.Name}", baseColor, 1);
+								break;
+
+							case ResultStatus.Skipped:
+								baseColor = ConsoleColor.Yellow;
+								if (!options.IgnoreSkipped)
+								{
+									ConsoleWriter.Write($"Skipped: {testCaseResult.Name}", baseColor, 1);
+								}
+								break;
+
+							case ResultStatus.Fail:
+							default:
+								baseColor = ConsoleColor.Red;
+								ConsoleWriter.Write($"Fail: {testCaseResult.Name}", baseColor, 1);
+								break;
 						}
 
-						WriteToConsole($"Re-run command: .\\wopivalidator.exe -n {testCaseResult.Name} -w {options.WopiEndpoint} -t {options.AccessToken} -l {options.AccessTokenTtl}\n", baseColor, 2);
-						Console.WriteLine();
+						if (testCaseResult.Status == ResultStatus.Fail ||
+							(testCaseResult.Status == ResultStatus.Skipped && !options.IgnoreSkipped))
+						{
+							foreach (var request in testCaseResult.RequestDetails)
+							{
+								var responseStatus = (HttpStatusCode)request.ResponseStatusCode;
+								var color = request.ValidationFailures.Count == 0 ? ConsoleColor.DarkGreen : baseColor;
+								ConsoleWriter.Write($"{request.Name}, response code: {request.ResponseStatusCode} {responseStatus}", color, 2);
+								foreach (var failure in request.ValidationFailures)
+								{
+									foreach (var error in failure.Errors)
+										ConsoleWriter.Write($"{error}", baseColor, 3);
+								}
+							}
+
+							ConsoleWriter.Write($"Re-run command: .\\wopivalidator.exe -n {testCaseResult.Name} -w {options.WopiEndpoint} -t {options.AccessToken} -l {options.AccessTokenTtl}", baseColor, 2);
+							Console.WriteLine();
+						}
 					}
 				}
 
 				if (options.IgnoreSkipped && !resultStatuses.ContainsAny(ResultStatus.Pass, ResultStatus.Fail))
 				{
-					WriteToConsole($"All tests skipped.\n", baseColor, 1);
+					ConsoleWriter.Write($"All tests skipped.", baseColor, 1);
 				}
 			}
 
@@ -164,15 +197,6 @@ namespace Microsoft.Office.WopiValidator
 				return ExitCode.Failure;
 			}
 			return ExitCode.Success;
-		}
-
-		private static void WriteToConsole(string message, ConsoleColor color, int indentLevel = 0)
-		{
-			ConsoleColor currentColor = Console.ForegroundColor;
-			Console.ForegroundColor = color;
-			string indent = new string(' ', indentLevel * 2);
-			Console.Write(indent + message);
-			Console.ForegroundColor = currentColor;
 		}
 	}
 

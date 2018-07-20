@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.Extensions.Logging;
 using Microsoft.Office.WopiValidator.Core.Logging;
 using System;
 using System.Collections.Generic;
@@ -14,12 +15,12 @@ namespace Microsoft.Office.WopiValidator.Core.ResourceManagement
 	/// </summary>
 	class ResourceManager : IResourceManager
 	{
-		private readonly ILogger _logger;
+		private readonly ILogger logger;
 		private readonly Dictionary<string, Resource> _resources;
 
-		public ResourceManager(IEnumerable<Resource> files, ILogger logger)
+		public ResourceManager(IEnumerable<Resource> files)
 		{
-			_logger = logger;
+			logger = ApplicationLogging.CreateLogger<ResourceManager>();
 			_resources = files.ToDictionary(x => x.ResourceId);
 		}
 
@@ -27,7 +28,7 @@ namespace Microsoft.Office.WopiValidator.Core.ResourceManagement
 		{
 			Resource resource;
 			if (TryGetResource(resourceId, out resource))
-				return resource.GetContentStream(_logger);
+				return resource.GetContentStream(logger);
 
 			throw new ArgumentException(string.Format("Resource with resourceId '{0}' doesn't exist.", resourceId), "resourceId");
 		}

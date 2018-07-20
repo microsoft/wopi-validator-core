@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using CommandLine;
+using Microsoft.Extensions.Logging;
 using Microsoft.Office.WopiValidator.Core;
 
 namespace Microsoft.Office.WopiValidator
@@ -9,7 +10,7 @@ namespace Microsoft.Office.WopiValidator
 	/// <summary>
 	/// Represents set of command line arguments that can be used to modify behavior of the application.
 	/// </summary>
-	class Options
+	internal class Options
 	{
 		[Option('w', "wopisrc", Required = true, HelpText = "WopiSrc URL for a wopitest file")]
 		public string WopiEndpoint { get; set; }
@@ -34,5 +35,11 @@ namespace Microsoft.Office.WopiValidator
 
 		[Option('s', "ignore-skipped", Required = false, HelpText = "Don't output any info about skipped tests.")]
 		public bool IgnoreSkipped { get; set; }
+
+		[Option('v', "verbose", Required = false, HelpText = "Enable verbose logging to the console. Equivalent to --level debug.")]
+		public bool VerboseLogging { get; set; }
+
+		[Option("level", Required = false, Default = LogLevel.None, HelpText = "The minimum log level to log to the console.")]
+		public LogLevel MinLogLevel { get; set; }
 	}
 }

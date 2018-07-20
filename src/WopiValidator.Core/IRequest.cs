@@ -3,12 +3,13 @@
 
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Office.WopiValidator.Core
 {
 	public interface IRequest
 	{
-		string Name { get;  }
+		string Name { get; }
 		string TargetUrl { get; }
 		bool IsTextResponseExpected { get; }
 		IEnumerable<KeyValuePair<string, string>> RequestHeaders { get; }

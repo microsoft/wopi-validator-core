@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.Extensions.Logging;
+using Microsoft.Office.WopiValidator.Core.Logging;
 using Microsoft.Office.WopiValidator.Core.Validators;
 using System;
 using System.Collections.Generic;
@@ -15,6 +17,7 @@ namespace Microsoft.Office.WopiValidator.Core
 	public class TestCaseExecutor
 	{
 		private static readonly IEnumerable<IValidator> MandatoryValidators = new List<IValidator>(1) { new ContentLengthValidator() };
+		private static readonly ILogger logger = ApplicationLogging.CreateLogger<TestCaseExecutor>();
 
 		public TestCaseExecutor(
 			TestExecutionData executionData,
@@ -34,6 +37,8 @@ namespace Microsoft.Office.WopiValidator.Core
 			UserAgent = userAgent;
 			ProofKeyProviderNew = proofKeyProviderNew;
 			ProofKeyProviderOld = proofKeyProviderOld;
+
+			logger.LogInformation("Inside TestCaseExecutor constructor.");
 		}
 
 		public ITestCase TestCase { get; private set; }
@@ -46,9 +51,10 @@ namespace Microsoft.Office.WopiValidator.Core
 		public RSACryptoServiceProvider ProofKeyProviderNew { get; private set; }
 		public RSACryptoServiceProvider ProofKeyProviderOld { get; private set; }
 
-		public TestCaseResult Execute()
+		public TestCaseResult Execute(ILogger logger)
 		{
-			IEnumerable<TestCaseResult> prereqResults = PrereqCases.Select(ExecuteTestCase);
+			IEnumerable<TestCaseResult> prereqResults = from testCase in PrereqCases select ExecuteTestCase(testCase, logger);
+			//PrereqCases.Select(ExecuteTestCase);
 
 			// Although multiple prereq tests may fail, we are surfacing details for only the first one.
 			TestCaseResult failure = prereqResults.FirstOrDefault(r => r.Status != ResultStatus.Pass);
@@ -56,7 +62,7 @@ namespace Microsoft.Office.WopiValidator.Core
 			if (failure != null)
 				return new TestCaseResult(TestCase.Name, failure.RequestDetails, "Prerequisites failed", failure.Errors, ResultStatus.Skipped);
 
-			return ExecuteTestCase(TestCase);
+			return ExecuteTestCase(TestCase, logger);
 		}
 
 		/// <summary>
@@ -65,7 +71,7 @@ namespace Microsoft.Office.WopiValidator.Core
 		/// --- executes the requests
 		/// --- runs the validations
 		/// </summary>
-		private TestCaseResult ExecuteTestCase(ITestCase testCase)
+		private TestCaseResult ExecuteTestCase(ITestCase testCase, ILogger logger)
 		{
 			IList<RequestInfo> requestDetails = new List<RequestInfo>();
 			Dictionary<string, string> savedState = new Dictionary<string, string>()
@@ -145,7 +151,7 @@ namespace Microsoft.Office.WopiValidator.Core
 			finally
 			{
 				// run the cleanup cases if there were any
-				RunCleanupRequests(testCase, savedState, requestDetails);
+				RunCleanupRequests(testCase, savedState, requestDetails, logger);
 			}
 
 			if (finalTestResult == null)
@@ -197,7 +203,7 @@ namespace Microsoft.Office.WopiValidator.Core
 			return false;
 		}
 
-		private void RunCleanupRequests(ITestCase testCase, Dictionary<string, string> savedState, IList<RequestInfo> requestDetails)
+		private void RunCleanupRequests(ITestCase testCase, Dictionary<string, string> savedState, IList<RequestInfo> requestDetails, ILogger logger)
 		{
 			if (testCase.CleanupRequests == null)
 				return;

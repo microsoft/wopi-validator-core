@@ -46,7 +46,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		/// <summary>
 		/// Parses single TestCase.
 		///
-		/// User RequestFactory.GetRequests to parse requests defined in that Test Case.
+		/// Use RequestFactory.GetRequests to parse requests defined in that Test Case.
 		/// </summary>
 		private static ITestCase GetTestCase(XElement definition)
 		{

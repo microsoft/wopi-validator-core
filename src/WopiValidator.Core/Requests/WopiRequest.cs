@@ -52,7 +52,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 
 		protected WopiRequest(WopiRequestParam param)
 		{
-			this.OverrideUrl = param.OverrideUrl;
+			OverrideUrl = param.OverrideUrl;
 			Validators = (param.Validators ?? Enumerable.Empty<IValidator>()).ToArray();
 			State = (param.StateSavers ?? Enumerable.Empty<IStateEntry>()).ToArray();
 			Mutators = (param.Mutators ?? Enumerable.Empty<IMutator>()).ToArray();
@@ -105,7 +105,8 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 
 			MemoryStream contentStream = HasRequestContent ? GetRequestContent(resourceManager) : null;
 			RequestExecutionData executionData = new RequestExecutionData(uri, headers, contentStream);
-			return ExecuteRequest(executionData, userAgent);
+
+			return ExecuteRequest(executionData, userAgent: userAgent);
 		}
 
 		protected Uri GetRequestUri(string endpointAddress, ref string accessToken, long accessTokenTtl, Dictionary<string, string> savedState)

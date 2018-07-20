@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.Extensions.Logging;
+using Microsoft.Office.WopiValidator.Core.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +15,8 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 {
 	abstract class RequestBase : IRequest
 	{
+		protected ILogger logger = ApplicationLogging.CreateLogger<RequestBase>();
+
 		/// <summary>
 		/// Whether request should be made as POST or GET.
 		/// </summary>
@@ -102,6 +106,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			// ProtocolErrors will have a non-null Response object so we can still get response details
 			catch (WebException ex) when (ex.Status == WebExceptionStatus.ProtocolError)
 			{
+				logger.Log($"Request raised an Exception, but hasToBeSuccessful is false, so we're continuing...");
 				using (HttpWebResponse response = (HttpWebResponse)ex.Response)
 				{
 					timer.Stop();
