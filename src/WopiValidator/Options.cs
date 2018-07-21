@@ -20,7 +20,7 @@ namespace Microsoft.Office.WopiValidator
 		[Option('l', "token_ttl", Required = true, HelpText = "WOPI access token ttl")]
 		public long AccessTokenTtl { get; set; }
 
-		[Option('c', "config", Required = false, Default = "runConfig.xml", HelpText = "Path to XML file with test definitions")]
+		[Option('c', "config", Required = false, Default = "TestCases.xml", HelpText = "Path to XML file with test definitions")]
 		public string RunConfigurationFilePath { get; set; }
 
 		[Option('g', "testgroup", Required = false, HelpText = "Run only the tests in the specified group (cannot be used with testname)")]

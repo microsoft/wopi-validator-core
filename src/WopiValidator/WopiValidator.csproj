@@ -1,14 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFrameworks>netcoreapp2.0;net45</TargetFrameworks>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../WopiValidatorSigningKey.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
     <StartupObject>Microsoft.Office.WopiValidator.Program</StartupObject>
     <AssemblyName>Microsoft.Office.WopiValidator</AssemblyName>
     <RootNamespace>Microsoft.Office.WopiValidator</RootNamespace>
+    <VersionSuffix>$(VersionSuffix)</VersionSuffix>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -18,24 +20,12 @@
     <Description>Validates WOPI server implementations</Description>
     <PackageTags>wopi</PackageTags>
     <PackageId>WopiValidator</PackageId>
+    <PackageVersion>1.0.0-local</PackageVersion>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <InformationalVersion>1.0.0-local</InformationalVersion>
     <Product>WopiValidator</Product>
     <Copyright>Microsoft</Copyright>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netcoreapp2.0\Microsoft.Office.WopiValidator.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netcoreapp2.0\Microsoft.Office.WopiValidator.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <!-- Include the featuresConfig.xml and runConfig.xml/xsd files in the build output (and NuGet package) -->
-    <Content Include="*Config.x*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Properties/" />
@@ -50,11 +40,28 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Include the validator Core DLL in the build output (and NuGet package) -->
-    <Content Include="$(OutputPath)\Microsoft.Office.WopiValidator.Core.dll">
-      <Pack>true</Pack>
-      <PackagePath>lib\$(TargetFramework)</PackagePath>
+    <Content Include="..\..\FeatureTestCases.xml" Link="FeatureTestCases.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\TestCases.xml" Link="TestCases.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\TestCases.xsd" Link="TestCases.xsd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WopiValidator.Core\WopiValidator.Core.csproj" PrivateAssets="all" />
+    <!-- <ProjectReference Include="..\ClassLibrary3\ClassLibrary3.csproj" Condition="'$(TargetFramework)' == 'net47'" PrivateAssets="all" /> -->
+  </ItemGroup>
+
+  <!-- This is a workaround to include files from the WopiValidator.Core project in the Nuget package for this
+    project. See https://github.com/nuget/home/issues/3891#issuecomment-377319939 for more info. -->
+  <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+    </ItemGroup>
+  </Target>
 
 </Project>

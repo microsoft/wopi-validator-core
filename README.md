@@ -1,10 +1,11 @@
 # WOPI Validator
 
-[![Build Status](https://travis-ci.org/Microsoft/wopi-validator-core.svg?branch=master)](https://travis-ci.org/Microsoft/wopi-validator-core)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/3ec9rkntlgcffbiq/branch/master?svg=true)](https://ci.appveyor.com/project/tylerbutler/wopi-validator-core/branch/master)
 
-This project contains the core logic of the [WOPI validator][] as well as a command-line interface to it.
+[![Travis](https://travis-ci.org/Microsoft/wopi-validator-core.svg?branch=master)](https://travis-ci.org/Microsoft/wopi-validator-core)
 
-[WOPI validator]: https://wopi.readthedocs.io/en/latest/build_test_ship/validator.html
+This project contains the core logic of the [WOPI validator](https://wopi.readthedocs.io/en/latest/build_test_ship/validator.html)
+as well as a command-line interface to it.
 
 ## Building the project
 

@@ -1,0 +1,20 @@
+version: 1.0.0.{build}
+image: Visual Studio 2017
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  package_version: '{version}-$(configuration)'
+  informational_version: '{version}-$(appveyor_repo_commit)-$(configuration)-appveyor'
+before_build:
+  - cmd: dotnet restore
+build:
+  publish_nuget: true
+  verbosity: minimal
+configuration:
+  - Debug
+  - Release
+matrix:
+  fast_finish: true
