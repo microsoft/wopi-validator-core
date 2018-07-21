@@ -70,7 +70,7 @@ namespace Microsoft.Office.WopiValidator.Core
 
 		public static class Requests
 		{
-			public const string CheckFile = "CheckFile";
+			public const string CheckFile = "CheckFileInfo";
 			public const string GetFile = "GetFile";
 			public const string PutFile = "PutFile";
 			public const string PutRelativeFile = "PutRelativeFile";
@@ -82,7 +82,7 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const string CheckEcosystem = "CheckEcosystem";
 			public const string GetNewAccessToken = "GetNewAccessToken";
 			public const string GetRootContainer = "GetRootContainer";
-			public const string CheckContainer = "CheckContainer";
+			public const string CheckContainer = "CheckContainerInfo";
 			public const string EnumerateChildren = "EnumerateChildren";
 			public const string EnumerateAncestors = "EnumerateAncestors";
 			public const string GetEcosystem = "GetEcosystem";

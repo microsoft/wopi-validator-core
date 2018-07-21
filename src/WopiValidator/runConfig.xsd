@@ -213,7 +213,7 @@
         <xs:complexType>
           <xs:sequence>
             <xs:choice maxOccurs="unbounded">
-              <xs:element name="CheckFile">
+              <xs:element name="CheckFileInfo">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element name="SaveState" type="SaveStateType" minOccurs="0"/>
@@ -309,7 +309,7 @@
                   <xs:attribute name="OverrideUrl" type="xs:string" />
                 </xs:complexType>
               </xs:element>
-              <xs:element name="CheckContainer">
+              <xs:element name="CheckContainerInfo">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element name="SaveState" type="SaveStateType" minOccurs="0" />
