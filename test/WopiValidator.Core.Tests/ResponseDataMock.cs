@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Collections.Generic;
 using Microsoft.Office.WopiValidator.Core;
 
 namespace Microsoft.Office.WopiValidator.UnitTests

@@ -315,7 +315,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
-				Headers = new CaseInsensitiveDictionary() { {headerKey, actualValue} }
+				Headers = new CaseInsensitiveDictionary() { { headerKey, actualValue } }
 			};
 
 			// Act
@@ -558,7 +558,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string actualValue = "value";
 			const string expectedValue = actualValue;
 			const bool shouldMatch = true;
-			Dictionary<string, string> savedState = new Dictionary<string, string>() { {"StateKey", "incorrect value" } };
+			Dictionary<string, string> savedState = new Dictionary<string, string>() { { "StateKey", "incorrect value" } };
 			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, "StateKey", false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock

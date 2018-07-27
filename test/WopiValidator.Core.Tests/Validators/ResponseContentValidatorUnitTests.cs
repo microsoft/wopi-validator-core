@@ -23,7 +23,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			MemoryStream expectedStream = new MemoryStream(content);
 			ResponseContentValidator validator = new ResponseContentValidator(fileId);
 			ResourceManagerMock resourceManager = new ResourceManagerMock { { fileId, expectedStream } };
-			ResponseDataMock responseData = new ResponseDataMock {ResponseStream = responseStream};
+			ResponseDataMock responseData = new ResponseDataMock { ResponseStream = responseStream };
 
 			// Act
 			ValidationResult validationResult = validator.Validate(responseData, resourceManager, null);

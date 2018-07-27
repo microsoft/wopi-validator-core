@@ -98,7 +98,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 		{
 			// Arrange
 			const string content = "{ propertyName: '2' }";
-			Dictionary<string, string> savedState = new Dictionary<string, string>() { { "StateKey", "2"} };
+			Dictionary<string, string> savedState = new Dictionary<string, string>() { { "StateKey", "2" } };
 			JsonContentValidator validator = new JsonContentValidator(
 				new JsonContentValidator.JsonIntegerPropertyValidator("propertyName", true, 1, true, "StateKey"));
 			ResponseDataMock responseData = CreateDefaultResponseDataMock(content);

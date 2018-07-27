@@ -48,7 +48,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Mutators
 			// Arrange
 			const bool mutateCurrent = true;
 			const bool mutateOld = true;
-			const string keyRelation = null; 
+			const string keyRelation = null;
 
 			Dictionary<string, string> originalHeaders = CreateDefaultProofKeyHeaders();
 			ProofKeyMutator mutator = new ProofKeyMutator(mutateCurrent, mutateOld, MutatedWopiTimestampString, keyRelation);

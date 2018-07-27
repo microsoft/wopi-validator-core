@@ -17,6 +17,17 @@
     <Authors>Microsoft</Authors>
     <Description>Validates WOPI server implementations</Description>
     <PackageTags>wopi</PackageTags>
+    <PackageId>WopiValidator</PackageId>
+    <Product>WopiValidator</Product>
+    <Copyright>Microsoft</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netcoreapp2.0\Microsoft.Office.WopiValidator.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netcoreapp2.0\Microsoft.Office.WopiValidator.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

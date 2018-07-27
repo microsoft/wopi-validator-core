@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Text;
 using System.Collections.Generic;
-using System.Web;
 
 namespace Microsoft.Office.WopiValidator.Core.Requests
 {
