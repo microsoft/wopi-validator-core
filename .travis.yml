@@ -1,0 +1,7 @@
+language: csharp
+solution: WopiValidator.sln
+dotnet: 2.1
+mono: none
+script:
+  - dotnet build -c Release
+  - dotnet test ./test/WopiValidator.Core.Tests/WopiValidator.Core.Tests.csproj -c Release
