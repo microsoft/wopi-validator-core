@@ -1,5 +1,7 @@
 # WOPI Validator
 
+[![Build Status](https://travis-ci.org/Microsoft/wopi-validator-core.svg?branch=master)](https://travis-ci.org/Microsoft/wopi-validator-core)
+
 This project contains the core logic of the [WOPI validator][] as well as a command-line interface to it.
 
 [WOPI validator]: https://wopi.readthedocs.io/en/latest/build_test_ship/validator.html
