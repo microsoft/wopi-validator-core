@@ -78,7 +78,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 		}
 
 		[TestMethod]
-		[Ignore("This test fails by current design; the ContentLengthValidator always returns true if the Content-Length header is not provided.")]
+		//[Ignore("This test fails by current design; the ContentLengthValidator always returns true if the Content-Length header is not provided.")]
 		public void Validate_NonZerContentAndNoContentLengthHeader_Fails()
 		{
 			MemoryStream responseStream = new MemoryStream(Encoding.UTF8.GetBytes("my content"));
