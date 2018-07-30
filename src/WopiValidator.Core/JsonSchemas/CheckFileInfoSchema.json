@@ -83,6 +83,9 @@
       "format": "uri",
       "type": "string"
     },
+    "FileVersionPostMessage": {
+      "type": "boolean"
+    },
     "HostEditUrl": {
       "format": "uri",
       "type": "string"
