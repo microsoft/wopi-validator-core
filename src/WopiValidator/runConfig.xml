@@ -223,6 +223,21 @@
       </Requests>
     </TestCase>
 
+    <TestCase Name="SupportedShareUrlTypesForFilePrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the host sets SupportedShareUrlTypes in CheckFileInfo to any value.
+      </Description>
+      <Requests>
+        <CheckFileInfo>
+          <Validators>
+            <JsonResponseContentValidator>
+              <ArrayProperty Name="SupportedShareUrlTypes" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFileInfo>
+      </Requests>
+    </TestCase>
+
     <TestCase Name="ShareUrlTypeReadOnlyForFilePrereq" Document="WordBlankDocument" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the host declares support for the "ReadOnly" Share Url type for the file.
@@ -253,18 +268,32 @@
       </Requests>
     </TestCase>
 
+    <TestCase Name="SupportedShareUrlTypesForContainerPrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the host sets SupportedShareUrlTypes in CheckContainerInfo to any value.
+      </Description>
+      <Requests>
+        <EnumerateAncestors>
+          <SaveState>
+            <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+            <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+          </SaveState>
+        </EnumerateAncestors>
+        <CheckContainerInfo OverrideUrl="$State:ParentContainerUrl">
+          <Validators>
+            <JsonResponseContentValidator>
+              <ArrayProperty Name="SupportedShareUrlTypes" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckContainerInfo>
+      </Requests>
+    </TestCase>
+
     <TestCase Name="ShareUrlTypeReadOnlyForContainerPrereq" Document="WordBlankDocument" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the host declares support for the "ReadOnly" Share Url type for the container.
       </Description>
       <Requests>
-        <CheckFileInfo>
-          <Validators>
-            <JsonResponseContentValidator>
-              <BooleanProperty Name="SupportsContainers" ExpectedValue="true" IsRequired="true"/>
-            </JsonResponseContentValidator>
-          </Validators>
-        </CheckFileInfo>
         <EnumerateAncestors>
           <SaveState>
             <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
@@ -286,13 +315,6 @@
         Prereq WOPI Validation test to check if the host declares support for the "ReadWrite" Share Url type for the container.
       </Description>
       <Requests>
-        <CheckFileInfo>
-          <Validators>
-            <JsonResponseContentValidator>
-              <BooleanProperty Name="SupportsContainers" ExpectedValue="true" IsRequired="true"/>
-            </JsonResponseContentValidator>
-          </Validators>
-        </CheckFileInfo>
         <EnumerateAncestors>
           <SaveState>
             <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
@@ -3256,6 +3278,7 @@
   <TestGroup Name="GetSharingUrlForFileWithUnknownType">
     <PrereqTests>
       <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>SupportedShareUrlTypesForFilePrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
       <TestCase Name="files.GetShareUrlForUnknownUrlType" Document="WordBlankDocument" Category="WopiCore">
@@ -3277,6 +3300,7 @@
   <TestGroup Name="GetSharingUrlForContainerWithTypeReadOnly">
     <PrereqTests>
       <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>ContainersPrereq</PrereqTest>
       <PrereqTest>ShareUrlTypeReadOnlyForContainerPrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
@@ -3307,6 +3331,7 @@
   <TestGroup Name="GetSharingUrlForContainerWithTypeReadWrite">
     <PrereqTests>
       <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>ContainersPrereq</PrereqTest>
       <PrereqTest>ShareUrlTypeReadWriteForContainerPrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
@@ -3338,6 +3363,7 @@
     <PrereqTests>
       <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>ContainersPrereq</PrereqTest>
+      <PrereqTest>SupportedShareUrlTypesForContainerPrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
       <TestCase Name="containers.GetShareUrlForUnknownUrlType" Document="WordBlankDocument" Category="WopiCore">
