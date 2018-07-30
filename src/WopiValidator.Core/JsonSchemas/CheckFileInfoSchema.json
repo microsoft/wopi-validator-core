@@ -132,10 +132,11 @@
       "type": "number"
     },
     "SupportedShareUrlTypes": {
-      "enum": [
-        "ReadOnly",
-        "ReadWrite"
-      ]
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [ "ReadOnly", "ReadWrite" ]
+      }
     },
     "SupportsAddActivities": {
       "type": "boolean"
@@ -209,11 +210,15 @@
     "Version": {
       "type": "string"
     },
+    "WorkflowPostMessage": {
+      "type": "boolean"
+    },
     "WorkflowType": {
-      "enum": [
-        "Assign",
-        "Submit"
-      ]
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [ "Assign", "Submit" ]
+      }
     },
     "WorkflowUrl": {
       "format": "uri",
