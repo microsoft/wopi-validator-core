@@ -54,7 +54,7 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 
 			List<string> errorMessages = new List<string>();
 			var grouped = errors.GroupBy(error => error.Kind);
-				
+
 			foreach (var theGroup in grouped)
 			{
 				var errorKind = ValidationErrorKindString(theGroup.Key);
