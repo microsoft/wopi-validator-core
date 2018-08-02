@@ -115,6 +115,7 @@ namespace Microsoft.Office.WopiValidator.Core
 				public const string BooleanProperty = "BooleanProperty";
 				public const string IntegerProperty = "IntegerProperty";
 				public const string LongProperty = "LongProperty";
+				public const string StringRegexProperty = "StringRegexProperty";
 				public const string StringProperty = "StringProperty";
 			}
 		}

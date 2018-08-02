@@ -128,6 +128,10 @@
     "SHA256": {
       "type": "string"
     },
+    "SignInUrl": {
+      "format": "uri",
+      "type": "string"
+    },
     "SignoutUrl": {
       "format": "uri",
       "type": "string"

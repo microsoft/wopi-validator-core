@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -174,7 +175,7 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 				}
 
 				// If the "ExpectedValue" and "ExpectedStateKey" attributes are non-empty on a Validator, then ExpectedStateKey will take precedence.
-				// But if the mentioned "ExpectedStateKey" is invalid or doesn't have a saved state value, then the logic below will default to the value set in 
+				// But if the mentioned "ExpectedStateKey" is invalid or doesn't have a saved state value, then the logic below will default to the value set in
 				// "ExpectedValue" attribute of the Validator.
 				T expectedValue = DefaultExpectedValue;
 				bool hasExpectedStateValue = false;
@@ -277,7 +278,7 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 
 		public class JsonStringPropertyValidator : JsonPropertyEqualityValidator<string>
 		{
-			private string _endsWithValue;
+			private readonly string _endsWithValue;
 
 			public JsonStringPropertyValidator(string key, bool isRequired, string expectedValue, bool hasExpectedValue, string endsWithValue, string expectedStateKey)
 				: base(key, isRequired, expectedValue, hasExpectedValue, expectedStateKey)
@@ -309,6 +310,58 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 				}
 
 				return true;
+			}
+		}
+
+		public class JsonStringRegexPropertyValidator : JsonPropertyEqualityValidator<string>
+		{
+			private readonly Regex _regex;
+			private readonly bool _shouldMatch;
+
+			public JsonStringRegexPropertyValidator(string key, bool isRequired, string expectedValue, bool hasExpectedValue, string expectedStateKey, bool shouldMatch)
+				: base(key, isRequired, expectedValue, hasExpectedValue, expectedStateKey)
+			{
+				_regex = new Regex(expectedValue, RegexOptions.Compiled);
+				_shouldMatch = shouldMatch;
+			}
+
+			public override string FormatValue(string value)
+			{
+				return value;
+			}
+
+			public override bool Validate(JToken actualValue, Dictionary<string, string> savedState, out string errorMessage)
+			{
+				errorMessage = "";
+
+				if (actualValue == null && !IsRequired)
+					return true;
+
+				errorMessage = "";
+				string typedActualValue = actualValue.Value<string>();
+				string formattedActualValue = FormatValue(typedActualValue);
+
+				bool isMatch = _regex.IsMatch(typedActualValue);
+
+				if (_shouldMatch)
+				{
+					if (isMatch)
+					{
+						return true;
+					}
+					errorMessage = string.Format("Value '{0}' doesn't match the expected regular expression '{1}'", formattedActualValue, _regex);
+					return false;
+				}
+				else // _isMatchShouldBe == false
+				{
+					if (!isMatch)
+					{
+						return true;
+					}
+
+					errorMessage = string.Format("Value '{0}' matched the regular expression, but should not '{1}'", formattedActualValue, _regex);
+					return false;
+				}
 			}
 		}
 

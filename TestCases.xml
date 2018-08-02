@@ -455,7 +455,6 @@
     <PrereqTests>
       <PrereqTest>WopiValidatorPrereq</PrereqTest>
     </PrereqTests>
-    <!-- Full Viewer app sequences -->
     <TestCases>
       <TestCase Name="FullCheckFileInfoSchema" Document="WordBlankDocument" Category="WopiCore">
         <Description>
@@ -465,6 +464,30 @@
           <CheckFileInfo>
             <Validators>
               <JsonSchemaValidator Schema="CheckFileInfoSchema" />
+            </Validators>
+          </CheckFileInfo>
+        </Requests>
+      </TestCase>
+      <TestCase Name="HostUrls" Document="WordBlankDocument" Category="OfficeOnline">
+        <Description>
+          This tests that the Host* URLs provided by the host are not Office Online action URLs.
+        </Description>
+        <Requests>
+          <CheckFileInfo>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringRegexProperty Name="CloseUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="DownloadUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="FileSharingUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="FileUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="FileVersionUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="HostEditUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="HostEmbeddedViewUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="HostViewUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="SignInUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="SignoutUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="Workflow" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+              </JsonResponseContentValidator>
             </Validators>
           </CheckFileInfo>
         </Requests>

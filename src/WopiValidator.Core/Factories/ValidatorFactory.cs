@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Microsoft.Office.WopiValidator.Core.Validators;
 
@@ -136,6 +137,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			string endsWithValue = (string)definition.Attribute("EndsWith");
 			string expectedStateKey = (string)definition.Attribute("ExpectedStateKey");
 			string containsValue = (string)definition.Attribute("ContainsValue");
+			bool shouldMatch = ((bool?)definition.Attribute("ShouldMatch")) ?? true;
 			bool hasContainsValue = containsValue != null;
 
 			switch (elementName)
@@ -168,6 +170,14 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 						hasExpectedValue,
 						endsWithValue,
 						expectedStateKey);
+
+				case Constants.Validators.Properties.StringRegexProperty:
+					return new JsonContentValidator.JsonStringRegexPropertyValidator(key,
+						isRequired,
+						expectedValue,
+						hasExpectedValue,
+						expectedStateKey,
+						shouldMatch);
 
 				case Constants.Validators.Properties.AbsoluteUrlProperty:
 					return new JsonContentValidator.JsonAbsoluteUrlPropertyValidator(key,
