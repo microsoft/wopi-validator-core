@@ -486,7 +486,7 @@
                 <StringRegexProperty Name="HostViewUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
                 <StringRegexProperty Name="SignInUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
                 <StringRegexProperty Name="SignoutUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="Workflow" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="WorkflowUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
               </JsonResponseContentValidator>
             </Validators>
           </CheckFileInfo>
