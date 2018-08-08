@@ -67,7 +67,7 @@ There are several ways to run the validator.
 After building the projects as described above, you can run the resulting `Microsoft.Office.WopiValidator.dll`
 using the `dotnet` command. For example:
 
-`dotnet Microsoft.Office.WopiValidator.dll --token MyAccessToken --token_ttl 0 -wopisrc http://localhost:5000/wopi/files/1 --testcategory OfficeOnline --ignore-skipped`
+`dotnet Microsoft.Office.WopiValidator.dll --token MyAccessToken --token_ttl 0 --wopisrc http://localhost:5000/wopi/files/1 --testcategory OfficeOnline --ignore-skipped`
 
 Note: the Microsoft.Office.WopiValidator.dll file can be found in `src\WopiValidator\bin\Release\netcoreapp2.0\`.
 
