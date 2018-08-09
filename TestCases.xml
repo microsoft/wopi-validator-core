@@ -1279,6 +1279,28 @@
           <DeleteFile OverrideUrl="$State:UrlWithFileNameLongerThan512Chars"/>
         </CleanupRequests>
       </TestCase>
+
+      <TestCase Name="PutRelativeFile.IncludeHostUrls" Document="WordBlankDocument" Category="OfficeOnline">
+        <Description>
+          Tests that the host returns the HostEditUrl and HostViewUrl on their PutRelativeFile response.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="Suggested" Name="new_file.wopitest" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="true" />
+                <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewFileUrl"/>
+        </CleanupRequests>
+      </TestCase>
     </TestCases>
   </TestGroup>
 
