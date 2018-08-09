@@ -1702,6 +1702,54 @@
           <DeleteFile OverrideUrl="$State:NewFileUrl" />
         </CleanupRequests>
       </TestCase>
+
+      <TestCase Name="PutRelativeAndRenameFile.RenameShouldNotChangeFileExtension" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Perform a PutRelativeFile operation, then rename and delete it. The rename operation should not change the file extension of the file.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <CheckFileInfo OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
+                <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+          <RenameFile OverrideUrl="$State:NewFileUrl" Name="ValidatorTestFileRenamed">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFileRenamed" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </RenameFile>
+          <CheckFileInfo OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="BaseFileName" ExpectedValue="ValidatorTestFileRenamed.docx" IsRequired="true" />
+                <StringProperty Name="FileExtension" ExpectedValue=".docx" IsRequired="false" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </CleanupRequests>
+      </TestCase>
+
     </TestCases>
   </TestGroup>
 
@@ -1948,6 +1996,61 @@
           <DeleteFile OverrideUrl="$State:NewFileUrl" />
         </CleanupRequests>
       </TestCase>
+
+      <TestCase Name="CreateChildFileAndRenameFile.RenameShouldNotChangeFileExtension" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Create a file, then rename and delete it. The rename operation should not change the file extension of the file.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </CreateChildFile>
+          <CheckFileInfo OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
+                <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+          <RenameFile OverrideUrl="$State:NewFileUrl" Name="ValidatorTestFileRenamed">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFileRenamed" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </RenameFile>
+          <CheckFileInfo OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="BaseFileName" ExpectedValue="ValidatorTestFileRenamed.docx" IsRequired="true" />
+                <StringProperty Name="FileExtension" ExpectedValue=".docx" IsRequired="false" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </CleanupRequests>
+      </TestCase>
+
     </TestCases>
   </TestGroup>
 
