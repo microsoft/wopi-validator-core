@@ -737,7 +737,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			// Arrange
 			const string content = "{ propertyName: 'https://bing.com' }";
 			JsonContentValidator validator = new JsonContentValidator(
-				new JsonContentValidator.JsonAbsoluteUrlPropertyValidator("propertyName", false, null));
+				new JsonContentValidator.JsonAbsoluteUrlPropertyValidator("propertyName", false, false, null));
 			ResponseDataMock responseData = CreateDefaultResponseDataMock(content);
 
 			// Act
@@ -753,7 +753,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			// Arrange
 			const string content = "{ propertyName: 'bing.com' }";
 			JsonContentValidator validator = new JsonContentValidator(
-				new JsonContentValidator.JsonAbsoluteUrlPropertyValidator("propertyName", false, null));
+				new JsonContentValidator.JsonAbsoluteUrlPropertyValidator("propertyName", false, false, null));
 			ResponseDataMock responseData = CreateDefaultResponseDataMock(content);
 
 			// Act
@@ -764,12 +764,12 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 		}
 
 		[TestMethod]
-		public void Validate_RequiredValidatingAbsoluteUrlPropertyWithNoValue_ValidationFails()
+		public void Validate_ValidatingAbsoluteUrlPropertyWithNoValue_RequiredValidating_ValidationFails()
 		{
 			// Arrange
 			const string content = "{ }";
 			JsonContentValidator validator = new JsonContentValidator(
-				new JsonContentValidator.JsonAbsoluteUrlPropertyValidator("propertyName", true, null));
+				new JsonContentValidator.JsonAbsoluteUrlPropertyValidator("propertyName", true, false, null));
 			ResponseDataMock responseData = CreateDefaultResponseDataMock(content);
 
 			// Act
@@ -780,12 +780,12 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 		}
 
 		[TestMethod]
-		public void Validate_NotRequiredValidatingAbsoluteUrlPropertyWithNoValue_ValidationSucceeds()
+		public void Validate_AbsoluteUrlPropertyWithNoValue_NotRequiredValidating_ValidationSucceeds()
 		{
 			// Arrange
 			const string content = "{ }";
 			JsonContentValidator validator = new JsonContentValidator(
-				new JsonContentValidator.JsonAbsoluteUrlPropertyValidator("propertyName", false, null));
+				new JsonContentValidator.JsonAbsoluteUrlPropertyValidator("propertyName", false, false, null));
 			ResponseDataMock responseData = CreateDefaultResponseDataMock(content);
 
 			// Act
@@ -793,6 +793,38 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 
 			// Assert
 			Assert.IsFalse(validationResult.HasFailures);
+		}
+
+		[TestMethod]
+		public void Validate_ValidatingAbsoluteUrlPropertyWithCorrectValue_RequiresAccessToken_ValidationSucceeds()
+		{
+			// Arrange
+			const string content = "{ propertyName: 'https://contoso.com/?access_token=abc123' }";
+			JsonContentValidator validator = new JsonContentValidator(
+				new JsonContentValidator.JsonAbsoluteUrlPropertyValidator("propertyName", false, true, null));
+			ResponseDataMock responseData = CreateDefaultResponseDataMock(content);
+
+			// Act
+			ValidationResult validationResult = validator.Validate(responseData, null, null);
+
+			// Assert
+			Assert.IsFalse(validationResult.HasFailures);
+		}
+
+		[TestMethod]
+		public void Validate_ValidatingAbsoluteUrlPropertyWithIncorrectValue_RequiresAccessToken_ValidationFails()
+		{
+			// Arrange
+			const string content = "{ propertyName: 'https://contoso.com' }";
+			JsonContentValidator validator = new JsonContentValidator(
+				new JsonContentValidator.JsonAbsoluteUrlPropertyValidator("propertyName", false, true, null));
+			ResponseDataMock responseData = CreateDefaultResponseDataMock(content);
+
+			// Act
+			ValidationResult validationResult = validator.Validate(responseData, null, null);
+
+			// Assert
+			Assert.IsTrue(validationResult.HasFailures);
 		}
 
 		[TestMethod]

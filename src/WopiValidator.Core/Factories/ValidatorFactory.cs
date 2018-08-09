@@ -139,6 +139,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			string containsValue = (string)definition.Attribute("ContainsValue");
 			bool shouldMatch = ((bool?)definition.Attribute("ShouldMatch")) ?? true;
 			bool hasContainsValue = containsValue != null;
+			bool mustIncludeAccessToken = ((bool?)definition.Attribute("MustIncludeAccessToken")) ?? false;
 
 			switch (elementName)
 			{
@@ -182,6 +183,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 				case Constants.Validators.Properties.AbsoluteUrlProperty:
 					return new JsonContentValidator.JsonAbsoluteUrlPropertyValidator(key,
 						isRequired,
+						mustIncludeAccessToken,
 						expectedStateKey);
 
 				case Constants.Validators.Properties.ArrayProperty:

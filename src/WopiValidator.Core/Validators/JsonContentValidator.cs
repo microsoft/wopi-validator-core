@@ -106,16 +106,17 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 		public class JsonAbsoluteUrlPropertyValidator : JsonPropertyValidator
 		{
 			public string ExpectedStateKey { get; private set; }
+			private readonly bool _mustIncludeAccessToken = false;
 
-			public JsonAbsoluteUrlPropertyValidator(string key, bool isRequired, string expectedStateKey)
+			public JsonAbsoluteUrlPropertyValidator(string key, bool isRequired, bool mustIncludeAccessToken, string expectedStateKey)
 				: base(key, isRequired)
 			{
 				ExpectedStateKey = expectedStateKey;
+				_mustIncludeAccessToken = mustIncludeAccessToken;
 			}
 
 			public override bool Validate(JToken actualValue, Dictionary<string, string> savedState, out string errorMessage)
 			{
-				bool isValid = false;
 				errorMessage = null;
 
 				if (IsActualValueNullOrEmpty(actualValue))
@@ -123,11 +124,10 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 					if (IsRequired)
 					{
 						errorMessage = string.Format("Value is required but not provided.");
+						return false;
 					}
-					else
-					{
-						isValid = true;
-					}
+
+					return true;
 				}
 				else
 				{
@@ -136,14 +136,28 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 					Uri uri;
 					if (Uri.TryCreate(value, UriKind.Absolute, out uri))
 					{
-						isValid = true;
+						if (_mustIncludeAccessToken && IncludesAccessToken(value))
+						{
+							errorMessage = $"URL '{value}' does not include the 'access_token' query parameter";
+							return false;
+						}
+
+						return true;
 					}
 					else
 					{
 						errorMessage = string.Format("Cannot parse {0} as absolute URL", value);
+						return false;
 					}
 				}
-				return isValid;
+			}
+
+			/// <summary>
+			/// Returns true if the URI includes an access_token query string parameter; false otherwise.
+			/// </summary>
+			private bool IncludesAccessToken(string url)
+			{
+				return UrlHelper.GetQueryParameterValue(url, "access_token") == null;
 			}
 		}
 

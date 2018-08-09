@@ -66,6 +66,7 @@
                         <xs:attribute name="Name" type="xs:string" use="required" />
                         <xs:attribute name="ExpectedStateKey" type="xs:string" use="optional" />
                         <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="false" />
+                        <xs:attribute name="MustIncludeAccessToken" type="xs:boolean" use="optional" default="false" />
                       </xs:complexType>
                     </xs:element>
                     <xs:element name="ArrayProperty">

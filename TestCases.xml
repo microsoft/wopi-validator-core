@@ -920,7 +920,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" EndsWith=".foox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -944,7 +944,7 @@
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" EndsWith="wopitest" IsRequired="true"/>
+                <StringProperty Name="Name" EndsWith="wopitest" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
@@ -972,7 +972,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" EndsWith="wopitest" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -986,7 +986,7 @@
               <ResponseCodeValidator ExpectedCode="200"/>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" EndsWith="wopitest" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -1013,7 +1013,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -1040,7 +1040,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -1067,7 +1067,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -1093,7 +1093,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -1124,7 +1124,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -1154,7 +1154,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -1167,7 +1167,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" EndsWith=".wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -1216,7 +1216,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -1735,7 +1735,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </CreateChildFile>
@@ -1782,7 +1782,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="madeup_name.wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </CreateChildFile>
@@ -1828,7 +1828,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </CreateChildFile>
@@ -1878,7 +1878,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </CreateChildFile>
@@ -1924,7 +1924,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </CreateChildFile>
@@ -2110,7 +2110,7 @@
           <GetEcosystem>
             <Validators>
               <JsonResponseContentValidator>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true" />
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true" />
               </JsonResponseContentValidator>
             </Validators>
           </GetEcosystem>
@@ -2156,7 +2156,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ContainerPointer.Name" IsRequired="true" />
-                <AbsoluteUrlProperty Name="ContainerPointer.Url" IsRequired="true" />
+                <AbsoluteUrlProperty Name="ContainerPointer.Url" IsRequired="true" MustIncludeAccessToken="true" />
               </JsonResponseContentValidator>
             </Validators>
           </GetRootContainer>
@@ -2453,7 +2453,7 @@
           <GetEcosystem OverrideUrl="$State:ParentContainerUrl">
             <Validators>
               <JsonResponseContentValidator>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true" />
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true" />
               </JsonResponseContentValidator>
             </Validators>
           </GetEcosystem>
@@ -2520,7 +2520,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="AncestorsWithRootFirst[0].Name" IsRequired="true" />
-                <AbsoluteUrlProperty Name="AncestorsWithRootFirst[0].Url" IsRequired="true" />
+                <AbsoluteUrlProperty Name="AncestorsWithRootFirst[0].Url" IsRequired="true" MustIncludeAccessToken="true" />
               </JsonResponseContentValidator>
             </Validators>
           </EnumerateAncestors>
@@ -2540,7 +2540,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ChildFiles[0].Name" IsRequired="true" />
-                <AbsoluteUrlProperty Name="ChildFiles[0].Url" IsRequired="true" />
+                <AbsoluteUrlProperty Name="ChildFiles[0].Url" IsRequired="true" MustIncludeAccessToken="true" />
                 <StringProperty Name="ChildFiles[0].Version" IsRequired="true" />
                 <LongProperty Name="ChildFiles[0].Size" IsRequired="true" />
               </JsonResponseContentValidator>
@@ -2575,7 +2575,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ChildFiles[0].Name" IsRequired="true" />
-                <AbsoluteUrlProperty Name="ChildFiles[0].Url" IsRequired="true" />
+                <AbsoluteUrlProperty Name="ChildFiles[0].Url" IsRequired="true" MustIncludeAccessToken="true" />
                 <StringProperty Name="ChildFiles[0].Version" IsRequired="true" />
                 <LongProperty Name="ChildFiles[0].Size" IsRequired="true" />
               </JsonResponseContentValidator>
@@ -2596,7 +2596,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ChildFiles[0].Name" IsRequired="true" />
-                <AbsoluteUrlProperty Name="ChildFiles[0].Url" IsRequired="true" />
+                <AbsoluteUrlProperty Name="ChildFiles[0].Url" IsRequired="true" MustIncludeAccessToken="true" />
                 <StringProperty Name="ChildFiles[0].Version" IsRequired="true" />
                 <LongProperty Name="ChildFiles[0].Size" IsRequired="true" />
               </JsonResponseContentValidator>
@@ -2647,7 +2647,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="AncestorsWithRootFirst[0].Name" IsRequired="true" />
-                <AbsoluteUrlProperty Name="AncestorsWithRootFirst[0].Url" IsRequired="true" />
+                <AbsoluteUrlProperty Name="AncestorsWithRootFirst[0].Url" IsRequired="true" MustIncludeAccessToken="true" />
               </JsonResponseContentValidator>
             </Validators>
           </EnumerateAncestors>
@@ -2723,7 +2723,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" EndsWith="wopitest" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -2762,7 +2762,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" EndsWith="wopitest" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -2776,7 +2776,7 @@
               <ResponseCodeValidator ExpectedCode="200"/>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" EndsWith="wopitest" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -2815,7 +2815,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -2854,7 +2854,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -2893,7 +2893,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -2932,7 +2932,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -2976,7 +2976,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -3020,7 +3020,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -3033,7 +3033,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" EndsWith=".wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -3105,7 +3105,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
@@ -3224,7 +3224,7 @@
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </CreateChildFile>
