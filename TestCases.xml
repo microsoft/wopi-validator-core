@@ -4131,34 +4131,6 @@
     </TestCases>
   </TestGroup>
 
-  <TestGroup Name="Features">
-    <TestCases>
-      <TestCase
-        Name="Feature.FileSharing"
-        Document="WordBlankDocument"
-        UiScreenshot="Feature.FileSharing.png"
-        DocumentationLink="https://wopi.readthedocs.org/en/latest/wopi/files/CheckFileInfo.html?highlight=sharing#term-filesharingurl"
-        FailMessage="File sharing not available."
-        Category="OfficeOnline">
-        <Description>Checks the support for the file sharing feature</Description>
-        <Requests>
-          <CheckFileInfo>
-            <Validators>
-              <Or>
-                <JsonResponseContentValidator>
-                  <AbsoluteUrlProperty Name="FileSharingUrl" IsRequired="true" />
-                </JsonResponseContentValidator>
-                <JsonResponseContentValidator>
-                  <BooleanProperty Name="FileSharingPostMessage" ExpectedValue="true" />
-                </JsonResponseContentValidator>
-              </Or>
-            </Validators>
-          </CheckFileInfo>
-        </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
   <!-- Proof key related test cases -->
   <TestGroup Name="ProofKeys">
     <PrereqTests>
