@@ -21,9 +21,9 @@ portion if you want to build the debug version instead.
 To build a [self-contained package][1] for Linux or macOS, use the `dotnet publish` command:
 
 ```text
-dotnet publish -c Release -r linux-x64
-dotnet publish -c Release -r osx-x64
-dotnet publish -c Release -r win-x64
+dotnet publish -c Release -f netcoreapp2.0 -r linux-x64
+dotnet publish -c Release -f netcoreapp2.0 -r osx-x64
+dotnet publish -c Release -f netcoreapp2.0 -r win-x64
 ```
 
 Note: you may see an error on build like this:
@@ -54,7 +54,7 @@ From the root of the project, use the following command:
 
 `dotnet pack -c Release`
 
-The package will be output to `src\WopiValidator\bin\Release\Microsoft.Office.WopiValidator.1.0.0.nupkg`
+The package will be output to `src\WopiValidator\bin\Release\WopiValidator.1.0.0-local.nupkg`
 
 Note: if you see any errors, you may need to build the project first, as described above.
 
@@ -77,7 +77,7 @@ You can also use the `dotnet run` command, passing the path to the `WopiValidato
 option. Arguments to the validator itself can be passed in by separating them from the `dotnet run` arguments with
 a `--`. For example:
 
-`dotnet run --project ./src/WopiValidator/WopiValidator.csproj -- -t MyAccessToken -l 0 -w http://localhost:5000/wopi/files/1 -e OfficeOnline -s`
+`dotnet run --project ./src/WopiValidator/WopiValidator.csproj --framework netcoreapp2.0 -- -t MyAccessToken -l 0 -w http://localhost:5000/wopi/files/1 -e OfficeOnline -s`
 
 ### Option 3: self-contained package
 
