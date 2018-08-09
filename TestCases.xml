@@ -1193,7 +1193,10 @@
           <CheckFileInfo />
           <PutRelativeFile PutRelativeFileMode="Conflicting" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument">
             <Validators>
-              <ResponseCodeValidator ExpectedCode="501"/>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="400"/>
+                <ResponseCodeValidator ExpectedCode="501"/>
+              </Or>
             </Validators>
           </PutRelativeFile>
         </Requests>
