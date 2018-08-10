@@ -384,73 +384,6 @@
 
   </PrereqCases>
 
-  <TestGroup Name="BaseWopiViewing">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-    </PrereqTests>
-    <!-- Full Viewer app sequences -->
-    <TestCases>
-      <TestCase Name="CheckFileInfoFieldsNotToBeSetByHosts" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests that the WOPI host is setting (or not setting) some CheckFileInfo properties correctly.
-        </Description>
-        <Requests>
-          <CheckFileInfo>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="UserId" IsRequired="true" />
-                <StringProperty Name="HostAuthenticationId" ExpectedValue="" IsRequired="false" />
-                <StringProperty Name="PresenceUserId" ExpectedValue="" IsRequired="false" />
-                <StringProperty Name="TenantId" ExpectedValue="" IsRequired="false" />
-                <StringProperty Name="UserPrincipalName" ExpectedValue="" IsRequired="false" />
-                <StringProperty Name="AADUserObjectId" ExpectedValue="" IsRequired="false" />
-
-                <!-- FileExtension, if provided, should start with a "."; using this as a shortcut to test for that. -->
-                <StringProperty Name="FileExtension" ExpectedValue=".wopitest" IsRequired="false" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-        </Requests>
-      </TestCase>
-
-      <TestCase Name="ViewOnlySupport" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Standard sequence of requests made by a WOPI client to render a document.
-        </Description>
-        <Requests>
-          <CheckFileInfo>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="BaseFileName" IsRequired="true" />
-                <StringProperty Name="OwnerId" IsRequired="true" />
-                <LongProperty Name="Size" IsRequired="true" />
-                <StringProperty Name="Version" IsRequired="true" />
-
-                <AbsoluteUrlProperty Name="BreadcrumbBrandUrl" />
-                <AbsoluteUrlProperty Name="BreadcrumbDocUrl" />
-                <AbsoluteUrlProperty Name="BreadcrumbFolderUrl" />
-                <AbsoluteUrlProperty Name="DownloadUrl" />
-                <AbsoluteUrlProperty Name="CloseUrl" />
-                <AbsoluteUrlProperty Name="HostEditUrl" />
-                <AbsoluteUrlProperty Name="HostViewUrl" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-          <GetFile />
-        </Requests>
-      </TestCase>
-
-      <TestCase Name="GetUnlockedFile" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          GetFile requests on a file that wasn't locked before - necessary for Viewing and Editing.
-        </Description>
-        <Requests>
-          <GetFile />
-        </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
   <TestGroup Name="CheckFileInfoSchema">
     <PrereqTests>
       <PrereqTest>WopiValidatorPrereq</PrereqTest>
@@ -492,100 +425,6 @@
           </CheckFileInfo>
         </Requests>
       </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="EditFlows">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>UserCanWritePrereq</PrereqTest>
-      <PrereqTest>FileEditingPrereq</PrereqTest>
-      <PrereqTest>LocksPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="BasicEdit" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Standard sequence of requests made by an edit-capable WOPI client as part of application boot and successful saves when user interacts with the document.
-        </Description>
-        <Requests>
-          <CheckFileInfo>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="BaseFileName" IsRequired="true" />
-                <StringProperty Name="OwnerId" IsRequired="true" />
-                <LongProperty Name="Size" IsRequired="true" />
-                <StringProperty Name="Version" IsRequired="true" />
-
-                <AbsoluteUrlProperty Name="BreadcrumbBrandUrl" />
-                <AbsoluteUrlProperty Name="BreadcrumbDocUrl" />
-                <AbsoluteUrlProperty Name="BreadcrumbFolderUrl" />
-                <AbsoluteUrlProperty Name="DownloadUrl" />
-                <AbsoluteUrlProperty Name="CloseUrl" />
-                <AbsoluteUrlProperty Name="HostEditUrl" />
-                <AbsoluteUrlProperty Name="HostViewUrl" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-          <Lock Lock="LockString" />
-          <GetFile Lock="LockString" />
-          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
-          <Unlock Lock="LockString" />
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <TestCase Name="EditNoChange" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Simulates an editor boot and save with no changes to a file.
-        </Description>
-        <Requests>
-          <CheckFileInfo>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="BaseFileName" IsRequired="true" />
-                <StringProperty Name="OwnerId" IsRequired="true" />
-                <LongProperty Name="Size" IsRequired="true" />
-                <StringProperty Name="Version" IsRequired="true" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-          <Lock Lock="LockString" />
-          <GetFile Lock="LockString" />
-          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
-          <Unlock Lock="LockString" />
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <!-- Requests to unlocked file -->
-      <TestCase Name="PutUnlockedFile" Document="WordZeroByteDocument" Category="WopiCore">
-        <Description>
-          Simulates creating a new file on the host, which requires PutFile requests to an unlocked 0-byte file to succeed.
-        </Description>
-        <Requests>
-          <!-- Set up the test -->
-          <Lock Lock="LockString" />
-          <PutFile Lock="LockString" ResourceId="ZeroByteFile" />
-          <Unlock Lock="LockString" />
-
-          <!-- Execute the actual test -->
-          <PutFile ResourceId="WordBlankDocument" />
-          <GetFile>
-            <Validators>
-              <ResponseContentValidator ExpectedDocumentId="WordBlankDocument" />
-            </Validators>
-          </GetFile>
-        </Requests>
-        <CleanupRequests>
-          <!-- If any of the setup steps fail, subsequent requests won't be issued, leaving the file potentially locked, so unlock it here in a cleanup request. -->
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
     </TestCases>
   </TestGroup>
 
@@ -894,6 +733,167 @@
           <Unlock Lock="LockString" />
         </CleanupRequests>
       </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="BaseWopiViewing">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+    </PrereqTests>
+    <!-- Full Viewer app sequences -->
+    <TestCases>
+      <TestCase Name="CheckFileInfoFieldsNotToBeSetByHosts" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that the WOPI host is setting (or not setting) some CheckFileInfo properties correctly.
+        </Description>
+        <Requests>
+          <CheckFileInfo>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="UserId" IsRequired="true" />
+                <StringProperty Name="HostAuthenticationId" ExpectedValue="" IsRequired="false" />
+                <StringProperty Name="PresenceUserId" ExpectedValue="" IsRequired="false" />
+                <StringProperty Name="TenantId" ExpectedValue="" IsRequired="false" />
+                <StringProperty Name="UserPrincipalName" ExpectedValue="" IsRequired="false" />
+                <StringProperty Name="AADUserObjectId" ExpectedValue="" IsRequired="false" />
+
+                <!-- FileExtension, if provided, should start with a "."; using this as a shortcut to test for that. -->
+                <StringProperty Name="FileExtension" ExpectedValue=".wopitest" IsRequired="false" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="ViewOnlySupport" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Standard sequence of requests made by a WOPI client to render a document.
+        </Description>
+        <Requests>
+          <CheckFileInfo>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="BaseFileName" IsRequired="true" />
+                <StringProperty Name="OwnerId" IsRequired="true" />
+                <LongProperty Name="Size" IsRequired="true" />
+                <StringProperty Name="Version" IsRequired="true" />
+
+                <AbsoluteUrlProperty Name="BreadcrumbBrandUrl" />
+                <AbsoluteUrlProperty Name="BreadcrumbDocUrl" />
+                <AbsoluteUrlProperty Name="BreadcrumbFolderUrl" />
+                <AbsoluteUrlProperty Name="DownloadUrl" />
+                <AbsoluteUrlProperty Name="CloseUrl" />
+                <AbsoluteUrlProperty Name="HostEditUrl" />
+                <AbsoluteUrlProperty Name="HostViewUrl" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+          <GetFile />
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="GetUnlockedFile" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          GetFile requests on a file that wasn't locked before - necessary for Viewing and Editing.
+        </Description>
+        <Requests>
+          <GetFile />
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="EditFlows">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>UserCanWritePrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="BasicEdit" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Standard sequence of requests made by an edit-capable WOPI client as part of application boot and successful saves when user interacts with the document.
+        </Description>
+        <Requests>
+          <CheckFileInfo>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="BaseFileName" IsRequired="true" />
+                <StringProperty Name="OwnerId" IsRequired="true" />
+                <LongProperty Name="Size" IsRequired="true" />
+                <StringProperty Name="Version" IsRequired="true" />
+
+                <AbsoluteUrlProperty Name="BreadcrumbBrandUrl" />
+                <AbsoluteUrlProperty Name="BreadcrumbDocUrl" />
+                <AbsoluteUrlProperty Name="BreadcrumbFolderUrl" />
+                <AbsoluteUrlProperty Name="DownloadUrl" />
+                <AbsoluteUrlProperty Name="CloseUrl" />
+                <AbsoluteUrlProperty Name="HostEditUrl" />
+                <AbsoluteUrlProperty Name="HostViewUrl" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+          <Lock Lock="LockString" />
+          <GetFile Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="EditNoChange" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          Simulates an editor boot and save with no changes to a file.
+        </Description>
+        <Requests>
+          <CheckFileInfo>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="BaseFileName" IsRequired="true" />
+                <StringProperty Name="OwnerId" IsRequired="true" />
+                <LongProperty Name="Size" IsRequired="true" />
+                <StringProperty Name="Version" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+          <Lock Lock="LockString" />
+          <GetFile Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- Requests to unlocked file -->
+      <TestCase Name="PutUnlockedFile" Document="WordZeroByteDocument" Category="WopiCore">
+        <Description>
+          Simulates creating a new file on the host, which requires PutFile requests to an unlocked 0-byte file to succeed.
+        </Description>
+        <Requests>
+          <!-- Set up the test -->
+          <Lock Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="ZeroByteFile" />
+          <Unlock Lock="LockString" />
+
+          <!-- Execute the actual test -->
+          <PutFile ResourceId="WordBlankDocument" />
+          <GetFile>
+            <Validators>
+              <ResponseContentValidator ExpectedDocumentId="WordBlankDocument" />
+            </Validators>
+          </GetFile>
+        </Requests>
+        <CleanupRequests>
+          <!-- If any of the setup steps fail, subsequent requests won't be issued, leaving the file potentially locked, so unlock it here in a cleanup request. -->
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
     </TestCases>
   </TestGroup>
 
