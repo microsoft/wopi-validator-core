@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.IO;
 using Microsoft.Office.WopiValidator.Core.Logging;
 
@@ -27,7 +28,7 @@ namespace Microsoft.Office.WopiValidator.Core.ResourceManagement
 				// "ZeroByteFile.wopitest". This way we can still write out zero-byte files.
 				MemoryStream result = new MemoryStream();
 				StreamWriter sw = new StreamWriter(result);
-				string fileContent = FileName == "ZeroByteFile.wopitest" ? string.Empty : ResourceId + FilePath + FileName;
+				string fileContent = FileName == "ZeroByteFile.wopitest" ? string.Empty : ResourceId + FilePath + FileName + Guid.NewGuid().ToString("n");
 				sw.Write(fileContent);
 				sw.Flush();
 				result.Seek(0, SeekOrigin.Begin);
