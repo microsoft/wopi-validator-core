@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <WopiValidation>
   <Resources>
     <!-- Contains files that can be used by test cases -->
@@ -944,8 +944,8 @@
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" EndsWith="wopitest" IsRequired="true" MustIncludeAccessToken="true"/>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true"/>
+                <StringProperty Name="Name" EndsWith="wopitest" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true" />
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
