@@ -128,7 +128,8 @@
           <xs:complexType>
             <xs:complexContent>
               <xs:extension base="ValidatorBaseType">
-                <xs:attribute name="ExpectedDocumentId" type="xs:string" use="required" />
+                <xs:attribute name="ExpectedDocumentId" type="xs:string" use="optional" />
+                <xs:attribute name="ExpectedBodyContent" type="xs:string" use="optional" />
               </xs:extension>
             </xs:complexContent>
           </xs:complexType>
@@ -445,7 +446,15 @@
               <xs:element name="AddActivities">
                 <xs:complexType>
                   <xs:sequence minOccurs="1">
-                    <xs:element minOccurs="1" maxOccurs="1" name="RequestBodyJson" type="xs:string" />
+                    <xs:element minOccurs="1" maxOccurs="1" name="RequestBody" type="xs:string" />
+                    <xs:element minOccurs="0" maxOccurs="1" name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="PutUserInfo">
+                <xs:complexType>
+                  <xs:sequence minOccurs="1">
+                    <xs:element minOccurs="1" maxOccurs="1" name="RequestBody" type="xs:string" />
                     <xs:element minOccurs="0" maxOccurs="1" name="Validators" type="ValidatorsType" />
                   </xs:sequence>
                 </xs:complexType>
@@ -472,6 +481,13 @@
               <xs:element name="DeleteFile">
                 <xs:complexType>
                   <xs:attribute name="OverrideUrl" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="PutUserInfo">
+                <xs:complexType>
+                  <xs:sequence minOccurs="1">
+                    <xs:element minOccurs="1" maxOccurs="1" name="RequestBody" type="xs:string" />
+                  </xs:sequence>
                 </xs:complexType>
               </xs:element>
             </xs:choice>

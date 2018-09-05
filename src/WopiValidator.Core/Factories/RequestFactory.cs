@@ -29,7 +29,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			XElement validatorsDefinition = definition.Element("Validators");
 			XElement stateDefinition = definition.Element("SaveState");
 			XElement mutatorsDefinition = definition.Element("Mutators");
-			XElement requestBodyDefinition = definition.Element("RequestBodyJson");
+			XElement requestBodyDefinition = definition.Element("RequestBody");
 
 			IEnumerable<IValidator> validators = validatorsDefinition == null ? null : ValidatorFactory.GetValidators(validatorsDefinition);
 			IEnumerable<IStateEntry> stateSavers = stateDefinition == null ? null : StateFactory.GetStateExpressions(stateDefinition);
@@ -55,7 +55,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 
 			if (requestBodyDefinition != null && !String.IsNullOrEmpty(requestBodyDefinition.Value))
 			{
-				wopiRequestParams.RequestBodyJson = requestBodyDefinition.Value;
+				wopiRequestParams.RequestBody = requestBodyDefinition.Value;
 			}
 
 			string fileMode = (string)definition.Attribute("PutRelativeFileMode");
@@ -126,6 +126,8 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 					return new GetShareUrlRequest(wopiRequestParams);
 				case Constants.Requests.AddActivities:
 					return new AddActivitiesRequest(wopiRequestParams);
+				case Constants.Requests.PutUserInfo:
+					return new PutUserInfoRequest(wopiRequestParams);
 
 				default:
 					throw new ArgumentException(string.Format("Unknown request: '{0}'", elementName));

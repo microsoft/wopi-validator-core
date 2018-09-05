@@ -19,7 +19,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		public string OverrideUrl { get; set; }
 		public bool? OverwriteRelative { get; set; }
 		public PutRelativeFileMode PutRelativeFileMode { get; set; }
-		public string RequestBodyJson { get; set; }
+		public string RequestBody { get; set; }
 		public string RequestedName { get; set; }
 		public string ResourceId { get; set; }
 		public IEnumerable<IStateEntry> StateSavers { get; set; }

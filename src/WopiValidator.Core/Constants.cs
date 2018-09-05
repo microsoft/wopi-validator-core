@@ -60,6 +60,7 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const string RenameFile = "RENAME_FILE";
 			public const string GetShareUrl = "GET_SHARE_URL";
 			public const string AddActivities = "ADD_ACTIVITIES";
+			public const string PutUserInfo = "PUT_USER_INFO";
 		}
 
 		public static class RequestMethods
@@ -95,6 +96,7 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const string GetFromFileUrl = "GetFromFileUrl";
 			public const string GetShareUrl = "GetShareUrl";
 			public const string AddActivities = "AddActivities";
+			public const string PutUserInfo = "PutUserInfo";
 		}
 
 		public static class Validators

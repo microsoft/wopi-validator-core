@@ -11,10 +11,10 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 	{
 		public AddActivitiesRequest(WopiRequestParam param) : base(param)
 		{
-			if (String.IsNullOrWhiteSpace(param.RequestBodyJson))
-				throw new ArgumentOutOfRangeException("RequestBodyJson", "No RequestBodyJson specified for AddActivities operation");
+			if (String.IsNullOrWhiteSpace(param.RequestBody))
+				throw new ArgumentOutOfRangeException("RequestBody", "No RequestBody specified for AddActivities operation");
 
-			this.ActivitiesJson = param.RequestBodyJson;
+			this.ActivitiesJson = param.RequestBody;
 		}
 
 		public string ActivitiesJson { get; private set; }
