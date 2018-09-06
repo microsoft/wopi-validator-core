@@ -397,6 +397,10 @@
           <CheckFileInfo>
             <Validators>
               <JsonSchemaValidator Schema="CheckFileInfoSchema" />
+              <JsonResponseContentValidator>
+                <!-- FileExtension, if provided, should start with a "."; using this as a shortcut to test for that. -->
+                <StringProperty Name="FileExtension" ExpectedValue=".wopitest" IsRequired="false" />
+              </JsonResponseContentValidator>
             </Validators>
           </CheckFileInfo>
         </Requests>
@@ -742,29 +746,6 @@
     </PrereqTests>
     <!-- Full Viewer app sequences -->
     <TestCases>
-      <TestCase Name="CheckFileInfoFieldsNotToBeSetByHosts" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests that the WOPI host is setting (or not setting) some CheckFileInfo properties correctly.
-        </Description>
-        <Requests>
-          <CheckFileInfo>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="UserId" IsRequired="true" />
-                <StringProperty Name="HostAuthenticationId" ExpectedValue="" IsRequired="false" />
-                <StringProperty Name="PresenceUserId" ExpectedValue="" IsRequired="false" />
-                <StringProperty Name="TenantId" ExpectedValue="" IsRequired="false" />
-                <StringProperty Name="UserPrincipalName" ExpectedValue="" IsRequired="false" />
-                <StringProperty Name="AADUserObjectId" ExpectedValue="" IsRequired="false" />
-
-                <!-- FileExtension, if provided, should start with a "."; using this as a shortcut to test for that. -->
-                <StringProperty Name="FileExtension" ExpectedValue=".wopitest" IsRequired="false" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-        </Requests>
-      </TestCase>
-
       <TestCase Name="ViewOnlySupport" Document="WordBlankDocument" Category="WopiCore">
         <Description>
           Standard sequence of requests made by a WOPI client to render a document.
