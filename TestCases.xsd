@@ -312,12 +312,19 @@
                 </xs:complexType>
               </xs:element>
               <xs:element name="EnumerateAncestors">
+                <xs:complexType>
+                  <xs:choice>
+                    <xs:element name="SaveState" type="SaveStateType" minOccurs="0" />
+                    <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
+                  </xs:choice>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                </xs:complexType>
               </xs:element>
               <xs:element name="GetEcosystem">
                 <xs:complexType>
                   <xs:choice>
-                    <xs:element name="SaveState" type="SaveStateType" />
-                    <xs:element name="Validators" type="ValidatorsType" />
+                    <xs:element name="SaveState" type="SaveStateType" minOccurs="0" />
+                    <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
                   </xs:choice>
                   <xs:attribute name="OverrideUrl" type="xs:string" />
                 </xs:complexType>
