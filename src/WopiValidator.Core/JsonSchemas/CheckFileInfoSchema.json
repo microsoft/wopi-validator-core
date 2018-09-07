@@ -22,6 +22,9 @@
     "AllowExternalMarketplace": {
       "type": "boolean"
     },
+    "AppStateHistoryPostMessage": {
+      "type": "boolean"
+    },
     "BaseFileName": {
       "type": "string"
     },
