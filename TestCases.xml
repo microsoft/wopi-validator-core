@@ -2233,15 +2233,12 @@
           </PutUserInfo>
           <CheckFileInfo>
             <Validators>
-              <ResponseContentValidator ExpectedBodyContent="PutUserInfoTest" />
+              <JsonResponseContentValidator>
+                <StringProperty Name="UserInfo" ExpectedValue="PutUserInfoTest" />
+              </JsonResponseContentValidator>
             </Validators>
           </CheckFileInfo>
         </Requests>
-        <CleanupRequests>
-          <PutUserInfo>
-            <RequestBody></RequestBody>
-          </PutUserInfo>
-        </CleanupRequests>
       </TestCase>
 
     </TestCases>
