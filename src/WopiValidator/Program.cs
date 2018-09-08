@@ -35,12 +35,17 @@ namespace Microsoft.Office.WopiValidator
 			{
 				var result = Parser.Default.ParseArguments<Options>(args)
 					.WithParsed(options => Execute(options))
-					.WithNotParsed(errors => { return; });
+					.WithNotParsed(errors =>
+					{
+						Environment.ExitCode = 1;
+						return;
+					});
 
 			}
 			catch (Exception ex)
 			{
 				WriteToConsole(ex.ToString(), ConsoleColor.Red);
+				Environment.ExitCode = 1;
 			}
 
 			if (Debugger.IsAttached)
@@ -79,6 +84,7 @@ namespace Microsoft.Office.WopiValidator
 				});
 
 			ConsoleColor baseColor = ConsoleColor.White;
+			bool atLeastOneTestFailedOrSkipped = false;
 			foreach (var group in executorGroups)
 			{
 				WriteToConsole($"\nTest group: {group.Name}\n", ConsoleColor.White);
@@ -103,6 +109,7 @@ namespace Microsoft.Office.WopiValidator
 							baseColor = ConsoleColor.Yellow;
 							if (!options.IgnoreSkipped)
 							{
+								atLeastOneTestFailedOrSkipped = true;
 								WriteToConsole($"Skipped: {testCaseResult.Name}\n", baseColor, 1);
 							}
 							break;
@@ -112,6 +119,7 @@ namespace Microsoft.Office.WopiValidator
 							baseColor = ConsoleColor.Red;
 							WriteToConsole($"Fail: {testCaseResult.Name}\n", baseColor, 1);
 							hadPassFailResult = true;
+							atLeastOneTestFailedOrSkipped = true;
 							break;
 					}
 
@@ -138,6 +146,11 @@ namespace Microsoft.Office.WopiValidator
 				if (!hadPassFailResult && options.IgnoreSkipped)
 				{
 					WriteToConsole($"All tests skipped.\n", baseColor, 1);
+				}
+
+				if (atLeastOneTestFailedOrSkipped)
+				{
+					Environment.ExitCode = 1;
 				}
 			}
 		}
