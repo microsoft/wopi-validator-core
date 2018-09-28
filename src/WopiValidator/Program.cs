@@ -12,6 +12,12 @@ using Microsoft.Office.WopiValidator.Core;
 
 namespace Microsoft.Office.WopiValidator
 {
+	internal enum ExitCode
+	{
+		Success = 0,
+		Failure = 1,
+	}
+
 	internal class Program
 	{
 		private static TestCaseExecutor GetTestCaseExecutor(TestExecutionData testExecutionData, Options options, TestCategory inputTestCategory)
@@ -27,20 +33,22 @@ namespace Microsoft.Office.WopiValidator
 			return new TestCaseExecutor(testExecutionData, options.WopiEndpoint, options.AccessToken, options.AccessTokenTtl, userAgent);
 		}
 
-		private static void Main(string[] args)
+		private static int Main(string[] args)
 		{
 			// Wrapping all logic in a top-level Exception handler to ensure that exceptions are
 			// logged to the console and don't cause Windows Error Reporting to kick in.
+			ExitCode exitCode = ExitCode.Success;
 			try
 			{
-				var result = Parser.Default.ParseArguments<Options>(args)
-					.WithParsed(options => Execute(options))
-					.WithNotParsed(errors => { return; });
-
+				exitCode = Parser.Default.ParseArguments<Options>(args)
+					.MapResult(
+						(Options options) => Execute(options),
+						parseErrors => ExitCode.Failure);
 			}
 			catch (Exception ex)
 			{
 				WriteToConsole(ex.ToString(), ConsoleColor.Red);
+				exitCode = ExitCode.Failure;
 			}
 
 			if (Debugger.IsAttached)
@@ -48,10 +56,10 @@ namespace Microsoft.Office.WopiValidator
 				WriteToConsole("Press any key to exit", ConsoleColor.White);
 				Console.ReadLine();
 			}
-			return;
+			return (int)exitCode;
 		}
 
-		private static void Execute(Options options)
+		private static ExitCode Execute(Options options)
 		{
 			// get run configuration from XML
 			IEnumerable<TestExecutionData> testData = ConfigParser.ParseExecutionData(options.RunConfigurationFilePath, options.TestCategory);
@@ -73,12 +81,14 @@ namespace Microsoft.Office.WopiValidator
 
 			// Create executor groups
 			var executorGroups = executionData.GroupBy(d => d.TestGroupName)
-				.Select(g => new {
+				.Select(g => new
+				{
 					Name = g.Key,
 					Executors = g.Select(x => GetTestCaseExecutor(x, options, options.TestCategory))
 				});
 
 			ConsoleColor baseColor = ConsoleColor.White;
+			HashSet<ResultStatus> resultStatuses = new HashSet<ResultStatus>();
 			foreach (var group in executorGroups)
 			{
 				WriteToConsole($"\nTest group: {group.Name}\n", ConsoleColor.White);
@@ -87,16 +97,15 @@ namespace Microsoft.Office.WopiValidator
 				// as you iterate over returned collection
 				var results = group.Executors.Select(x => x.Execute());
 
-				bool hadPassFailResult = false;
 				// iterate over results and print success/failure indicators into console
 				foreach (TestCaseResult testCaseResult in results)
 				{
+					resultStatuses.Add(testCaseResult.Status);
 					switch (testCaseResult.Status)
 					{
 						case ResultStatus.Pass:
 							baseColor = ConsoleColor.Green;
 							WriteToConsole($"Pass: {testCaseResult.Name}\n", baseColor, 1);
-							hadPassFailResult = true;
 							break;
 
 						case ResultStatus.Skipped:
@@ -111,7 +120,6 @@ namespace Microsoft.Office.WopiValidator
 						default:
 							baseColor = ConsoleColor.Red;
 							WriteToConsole($"Fail: {testCaseResult.Name}\n", baseColor, 1);
-							hadPassFailResult = true;
 							break;
 					}
 
@@ -135,11 +143,26 @@ namespace Microsoft.Office.WopiValidator
 					}
 				}
 
-				if (!hadPassFailResult && options.IgnoreSkipped)
+				if (options.IgnoreSkipped && !resultStatuses.ContainsAny(ResultStatus.Pass, ResultStatus.Fail))
 				{
 					WriteToConsole($"All tests skipped.\n", baseColor, 1);
 				}
 			}
+
+			// If skipped tests are ignored, don't consider them when determining whether the test run passed or failed
+			if (options.IgnoreSkipped)
+			{
+				if (resultStatuses.Contains(ResultStatus.Fail))
+				{
+					return ExitCode.Failure;
+				}
+			}
+			// Otherwise consider skipped tests as failures
+			else if (resultStatuses.ContainsAny(ResultStatus.Skipped, ResultStatus.Fail))
+			{
+				return ExitCode.Failure;
+			}
+			return ExitCode.Success;
 		}
 
 		private static void WriteToConsole(string message, ConsoleColor color, int indentLevel = 0)
@@ -149,6 +172,14 @@ namespace Microsoft.Office.WopiValidator
 			string indent = new string(' ', indentLevel * 2);
 			Console.Write(indent + message);
 			Console.ForegroundColor = currentColor;
+		}
+	}
+
+	internal static class ExtensionMethods
+	{
+		internal static bool ContainsAny<T>(this HashSet<T> set, params T[] items)
+		{
+			return set.Intersect(items).Any();
 		}
 	}
 }
