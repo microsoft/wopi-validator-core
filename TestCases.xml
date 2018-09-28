@@ -382,6 +382,21 @@
       </Requests>
     </TestCase>
 
+      <TestCase Name="SupportsUserInfoPrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        The host must support /files/PutUserInfo.
+      </Description>
+      <Requests>
+        <CheckFileInfo>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="SupportsUserInfo" ExpectedValue="true" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFileInfo>
+      </Requests>
+    </TestCase>
+
   </PrereqCases>
 
   <TestGroup Name="CheckFileInfoSchema">
@@ -2177,6 +2192,39 @@
     </TestCases>
   </TestGroup>
 
+  <!-- Contains PutUserInfo test cases -->
+  <TestGroup Name="PutUserInfo">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>SupportsUserInfoPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+
+      <!-- PutUserInfo call returns 200 and subsequent CheckFileInfo calls return the correct value -->
+      <TestCase Name="PutUserInfoSucceeds" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          PutUserInfo call returns 200 and subsequent CheckFileInfo calls return the correct value
+        </Description>
+        <Requests>
+          <PutUserInfo>
+            <RequestBody>PutUserInfoTest</RequestBody>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+            </Validators>
+          </PutUserInfo>
+          <CheckFileInfo>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="UserInfo" ExpectedValue="PutUserInfoTest" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+        </Requests>
+      </TestCase>
+
+    </TestCases>
+  </TestGroup>
+
   <!-- Contains Ecosystem test cases -->
   <TestGroup Name="Ecosystem">
     <PrereqTests>
@@ -3533,7 +3581,7 @@
         <Description>one comment, minimal properties</Description>
         <Requests>
           <AddActivities>
-            <RequestBodyJson>
+            <RequestBody>
               <![CDATA[{ "Activities": [
               {
                 "Type": "comment",
@@ -3545,7 +3593,7 @@
                 }
               }
               ] }]]>
-            </RequestBodyJson>
+            </RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000014-0000-0000-0000-000000000000" />
@@ -3567,7 +3615,7 @@
         <Description>one comment with all data properties set</Description>
         <Requests>
           <AddActivities>
-            <RequestBodyJson>
+            <RequestBody>
               <![CDATA[{ "Activities": [
               {
                 "Type": "comment",
@@ -3582,7 +3630,7 @@
                 }
               }
               ] }]]>
-            </RequestBodyJson>
+            </RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000001-0000-0000-0000-000000000000" />
@@ -3604,7 +3652,7 @@
         <Description>one comment with all-caps ID GUID</Description>
         <Requests>
           <AddActivities>
-            <RequestBodyJson>
+            <RequestBody>
               <![CDATA[{ "Activities": [
               {
                 "Type": "comment",
@@ -3616,7 +3664,7 @@
                 }
               }
               ] }]]>
-            </RequestBodyJson>
+            </RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000002-ABCD-ABCD-ABCD-ABCDEFABCDEF" />
@@ -3638,7 +3686,7 @@
         <Description>one comment with max-length ContentID</Description>
         <Requests>
           <AddActivities>
-            <RequestBodyJson>
+            <RequestBody>
               <![CDATA[{ "Activities": [
               {
                 "Type": "comment",
@@ -3650,7 +3698,7 @@
                 }
               }
               ] }]]>
-            </RequestBodyJson>
+            </RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000004-0000-0000-0000-000000000000" />
@@ -3672,7 +3720,7 @@
         <Description>one comment with max-length NavigationId</Description>
         <Requests>
           <AddActivities>
-            <RequestBodyJson>
+            <RequestBody>
               <![CDATA[{ "Activities": [
               {
                 "Type": "comment",
@@ -3685,7 +3733,7 @@
                 }
               }
               ] }]]>
-            </RequestBodyJson>
+            </RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000005-0000-0000-0000-000000000000" />
@@ -3707,7 +3755,7 @@
         <Description>one comment with ContentAction=update</Description>
         <Requests>
           <AddActivities>
-            <RequestBodyJson>
+            <RequestBody>
               <![CDATA[{ "Activities": [
               {
                 "Type": "comment",
@@ -3719,7 +3767,7 @@
                 }
               }
               ] }]]>
-            </RequestBodyJson>
+            </RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000006-0000-0000-0000-000000000000" />
@@ -3741,7 +3789,7 @@
         <Description>one comment with ContentAction=delete</Description>
         <Requests>
           <AddActivities>
-            <RequestBodyJson>
+            <RequestBody>
               <![CDATA[{ "Activities": [
               {
                 "Type": "comment",
@@ -3753,7 +3801,7 @@
                 }
               }
               ] }]]>
-            </RequestBodyJson>
+            </RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000007-0000-0000-0000-000000000000" />
@@ -3775,7 +3823,7 @@
         <Description>one comment with bogus additional toplevel property</Description>
         <Requests>
           <AddActivities>
-            <RequestBodyJson>
+            <RequestBody>
               <![CDATA[{ "Activities": [
               {
                 "Type": "comment",
@@ -3788,7 +3836,7 @@
                 "BonusTopLevelProperty": "future compatibility!"
               }
               ] }]]>
-            </RequestBodyJson>
+            </RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000008-0000-0000-0000-000000000000" />
@@ -3810,7 +3858,7 @@
         <Description>one comment with bogus additional data property</Description>
         <Requests>
           <AddActivities>
-            <RequestBodyJson>
+            <RequestBody>
               <![CDATA[{ "Activities": [
               {
                 "Type": "comment",
@@ -3823,7 +3871,7 @@
                 }
               }
               ] }]]>
-            </RequestBodyJson>
+            </RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000003-0000-0000-0000-000000000000" />
@@ -3845,7 +3893,7 @@
         <Description>one comment, one person</Description>
         <Requests>
           <AddActivities>
-            <RequestBodyJson>
+            <RequestBody>
               <![CDATA[{ "Activities": [
               {
                 "Type": "comment",
@@ -3865,7 +3913,7 @@
                 ]
               }
               ] }]]>
-            </RequestBodyJson>
+            </RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="00000009-0000-0000-0000-000000000000" />
@@ -3887,7 +3935,7 @@
         <Description>one comment, three people</Description>
         <Requests>
           <AddActivities>
-            <RequestBodyJson>
+            <RequestBody>
               <![CDATA[{ "Activities": [
               {
                 "Type": "comment",
@@ -3920,7 +3968,7 @@
                 ]
               }
               ] }]]>
-            </RequestBodyJson>
+            </RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="0000000a-0000-0000-0000-000000000000" />
@@ -3942,7 +3990,7 @@
         <Description>one comment, one person with bogus additional property</Description>
         <Requests>
           <AddActivities>
-            <RequestBodyJson>
+            <RequestBody>
               <![CDATA[{ "Activities": [
               {
                 "Type": "comment",
@@ -3963,7 +4011,7 @@
                 ]
               }
               ] }]]>
-            </RequestBodyJson>
+            </RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="0000000b-0000-0000-0000-000000000000" />
@@ -3985,7 +4033,7 @@
         <Description>one comment, one person with non-wopi provider and ID</Description>
         <Requests>
           <AddActivities>
-            <RequestBodyJson>
+            <RequestBody>
               <![CDATA[{ "Activities": [
               {
                 "Type": "comment",
@@ -4005,7 +4053,7 @@
                 ]
               }
               ] }]]>
-            </RequestBodyJson>
+            </RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="0000000c-0000-0000-0000-000000000000" />
@@ -4027,7 +4075,7 @@
         <Description>one activity with bogus type</Description>
         <Requests>
           <AddActivities>
-            <RequestBodyJson>
+            <RequestBody>
               <![CDATA[{ "Activities": [
               {
                 "Type": "unsupported",
@@ -4039,7 +4087,7 @@
                 }
               }
               ] }]]>
-            </RequestBodyJson>
+            </RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="0000000d-0000-0000-0000-000000000000" />
@@ -4056,7 +4104,7 @@
         <Description>one activity with bogus type and no data</Description>
         <Requests>
           <AddActivities>
-            <RequestBodyJson>
+            <RequestBody>
               <![CDATA[{ "Activities": [
               {
                 "Type": "unsupported",
@@ -4064,7 +4112,7 @@
                 "Created": "2017-02-15T13:47:13000000Z"
               }
               ] }]]>
-            </RequestBodyJson>
+            </RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="ActivityResponses[0].Id" IsRequired="true" ExpectedValue="0000000e-0000-0000-0000-000000000000" />
@@ -4086,7 +4134,7 @@
         <Description>one comment and one activity with bogus type</Description>
         <Requests>
           <AddActivities>
-            <RequestBodyJson>
+            <RequestBody>
               <![CDATA[{ "Activities": [
               {
                 "Type": "comment",
@@ -4107,7 +4155,7 @@
                 }
               }
               ] }]]>
-            </RequestBodyJson>
+            </RequestBody>
             <Validators>
               <Or>
                 <!-- We don't know what order they'll come back in so we need to OR and check both ways -->
@@ -4145,7 +4193,7 @@
         <Description>three comments</Description>
         <Requests>
           <AddActivities>
-            <RequestBodyJson>
+            <RequestBody>
               <![CDATA[{ "Activities": [
               {
                 "Type": "comment",
@@ -4175,7 +4223,7 @@
                 }
               }
               ] }]]>
-            </RequestBodyJson>
+            </RequestBody>
             <Validators>
               <!-- We don't know what order they'll come back in and checking each possibility is too much so we'll just make sure that we got three replies -->
               <JsonResponseContentValidator>
