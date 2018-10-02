@@ -90,6 +90,10 @@
     "FileVersionPostMessage": {
       "type": "boolean"
     },
+    "FileVersionUrl": {
+      "format": "uri",
+      "type": "string"
+    },
     "HostEditUrl": {
       "format": "uri",
       "type": "string"
