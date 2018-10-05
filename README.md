@@ -4,6 +4,8 @@
 
 [![Travis](https://travis-ci.org/Microsoft/wopi-validator-core.svg?branch=master)](https://travis-ci.org/Microsoft/wopi-validator-core)
 
+[![Azure Pipelines](https://dev.azure.com/wopi/validator-ci/_apis/build/status/validator-ci)](https://dev.azure.com/wopi/validator-ci/_build/latest?definitionId=1)
+
 This project contains the core logic of the [WOPI validator](https://wopi.readthedocs.io/en/latest/build_test_ship/validator.html)
 as well as a command-line interface to it.
 
