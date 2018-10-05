@@ -12,6 +12,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{43983B8F-3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WopiValidator.Core.Tests", "test\WopiValidator.Core.Tests\WopiValidator.Core.Tests.csproj", "{A0BDD54B-E033-459C-BEB7-1B3E8D61C377}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{B8E53A0B-EC1A-46AE-A8B0-8F0F2F44DDF1}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		.travis.yml = .travis.yml
+		appveyor.yml = appveyor.yml
+		FeatureTestCases.xml = FeatureTestCases.xml
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
