@@ -80,6 +80,10 @@ namespace Microsoft.Office.WopiValidator.Core
 	{
 		private static ProofKeyOutput GetProofData(ProofKeyInput proofData)
 		{
+			if (proofData.AccessToken == null) {
+				throw new ProofKeySigningException(nameof(proofData.AccessToken));
+			}
+
 			// Get the final values we'll operate on
 			string accessToken = proofData.AccessToken;
 			string hostUrl = proofData.Url.ToUpperInvariant();
@@ -151,6 +155,19 @@ namespace Microsoft.Office.WopiValidator.Core
 		private static byte[] EncodeNumber(long value)
 		{
 			return BitConverter.GetBytes(System.Net.IPAddress.HostToNetworkOrder(value));
+		}
+	}
+
+	public class ProofKeySigningException : ArgumentNullException
+	{
+		public ProofKeySigningException()
+			: base()
+		{
+		}
+
+		public ProofKeySigningException(string paramName)
+			: base(paramName)
+		{
 		}
 	}
 }
