@@ -24,7 +24,7 @@ namespace Microsoft.Office.WopiValidator.Core.Mutators
 	{
 		public readonly bool MutateCurrent;
 		public readonly bool MutateOld;
-		public readonly string WopiTimestamp;
+		public readonly long? WopiTimestamp;
 		public readonly string KeyRelation;
 
 		public static readonly string InvalidBase64String = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("INVALID"));
@@ -42,7 +42,7 @@ namespace Microsoft.Office.WopiValidator.Core.Mutators
 					CultureInfo.InvariantCulture,
 					DateTimeStyles.None,
 					out DateTime wopiTimestamp)
-				? wopiTimestamp.Ticks.ToString(CultureInfo.InvariantCulture) : null;
+				? wopiTimestamp.Ticks : (long?)null;
 			this.KeyRelation = keyRelation ?? KeyRelationType.Synced;
 		}
 
@@ -52,10 +52,22 @@ namespace Microsoft.Office.WopiValidator.Core.Mutators
 		}
 
 
-		public Dictionary<string, string> Mutate(Dictionary<string, string> originalProofKeyHeaders)
+		public Dictionary<string, string> Mutate(
+			Dictionary<string, string> originalProofKeyHeaders,
+			Func<long, Dictionary<string, string>> proofKeyGeneration)
 		{
-			Dictionary<string, string> proofKeyHeaders = new Dictionary<string, string>(3);
+			Dictionary<string, string> proofKeyHeaders;
 
+			if (WopiTimestamp != null && proofKeyGeneration != null)
+			{
+				proofKeyHeaders = proofKeyGeneration(WopiTimestamp.Value);
+			}
+			else
+			{
+				proofKeyHeaders = new Dictionary<string, string>(3);
+				proofKeyHeaders[Constants.Headers.WopiTimestamp] = originalProofKeyHeaders[Constants.Headers.WopiTimestamp];
+			}
+			
 			switch (KeyRelation)
 			{
 				case KeyRelationType.Synced:
@@ -74,7 +86,6 @@ namespace Microsoft.Office.WopiValidator.Core.Mutators
 					break;
 			}
 
-			proofKeyHeaders[Constants.Headers.WopiTimestamp] = WopiTimestamp ?? originalProofKeyHeaders[Constants.Headers.WopiTimestamp];
 			return proofKeyHeaders;
 		}
 

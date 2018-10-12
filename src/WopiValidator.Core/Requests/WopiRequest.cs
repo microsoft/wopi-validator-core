@@ -96,7 +96,8 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			{
 				Dictionary<string, string> originalProofKeyHeaders =
 					GetProofKeyHeaders(accessTokenToUse, uri, proofKeyProviderNew, proofKeyProviderOld);
-				Dictionary<string, string> proofKeyHeadersToUse = GetMutatedProofKeyHeaders(originalProofKeyHeaders);
+				Dictionary<string, string> proofKeyHeadersToUse =
+					GetMutatedProofKeyHeaders(originalProofKeyHeaders, timestamp => GetProofKeyHeaders(accessTokenToUse, uri, proofKeyProviderNew, proofKeyProviderOld, timestamp));
 				headers.AddRange(proofKeyHeadersToUse);
 			}
 
@@ -177,11 +178,10 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		private Dictionary<string, string> GetProofKeyHeaders(string accessToken,
 			Uri endpointUri,
 			RSACryptoServiceProvider proofKeyProviderNew,
-			RSACryptoServiceProvider proofKeyProviderOld)
+			RSACryptoServiceProvider proofKeyProviderOld,
+			long timestamp)
 		{
 			Dictionary<string, string> proofKeyHeaders = new Dictionary<string, string>();
-
-			long timestamp = DateTime.UtcNow.Ticks;
 
 			ProofKeyInput input = new ProofKeyInput(accessToken, timestamp, endpointUri.AbsoluteUri);
 
@@ -203,16 +203,26 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			return proofKeyHeaders;
 		}
 
+		private Dictionary<string, string> GetProofKeyHeaders(string accessToken,
+			Uri endpointUri,
+			RSACryptoServiceProvider proofKeyProviderNew,
+			RSACryptoServiceProvider proofKeyProviderOld)
+		{
+			return GetProofKeyHeaders(accessToken, endpointUri, proofKeyProviderNew, proofKeyProviderOld, DateTime.UtcNow.Ticks);
+		}
+
 		private string GetMutatedAccessToken(string original)
 		{
 			AccessTokenMutator mutator = Mutators.OfType<AccessTokenMutator>().FirstOrDefault();
 			return mutator == null ? original : mutator.Mutate(original);
 		}
 
-		private Dictionary<string, string> GetMutatedProofKeyHeaders(Dictionary<string, string> original)
+		private Dictionary<string, string> GetMutatedProofKeyHeaders(
+			Dictionary<string, string> original,
+			Func<long, Dictionary<string, string>> proofKeyGeneration)
 		{
 			ProofKeyMutator mutator = Mutators.OfType<ProofKeyMutator>().FirstOrDefault();
-			return mutator == null ? original : mutator.Mutate(original);
+			return mutator == null ? original : mutator.Mutate(original, proofKeyGeneration);
 		}
 	}
 }
