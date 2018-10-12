@@ -6,6 +6,19 @@ using System.Text;
 
 namespace Microsoft.Office.WopiValidator.Core
 {
+	/// <summary>
+	/// This class contains functions to help handle exceptions while executing tests, so that the exception
+	/// data can be displayed in the validator UI (or command line). The response code is set to
+	/// HttpStatusCode.Unused (306) in this case. The exception message is put in the X-WOPI-ValidatorError
+	/// header, and the response stream contains the stack trace (Exception.ToString).
+	///
+	/// This works in conjunction with the ExceptionValidator. That validator sees the 306 response and the
+	/// X-WOPI-ValidatorError header and fails the test, passing the exception details in the test results.
+	///
+	/// Note: This is a somewhat hacky solution (passing the exception details through a 'fake' ResponseData
+	/// that is then picked up by a Validator later), but this seems to be an unusual scenario overall and
+	/// this approach can be cleaned up and improved over time if needed.
+	/// </summary>
 	class ExceptionHelper
 	{
 		private static IResponseData CustomResponseData(string exceptionMessage, string exceptionDetails)
