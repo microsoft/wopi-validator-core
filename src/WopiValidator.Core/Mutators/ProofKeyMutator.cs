@@ -56,32 +56,25 @@ namespace Microsoft.Office.WopiValidator.Core.Mutators
 			Dictionary<string, string> originalProofKeyHeaders,
 			Func<long, Dictionary<string, string>> proofKeyGeneration)
 		{
-			Dictionary<string, string> proofKeyHeaders;
-
-			if (WopiTimestamp != null && proofKeyGeneration != null)
-			{
-				proofKeyHeaders = proofKeyGeneration(WopiTimestamp.Value);
-			}
-			else
-			{
-				proofKeyHeaders = new Dictionary<string, string>(3);
-				proofKeyHeaders[Constants.Headers.WopiTimestamp] = originalProofKeyHeaders[Constants.Headers.WopiTimestamp];
-			}
+			Dictionary<string, string> proofKeyHeaders
+				= WopiTimestamp != null ? proofKeyGeneration(WopiTimestamp.Value) : new Dictionary<string, string>(originalProofKeyHeaders);
 			
 			switch (KeyRelation)
 			{
 				case KeyRelationType.Synced:
-					proofKeyHeaders[Constants.Headers.ProofKey] = MutateCurrent
-						? InvalidBase64String : originalProofKeyHeaders[Constants.Headers.ProofKey];
-					proofKeyHeaders[Constants.Headers.ProofKeyOld] = MutateOld
-						? InvalidBase64String : originalProofKeyHeaders[Constants.Headers.ProofKeyOld];
+					if (MutateCurrent)
+						proofKeyHeaders[Constants.Headers.ProofKey] = InvalidBase64String;
+					if (MutateOld)
+						proofKeyHeaders[Constants.Headers.ProofKeyOld] = InvalidBase64String;
 					break;
+
 				case KeyRelationType.Behind:
-					proofKeyHeaders[Constants.Headers.ProofKey] = originalProofKeyHeaders[Constants.Headers.ProofKeyOld];
+					proofKeyHeaders[Constants.Headers.ProofKey] = proofKeyHeaders[Constants.Headers.ProofKeyOld];
 					proofKeyHeaders[Constants.Headers.ProofKeyOld] = InvalidBase64String;
 					break;
+
 				case KeyRelationType.Ahead:
-					proofKeyHeaders[Constants.Headers.ProofKeyOld] = originalProofKeyHeaders[Constants.Headers.ProofKey];
+					proofKeyHeaders[Constants.Headers.ProofKeyOld] = proofKeyHeaders[Constants.Headers.ProofKey];
 					proofKeyHeaders[Constants.Headers.ProofKey] = InvalidBase64String;
 					break;
 			}
