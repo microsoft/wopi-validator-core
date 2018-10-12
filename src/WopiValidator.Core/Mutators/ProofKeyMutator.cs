@@ -56,6 +56,7 @@ namespace Microsoft.Office.WopiValidator.Core.Mutators
 			Dictionary<string, string> originalProofKeyHeaders,
 			Func<long, Dictionary<string, string>> proofKeyGeneration)
 		{
+			// if we're mutating the wopi timestamp we have to regenerate the entire proofKey data before doing other mutations.
 			Dictionary<string, string> proofKeyHeaders
 				= WopiTimestamp != null ? proofKeyGeneration(WopiTimestamp.Value) : new Dictionary<string, string>(originalProofKeyHeaders);
 			
