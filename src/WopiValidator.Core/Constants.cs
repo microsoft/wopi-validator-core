@@ -35,6 +35,7 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const string OverwriteRelative = "X-WOPI-OverwriteRelativeTarget";
 			public const string Version = "X-WOPI-ItemVersion";
 			public const string UrlType = "X-WOPI-UrlType";
+			public const string ValidatorError = "X-WOPI-ValidatorError";
 		}
 
 		public static class HeaderValues

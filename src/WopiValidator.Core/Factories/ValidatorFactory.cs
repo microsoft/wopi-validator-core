@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.Office.WopiValidator.Core.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using Microsoft.Office.WopiValidator.Core.Validators;
 
 namespace Microsoft.Office.WopiValidator.Core.Factories
 {
@@ -14,7 +13,9 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 	{
 		public static IEnumerable<IValidator> GetValidators(XElement definition)
 		{
-			return definition.Elements().Select(GetValidator);
+			var validators = new List<IValidator> { new ExceptionValidator() };
+			validators.AddRange(definition.Elements().Select(GetValidator));
+			return validators;
 		}
 
 		/// <summary>

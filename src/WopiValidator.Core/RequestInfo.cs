@@ -14,7 +14,6 @@ namespace Microsoft.Office.WopiValidator.Core
 	{
 		public string Name { get; private set; }
 		public string TargetUrl { get; private set; }
-		public bool HasToBeSuccessful { get; private set; }
 		public IEnumerable<KeyValuePair<string, string>> RequestHeaders { get; private set; }
 		public int ResponseStatusCode { get; private set; }
 		public IEnumerable<KeyValuePair<string, string>> ResponseHeaders { get; private set; }
@@ -27,7 +26,6 @@ namespace Microsoft.Office.WopiValidator.Core
 		public RequestInfo(
 			string name,
 			string targetUrl,
-			bool hasToBeSuccessful,
 			IEnumerable<KeyValuePair<string, string>> requestHeaders,
 			int responseStatusCode,
 			IEnumerable<KeyValuePair<string, string>> responseHeaders,
@@ -39,7 +37,6 @@ namespace Microsoft.Office.WopiValidator.Core
 		{
 			Name = name;
 			TargetUrl = targetUrl;
-			HasToBeSuccessful = hasToBeSuccessful;
 			RequestHeaders = requestHeaders ?? Enumerable.Empty<KeyValuePair<string, string>>();
 			ResponseStatusCode = responseStatusCode;
 			ResponseHeaders = responseHeaders ?? Enumerable.Empty<KeyValuePair<string, string>>();
