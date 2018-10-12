@@ -10,7 +10,6 @@ namespace Microsoft.Office.WopiValidator.Core
 	{
 		string Name { get;  }
 		string TargetUrl { get; }
-		bool HasToBeSuccessful { get; }
 		bool IsTextResponseExpected { get; }
 		IEnumerable<KeyValuePair<string, string>> RequestHeaders { get; }
 		ProofKeyOutput CurrentProofData { get; set; }

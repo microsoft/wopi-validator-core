@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 using System;
@@ -39,7 +39,6 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		/// </summary>
 		public virtual bool IsTextResponseExpected { get { return true; } }
 
-		public bool HasToBeSuccessful { get; private set; }
 		public string TargetUrl { get; private set; }
 		public IEnumerable<KeyValuePair<string, string>> RequestHeaders { get; private set; }
 		public ProofKeyOutput CurrentProofData { get; set; }
@@ -57,15 +56,12 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		/// <param name="targetUri">URI request should be made against</param>
 		/// <param name="headers">Set of custom headers that should be added to the request</param>
 		/// <param name="content">Request content stream</param>
-		/// <param name="hasToBeSuccessful">Whether Response Code has to be 200 or other response codes are ok.</param>
 		/// <returns>IResponseData instance with information takes from response.</returns>
 		protected IResponseData ExecuteRequest(
 			RequestExecutionData executionData,
-			string userAgent = null,
-			bool hasToBeSuccessful = false
+			string userAgent = null
 			)
 		{
-			HasToBeSuccessful = hasToBeSuccessful;
 			TargetUrl = executionData.TargetUri.AbsoluteUri;
 			RequestHeaders = executionData.Headers.ToArray();
 
@@ -105,16 +101,19 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			}
 			catch (WebException ex)
 			{
-				// if hasToBeSuccessful we don't want the exception to be caught here.
-				if (hasToBeSuccessful)
-					throw;
-
-				// get response information anyway otherwise.
-				using (HttpWebResponse response = (HttpWebResponse)ex.Response)
+				// ProtocolErrors will have a non-null Response object so we can still get
+				// response details
+				if (ex.Status == WebExceptionStatus.ProtocolError)
 				{
-					timer.Stop();
-					return GetResponseData(response, IsTextResponseExpected,timer.Elapsed);
+					using (HttpWebResponse response = (HttpWebResponse)ex.Response)
+					{
+						timer.Stop();
+						return GetResponseData(response, IsTextResponseExpected, timer.Elapsed);
+					}
 				}
+
+				// no response, so we wrap the exception details so they can be included in a validation failure
+				return ExceptionHelper.WrapExceptionInResponseData(ex);
 			}
 		}
 
@@ -136,7 +135,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 				!savedState.TryGetValue(overrideSetting, out urlToUse))
 			{
 				throw new InvalidOperationException("OverrideUrl specified in definition but not found in state dictionary.  Did it depend on a request that failed?");
-			}	
+			}
 
 			if (String.IsNullOrEmpty(urlToUse))
 			{

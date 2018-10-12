@@ -100,7 +100,6 @@ namespace Microsoft.Office.WopiValidator.Core
 					RequestInfo requestInfo = new RequestInfo(
 						request.Name,
 						request.TargetUrl,
-						request.HasToBeSuccessful,
 						request.RequestHeaders,
 						responseData.StatusCode,
 						responseData.Headers,
@@ -216,7 +215,6 @@ namespace Microsoft.Office.WopiValidator.Core
 					RequestInfo requestInfo = new RequestInfo(
 						request.Name,
 						request.TargetUrl,
-						request.HasToBeSuccessful,
 						request.RequestHeaders,
 						responseData.StatusCode,
 						responseData.Headers,
@@ -236,7 +234,6 @@ namespace Microsoft.Office.WopiValidator.Core
 					RequestInfo requestInfo = new RequestInfo(
 						request.Name,
 						request.TargetUrl,
-						request.HasToBeSuccessful,
 						request.RequestHeaders,
 						0,
 						Enumerable.Empty<KeyValuePair<string, string>>(),

@@ -35,6 +35,10 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const string OverwriteRelative = "X-WOPI-OverwriteRelativeTarget";
 			public const string Version = "X-WOPI-ItemVersion";
 			public const string UrlType = "X-WOPI-UrlType";
+
+			// This is not an official WOPI header; it is used to pass exception information
+			// back to the validator UI. See the ExceptionHelper class for more details.
+			public const string ValidatorError = "X-WOPI-ValidatorError";
 		}
 
 		public static class HeaderValues
