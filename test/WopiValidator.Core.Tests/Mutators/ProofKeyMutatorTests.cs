@@ -34,7 +34,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Mutators
 			ProofKeyMutator mutator = new ProofKeyMutator(mutateCurrent, mutateOld, timestamp, keyRelation);
 
 			// Act
-			Dictionary<string, string> mutatedHeaders = mutator.Mutate(originalHeaders);
+			Dictionary<string, string> mutatedHeaders = mutator.Mutate(originalHeaders, proofKeyGeneration: CreateProofKeyHeadersWithMutatedTimestamp);
 
 			// Assert
 			Assert.AreEqual(CurrentProofKey, mutatedHeaders[Constants.Headers.ProofKey]);
@@ -54,7 +54,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Mutators
 			ProofKeyMutator mutator = new ProofKeyMutator(mutateCurrent, mutateOld, MutatedWopiTimestampString, keyRelation);
 
 			// Act
-			Dictionary<string, string> mutatedHeaders = mutator.Mutate(originalHeaders);
+			Dictionary<string, string> mutatedHeaders = mutator.Mutate(originalHeaders, proofKeyGeneration: CreateProofKeyHeadersWithMutatedTimestamp);
 
 			// Assert
 			Assert.AreEqual(ProofKeyMutator.InvalidBase64String, mutatedHeaders[Constants.Headers.ProofKey]);
@@ -77,7 +77,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Mutators
 				ProofKeyMutator.KeyRelationType.Ahead);
 
 			// Act
-			Dictionary<string, string> mutatedHeaders = mutator.Mutate(originalHeaders);
+			Dictionary<string, string> mutatedHeaders = mutator.Mutate(originalHeaders, proofKeyGeneration: CreateProofKeyHeadersWithMutatedTimestamp);
 
 			// Assert
 			Assert.AreEqual(ProofKeyMutator.InvalidBase64String, mutatedHeaders[Constants.Headers.ProofKey]);
@@ -100,7 +100,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Mutators
 				ProofKeyMutator.KeyRelationType.Behind);
 
 			// Act
-			Dictionary<string, string> mutatedHeaders = mutator.Mutate(originalHeaders);
+			Dictionary<string, string> mutatedHeaders = mutator.Mutate(originalHeaders, proofKeyGeneration: CreateProofKeyHeadersWithMutatedTimestamp);
 
 			// Assert
 			Assert.AreEqual(OldProofKey, mutatedHeaders[Constants.Headers.ProofKey]);
@@ -123,7 +123,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Mutators
 				ProofKeyMutator.KeyRelationType.Ahead);
 
 			// Act
-			Dictionary<string, string> mutatedHeaders = mutator.Mutate(originalHeaders);
+			Dictionary<string, string> mutatedHeaders = mutator.Mutate(originalHeaders, proofKeyGeneration: CreateProofKeyHeadersWithMutatedTimestamp);
 
 			// Assert
 			Assert.AreEqual(ProofKeyMutator.InvalidBase64String, mutatedHeaders[Constants.Headers.ProofKey]);
@@ -146,7 +146,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Mutators
 				ProofKeyMutator.KeyRelationType.Behind);
 
 			// Act
-			Dictionary<string, string> mutatedHeaders = mutator.Mutate(originalHeaders);
+			Dictionary<string, string> mutatedHeaders = mutator.Mutate(originalHeaders, proofKeyGeneration: CreateProofKeyHeadersWithMutatedTimestamp);
 
 			// Assert
 			Assert.AreEqual(OldProofKey, mutatedHeaders[Constants.Headers.ProofKey]);
@@ -161,6 +161,16 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Mutators
 				{ Constants.Headers.ProofKey, CurrentProofKey },
 				{ Constants.Headers.ProofKeyOld, OldProofKey },
 				{ Constants.Headers.WopiTimestamp, WopiTimestamp }
+			};
+		}
+
+		private static Dictionary<string, string> CreateProofKeyHeadersWithMutatedTimestamp(long timestamp)
+		{
+			return new Dictionary<string, string>()
+			{
+				{ Constants.Headers.ProofKey, CurrentProofKey },
+				{ Constants.Headers.ProofKeyOld, OldProofKey },
+				{ Constants.Headers.WopiTimestamp, timestamp.ToString(System.Globalization.CultureInfo.InstalledUICulture) }
 			};
 		}
 	}
