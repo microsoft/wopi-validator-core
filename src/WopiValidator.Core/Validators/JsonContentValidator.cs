@@ -65,10 +65,13 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 
 				return new ValidationResult(errors.ToArray());
 			}
+			catch(JsonReaderException ex)
+			{
+				return new ValidationResult($"{Name}: {ex.GetType().Name} thrown while parsing JSON. Are you sure the response is JSON?");
+			}
 			catch (JsonException ex)
 			{
-				return new ValidationResult(
-					string.Format("Exception thrown when trying to validate content as JSON: '{0}', '{1}'", ex.Message, jsonString));
+				return new ValidationResult($"{Name}: {ex.GetType().Name} thrown while parsing JSON content: '{ex.Message}'");
 			}
 		}
 

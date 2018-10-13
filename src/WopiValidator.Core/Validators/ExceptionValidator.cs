@@ -20,7 +20,7 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 			if (data.StatusCode == (int)HttpStatusCode.Unused &&
 				data.Headers.ContainsKey(Constants.Headers.ValidatorError))
 			{
-				return new ValidationResult(data.Headers[Constants.Headers.ValidatorError]);
+				return new ValidationResult($"{Name}: Exception thrown while executing: {data.Headers[Constants.Headers.ValidatorError]}");
 			}
 
 			return new ValidationResult();
