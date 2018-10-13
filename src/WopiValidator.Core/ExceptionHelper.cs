@@ -37,12 +37,12 @@ namespace Microsoft.Office.WopiValidator.Core
 		/// stack trace will be in ResponseStream.</returns>
 		public static IResponseData WrapExceptionInResponseData(Exception ex)
 		{
-			return CustomResponseData(ex.Message, ex.ToString());
+			return CustomResponseData($"({ex.GetType().Name}) {ex.Message}", ex.ToString());
 		}
 
 		public static IResponseData WrapExceptionInResponseData(WebException ex)
 		{
-			var message = $"{ex.Status}: {ex.Message}";
+			var message = $"({ex.GetType().Name}){ex.Status}: {ex.Message}";
 			return CustomResponseData(message, ex.ToString());
 		}
 

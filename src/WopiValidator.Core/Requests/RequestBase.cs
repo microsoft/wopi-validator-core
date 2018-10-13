@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 using System;
@@ -99,20 +99,18 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 					return GetResponseData(response, IsTextResponseExpected, timer.Elapsed);
 				}
 			}
+			// ProtocolErrors will have a non-null Response object so we can still get response details
+			catch (WebException ex) when (ex.Status == WebExceptionStatus.ProtocolError)
+			{
+				using (HttpWebResponse response = (HttpWebResponse)ex.Response)
+				{
+					timer.Stop();
+					return GetResponseData(response, IsTextResponseExpected, timer.Elapsed);
+				}
+			}
+			// no response, so we wrap the exception details so they can be included in a validation failure
 			catch (WebException ex)
 			{
-				// ProtocolErrors will have a non-null Response object so we can still get
-				// response details
-				if (ex.Status == WebExceptionStatus.ProtocolError)
-				{
-					using (HttpWebResponse response = (HttpWebResponse)ex.Response)
-					{
-						timer.Stop();
-						return GetResponseData(response, IsTextResponseExpected, timer.Elapsed);
-					}
-				}
-
-				// no response, so we wrap the exception details so they can be included in a validation failure
 				return ExceptionHelper.WrapExceptionInResponseData(ex);
 			}
 		}
