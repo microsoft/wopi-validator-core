@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 using System;
@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Text;
 using CommandLine;
 using Microsoft.Office.WopiValidator.Core;
 
@@ -134,7 +135,7 @@ namespace Microsoft.Office.WopiValidator
 							foreach (var failure in request.ValidationFailures)
 							{
 								foreach (var error in failure.Errors)
-									WriteToConsole($"{error}\n", baseColor, 3);
+									WriteToConsole($"{error.StripNewLines()}\n", baseColor, 3);
 							}
 						}
 
@@ -180,6 +181,25 @@ namespace Microsoft.Office.WopiValidator
 		internal static bool ContainsAny<T>(this HashSet<T> set, params T[] items)
 		{
 			return set.Intersect(items).Any();
+		}
+
+		internal static string StripNewLines(this string str)
+		{
+			StringBuilder sb = new StringBuilder(str);
+			bool newLineAtStart = str.StartsWith(Environment.NewLine);
+			bool newLineAtEnd = str.EndsWith(Environment.NewLine);
+			sb.Replace(Environment.NewLine, " ");
+
+			if (newLineAtStart)
+			{
+				sb.Insert(0, Environment.NewLine);
+			}
+
+			if (newLineAtEnd)
+			{
+				sb.Append(Environment.NewLine);
+			}
+			return sb.ToString();
 		}
 	}
 }
