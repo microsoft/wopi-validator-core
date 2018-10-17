@@ -80,16 +80,24 @@ namespace Microsoft.Office.WopiValidator.Core
 			{
 				foreach (IRequest request in testCase.Requests)
 				{
-					IResponseData responseData = request.Execute(WopiEndpoint,
-						AccessToken,
-						AccessTokenTtl,
-						testCase,
-						savedState,
-						ResourceManager,
-						UserAgent,
-						ProofKeyProviderNew,
-						ProofKeyProviderOld);
+					IResponseData responseData;
 
+					try
+					{
+						responseData = request.Execute(WopiEndpoint,
+							AccessToken,
+							AccessTokenTtl,
+							testCase,
+							savedState,
+							ResourceManager,
+							UserAgent,
+							ProofKeyProviderNew,
+							ProofKeyProviderOld);
+					}
+					catch (ProofKeySigningException ex)
+					{
+						responseData = ExceptionHelper.WrapExceptionInResponseData(ex);
+					}
 
 					IEnumerable<IValidator> validators = MandatoryValidators.Concat(request.Validators);
 					List<ValidationResult> validationResults = validators.Select(validator => validator.Validate(responseData, ResourceManager, savedState)).ToList();
