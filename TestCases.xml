@@ -428,17 +428,17 @@
           <CheckFileInfo>
             <Validators>
               <JsonResponseContentValidator>
-                <StringRegexProperty Name="CloseUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="DownloadUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="FileSharingUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="FileUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="FileVersionUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="HostEditUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="HostEmbeddedViewUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="HostViewUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="SignInUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="SignoutUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="WorkflowUrl" ExpectedValue="^https:\/\/onenote\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="CloseUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="DownloadUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="FileSharingUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="FileUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="FileVersionUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="HostEditUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="HostEmbeddedViewUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="HostViewUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="SignInUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="SignoutUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
+                <StringRegexProperty Name="WorkflowUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
               </JsonResponseContentValidator>
             </Validators>
           </CheckFileInfo>
