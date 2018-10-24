@@ -4310,7 +4310,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="ProofKeyWacAheadOfHost" Document="WordBlankDocuemnt" Category="OfficeOnline">
+      <TestCase Name="ProofKeyWacAheadOfHost" Document="WordBlankDocument" Category="OfficeOnline">
         <Description>
           Tests that hosts do accept current WOPI proof key signed with old public key.
           This can happen when a client has updated proof keys but the host hasn't rerun discovery yet.
