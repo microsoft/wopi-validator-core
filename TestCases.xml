@@ -2215,7 +2215,7 @@
           <CheckFileInfo>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="UserInfo" ExpectedValue="PutUserInfoTest" />
+                <StringProperty Name="UserInfo" ExpectedValue="PutUserInfoTest" IsRequired="true" />
               </JsonResponseContentValidator>
             </Validators>
           </CheckFileInfo>
