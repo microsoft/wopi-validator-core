@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using NJsonSchema;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using NJsonSchema;
 
 namespace Microsoft.Office.WopiValidator.Core.ResourceManagement
 {

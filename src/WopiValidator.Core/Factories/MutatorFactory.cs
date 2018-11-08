@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.Office.WopiValidator.Core.Mutators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Microsoft.Office.WopiValidator.Core.Mutators;
 
 namespace Microsoft.Office.WopiValidator.Core.Factories
 {
@@ -25,7 +25,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		private static IMutator GetMutator(XElement definition)
 		{
 			string elementName = definition.Name.LocalName;
-			
+
 			switch (elementName)
 			{
 				case Constants.Mutators.AccessToken:

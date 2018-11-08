@@ -49,11 +49,11 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 			}
 
 			// If the "ExpectedValue" and "ExpectedStateKey" attributes are non-empty on a Validator, then ExpectedStateKey will take precedence.
-			// But if the mentioned "ExpectedStateKey" is invalid or doesn't have a saved state value, then the logic below will default to the value set in 
+			// But if the mentioned "ExpectedStateKey" is invalid or doesn't have a saved state value, then the logic below will default to the value set in
 			// "ExpectedValue" attribute of the Validator.
-			string expectedValue = savedState != null && 
-				ExpectedStateKey != null && 
-				savedState.ContainsKey(ExpectedStateKey) && 
+			string expectedValue = savedState != null &&
+				ExpectedStateKey != null &&
+				savedState.ContainsKey(ExpectedStateKey) &&
 				!string.IsNullOrEmpty(savedState[ExpectedStateKey]) ? savedState[ExpectedStateKey] : DefaultExpectedValue;
 
 			if (expectedValue == null)

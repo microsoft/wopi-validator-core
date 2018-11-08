@@ -1,13 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.Office.WopiValidator.Core.ResourceManagement;
+using NJsonSchema;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NJsonSchema;
-using JsonValidation = NJsonSchema.Validation;
-using Microsoft.Office.WopiValidator.Core.ResourceManagement;
 using System.Text.RegularExpressions;
+
+using JsonValidation = NJsonSchema.Validation;
 
 namespace Microsoft.Office.WopiValidator.Core.Validators
 {

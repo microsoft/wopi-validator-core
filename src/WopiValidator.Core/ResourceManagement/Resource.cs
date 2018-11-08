@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System.IO;
 using Microsoft.Office.WopiValidator.Core.Logging;
+using System.IO;
 
 namespace Microsoft.Office.WopiValidator.Core.ResourceManagement
 {

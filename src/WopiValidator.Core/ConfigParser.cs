@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System.Linq;
-using System.Collections.Generic;
-using System.Xml.Linq;
 using Microsoft.Office.WopiValidator.Core.Factories;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace Microsoft.Office.WopiValidator.Core
 {

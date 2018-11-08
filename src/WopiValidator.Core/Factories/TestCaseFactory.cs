@@ -45,7 +45,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 
 		/// <summary>
 		/// Parses single TestCase.
-		/// 
+		///
 		/// User RequestFactory.GetRequests to parse requests defined in that Test Case.
 		/// </summary>
 		private static ITestCase GetTestCase(XElement definition)
@@ -86,7 +86,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		}
 
 		///<summary>
-		/// This function helps ensure that, 
+		/// This function helps ensure that,
 		/// We are getting all the TestCases if the targetTestCategory is set to "All"
 		/// We are getting all the TestCases with "WopiCore" as their "Category", regardless of the targetTestCategory.
 		/// The rest of the test cases are picked up if their "Category" matches the targetTestCategory.

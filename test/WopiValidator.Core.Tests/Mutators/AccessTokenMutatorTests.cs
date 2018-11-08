@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Office.WopiValidator.Core.Mutators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Microsoft.Office.WopiValidator.UnitTests.Mutators
 {

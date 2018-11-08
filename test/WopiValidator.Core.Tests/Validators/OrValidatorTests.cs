@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Office.WopiValidator.Core;
 using Microsoft.Office.WopiValidator.Core.Validators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 {

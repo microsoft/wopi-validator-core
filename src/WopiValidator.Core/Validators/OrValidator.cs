@@ -26,7 +26,7 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 		{
 			if (results.Any(r => !r.HasFailures))
 				return new ValidationResult();
-			
+
 			string[] errors = results.SelectMany(r => r.Errors).ToArray();
 			return new ValidationResult(errors);
 		}
