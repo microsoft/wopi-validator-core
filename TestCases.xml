@@ -382,7 +382,27 @@
       </Requests>
     </TestCase>
 
-      <TestCase Name="SupportsUserInfoPrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="UserCanRenameContainerPrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the user has permissions to call RenameContainer.
+      </Description>
+      <Requests>
+        <EnumerateAncestors>
+          <SaveState>
+            <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+          </SaveState>
+        </EnumerateAncestors>
+        <CheckContainerInfo OverrideUrl="$State:ParentContainerUrl">
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckContainerInfo>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="SupportsUserInfoPrereq" Document="WordBlankDocument" Category="WopiCore">
       <Description>
         The host must support /files/PutUserInfo.
       </Description>
@@ -2518,6 +2538,80 @@
         </CleanupRequests>
       </TestCase>
 
+      <!-- /containers/GetEcosystem -->
+      <TestCase Name="containers.GetEcosystem" Document="WordBlankDocument" Category="WopiCore">
+        <Description>/files/EnumerateAncestors then /containers/GetEcosystem on each element</Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <GetEcosystem OverrideUrl="$State:ParentContainerUrl">
+            <Validators>
+              <JsonResponseContentValidator>
+                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </GetEcosystem>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="containers.LicensingPropertiesOnChildFolderMatchWithParentFolder" Document="WordBlankDocument" Category="OfficeNativeClient">
+        <Description>
+          Verify that some CheckContainerInfo user properties match between a child container and its parent.
+        </Description>
+        <Requests>
+          <EnumerateAncestors>
+            <SaveState>
+              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
+            </SaveState>
+          </EnumerateAncestors>
+          <CheckContainerInfo OverrideUrl="$State:ParentContainerUrl">
+            <SaveState>
+              <State Name="LicenseCheckForEditIsEnabledParentContainer" Source="LicenseCheckForEditIsEnabled" />
+              <State Name="IsEduUserParentContainer" Source="IsEduUser" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" />
+                <BooleanProperty Name="UserCanCreateChildContainer" ExpectedValue="true" />
+                <BooleanProperty Name="LicenseCheckForEditIsEnabled" IsRequired="true" />
+                <BooleanProperty Name="IsEduUser" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainerInfo>
+          <CreateChildContainer OverrideUrl="$State:ParentContainerUrl" FolderName="testfolder" PutRelativeFileMode="ExactName">
+            <SaveState>
+              <State Name="TestChildFolder" Source="ContainerPointer.Url" />
+            </SaveState>
+          </CreateChildContainer>
+          <CheckContainerInfo OverrideUrl="$State:TestChildFolder">
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="LicenseCheckForEditIsEnabled" ExpectedStateKey="LicenseCheckForEditIsEnabledParentContainer" IsRequired="true" />
+                <BooleanProperty Name="IsEduUser" ExpectedStateKey="IsEduUserParentContainer" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckContainerInfo>
+        </Requests>
+        <CleanupRequests>
+          <DeleteContainer OverrideUrl="$State:TestChildFolder" />
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <!-- Contains Container rename test cases -->
+  <TestGroup Name="RenameContainer">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>UserCanWritePrereq</PrereqTest>
+      <PrereqTest>ContainersPrereq</PrereqTest>
+      <PrereqTest>UserCanRenameContainerPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
       <!-- /containers/RenameContainer -->
       <TestCase Name="containers.CreateAndRenameChildContainer" Document="WordBlankDocument" Category="WopiCore">
         <Description>
@@ -2592,69 +2686,6 @@
         </Requests>
         <CleanupRequests>
           <DeleteContainer OverrideUrl="$State:NewFolderUrl" />
-        </CleanupRequests>
-      </TestCase>
-
-      <!-- /containers/GetEcosystem -->
-      <TestCase Name="containers.GetEcosystem" Document="WordBlankDocument" Category="WopiCore">
-        <Description>/files/EnumerateAncestors then /containers/GetEcosystem on each element</Description>
-        <Requests>
-          <EnumerateAncestors>
-            <SaveState>
-              <!-- Save the Url property of the last child of AncestorsWithRootFirst -->
-              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
-            </SaveState>
-          </EnumerateAncestors>
-          <GetEcosystem OverrideUrl="$State:ParentContainerUrl">
-            <Validators>
-              <JsonResponseContentValidator>
-                <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </GetEcosystem>
-        </Requests>
-      </TestCase>
-
-      <TestCase Name="containers.LicensingPropertiesOnChildFolderMatchWithParentFolder" Document="WordBlankDocument" Category="OfficeNativeClient">
-        <Description>
-          Verify that some CheckContainerInfo user properties match between a child container and its parent.
-        </Description>
-        <Requests>
-          <EnumerateAncestors>
-            <SaveState>
-              <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
-            </SaveState>
-          </EnumerateAncestors>
-          <CheckContainerInfo OverrideUrl="$State:ParentContainerUrl">
-            <SaveState>
-              <State Name="LicenseCheckForEditIsEnabledParentContainer" Source="LicenseCheckForEditIsEnabled" />
-              <State Name="IsEduUserParentContainer" Source="IsEduUser" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <BooleanProperty Name="UserCanCreateChildFile" ExpectedValue="true" />
-                <BooleanProperty Name="UserCanCreateChildContainer" ExpectedValue="true" />
-                <BooleanProperty Name="LicenseCheckForEditIsEnabled" IsRequired="true" />
-                <BooleanProperty Name="IsEduUser" IsRequired="true" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckContainerInfo>
-          <CreateChildContainer OverrideUrl="$State:ParentContainerUrl" FolderName="testfolder" PutRelativeFileMode="ExactName">
-            <SaveState>
-              <State Name="TestChildFolder" Source="ContainerPointer.Url" />
-            </SaveState>
-          </CreateChildContainer>
-          <CheckContainerInfo OverrideUrl="$State:TestChildFolder">
-            <Validators>
-              <JsonResponseContentValidator>
-                <BooleanProperty Name="LicenseCheckForEditIsEnabled" ExpectedStateKey="LicenseCheckForEditIsEnabledParentContainer" IsRequired="true" />
-                <BooleanProperty Name="IsEduUser" ExpectedStateKey="IsEduUserParentContainer" IsRequired="true" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckContainerInfo>
-        </Requests>
-        <CleanupRequests>
-          <DeleteContainer OverrideUrl="$State:TestChildFolder" />
         </CleanupRequests>
       </TestCase>
     </TestCases>
