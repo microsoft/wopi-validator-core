@@ -890,6 +890,29 @@
         </CleanupRequests>
       </TestCase>
 
+      <TestCase Name="PutUnlockedFileNotZeroBytes" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          This tests that PutFile requests fail when executed against files that are not zero bytes.
+        </Description>
+        <Requests>
+          <!-- Set up the test -->
+          <Lock Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
+          <Unlock Lock="LockString" />
+
+          <!-- Execute the actual test -->
+          <PutFile ResourceId="WordBlankDocument">
+            <Validators>
+              <!-- Should return a 409 since the file is unlocked and not zero bytes -->
+              <ResponseCodeValidator ExpectedCode="409" />
+            </Validators>
+          </PutFile>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
     </TestCases>
   </TestGroup>
 
