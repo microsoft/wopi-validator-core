@@ -932,13 +932,13 @@
         </Description>
         <Requests>
           <CheckFileInfo />
-          <PutRelativeFile PutRelativeFileMode="Suggested" Name=".foox" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="Suggested" Name=".wopitestx" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" EndsWith=".foox" IsRequired="true"/>
+                <StringProperty Name="Name" EndsWith=".wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
@@ -1025,13 +1025,13 @@
         </Description>
         <Requests>
           <CheckFileInfo />
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
@@ -1052,13 +1052,13 @@
         </Description>
         <Requests>
           <CheckFileInfo />
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument" OverwriteRelative="true">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument" OverwriteRelative="true">
             <SaveState>
               <State Name="NewUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
@@ -1079,13 +1079,13 @@
         </Description>
         <Requests>
           <CheckFileInfo />
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument" OverwriteRelative="false">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument" OverwriteRelative="false">
             <SaveState>
               <State Name="NewUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
@@ -1105,20 +1105,20 @@
         </Description>
         <Requests>
           <CheckFileInfo />
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument">
             <Validators>
               <ResponseCodeValidator ExpectedCode="409"/>
             </Validators>
@@ -1136,20 +1136,20 @@
         </Description>
         <Requests>
           <CheckFileInfo />
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument" OverwriteRelative="false">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument" OverwriteRelative="false">
             <Validators>
               <ResponseCodeValidator ExpectedCode="409"/>
             </Validators>
@@ -1166,26 +1166,26 @@
         </Description>
         <Requests>
           <CheckFileInfo />
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewUrl1" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument" OverwriteRelative="true">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument" OverwriteRelative="true">
             <SaveState>
               <State Name="NewUrl2" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" EndsWith=".wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" EndsWith=".wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
@@ -1210,7 +1210,7 @@
         </Description>
         <Requests>
           <CheckFileInfo />
-          <PutRelativeFile PutRelativeFileMode="Conflicting" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="Conflicting" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument">
             <Validators>
               <Or>
                 <ResponseCodeValidator ExpectedCode="400"/>
@@ -1228,13 +1228,13 @@
         </Description>
         <Requests>
           <CheckFileInfo />
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
@@ -1242,7 +1242,7 @@
             </Validators>
           </PutRelativeFile>
           <Lock Lock="LockString" OverrideUrl="$State:NewUrl"/>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" ResourceId="WordSimpleDocument" OverwriteRelative="true">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument" OverwriteRelative="true">
             <Validators>
               <ResponseCodeValidator ExpectedCode="409"/>
             </Validators>
@@ -1260,13 +1260,13 @@
         </Description>
         <Requests>
           <CheckFileInfo />
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeup_name.wopitestfoox" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeup_name.wopitestx" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeup_name.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeup_name.wopitestx" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -1282,7 +1282,7 @@
         </Description>
         <Requests>
           <CheckFileInfo />
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="longwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilename.wopitestfoox" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="longwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilename.wopitestx" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="UrlWithFileNameLongerThan512Chars" Source="Url" />
             </SaveState>
@@ -1338,7 +1338,7 @@
         </Description>
         <Requests>
           <CheckFileInfo />
-          <PutRelativeFile PutRelativeFileMode="Suggested" Name=".foox" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="Suggested" Name=".wopitestx" ResourceId="WordSimpleDocument">
             <Validators>
               <ResponseCodeValidator ExpectedCode="501"/>
             </Validators>
@@ -1570,13 +1570,13 @@
           The rename operation should succeed and the server should return the name as a UTF-8 encoded string.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeup_name.wopitestfoox" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeup_name.wopitestx" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeup_name.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeup_name.wopitestx" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -1842,13 +1842,13 @@
               <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
             </SaveState>
           </EnumerateAncestors>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeup_name.wopitestfoox">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeup_name.wopitestx">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeup_name.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeup_name.wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
@@ -2963,13 +2963,13 @@
               </JsonResponseContentValidator>
             </Validators>
           </CheckContainerInfo>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestx">
             <SaveState>
               <State Name="NewUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
@@ -3002,13 +3002,13 @@
               </JsonResponseContentValidator>
             </Validators>
           </CheckContainerInfo>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" OverwriteRelative="true">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" OverwriteRelative="true">
             <SaveState>
               <State Name="NewUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
@@ -3041,13 +3041,13 @@
               </JsonResponseContentValidator>
             </Validators>
           </CheckContainerInfo>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" OverwriteRelative="false">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" OverwriteRelative="false">
             <SaveState>
               <State Name="NewUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
@@ -3080,20 +3080,20 @@
               </JsonResponseContentValidator>
             </Validators>
           </CheckContainerInfo>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestx">
             <SaveState>
               <State Name="NewUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
             </Validators>
           </CreateChildFile>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestx">
             <Validators>
               <ResponseCodeValidator ExpectedCode="409"/>
             </Validators>
@@ -3124,20 +3124,20 @@
               </JsonResponseContentValidator>
             </Validators>
           </CheckContainerInfo>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestx">
             <SaveState>
               <State Name="NewUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
             </Validators>
           </CreateChildFile>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" OverwriteRelative="false">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" OverwriteRelative="false">
             <Validators>
               <ResponseCodeValidator ExpectedCode="409"/>
             </Validators>
@@ -3168,26 +3168,26 @@
               </JsonResponseContentValidator>
             </Validators>
           </CheckContainerInfo>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestx">
             <SaveState>
               <State Name="NewUrl1" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
             </Validators>
           </CreateChildFile>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" OverwriteRelative="true">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" OverwriteRelative="true">
             <SaveState>
               <State Name="NewUrl2" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" EndsWith=".wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" EndsWith=".wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
@@ -3225,7 +3225,7 @@
               </JsonResponseContentValidator>
             </Validators>
           </CheckContainerInfo>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="Conflicting" Name="madeupname.wopitestfoox">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="Conflicting" Name="madeupname.wopitestx">
             <Validators>
               <ResponseCodeValidator ExpectedCode="501"/>
             </Validators>
@@ -3253,13 +3253,13 @@
               </JsonResponseContentValidator>
             </Validators>
           </CheckContainerInfo>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestx">
             <SaveState>
               <State Name="NewUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
@@ -3267,7 +3267,7 @@
             </Validators>
           </CreateChildFile>
           <Lock Lock="LockString" OverrideUrl="$State:NewUrl"/>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox" OverwriteRelative="true">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" OverwriteRelative="true">
             <Validators>
               <ResponseCodeValidator ExpectedCode="409"/>
             </Validators>
@@ -3298,13 +3298,13 @@
               </JsonResponseContentValidator>
             </Validators>
           </CheckContainerInfo>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeup_name.wopitestfoox">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeup_name.wopitestx">
             <SaveState>
               <State Name="NewUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeup_name.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeup_name.wopitestx" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </CreateChildFile>
@@ -3332,7 +3332,7 @@
               </JsonResponseContentValidator>
             </Validators>
           </CheckContainerInfo>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="longwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilename.wopitestfoox">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="longwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilenamelongwopitestfilename.wopitestx">
             <SaveState>
               <State Name="UrlWithFileNameLongerThan512Chars" Source="Url" />
             </SaveState>
@@ -3372,13 +3372,13 @@
               </JsonResponseContentValidator>
             </Validators>
           </CheckContainerInfo>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestfoox">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestx">
             <SaveState>
               <State Name="NewUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestfoox" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitestx" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
