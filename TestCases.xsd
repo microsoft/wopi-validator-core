@@ -143,6 +143,7 @@
                 <xs:attribute name="ExpectedValue" type="xs:string" use="optional" />
                 <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="true" />
                 <xs:attribute name="ShouldMatch" type="xs:boolean" use="optional" default="true" />
+                <xs:attribute name="IsUrl" type="xs:boolean" use="optional" />
               </xs:extension>
             </xs:complexContent>
           </xs:complexType>
@@ -448,6 +449,15 @@
                   </xs:sequence>
                   <xs:attribute name="OverrideUrl" type="xs:string" />
                   <xs:attribute name="UrlType" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="GetRestrictedLink">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                  <xs:attribute name="RestrictedLink" type="xs:string" />
                 </xs:complexType>
               </xs:element>
               <xs:element name="AddActivities">

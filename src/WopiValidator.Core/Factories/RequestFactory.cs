@@ -51,6 +51,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 				UrlType = (string)definition.Attribute("UrlType"),
 				Validators = validators ?? GetDefaultValidators(),
 				WopiSrc = (string)definition.Attribute("WopiSrc"),
+				RestrictedLink = (string)definition.Attribute("RestrictedLink")
 			};
 
 			if (requestBodyDefinition != null && !String.IsNullOrEmpty(requestBodyDefinition.Value))
@@ -128,7 +129,8 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 					return new AddActivitiesRequest(wopiRequestParams);
 				case Constants.Requests.PutUserInfo:
 					return new PutUserInfoRequest(wopiRequestParams);
-
+				case Constants.Requests.GetRestrictedLink:
+					return new GetRestrictedLinkRequest(wopiRequestParams);
 				default:
 					throw new ArgumentException(string.Format("Unknown request: '{0}'", elementName));
 			}

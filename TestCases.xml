@@ -417,6 +417,35 @@
       </Requests>
     </TestCase>
 
+    <TestCase Name="SupportsScenarioLinksPrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the host declares support for GetRestrictedLink/RevokeRestrictedLink
+      </Description>
+      <Requests>
+        <CheckFileInfo>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="SupportsScenarioLinks" ExpectedValue="true" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFileInfo>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="SupportsSecureStorePrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the host declares support for ReadSecureStore
+      </Description>
+      <Requests>
+        <CheckFileInfo>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="SupportsSecureStore" ExpectedValue="true" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFileInfo>
+      </Requests>
+    </TestCase>
   </PrereqCases>
 
   <TestGroup Name="CheckFileInfoSchema">
@@ -3617,6 +3646,41 @@
               <ResponseCodeValidator ExpectedCode="501"/>
             </Validators>
           </GetShareUrl>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="GetRestrictedLink">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>SupportsScenarioLinksPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="files.GetRestrictedLink" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the GetRestrictedLink operation for a file
+        </Description>
+        <Requests>
+          <CheckFileInfo />
+          <GetRestrictedLink RestrictedLink="FORMS">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-RestrictedUseLink" IsRequired="true" IsUrl="true" />
+            </Validators>
+          </GetRestrictedLink>
+        </Requests>
+      </TestCase>
+      <TestCase Name="files.GetRestrictedLinkForUnknownRestrictedLinkType" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the GetRestrictedLink operation for a file where the requested restricted link type is unknown.
+        </Description>
+        <Requests>
+          <CheckFileInfo />
+          <GetRestrictedLink RestrictedLink="UnknownType">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="501"/>
+            </Validators>
+          </GetRestrictedLink>
         </Requests>
       </TestCase>
     </TestCases>
