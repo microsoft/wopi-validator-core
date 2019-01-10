@@ -73,7 +73,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 				requests,
 				cleanupRequests,
 				name,
-				description,
+				description.Trim(),
 				uploadDocumentOnSetup,
 				deleteDocumentOnTeardown,
 				category);
