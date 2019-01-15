@@ -64,10 +64,6 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 					return new ValidationResult(string.Format(CultureInfo.CurrentCulture, "'{0}' header value should be a valid url.",
 						Key));
 				}
-				else
-				{
-					return new ValidationResult();
-				}
 			}
 
 			// If the "ExpectedValue" and "ExpectedStateKey" attributes are non-empty on a Validator, then ExpectedStateKey will take precedence.

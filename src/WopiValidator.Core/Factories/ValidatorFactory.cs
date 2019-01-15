@@ -77,8 +77,9 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			string expectedValue = (string)definition.Attribute("ExpectedValue");
 			bool isRequired = ((bool?)definition.Attribute("IsRequired")) ?? true;
 			bool shouldMatch = ((bool?)definition.Attribute("ShouldMatch")) ?? true;
+			bool IsUrl = ((bool?)definition.Attribute("IsUrl")) ?? false;
 
-			return new ResponseHeaderValidator(header, expectedValue, expectedStateKey, isRequired, shouldMatch);
+			return new ResponseHeaderValidator(header, expectedValue, expectedStateKey, isRequired, shouldMatch, IsUrl);
 		}
 
 		/// <summary>
