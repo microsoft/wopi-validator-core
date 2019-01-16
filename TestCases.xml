@@ -3686,6 +3686,49 @@
     </TestCases>
   </TestGroup>
 
+  <TestGroup Name="RevokeRestrictedLink">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>SupportsScenarioLinksPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="files.RevokeRestrictedLink" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the RevokeRestrictedLink operation for a file
+        </Description>
+        <Requests>
+          <CheckFileInfo />
+          <RevokeRestrictedLink RestrictedLink="FORMS">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200"/>
+            </Validators>
+          </RevokeRestrictedLink>>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="ReadSecureStore">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>SupportsSecureStorePrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="files.SupportsSecureStorePrereq" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the SupportsSecureStorePrereq operation for a file
+        </Description>
+        <Requests>
+          <ReadSecureStore>
+            <Validators>
+              <JsonSchemaValidator Schema="ReadSecureStoreSchema" />
+            </Validators>
+          </ReadSecureStore>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
   <!-- Contains AddActivities test cases -->
   <TestGroup Name="AddActivities">
     <PrereqTests>

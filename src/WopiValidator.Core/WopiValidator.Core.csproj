@@ -16,9 +16,11 @@
 
   <ItemGroup>
     <None Remove="JsonSchemas\CheckFileInfoSchema.json" />
+    <None Remove="JsonSchemas\ReadSecureStoreSchema.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="JsonSchemas\ReadSecureStoreSchema.json" />
     <EmbeddedResource Include="JsonSchemas\CheckFileInfoSchema.json" />
   </ItemGroup>
 

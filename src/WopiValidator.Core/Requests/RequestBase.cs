@@ -40,7 +40,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		public virtual bool IsTextResponseExpected { get { return true; } }
 
 		public string TargetUrl { get; private set; }
-		public IEnumerable<KeyValuePair<string, string>> RequestHeaders { get; private set; }
+		public IEnumerable<KeyValuePair<string, string>> RequestHeaders { get; set; }
 		public ProofKeyOutput CurrentProofData { get; set; }
 		public ProofKeyOutput OldProofData { get; set; }
 

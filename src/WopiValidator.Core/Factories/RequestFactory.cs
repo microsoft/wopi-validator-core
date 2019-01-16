@@ -131,6 +131,10 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 					return new PutUserInfoRequest(wopiRequestParams);
 				case Constants.Requests.GetRestrictedLink:
 					return new GetRestrictedLinkRequest(wopiRequestParams);
+				case Constants.Requests.RevokeRestrictedLink:
+					return new RevokeRestrictedLinkRequest(wopiRequestParams);
+				case Constants.Requests.ReadSecureStore:
+					return new ReadSecureStoreRequest(wopiRequestParams);
 				default:
 					throw new ArgumentException(string.Format("Unknown request: '{0}'", elementName));
 			}

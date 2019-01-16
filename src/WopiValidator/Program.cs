@@ -65,6 +65,41 @@ namespace Microsoft.Office.WopiValidator
 			// get run configuration from XML
 			IEnumerable<TestExecutionData> testData = ConfigParser.ParseExecutionData(options.RunConfigurationFilePath, options.TestCategory);
 
+			// Set header "X-WOPI-ApplicationId" for ReadSecureStore request.
+			// Set header "X-WOPI-UsingRestrictedScenario" for GetRestrictedLink and RevokeRestrictedLink request.
+			if (!string.IsNullOrEmpty(options.UsingRestrictedScenario)
+				|| !string.IsNullOrEmpty(options.ApplicationId))
+			{
+				TestExecutionData[] testExecutionDatas = testData.ToArray();
+				foreach (TestExecutionData item in testExecutionDatas)
+				{
+					ITestCase testcase = item.TestCase;
+					IRequest[] requests = testcase.Requests.ToArray();
+					foreach (IRequest request in requests)
+					{
+						if (request.Name == Constants.Requests.GetRestrictedLink
+							|| request.Name == Constants.Requests.RevokeRestrictedLink)
+						{
+							request.RequestHeaders = new Dictionary<string, string>
+							{
+								{ Constants.Headers.UsingRestrictedScenario, options.UsingRestrictedScenario}
+							};
+						}
+
+						if (request.Name == Constants.Requests.ReadSecureStore)
+						{
+							request.RequestHeaders = new Dictionary<string, string>
+							{
+								{ Constants.Headers.ApplicationId, options.ApplicationId}
+							};
+						}
+					}
+					testcase.Requests = requests;
+					item.TestCase = testcase;
+				}
+				testData = testExecutionDatas;
+			}
+
 			if (!String.IsNullOrEmpty(options.TestGroup))
 			{
 				testData = testData.Where(d => d.TestGroupName == options.TestGroup);

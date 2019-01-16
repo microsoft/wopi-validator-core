@@ -460,6 +460,23 @@
                   <xs:attribute name="RestrictedLink" type="xs:string" />
                 </xs:complexType>
               </xs:element>
+              <xs:element name="RevokeRestrictedLink">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                  <xs:attribute name="RestrictedLink" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="ReadSecureStore">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
               <xs:element name="AddActivities">
                 <xs:complexType>
                   <xs:sequence minOccurs="1">
