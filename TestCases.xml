@@ -3702,7 +3702,7 @@
             <Validators>
               <ResponseCodeValidator ExpectedCode="200"/>
             </Validators>
-          </RevokeRestrictedLink>>
+          </RevokeRestrictedLink>
         </Requests>
       </TestCase>
     </TestCases>
