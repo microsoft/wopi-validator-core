@@ -148,6 +148,7 @@ namespace Microsoft.Office.WopiValidator.Core
 		{
 			public const string AccessToken = "AccessToken";
 			public const string ProofKey = "ProofKey";
+			public const string Id = "Id";
 		}
 	}
 }

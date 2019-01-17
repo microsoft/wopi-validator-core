@@ -32,6 +32,8 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 					return GetAccessTokenMutator(definition);
 				case Constants.Mutators.ProofKey:
 					return GetProofKeyMutator(definition);
+				case Constants.Mutators.Id:
+					return GetIdMutator(definition);
 				default:
 					throw new ArgumentException(string.Format("Unknown mutator: '{0}'", elementName));
 			}
@@ -41,6 +43,12 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		{
 			string mutation = (string)definition.Attribute("Mutation");
 			return new AccessTokenMutator(mutation);
+		}
+
+		private static IMutator GetIdMutator(XElement definition)
+		{
+			string mutation = (string)definition.Attribute("Mutation");
+			return new IdMutator(mutation);
 		}
 
 		private static IMutator GetProofKeyMutator(XElement definition)

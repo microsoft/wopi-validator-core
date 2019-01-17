@@ -197,6 +197,11 @@
           <xs:attribute name="Mutation" />
         </xs:complexType>
       </xs:element>
+      <xs:element name="Id">
+        <xs:complexType>
+          <xs:attribute name="Mutation" />
+        </xs:complexType>
+      </xs:element>
     </xs:choice>
   </xs:complexType>
 
@@ -454,6 +459,7 @@
               <xs:element name="GetRestrictedLink">
                 <xs:complexType>
                   <xs:sequence minOccurs="0">
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
                     <xs:element name="Validators" type="ValidatorsType" />
                   </xs:sequence>
                   <xs:attribute name="OverrideUrl" type="xs:string" />
@@ -463,6 +469,7 @@
               <xs:element name="RevokeRestrictedLink">
                 <xs:complexType>
                   <xs:sequence minOccurs="0">
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
                     <xs:element name="Validators" type="ValidatorsType" />
                   </xs:sequence>
                   <xs:attribute name="OverrideUrl" type="xs:string" />
@@ -472,6 +479,7 @@
               <xs:element name="ReadSecureStore">
                 <xs:complexType>
                   <xs:sequence minOccurs="0">
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
                     <xs:element name="Validators" type="ValidatorsType" />
                   </xs:sequence>
                   <xs:attribute name="OverrideUrl" type="xs:string" />

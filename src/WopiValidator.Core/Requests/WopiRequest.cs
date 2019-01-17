@@ -71,6 +71,15 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			RSACryptoServiceProvider proofKeyProviderNew,
 			RSACryptoServiceProvider proofKeyProviderOld)
 		{
+			string id = endpointAddress.Split('/').Last();
+
+			string idToUse = GetMutatedId(id);
+			if (id != idToUse)
+			{
+				// The id changed so update our id with the new one
+				endpointAddress = endpointAddress.Substring(0, endpointAddress.LastIndexOf(id)) + idToUse;
+			}
+
 			// Get the url of the WOPI endpoint that we'll call - either the normal endpoint, or a SavedState override.
 			// If it's an override it might change the accessToken that we're using because it probably already has a token on it.
 			Uri uri = GetRequestUri(endpointAddress, ref accessToken, accessTokenTtl, savedState);
@@ -216,6 +225,12 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		private string GetMutatedAccessToken(string original)
 		{
 			AccessTokenMutator mutator = Mutators.OfType<AccessTokenMutator>().FirstOrDefault();
+			return mutator == null ? original : mutator.Mutate(original);
+		}
+
+		private string GetMutatedId(string original)
+		{
+			IdMutator mutator = Mutators.OfType<IdMutator>().FirstOrDefault();
 			return mutator == null ? original : mutator.Mutate(original);
 		}
 
