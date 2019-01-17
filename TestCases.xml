@@ -3683,36 +3683,6 @@
           </GetRestrictedLink>
         </Requests>
       </TestCase>
-      <TestCase Name="files.GetRestrictedLinkWithInvalidId" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Simulates a GetRestrictedLink request with invalid id and expects a 404 response.
-        </Description>
-        <Requests>
-          <GetRestrictedLink RestrictedLink="FORMS">
-            <Mutators>
-              <Id Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404"/>
-            </Validators>
-          </GetRestrictedLink>
-        </Requests>
-      </TestCase>
-      <TestCase Name="files.GetRestrictedLinkWithInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Simulates a GetRestrictedLink request with invalid access token and expects a 404 response.
-        </Description>
-        <Requests>
-          <GetRestrictedLink RestrictedLink="FORMS">
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404"/>
-            </Validators>
-          </GetRestrictedLink>
-        </Requests>
-      </TestCase>
     </TestCases>
   </TestGroup>
 
@@ -3735,48 +3705,6 @@
           </RevokeRestrictedLink>
         </Requests>
       </TestCase>
-      <TestCase Name="files.RevokeRestrictedLinkForUnknownRestrictedLinkType" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests the RevokeRestrictedLink operation for a file where the requested restricted link type is unknown.
-        </Description>
-        <Requests>
-          <RevokeRestrictedLink RestrictedLink="UnknownType">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="501"/>
-            </Validators>
-          </RevokeRestrictedLink>
-        </Requests>
-      </TestCase>
-      <TestCase Name="files.RevokeRestrictedLinkWithInvalidId" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Simulates a RevokeRestrictedLink request with invalid id and expects a 404 response.
-        </Description>
-        <Requests>
-          <RevokeRestrictedLink RestrictedLink="FORMS">
-            <Mutators>
-              <Id Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404"/>
-            </Validators>
-          </RevokeRestrictedLink>
-        </Requests>
-      </TestCase>
-      <TestCase Name="files.RevokeRestrictedLinkWithInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Simulates a RevokeRestrictedLink request with invalid access token and expects a 404 response.
-        </Description>
-        <Requests>
-          <RevokeRestrictedLink RestrictedLink="FORMS">
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404"/>
-            </Validators>
-          </RevokeRestrictedLink>
-        </Requests>
-      </TestCase>
     </TestCases>
   </TestGroup>
 
@@ -3794,39 +3722,6 @@
           <ReadSecureStore>
             <Validators>
               <JsonSchemaValidator Schema="ReadSecureStoreSchema" />
-            </Validators>
-          </ReadSecureStore>
-        </Requests>
-      </TestCase>
-      <TestCase Name="files.ReadSecureStoreWithInvalidId" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Simulates a ReadSecureStore request with invalid id and expects a 404 response.
-        </Description>
-        <Requests>
-          <ReadSecureStore>
-            <Mutators>
-              <Id Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404"/>
-            </Validators>
-          </ReadSecureStore>
-        </Requests>
-      </TestCase>
-      <TestCase Name="files.ReadSecureStoreWithInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Simulates a ReadSecureStore request with invalid access token and expects a 401 or 404 response.
-        </Description>
-        <Requests>
-          <ReadSecureStore>
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <Or>
-                <ResponseCodeValidator ExpectedCode="401" />
-                <ResponseCodeValidator ExpectedCode="404" />
-              </Or>
             </Validators>
           </ReadSecureStore>
         </Requests>
