@@ -3786,11 +3786,16 @@
       <PrereqTest>SupportsSecureStorePrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="files.SupportsSecureStorePrereq" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.ReadSecureStore" Document="WordBlankDocument" Category="WopiCore">
         <Description>
-          Tests the SupportsSecureStorePrereq operation for a file
+          Tests the ReadSecureStore operation for a file
         </Description>
         <Requests>
+          <ReadSecureStore>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+            </Validators>
+          </ReadSecureStore>
           <ReadSecureStore>
             <Validators>
               <JsonSchemaValidator Schema="ReadSecureStoreSchema" />
