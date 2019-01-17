@@ -3701,6 +3701,52 @@
     </TestCases>
   </TestGroup>
 
+  <TestGroup Name="GetRestrictedLinkToADeletedFile">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>DeleteFilePrereq</PrereqTest>
+      <PrereqTest>SupportsScenarioLinksPrereq</PrereqTest>
+      <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="GetRestrictedLinkToADeletedFileShouldReturnA404" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Perform a PutRelativeFile operation, then delete it and try to GetRestrictedLink to it. The GetRestrictedLink operation should fail with a 404 status code.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <CheckFileInfo OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsScenarioLinks" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+          <GetRestrictedLink OverrideUrl="$State:NewFileUrl" RestrictedLink="FORMS">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="404" />
+            </Validators>
+          </GetRestrictedLink>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
   <TestGroup Name="RevokeRestrictedLink">
     <PrereqTests>
       <PrereqTest>WopiValidatorPrereq</PrereqTest>
