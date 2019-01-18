@@ -498,7 +498,9 @@
                   <xs:sequence minOccurs="1">
                     <xs:element minOccurs="1" maxOccurs="1" name="RequestBody" type="xs:string" />
                     <xs:element minOccurs="0" maxOccurs="1" name="Validators" type="ValidatorsType" />
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
                   </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
                 </xs:complexType>
               </xs:element>
             </xs:choice>
