@@ -49,6 +49,7 @@
                         <xs:attribute name="EndsWith" type="xs:string" use="optional" />
                         <xs:attribute name="ExpectedStateKey" type="xs:string" use="optional" />
                         <xs:attribute name="ExpectedValue" type="xs:string" use="optional" />
+                        <xs:attribute name="UnExpectedValue" type="xs:string" use="optional" />
                         <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="false" />
                       </xs:complexType>
                     </xs:element>
@@ -418,6 +419,7 @@
               <xs:element name="RenameFile">
                 <xs:complexType>
                   <xs:sequence>
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
                     <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
                   </xs:sequence>
                   <xs:attribute name="OverrideUrl" type="xs:string" />

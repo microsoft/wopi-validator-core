@@ -1818,6 +1818,103 @@
         </CleanupRequests>
       </TestCase>
 
+      <TestCase Name="PutRelativeAndRenameFile.RenameWithInvalidAccessTokenShouldReturn401Or404" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Perform a PutRelativeFile operation, then try to rename it with invalid access token. The rename operation should fail with a 401 or 404 status code.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <CheckFileInfo OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
+                <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+          <RenameFile OverrideUrl="$State:NewFileUrl" Name="ValidatorTestFileRenamed">
+            <Mutators>
+              <AccessToken Mutation="INVALID" />
+            </Mutators>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
+            </Validators>
+          </RenameFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </CleanupRequests>
+      </TestCase>
+      
+      <TestCase Name="PutRelativeAndRenameFile.RenameToExistingNameShouldReturn200Or400" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Perform a PutRelativeFile operation, then try to rename it to an existing file name. The rename operation should return status code 200 or 400.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFileForRename.docx" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrlForRename" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFileForRename.docx" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <CheckFileInfo OverrideUrl="$State:NewFileUrlForRename">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
+                <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+          <RenameFile OverrideUrl="$State:NewFileUrlForRename" Name="ValidatorTestFile">
+            <Validators>
+              <Or>
+                <And>
+                  <ResponseCodeValidator ExpectedCode="200" />
+                  <JsonResponseContentValidator>
+                    <StringProperty Name="Name" IsRequired="true" UnExpectedValue="ValidatorTestFile" />
+                  </JsonResponseContentValidator>
+                </And>
+                <And>
+                  <ResponseCodeValidator ExpectedCode="400" />
+                  <ResponseHeaderValidator Header="X-WOPI-InvalidFileNameError" />
+                </And>
+              </Or>
+            </Validators>
+          </RenameFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+          <DeleteFile OverrideUrl="$State:NewFileUrlForRename" />
+        </CleanupRequests>
+      </TestCase>  
     </TestCases>
   </TestGroup>
 
@@ -3670,6 +3767,7 @@
           </GetRestrictedLink>
         </Requests>
       </TestCase>
+      
       <TestCase Name="files.GetRestrictedLinkForUnknownRestrictedLinkType" Document="WordBlankDocument" Category="WopiCore">
         <Description>
           Tests the GetRestrictedLink operation for a file where the requested restricted link type is unknown.
@@ -3683,6 +3781,7 @@
           </GetRestrictedLink>
         </Requests>
       </TestCase>
+      
       <TestCase Name="files.GetRestrictedLinkWithInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
         <Description>
           Simulates a GetRestrictedLink request with invalid access token and expects a 404 response.
@@ -3766,6 +3865,7 @@
           </RevokeRestrictedLink>
         </Requests>
       </TestCase>
+      
       <TestCase Name="files.RevokeRestrictedLinkForUnknownRestrictedLinkType" Document="WordBlankDocument" Category="WopiCore">
         <Description>
           Tests the RevokeRestrictedLink operation for a file where the requested restricted link type is unknown.
@@ -3778,6 +3878,7 @@
           </RevokeRestrictedLink>
         </Requests>
       </TestCase>
+        
       <TestCase Name="files.RevokeRestrictedLinkWithInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
         <Description>
           Simulates a RevokeRestrictedLink request with invalid access token and expects a 404 response.
@@ -3819,6 +3920,7 @@
           </ReadSecureStore>
         </Requests>
       </TestCase>
+      
       <TestCase Name="files.ReadSecureStoreWithInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
         <Description>
           Simulates a ReadSecureStore request with invalid access token and expects a 401 or 404 response.

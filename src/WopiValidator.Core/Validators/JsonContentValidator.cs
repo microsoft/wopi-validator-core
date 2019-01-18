@@ -296,11 +296,13 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 		public class JsonStringPropertyValidator : JsonPropertyEqualityValidator<string>
 		{
 			private readonly string _endsWithValue;
+			private readonly string _unExpectedValue;
 
-			public JsonStringPropertyValidator(string key, bool isRequired, string expectedValue, bool hasExpectedValue, string endsWithValue, string expectedStateKey)
+			public JsonStringPropertyValidator(string key, bool isRequired, string expectedValue, bool hasExpectedValue, string endsWithValue, string expectedStateKey, string unExpectedValue = null)
 				: base(key, isRequired, expectedValue, hasExpectedValue, expectedStateKey)
 			{
 				_endsWithValue = endsWithValue;
+				_unExpectedValue = unExpectedValue;
 			}
 
 			public override string FormatValue(string value)
@@ -314,15 +316,21 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 					return false;
 
 				errorMessage = "";
-				if (String.IsNullOrWhiteSpace(_endsWithValue))
-					return true;
-
 				string typedActualValue = actualValue.Value<string>();
 				string formattedActualValue = FormatValue(typedActualValue);
 
-				if (!formattedActualValue.EndsWith(_endsWithValue))
+				if (!String.IsNullOrWhiteSpace(_endsWithValue))
 				{
-					errorMessage = string.Format("Expected to end with: '{0}', Actual: '{1}'", _endsWithValue, formattedActualValue);
+					if (!formattedActualValue.EndsWith(_endsWithValue))
+					{
+						errorMessage = string.Format("Expected to end with: '{0}', Actual: '{1}'", _endsWithValue, formattedActualValue);
+						return false;
+					}
+				}
+
+				if (_unExpectedValue != null && formattedActualValue.Equals(_unExpectedValue))
+				{
+					errorMessage = string.Format("Expected to be not:'{0}, Actual: '{1}''", _unExpectedValue, formattedActualValue);
 					return false;
 				}
 

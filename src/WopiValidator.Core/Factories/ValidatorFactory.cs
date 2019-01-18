@@ -139,6 +139,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			bool isRequired = ((bool?)definition.Attribute("IsRequired")) ?? false;
 			string endsWithValue = (string)definition.Attribute("EndsWith");
 			string expectedStateKey = (string)definition.Attribute("ExpectedStateKey");
+			string unExpectedValue = (string)definition.Attribute("UnExpectedValue");
 			string containsValue = (string)definition.Attribute("ContainsValue");
 			bool shouldMatch = ((bool?)definition.Attribute("ShouldMatch")) ?? true;
 			bool hasContainsValue = containsValue != null;
@@ -173,7 +174,8 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 						expectedValue,
 						hasExpectedValue,
 						endsWithValue,
-						expectedStateKey);
+						expectedStateKey,
+						unExpectedValue);
 
 				case Constants.Validators.Properties.StringRegexProperty:
 					return new JsonContentValidator.JsonStringRegexPropertyValidator(key,
