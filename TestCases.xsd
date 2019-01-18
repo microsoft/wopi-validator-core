@@ -309,9 +309,11 @@
               <xs:element name="GetLock">
                 <xs:complexType>
                   <xs:sequence minOccurs="0">
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0"/>
                     <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
                   </xs:sequence>
                   <xs:attribute name="Lock" type="xs:string" />
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
                 </xs:complexType>
               </xs:element>
               <xs:element name="EnumerateAncestors">
@@ -447,6 +449,7 @@
               <xs:element name="GetShareUrl">
                 <xs:complexType>
                   <xs:sequence minOccurs="0">
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
                     <xs:element name="Validators" type="ValidatorsType" />
                   </xs:sequence>
                   <xs:attribute name="OverrideUrl" type="xs:string" />

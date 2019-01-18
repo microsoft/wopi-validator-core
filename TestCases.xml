@@ -1526,6 +1526,55 @@
           </GetLock>
         </Requests>
       </TestCase>
+
+      <TestCase Name="files.GetLockWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          Simulates GetLock request with invalid access token and expects a 401 or 404 response.
+        </Description>
+        <Requests>
+          <CheckFileInfo />
+          <Lock Lock="LockString" />
+          <GetLock>
+            <Mutators>
+              <AccessToken Mutation="INVALID" />
+            </Mutators>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
+            </Validators>
+          </GetLock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="files.GetLockOnADeletedFileShouldReturnA404" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          Perform a PutRelativeFile operation, then delete it and try to GetLock of it. The GetLock operation should fail with a 404 status code.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+          <GetLock  OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="404" />
+            </Validators>
+          </GetLock>
+        </Requests>
+      </TestCase>
+  
     </TestCases>
   </TestGroup>
 
@@ -3604,6 +3653,49 @@
               <JsonResponseContentValidator>
                 <AbsoluteUrlProperty Name="ShareUrl" IsRequired="true"/>
               </JsonResponseContentValidator>
+            </Validators>
+          </GetShareUrl>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.GetShareUrlWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          Simulates GetShareUrl request with invalid access token and expects a 401 or 404 response.
+        </Description>
+        <Requests>
+          <GetShareUrl UrlType="ReadOnly">
+            <Mutators>
+              <AccessToken Mutation="INVALID" />
+            </Mutators>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
+            </Validators>
+          </GetShareUrl>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="files.GetShareUrlOnADeletedFileShouldReturnA404" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          Perform a PutRelativeFile operation, then delete it and try to GetShareUrl of it. The GetShareUrl operation should fail with a 404 status code.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+          <GetShareUrl  UrlType="ReadOnly" OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="404" />
             </Validators>
           </GetShareUrl>
         </Requests>
