@@ -6,10 +6,11 @@ using System;
 
 namespace Microsoft.Office.WopiValidator.Core
 {
-	enum StateSourceType
+	public enum StateSourceType
 	{
 		JsonBody,
-		Header
+		Header,
+		RequestContent
 	}
 
 	class StateEntry : IStateEntry

@@ -149,6 +149,15 @@
             </xs:complexContent>
           </xs:complexType>
         </xs:element>
+        <xs:element name="ContentLengthValidator">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="ValidatorBaseType">
+                <xs:attribute name="ExpectedStateKey" type="xs:string" use="optional" />
+              </xs:extension>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
         <xs:element name="Or" type="OrType">
         </xs:element>
       </xs:choice>

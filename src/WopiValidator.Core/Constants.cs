@@ -123,6 +123,7 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const string ResponseCode = "ResponseCodeValidator";
 			public const string ResponseContent = "ResponseContentValidator";
 			public const string ResponseHeader = "ResponseHeaderValidator";
+			public const string ContentLength = "ContentLengthValidator";
 
 			public static class Properties
 			{

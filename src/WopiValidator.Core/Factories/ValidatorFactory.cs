@@ -43,6 +43,8 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 					return GetOrValidator(definition);
 				case Constants.Validators.ResponseContent:
 					return GetResponseContentValidator(definition);
+				case Constants.Validators.ContentLength:
+					return GetContentLengthValidator(definition);
 				default:
 					throw new ArgumentException(string.Format("Unknown validator: '{0}'", elementName));
 			}
@@ -65,6 +67,15 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			string documentId = (string)definition.Attribute("ExpectedDocumentId");
 			string expectedBodyContent = (string)definition.Attribute("ExpectedBodyContent");
 			return new ResponseContentValidator(documentId, expectedBodyContent);
+		}
+
+		/// <summary>
+		/// Parses ContentLength validator information.
+		/// </summary>
+		private static IValidator GetContentLengthValidator(XElement definition)
+		{
+			string expectedStateKey = (string)definition.Attribute("ExpectedStateKey");
+			return new ContentLengthValidator(expectedStateKey);
 		}
 
 		/// <summary>

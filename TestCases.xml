@@ -55,6 +55,21 @@
       </Requests>
     </TestCase>
 
+    <TestCase Name="NotReadOnlyPrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if file can be changed by the user.
+      </Description>
+      <Requests>
+        <CheckFileInfo>
+          <Validators>
+            <JsonResponseContentValidator>
+              <BooleanProperty Name="ReadOnly" ExpectedValue="false" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFileInfo>
+      </Requests>
+    </TestCase>
+
     <TestCase Name="UserCanWriteRelativePrereq" Document="WordBlankDocument" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the user has permission to call PutRelativeFile.
@@ -842,7 +857,40 @@
           GetFile requests on a file that wasn't locked before - necessary for Viewing and Editing.
         </Description>
         <Requests>
-          <GetFile />
+          <CheckFileInfo>
+            <SaveState>
+              <State Name="FileSize" Source="Size" />
+            </SaveState>
+          </CheckFileInfo>
+          <GetFile>
+            <Validators>
+              <ContentLengthValidator ExpectedStateKey="FileSize" />
+            </Validators>
+          </GetFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="CheckNonExistFile" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          Perform a PutRelativeFile operation, then delete it and try to get information of it. The CheckFileInfo operation should fail with a 404 status code.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+          <CheckFileInfo OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="404" />
+            </Validators>
+          </CheckFileInfo>
         </Requests>
       </TestCase>
     </TestCases>
@@ -852,6 +900,7 @@
     <PrereqTests>
       <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>UserCanWritePrereq</PrereqTest>
+      <PrereqTest>NotReadOnlyPrereq</PrereqTest>
       <PrereqTest>FileEditingPrereq</PrereqTest>
       <PrereqTest>LocksPrereq</PrereqTest>
     </PrereqTests>
@@ -881,8 +930,17 @@
           </CheckFileInfo>
           <Lock Lock="LockString" />
           <GetFile Lock="LockString" />
-          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="RequestStringContent" SourceType="RequestContent" />
+            </SaveState>
+          </PutFile>
           <Unlock Lock="LockString" />
+          <GetFile>
+            <Validators>
+              <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
+            </Validators>
+          </GetFile>
         </Requests>
         <CleanupRequests>
           <Unlock Lock="LockString" />

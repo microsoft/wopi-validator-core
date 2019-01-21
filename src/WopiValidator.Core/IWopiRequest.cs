@@ -16,6 +16,7 @@ namespace Microsoft.Office.WopiValidator.Core
 		ProofKeyOutput OldProofData { get; set; }
 		IEnumerable<IValidator> Validators { get; }
 		IEnumerable<IStateEntry> State { get; }
+		string RequestContet { get; }
 
 		IResponseData Execute(string endpointAddress,
 			string accessToken,

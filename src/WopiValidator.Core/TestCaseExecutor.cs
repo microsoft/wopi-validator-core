@@ -138,7 +138,14 @@ namespace Microsoft.Office.WopiValidator.Core
 					// Save any state that was requested
 					foreach (IStateEntry stateSaver in request.State)
 					{
-						savedState[stateSaver.Name] = stateSaver.GetValue(responseData);
+						if (stateSaver.SourceType == StateSourceType.RequestContent)
+						{
+							savedState[stateSaver.Name] = request.RequestContet;
+						}
+						else
+						{
+							savedState[stateSaver.Name] = stateSaver.GetValue(responseData);
+						}
 					}
 				}
 			}

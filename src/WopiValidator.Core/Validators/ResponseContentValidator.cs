@@ -36,7 +36,18 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 			MemoryStream expectedContent;
 			if (!string.IsNullOrEmpty(ExpectedBodyContent))
 			{
-				expectedContent = new MemoryStream(Encoding.UTF8.GetBytes(ExpectedBodyContent));
+				string setting = null;
+				if (ExpectedBodyContent.StartsWith(Constants.StateOverrides.StateToken))
+					setting = ExpectedBodyContent.Substring(Constants.StateOverrides.StateToken.Length);
+
+				string expectedBodyContent = ExpectedBodyContent;
+				if (!String.IsNullOrEmpty(setting) &&
+					!savedState.TryGetValue(setting, out expectedBodyContent))
+				{
+					throw new InvalidOperationException("OverrideUrl specified in definition but not found in state dictionary.  Did it depend on a request that failed?");
+				}
+
+				expectedContent = new MemoryStream(Encoding.UTF8.GetBytes(expectedBodyContent));
 			}
 			else
 			{
