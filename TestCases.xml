@@ -911,6 +911,9 @@
         </Description>
         <Requests>
           <CheckFileInfo>
+            <SaveState>
+              <State Name="VersionBeforeUpdate" Source="Version" />
+            </SaveState>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="BaseFileName" IsRequired="true" />
@@ -941,6 +944,13 @@
               <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
             </Validators>
           </GetFile>
+          <CheckFileInfo>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Version" IsRequired="true" UnExpectedValue="$State:VersionBeforeUpdate" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
         </Requests>
         <CleanupRequests>
           <Unlock Lock="LockString" />

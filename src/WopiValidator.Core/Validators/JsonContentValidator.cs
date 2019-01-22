@@ -328,7 +328,18 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 					}
 				}
 
-				if (_unExpectedValue != null && formattedActualValue.Equals(_unExpectedValue))
+				string setting = null;
+				if (_unExpectedValue != null && _unExpectedValue.StartsWith(Constants.StateOverrides.StateToken))
+					setting = _unExpectedValue.Substring(Constants.StateOverrides.StateToken.Length);
+
+				string unExpectedValue = _unExpectedValue;
+				if (!String.IsNullOrEmpty(setting) &&
+					!savedState.TryGetValue(setting, out unExpectedValue))
+				{
+					throw new InvalidOperationException("OverrideUrl specified in definition but not found in state dictionary.  Did it depend on a request that failed?");
+				}
+
+				if (unExpectedValue != null && formattedActualValue.Equals(unExpectedValue))
 				{
 					errorMessage = string.Format("Expected to be not:'{0}, Actual: '{1}''", _unExpectedValue, formattedActualValue);
 					return false;
