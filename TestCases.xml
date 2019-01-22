@@ -1052,6 +1052,7 @@
           <PutRelativeFile PutRelativeFileMode="Suggested" Name=".wopitestx" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
+              <State Name="RequestStringContent" SourceType="RequestContent" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
@@ -1062,6 +1063,12 @@
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
+          <GetFile>
+            <Validators>
+              <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
+            </Validators>
+          </GetFile>
+        
         </Requests>
         <CleanupRequests>
           <DeleteFile OverrideUrl="$State:NewFileUrl"/>
