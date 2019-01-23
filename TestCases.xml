@@ -1105,10 +1105,14 @@
           <Unlock Lock="LockString" />
 
           <!-- Execute the actual test -->
-          <PutFile ResourceId="WordBlankDocument" />
+          <PutFile ResourceId="WordBlankDocument" >
+            <SaveState>
+              <State Name="RequestStringContent" SourceType="RequestContent" />
+            </SaveState>
+          </PutFile>
           <GetFile>
             <Validators>
-              <ResponseContentValidator ExpectedDocumentId="WordBlankDocument" />
+              <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
             </Validators>
           </GetFile>
         </Requests>
