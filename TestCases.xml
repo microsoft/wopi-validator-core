@@ -612,7 +612,7 @@
           <Unlock Lock="LockString" />
         </CleanupRequests>
       </TestCase>
-
+      
       <!-- LockMismatch -->
       <TestCase Name="LockMismatchOnLockRequest" Document="WordBlankDocument" Category="WopiCore">
         <Description>
@@ -869,8 +869,19 @@
           </GetFile>
         </Requests>
       </TestCase>
+    </TestCases>
+  </TestGroup>
 
-      <TestCase Name="CheckNonExistFile" Document="WordSimpleDocument" Category="WopiCore">
+  <TestGroup Name="OperatesOnUnknownFile">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>DeleteFilePrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="CheckUnknownFile" Document="WordSimpleDocument" Category="WopiCore">
         <Description>
           Perform a PutRelativeFile operation, then delete it and try to get information of it. The CheckFileInfo operation should fail with a 404 status code.
         </Description>
@@ -891,6 +902,103 @@
               <ResponseCodeValidator ExpectedCode="404" />
             </Validators>
           </CheckFileInfo>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="LocksUnknownFile" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Perform a PutRelativeFile operation, then delete it and try to simulate a sequence of lock-related requests on it: Lock, RefreshLock, UnlockAndRelock, Unlock. Those lock-related operations should fail with a 404 status code.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <CheckFileInfo OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+            </Validators>
+          </CheckFileInfo>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+          <Lock Lock="LockString" OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="404" />
+            </Validators>
+          </Lock>
+          <RefreshLock Lock="LockString" OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="404" />
+            </Validators>
+          </RefreshLock>
+          <UnlockAndRelock NewLock="NewLockString" OldLock="LockString" OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="404" />
+            </Validators>
+          </UnlockAndRelock>
+          <Unlock Lock="NewLockString" OverrideUrl="$State:NewFileUrl" >
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="404" />
+            </Validators>
+          </Unlock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" OverrideUrl="$State:NewFileUrl" />
+          <Unlock Lock="NewLockString" OverrideUrl="$State:NewFileUrl" />
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="DeleteUnknownFile" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          Delete unknown file should fail with a 404 status code.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+          <DeleteFile OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="404" />
+            </Validators>
+          </DeleteFile>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="PutUnknownFile" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          Update unknown file should fail with a 404 status code.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+          <PutFile OverrideUrl="$State:NewFileUrl" ResourceId="WordSimpleDocument">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="404" />
+            </Validators>
+          </PutFile>
         </Requests>
       </TestCase>
     </TestCases>
@@ -933,12 +1041,14 @@
           </CheckFileInfo>
           <Lock Lock="LockString" />
           <GetFile Lock="LockString" />
-          <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
+          <UnlockAndRelock NewLock="NewLockString" OldLock="LockString" />
+          <PutFile Lock="NewLockString" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="RequestStringContent" SourceType="RequestContent" />
             </SaveState>
           </PutFile>
-          <Unlock Lock="LockString" />
+          <Unlock Lock="NewLockString" />
           <GetFile>
             <Validators>
               <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
@@ -954,6 +1064,7 @@
         </Requests>
         <CleanupRequests>
           <Unlock Lock="LockString" />
+          <Unlock Lock="NewLockString" />
         </CleanupRequests>
       </TestCase>
 
@@ -1028,8 +1139,7 @@
         <CleanupRequests>
           <Unlock Lock="LockString" />
         </CleanupRequests>
-      </TestCase>
-
+      </TestCase>      
     </TestCases>
   </TestGroup>
 
@@ -1063,12 +1173,11 @@
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
-          <GetFile>
+          <GetFile OverrideUrl="$State:NewFileUrl">
             <Validators>
               <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
             </Validators>
-          </GetFile>
-        
+          </GetFile>        
         </Requests>
         <CleanupRequests>
           <DeleteFile OverrideUrl="$State:NewFileUrl"/>
@@ -1084,6 +1193,7 @@
           <PutRelativeFile PutRelativeFileMode="Suggested" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
+              <State Name="RequestStringContent" SourceType="RequestContent" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
@@ -1094,6 +1204,11 @@
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
+          <GetFile OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
+            </Validators>
+          </GetFile>
         </Requests>
         <CleanupRequests>
           <DeleteFile OverrideUrl="$State:NewFileUrl"/>
@@ -1306,6 +1421,7 @@
           <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument" OverwriteRelative="true">
             <SaveState>
               <State Name="NewUrl2" Source="Url" />
+              <State Name="RequestStringContent" SourceType="RequestContent" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
@@ -1321,6 +1437,11 @@
               <ResponseCodeValidator ExpectedCode="200" />
             </Validators>
           </CheckFileInfo>
+          <GetFile OverrideUrl="$State:NewUrl2">
+            <Validators>
+              <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
+            </Validators>
+          </GetFile>
         </Requests>
         <CleanupRequests>
           <DeleteFile OverrideUrl="$State:NewUrl1"/>
@@ -1442,6 +1563,42 @@
         </Requests>
         <CleanupRequests>
           <DeleteFile OverrideUrl="$State:NewFileUrl"/>
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="PutRelativeFile.UnknownFile" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Perform a PutRelativeFile operation, then delete it and try to create a new file base on it. The PutRelativeFile operation should fail with a 404 status code.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <CheckFileInfo OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+            </Validators>
+          </CheckFileInfo>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+          <PutRelativeFile OverrideUrl="$State:NewFileUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument" OverwriteRelative="true">
+            <SaveState>
+              <State Name="NewFileUrl2" Source="Url" />
+            </SaveState>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="404" />
+            </Validators>
+          </PutRelativeFile>
+        </Requests>
+        <CleanupRequests>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+          <DeleteFile OverrideUrl="$State:NewFileUrl2" />
         </CleanupRequests>
       </TestCase>
     </TestCases>
@@ -2535,6 +2692,18 @@
         </Requests>
       </TestCase>
 
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="PutUserInfoOnUnknownFile">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>SupportsUserInfoPrereq</PrereqTest>
+      <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>DeleteFilePrereq</PrereqTest>      
+    </PrereqTests>
+    <TestCases>
       <TestCase Name="files.PutUserInfoOnADeletedFileShouldReturnA404" Document="WordSimpleDocument" Category="WopiCore">
         <Description>
           Perform a PutRelativeFile operation, then delete it and try to PutUserInfo for it. The PutUserInfo operation should fail with a 404 status code.
@@ -2559,7 +2728,6 @@
           </PutUserInfo>
         </Requests>
       </TestCase>
-
     </TestCases>
   </TestGroup>
 
@@ -3796,7 +3964,18 @@
           </GetShareUrl>
         </Requests>
       </TestCase>
+    </TestCases>
+  </TestGroup>
 
+  <TestGroup Name="GetSharingUrlOnUnknownFile">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>ShareUrlTypeReadOnlyForFilePrereq</PrereqTest>
+      <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>DeleteFilePrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
       <TestCase Name="files.GetShareUrlOnADeletedFileShouldReturnA404" Document="WordSimpleDocument" Category="WopiCore">
         <Description>
           Perform a PutRelativeFile operation, then delete it and try to GetShareUrl of it. The GetShareUrl operation should fail with a 404 status code.

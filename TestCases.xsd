@@ -313,6 +313,7 @@
                   <xs:attribute name="ResourceId" type="xs:string" use="required" />
                   <xs:attribute name="PutRelativeFileMode" type="PutRelativeFileModeType" use="required" />
                   <xs:attribute name="OverwriteRelative" type="xs:boolean" use="optional"/>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
                 </xs:complexType>
               </xs:element>
               <xs:element name="GetLock">
