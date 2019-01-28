@@ -140,7 +140,7 @@ namespace Microsoft.Office.WopiValidator.Core
 					{
 						if (stateSaver.SourceType == StateSourceType.RequestContent)
 						{
-							savedState[stateSaver.Name] = request.RequestContet;
+							savedState[stateSaver.Name] = request.RequestContent;
 						}
 						else
 						{

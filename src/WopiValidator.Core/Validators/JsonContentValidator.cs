@@ -296,13 +296,13 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 		public class JsonStringPropertyValidator : JsonPropertyEqualityValidator<string>
 		{
 			private readonly string _endsWithValue;
-			private readonly string _unExpectedValue;
+			private readonly string _unexpectedValue;
 
-			public JsonStringPropertyValidator(string key, bool isRequired, string expectedValue, bool hasExpectedValue, string endsWithValue, string expectedStateKey, string unExpectedValue = null)
+			public JsonStringPropertyValidator(string key, bool isRequired, string expectedValue, bool hasExpectedValue, string endsWithValue, string expectedStateKey, string unexpectedValue = null)
 				: base(key, isRequired, expectedValue, hasExpectedValue, expectedStateKey)
 			{
 				_endsWithValue = endsWithValue;
-				_unExpectedValue = unExpectedValue;
+				_unexpectedValue = unexpectedValue;
 			}
 
 			public override string FormatValue(string value)
@@ -329,19 +329,19 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 				}
 
 				string setting = null;
-				if (_unExpectedValue != null && _unExpectedValue.StartsWith(Constants.StateOverrides.StateToken))
-					setting = _unExpectedValue.Substring(Constants.StateOverrides.StateToken.Length);
+				if (_unexpectedValue != null && _unexpectedValue.StartsWith(Constants.StateOverrides.StateToken))
+					setting = _unexpectedValue.Substring(Constants.StateOverrides.StateToken.Length);
 
-				string unExpectedValue = _unExpectedValue;
+				string unexpectedValue = _unexpectedValue;
 				if (!String.IsNullOrEmpty(setting) &&
-					!savedState.TryGetValue(setting, out unExpectedValue))
+					!savedState.TryGetValue(setting, out unexpectedValue))
 				{
 					throw new InvalidOperationException("OverrideUrl specified in definition but not found in state dictionary.  Did it depend on a request that failed?");
 				}
 
-				if (unExpectedValue != null && formattedActualValue.Equals(unExpectedValue))
+				if (unexpectedValue != null && formattedActualValue.Equals(unexpectedValue))
 				{
-					errorMessage = string.Format("Expected to be not:'{0}, Actual: '{1}''", _unExpectedValue, formattedActualValue);
+					errorMessage = string.Format("Expected to be not:'{0}, Actual: '{1}''", _unexpectedValue, formattedActualValue);
 					return false;
 				}
 

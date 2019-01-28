@@ -886,13 +886,13 @@
           Perform a PutRelativeFile operation, then delete it and try to get information of it. The CheckFileInfo operation should fail with a 404 status code.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -907,16 +907,16 @@
 
       <TestCase Name="LocksUnknownFile" Document="WordBlankDocument" Category="WopiCore">
         <Description>
-          Perform a PutRelativeFile operation, then delete it and try to simulate a sequence of lock-related requests on it: Lock, RefreshLock, UnlockAndRelock, Unlock. Those lock-related operations should fail with a 404 status code.
+          Tests that hosts respond correctly to lock requests on unknown files.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -959,13 +959,13 @@
           Delete unknown file should fail with a 404 status code.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -983,13 +983,13 @@
           Update unknown file should fail with a 404 status code.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -1057,7 +1057,7 @@
           <CheckFileInfo>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Version" IsRequired="true" UnExpectedValue="$State:VersionBeforeUpdate" />
+                <StringProperty Name="Version" IsRequired="true" UnexpectedValue="$State:VersionBeforeUpdate" />
               </JsonResponseContentValidator>
             </Validators>
           </CheckFileInfo>
@@ -1575,13 +1575,13 @@
           Perform a PutRelativeFile operation, then delete it and try to create a new file base on it. The PutRelativeFile operation should fail with a 404 status code.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -1591,7 +1591,7 @@
             </Validators>
           </CheckFileInfo>
           <DeleteFile OverrideUrl="$State:NewFileUrl" />
-          <PutRelativeFile OverrideUrl="$State:NewFileUrl" PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument" OverwriteRelative="true">
+          <PutRelativeFile OverrideUrl="$State:NewFileUrl" PutRelativeFileMode="ExactName" Name="madeupname2.wopitestx" ResourceId="WordSimpleDocument" OverwriteRelative="true">
             <SaveState>
               <State Name="NewFileUrl2" Source="Url" />
             </SaveState>
@@ -2184,12 +2184,12 @@
                 <And>
                   <ResponseCodeValidator ExpectedCode="200" />
                   <JsonResponseContentValidator>
-                    <StringProperty Name="Name" IsRequired="true" UnExpectedValue="ValidatorTestFile" />
+                    <StringProperty Name="Name" IsRequired="true" UnexpectedValue="ValidatorTestFile" />
                   </JsonResponseContentValidator>
                 </And>
                 <And>
                   <ResponseCodeValidator ExpectedCode="400" />
-                  <ResponseHeaderValidator Header="X-WOPI-InvalidFileNameError" />
+                  <ResponseHeaderValidator Header="X-WOPI-InvalidFileNameError" IsRequired="true" />
                 </And>
               </Or>
             </Validators>
@@ -2713,13 +2713,13 @@
           Perform a PutRelativeFile operation, then delete it and try to PutUserInfo for it. The PutUserInfo operation should fail with a 404 status code.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -3985,13 +3985,13 @@
           Perform a PutRelativeFile operation, then delete it and try to GetShareUrl of it. The GetShareUrl operation should fail with a 404 status code.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -4209,13 +4209,13 @@
           Perform a PutRelativeFile operation, then delete it and try to GetRestrictedLink of it. The GetRestrictedLink operation should fail with a 404 status code.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -4306,13 +4306,13 @@
           Perform a PutRelativeFile operation, then delete it and try to RevokeRestrictedLink on it. The RevokeRestrictedLink operation should fail with a 404 status code.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
