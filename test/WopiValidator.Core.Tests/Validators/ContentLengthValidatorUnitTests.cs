@@ -78,20 +78,6 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 		}
 
 		[TestMethod]
-		[Ignore("This test fails by current design; the ContentLengthValidator always returns true if the Content-Length header is not provided.")]
-		public void Validate_NonZerContentAndNoContentLengthHeader_Fails()
-		{
-			MemoryStream responseStream = new MemoryStream(Encoding.UTF8.GetBytes("my content"));
-			IResponseData response = new ResponseDataMock
-			{
-				ResponseStream = responseStream,
-				Headers = new CaseInsensitiveDictionary(0)
-			};
-			ValidationResult result = new ContentLengthValidator().Validate(response, null, null);
-			Assert.IsTrue(result.HasFailures);
-		}
-
-		[TestMethod]
 		public void Validate_CaseInsensitiveHeaderNameMatching_Succeeds()
 		{
 			MemoryStream responseStream = new MemoryStream(Encoding.UTF8.GetBytes("my content"));
