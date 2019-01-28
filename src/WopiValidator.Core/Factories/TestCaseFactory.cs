@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace Microsoft.Office.WopiValidator.Core.Factories
@@ -52,14 +53,14 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		{
 			string category = (string)definition.Attribute("Category");
 			string name = (string)definition.Attribute("Name");
-			string resourceId = (string) definition.Attribute("Document");
-			string description = (string) definition.Element("Description");
-			string uiScreenshot = (string) definition.Attribute("UiScreenshot");
-			string documentationLink = (string) definition.Attribute("DocumentationLink");
-			string failMessage = (string) definition.Attribute("FailMessage");
+			string resourceId = (string)definition.Attribute("Document");
+			string description = (string)definition.Element("Description");
+			string uiScreenshot = (string)definition.Attribute("UiScreenshot");
+			string documentationLink = (string)definition.Attribute("DocumentationLink");
+			string failMessage = (string)definition.Attribute("FailMessage");
 
-			bool uploadDocumentOnSetup = (bool?) definition.Attribute("UploadDocumentOnSetup") ?? true;
-			bool deleteDocumentOnTeardown = (bool?) definition.Attribute("DeleteDocumentOnTeardown") ?? true;
+			bool uploadDocumentOnSetup = (bool?)definition.Attribute("UploadDocumentOnSetup") ?? true;
+			bool deleteDocumentOnTeardown = (bool?)definition.Attribute("DeleteDocumentOnTeardown") ?? true;
 
 			XElement requestsDefinition = definition.Element("Requests");
 			IEnumerable<IRequest> requests = RequestFactory.GetRequests(requestsDefinition);
@@ -73,7 +74,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 				requests,
 				cleanupRequests,
 				name,
-				description.Trim(),
+				CondenseMultiLineString(description),
 				uploadDocumentOnSetup,
 				deleteDocumentOnTeardown,
 				category);
@@ -108,6 +109,33 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			}
 
 			return targetTestCategory == TestCategory.All || testCaseCategory == TestCategory.WopiCore || targetTestCategory == testCaseCategory;
+		}
+
+		/// <summary>
+		/// Condenses a multi-line string into a more compact form.
+		///
+		/// A single new-line will be converted to a space in the output.
+		/// 2+ consecutive new-lines will be condensed to a single new-line in the output.
+		/// Leading and trailing whitespace will be removed from each line.
+		/// </summary>
+		internal static string CondenseMultiLineString(string input)
+		{
+			const string doubleNewLinePlaceholder = "|-DOUBLE-|";
+
+			// Trim leading/trailing whitespace from each line
+			input = input.Trim();
+			input = Regex.Replace(input, @"^[ \t]+|[ \t]+$", "", RegexOptions.Multiline);
+
+			// Condense two or more new-lines to a placeholder string
+			input = Regex.Replace(input, @"(\r\n){2,}|\n{2,}", doubleNewLinePlaceholder);
+
+			// Convert remaining single new-lines to a space
+			input = Regex.Replace(input, @"(\r\n)+|\n+", " ");
+
+			// Replace the double new-line placeholder with a new-line
+			input = input.Replace(doubleNewLinePlaceholder, Environment.NewLine);
+
+			return input;
 		}
 	}
 }
