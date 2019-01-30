@@ -195,12 +195,6 @@
     "SupportsUserInfo": {
       "type": "boolean"
     },
-    "SupportsScenarioLinks": {
-      "type": "boolean"
-    },
-    "SupportsSecureStore": {
-      "type": "boolean"
-    },
     "UniqueContentId": {
       "type": "string"
     },

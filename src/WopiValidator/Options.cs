@@ -20,10 +20,10 @@ namespace Microsoft.Office.WopiValidator
 		[Option('l', "token_ttl", Required = true, HelpText = "WOPI access token ttl")]
 		public long AccessTokenTtl { get; set; }
 
-		[Option('r', "X-WOPI-UsingRestrictedScenario", Required = false, HelpText ="Restricted scenario")]
+		[Option("UsingRestrictedScenario", Required = false, HelpText = "Header 'X-WOPI-UsingRestrictedScenario' used Restricted scenario")]
 		public string UsingRestrictedScenario { get; set; }
 
-		[Option('a', "X-WOPI-ApplicationId", Required = false, HelpText = "Id of an application stored in secure store")]
+		[Option("ApplicationId", Required = false, HelpText = "Header 'X-WOPI-ApplicationId' indicates id of an application stored in secure store")]
 		public string ApplicationId { get; set; }
 
 		[Option('c', "config", Required = false, Default = "TestCases.xml", HelpText = "Path to XML file with test definitions")]

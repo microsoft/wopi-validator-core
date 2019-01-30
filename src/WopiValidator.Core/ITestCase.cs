@@ -11,7 +11,7 @@ namespace Microsoft.Office.WopiValidator.Core
 
 		string Description { get; }
 
-		IEnumerable<IRequest> Requests { get; set; }
+		IEnumerable<IRequest> Requests { get; }
 
 		IEnumerable<IRequest> CleanupRequests { get; }
 

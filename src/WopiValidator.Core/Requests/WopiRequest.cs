@@ -107,6 +107,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 
 			MemoryStream contentStream = HasRequestContent ? GetRequestContent(resourceManager) : null;
 			RequestExecutionData executionData = new RequestExecutionData(uri, headers, contentStream);
+
 			return ExecuteRequest(executionData, userAgent);
 		}
 

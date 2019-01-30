@@ -50,7 +50,7 @@ namespace Microsoft.Office.WopiValidator.Core
 			Category = category;
 		}
 
-		public IEnumerable<IRequest> Requests { get; set; }
+		public IEnumerable<IRequest> Requests { get; private set; }
 		public IEnumerable<IRequest> CleanupRequests { get; private set; }
 		public string Name { get; private set; }
 		public string Description { get; private set; }

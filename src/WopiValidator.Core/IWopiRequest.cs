@@ -11,7 +11,7 @@ namespace Microsoft.Office.WopiValidator.Core
 		string Name { get;  }
 		string TargetUrl { get; }
 		bool IsTextResponseExpected { get; }
-		IEnumerable<KeyValuePair<string, string>> RequestHeaders { get; set; }
+		IEnumerable<KeyValuePair<string, string>> RequestHeaders { get; }
 		ProofKeyOutput CurrentProofData { get; set; }
 		ProofKeyOutput OldProofData { get; set; }
 		IEnumerable<IValidator> Validators { get; }

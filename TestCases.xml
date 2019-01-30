@@ -55,21 +55,6 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="NotReadOnlyPrereq" Document="WordBlankDocument" Category="WopiCore">
-      <Description>
-        Prereq WOPI Validation test to check if file can be changed by the user.
-      </Description>
-      <Requests>
-        <CheckFileInfo>
-          <Validators>
-            <JsonResponseContentValidator>
-              <BooleanProperty Name="ReadOnly" ExpectedValue="false" />
-            </JsonResponseContentValidator>
-          </Validators>
-        </CheckFileInfo>
-      </Requests>
-    </TestCase>
-
     <TestCase Name="UserCanWriteRelativePrereq" Document="WordBlankDocument" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the user has permission to call PutRelativeFile.
@@ -432,35 +417,6 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="SupportsScenarioLinksPrereq" Document="WordBlankDocument" Category="WopiCore">
-      <Description>
-        Prereq WOPI Validation test to check if the host declares support for GetRestrictedLink/RevokeRestrictedLink
-      </Description>
-      <Requests>
-        <CheckFileInfo>
-          <Validators>
-            <JsonResponseContentValidator>
-              <BooleanProperty Name="SupportsScenarioLinks" ExpectedValue="true" IsRequired="true" />
-            </JsonResponseContentValidator>
-          </Validators>
-        </CheckFileInfo>
-      </Requests>
-    </TestCase>
-
-    <TestCase Name="SupportsSecureStorePrereq" Document="WordBlankDocument" Category="WopiCore">
-      <Description>
-        Prereq WOPI Validation test to check if the host declares support for ReadSecureStore
-      </Description>
-      <Requests>
-        <CheckFileInfo>
-          <Validators>
-            <JsonResponseContentValidator>
-              <BooleanProperty Name="SupportsSecureStore" ExpectedValue="true" IsRequired="true" />
-            </JsonResponseContentValidator>
-          </Validators>
-        </CheckFileInfo>
-      </Requests>
-    </TestCase>
   </PrereqCases>
 
   <TestGroup Name="CheckFileInfoSchema">
@@ -612,7 +568,7 @@
           <Unlock Lock="LockString" />
         </CleanupRequests>
       </TestCase>
-      
+
       <!-- LockMismatch -->
       <TestCase Name="LockMismatchOnLockRequest" Document="WordBlankDocument" Category="WopiCore">
         <Description>
@@ -857,148 +813,7 @@
           GetFile requests on a file that wasn't locked before - necessary for Viewing and Editing.
         </Description>
         <Requests>
-          <CheckFileInfo>
-            <SaveState>
-              <State Name="FileSize" Source="Size" />
-            </SaveState>
-          </CheckFileInfo>
-          <GetFile>
-            <Validators>
-              <ContentLengthValidator ExpectedStateKey="FileSize" />
-            </Validators>
-          </GetFile>
-        </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="OperatesOnUnknownFile">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
-      <PrereqTest>LocksPrereq</PrereqTest>
-      <PrereqTest>FileEditingPrereq</PrereqTest>
-      <PrereqTest>DeleteFilePrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="CheckUnknownFile" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Perform a PutRelativeFile operation, then delete it and try to get information of it. The CheckFileInfo operation should fail with a 404 status code.
-        </Description>
-        <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="NewFileUrl" Source="Url" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
-              </JsonResponseContentValidator>
-            </Validators>
-          </PutRelativeFile>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-          <CheckFileInfo OverrideUrl="$State:NewFileUrl">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404" />
-            </Validators>
-          </CheckFileInfo>
-        </Requests>
-      </TestCase>
-
-      <TestCase Name="LocksUnknownFile" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests that hosts respond correctly to lock requests on unknown files.
-        </Description>
-        <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="NewFileUrl" Source="Url" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
-              </JsonResponseContentValidator>
-            </Validators>
-          </PutRelativeFile>
-          <CheckFileInfo OverrideUrl="$State:NewFileUrl">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="200" />
-            </Validators>
-          </CheckFileInfo>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-          <Lock Lock="LockString" OverrideUrl="$State:NewFileUrl">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404" />
-            </Validators>
-          </Lock>
-          <RefreshLock Lock="LockString" OverrideUrl="$State:NewFileUrl">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404" />
-            </Validators>
-          </RefreshLock>
-          <UnlockAndRelock NewLock="NewLockString" OldLock="LockString" OverrideUrl="$State:NewFileUrl">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404" />
-            </Validators>
-          </UnlockAndRelock>
-          <Unlock Lock="NewLockString" OverrideUrl="$State:NewFileUrl" >
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404" />
-            </Validators>
-          </Unlock>
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" OverrideUrl="$State:NewFileUrl" />
-          <Unlock Lock="NewLockString" OverrideUrl="$State:NewFileUrl" />
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-        </CleanupRequests>
-      </TestCase>
-
-      <TestCase Name="DeleteUnknownFile" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Delete unknown file should fail with a 404 status code.
-        </Description>
-        <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="NewFileUrl" Source="Url" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
-              </JsonResponseContentValidator>
-            </Validators>
-          </PutRelativeFile>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-          <DeleteFile OverrideUrl="$State:NewFileUrl">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404" />
-            </Validators>
-          </DeleteFile>
-        </Requests>
-      </TestCase>
-
-      <TestCase Name="PutUnknownFile" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Update unknown file should fail with a 404 status code.
-        </Description>
-        <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="NewFileUrl" Source="Url" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
-              </JsonResponseContentValidator>
-            </Validators>
-          </PutRelativeFile>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-          <PutFile OverrideUrl="$State:NewFileUrl" ResourceId="WordSimpleDocument">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404" />
-            </Validators>
-          </PutFile>
+          <GetFile />
         </Requests>
       </TestCase>
     </TestCases>
@@ -1008,7 +823,6 @@
     <PrereqTests>
       <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>UserCanWritePrereq</PrereqTest>
-      <PrereqTest>NotReadOnlyPrereq</PrereqTest>
       <PrereqTest>FileEditingPrereq</PrereqTest>
       <PrereqTest>LocksPrereq</PrereqTest>
     </PrereqTests>
@@ -1019,9 +833,6 @@
         </Description>
         <Requests>
           <CheckFileInfo>
-            <SaveState>
-              <State Name="VersionBeforeUpdate" Source="Version" />
-            </SaveState>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="BaseFileName" IsRequired="true" />
@@ -1042,29 +853,10 @@
           <Lock Lock="LockString" />
           <GetFile Lock="LockString" />
           <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
-          <UnlockAndRelock NewLock="NewLockString" OldLock="LockString" />
-          <PutFile Lock="NewLockString" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="RequestStringContent" SourceType="RequestContent" />
-            </SaveState>
-          </PutFile>
-          <Unlock Lock="NewLockString" />
-          <GetFile>
-            <Validators>
-              <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
-            </Validators>
-          </GetFile>
-          <CheckFileInfo>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Version" IsRequired="true" UnexpectedValue="$State:VersionBeforeUpdate" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
+          <Unlock Lock="LockString" />
         </Requests>
         <CleanupRequests>
           <Unlock Lock="LockString" />
-          <Unlock Lock="NewLockString" />
         </CleanupRequests>
       </TestCase>
 
@@ -1105,14 +897,10 @@
           <Unlock Lock="LockString" />
 
           <!-- Execute the actual test -->
-          <PutFile ResourceId="WordBlankDocument" >
-            <SaveState>
-              <State Name="RequestStringContent" SourceType="RequestContent" />
-            </SaveState>
-          </PutFile>
+          <PutFile ResourceId="WordBlankDocument" />
           <GetFile>
             <Validators>
-              <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
+              <ResponseContentValidator ExpectedDocumentId="WordBlankDocument" />
             </Validators>
           </GetFile>
         </Requests>
@@ -1143,7 +931,8 @@
         <CleanupRequests>
           <Unlock Lock="LockString" />
         </CleanupRequests>
-      </TestCase>      
+      </TestCase>
+
     </TestCases>
   </TestGroup>
 
@@ -1166,7 +955,6 @@
           <PutRelativeFile PutRelativeFileMode="Suggested" Name=".wopitestx" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
-              <State Name="RequestStringContent" SourceType="RequestContent" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
@@ -1177,11 +965,6 @@
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
-          <GetFile OverrideUrl="$State:NewFileUrl">
-            <Validators>
-              <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
-            </Validators>
-          </GetFile>        
         </Requests>
         <CleanupRequests>
           <DeleteFile OverrideUrl="$State:NewFileUrl"/>
@@ -1197,7 +980,6 @@
           <PutRelativeFile PutRelativeFileMode="Suggested" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
-              <State Name="RequestStringContent" SourceType="RequestContent" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
@@ -1208,11 +990,6 @@
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
-          <GetFile OverrideUrl="$State:NewFileUrl">
-            <Validators>
-              <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
-            </Validators>
-          </GetFile>
         </Requests>
         <CleanupRequests>
           <DeleteFile OverrideUrl="$State:NewFileUrl"/>
@@ -1425,7 +1202,6 @@
           <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument" OverwriteRelative="true">
             <SaveState>
               <State Name="NewUrl2" Source="Url" />
-              <State Name="RequestStringContent" SourceType="RequestContent" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
@@ -1441,11 +1217,6 @@
               <ResponseCodeValidator ExpectedCode="200" />
             </Validators>
           </CheckFileInfo>
-          <GetFile OverrideUrl="$State:NewUrl2">
-            <Validators>
-              <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
-            </Validators>
-          </GetFile>
         </Requests>
         <CleanupRequests>
           <DeleteFile OverrideUrl="$State:NewUrl1"/>
@@ -1567,42 +1338,6 @@
         </Requests>
         <CleanupRequests>
           <DeleteFile OverrideUrl="$State:NewFileUrl"/>
-        </CleanupRequests>
-      </TestCase>
-
-      <TestCase Name="PutRelativeFile.UnknownFile" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Perform a PutRelativeFile operation, then delete it and try to create a new file base on it. The PutRelativeFile operation should fail with a 404 status code.
-        </Description>
-        <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="NewFileUrl" Source="Url" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
-              </JsonResponseContentValidator>
-            </Validators>
-          </PutRelativeFile>
-          <CheckFileInfo OverrideUrl="$State:NewFileUrl">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="200" />
-            </Validators>
-          </CheckFileInfo>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-          <PutRelativeFile OverrideUrl="$State:NewFileUrl" PutRelativeFileMode="ExactName" Name="madeupname2.wopitestx" ResourceId="WordSimpleDocument" OverwriteRelative="true">
-            <SaveState>
-              <State Name="NewFileUrl2" Source="Url" />
-            </SaveState>
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404" />
-            </Validators>
-          </PutRelativeFile>
-        </Requests>
-        <CleanupRequests>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-          <DeleteFile OverrideUrl="$State:NewFileUrl2" />
         </CleanupRequests>
       </TestCase>
     </TestCases>
@@ -1762,55 +1497,6 @@
           </GetLock>
         </Requests>
       </TestCase>
-
-      <TestCase Name="files.GetLockWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Simulates GetLock request with invalid access token and expects a 401 or 404 response.
-        </Description>
-        <Requests>
-          <CheckFileInfo />
-          <Lock Lock="LockString" />
-          <GetLock>
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <Or>
-                <ResponseCodeValidator ExpectedCode="401" />
-                <ResponseCodeValidator ExpectedCode="404" />
-              </Or>
-            </Validators>
-          </GetLock>
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <TestCase Name="files.GetLockOnADeletedFileShouldReturnA404" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Perform a PutRelativeFile operation, then delete it and try to GetLock of it. The GetLock operation should fail with a 404 status code.
-        </Description>
-        <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="NewFileUrl" Source="Url" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
-              </JsonResponseContentValidator>
-            </Validators>
-          </PutRelativeFile>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-          <GetLock  OverrideUrl="$State:NewFileUrl">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404" />
-            </Validators>
-          </GetLock>
-        </Requests>
-      </TestCase>
-  
     </TestCases>
   </TestGroup>
 
@@ -2103,103 +1789,6 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeAndRenameFile.RenameWithInvalidAccessTokenShouldReturn401Or404" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Perform a PutRelativeFile operation, then try to rename it with invalid access token. The rename operation should fail with a 401 or 404 status code.
-        </Description>
-        <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="NewFileUrl" Source="Url" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
-              </JsonResponseContentValidator>
-            </Validators>
-          </PutRelativeFile>
-          <CheckFileInfo OverrideUrl="$State:NewFileUrl">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="200" />
-              <JsonResponseContentValidator>
-                <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
-                <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-          <RenameFile OverrideUrl="$State:NewFileUrl" Name="ValidatorTestFileRenamed">
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <Or>
-                <ResponseCodeValidator ExpectedCode="401" />
-                <ResponseCodeValidator ExpectedCode="404" />
-              </Or>
-            </Validators>
-          </RenameFile>
-        </Requests>
-        <CleanupRequests>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-        </CleanupRequests>
-      </TestCase>
-      
-      <TestCase Name="PutRelativeAndRenameFile.RenameToExistingNameShouldReturn200Or400" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Perform a PutRelativeFile operation, then try to rename it to an existing file name. The rename operation should return status code 200 or 400.
-        </Description>
-        <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="NewFileUrl" Source="Url" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
-              </JsonResponseContentValidator>
-            </Validators>
-          </PutRelativeFile>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFileForRename.docx" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="NewFileUrlForRename" Source="Url" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFileForRename.docx" IsRequired="true"/>
-              </JsonResponseContentValidator>
-            </Validators>
-          </PutRelativeFile>
-          <CheckFileInfo OverrideUrl="$State:NewFileUrlForRename">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="200" />
-              <JsonResponseContentValidator>
-                <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
-                <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-          <RenameFile OverrideUrl="$State:NewFileUrlForRename" Name="ValidatorTestFile">
-            <Validators>
-              <Or>
-                <And>
-                  <ResponseCodeValidator ExpectedCode="200" />
-                  <JsonResponseContentValidator>
-                    <StringProperty Name="Name" IsRequired="true" UnexpectedValue="ValidatorTestFile" />
-                  </JsonResponseContentValidator>
-                </And>
-                <And>
-                  <ResponseCodeValidator ExpectedCode="400" />
-                  <ResponseHeaderValidator Header="X-WOPI-InvalidFileNameError" IsRequired="true" />
-                </And>
-              </Or>
-            </Validators>
-          </RenameFile>
-        </Requests>
-        <CleanupRequests>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-          <DeleteFile OverrideUrl="$State:NewFileUrlForRename" />
-        </CleanupRequests>
-      </TestCase>  
     </TestCases>
   </TestGroup>
 
@@ -2676,62 +2265,6 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="files.PutUserInfoWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Simulates PutUserInfo request with invalid access token and expects a 401 or 404 response.
-        </Description>
-        <Requests>
-          <PutUserInfo>
-            <RequestBody>PutUserInfoTest</RequestBody>
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <Or>
-                <ResponseCodeValidator ExpectedCode="401" />
-                <ResponseCodeValidator ExpectedCode="404" />
-              </Or>
-            </Validators>
-          </PutUserInfo>
-        </Requests>
-      </TestCase>
-
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="PutUserInfoOnUnknownFile">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>SupportsUserInfoPrereq</PrereqTest>
-      <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
-      <PrereqTest>FileEditingPrereq</PrereqTest>
-      <PrereqTest>DeleteFilePrereq</PrereqTest>      
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="files.PutUserInfoOnADeletedFileShouldReturnA404" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Perform a PutRelativeFile operation, then delete it and try to PutUserInfo for it. The PutUserInfo operation should fail with a 404 status code.
-        </Description>
-        <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="NewFileUrl" Source="Url" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
-              </JsonResponseContentValidator>
-            </Validators>
-          </PutRelativeFile>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-          <PutUserInfo  OverrideUrl="$State:NewFileUrl">
-            <RequestBody>PutUserInfoTest</RequestBody>
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404" />
-            </Validators>
-          </PutUserInfo>
-        </Requests>
-      </TestCase>
     </TestCases>
   </TestGroup>
 
@@ -3949,60 +3482,6 @@
           </GetShareUrl>
         </Requests>
       </TestCase>
-
-      <TestCase Name="files.GetShareUrlWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Simulates GetShareUrl request with invalid access token and expects a 401 or 404 response.
-        </Description>
-        <Requests>
-          <GetShareUrl UrlType="ReadOnly">
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <Or>
-                <ResponseCodeValidator ExpectedCode="401" />
-                <ResponseCodeValidator ExpectedCode="404" />
-              </Or>
-            </Validators>
-          </GetShareUrl>
-        </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="GetSharingUrlOnUnknownFile">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>ShareUrlTypeReadOnlyForFilePrereq</PrereqTest>
-      <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
-      <PrereqTest>FileEditingPrereq</PrereqTest>
-      <PrereqTest>DeleteFilePrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="files.GetShareUrlOnADeletedFileShouldReturnA404" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Perform a PutRelativeFile operation, then delete it and try to GetShareUrl of it. The GetShareUrl operation should fail with a 404 status code.
-        </Description>
-        <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="NewFileUrl" Source="Url" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
-              </JsonResponseContentValidator>
-            </Validators>
-          </PutRelativeFile>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-          <GetShareUrl  UrlType="ReadOnly" OverrideUrl="$State:NewFileUrl">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404" />
-            </Validators>
-          </GetShareUrl>
-        </Requests>
-      </TestCase>
     </TestCases>
   </TestGroup>
 
@@ -4138,243 +3617,6 @@
               <ResponseCodeValidator ExpectedCode="501"/>
             </Validators>
           </GetShareUrl>
-        </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="GetRestrictedLink">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>SupportsScenarioLinksPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="files.GetRestrictedLink" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests the GetRestrictedLink operation for a file
-        </Description>
-        <Requests>
-          <CheckFileInfo />
-          <GetRestrictedLink RestrictedLink="FORMS">
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-RestrictedUseLink" IsRequired="true" IsUrl="true" />
-            </Validators>
-          </GetRestrictedLink>
-        </Requests>
-      </TestCase>
-      
-      <TestCase Name="files.GetRestrictedLinkForUnknownRestrictedLinkType" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests the GetRestrictedLink operation for a file where the requested restricted link type is unknown.
-        </Description>
-        <Requests>
-          <CheckFileInfo />
-          <GetRestrictedLink RestrictedLink="UnknownType">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="501"/>
-            </Validators>
-          </GetRestrictedLink>
-        </Requests>
-      </TestCase>
-      
-      <TestCase Name="files.GetRestrictedLinkWithInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Simulates a GetRestrictedLink request with invalid access token and expects a 404 response.
-        </Description>
-        <Requests>
-          <GetRestrictedLink RestrictedLink="FORMS">
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404"/>
-            </Validators>
-          </GetRestrictedLink>
-        </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="GetRestrictedLinkOfADeletedFile">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>FileEditingPrereq</PrereqTest>
-      <PrereqTest>DeleteFilePrereq</PrereqTest>
-      <PrereqTest>SupportsScenarioLinksPrereq</PrereqTest>
-      <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="GetRestrictedLinkOfADeletedFileShouldReturnA404" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Perform a PutRelativeFile operation, then delete it and try to GetRestrictedLink of it. The GetRestrictedLink operation should fail with a 404 status code.
-        </Description>
-        <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="NewFileUrl" Source="Url" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
-              </JsonResponseContentValidator>
-            </Validators>
-          </PutRelativeFile>
-          <CheckFileInfo OverrideUrl="$State:NewFileUrl">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="200" />
-              <JsonResponseContentValidator>
-                <BooleanProperty Name="SupportsScenarioLinks" ExpectedValue="true" IsRequired="true" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-          <GetRestrictedLink OverrideUrl="$State:NewFileUrl" RestrictedLink="FORMS">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404" />
-            </Validators>
-          </GetRestrictedLink>
-        </Requests>
-        <CleanupRequests>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-        </CleanupRequests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="RevokeRestrictedLink">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>SupportsScenarioLinksPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="files.RevokeRestrictedLink" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests the RevokeRestrictedLink operation for a file
-        </Description>
-        <Requests>
-          <CheckFileInfo />
-          <RevokeRestrictedLink RestrictedLink="FORMS">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="200"/>
-            </Validators>
-          </RevokeRestrictedLink>
-        </Requests>
-      </TestCase>
-      
-      <TestCase Name="files.RevokeRestrictedLinkForUnknownRestrictedLinkType" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests the RevokeRestrictedLink operation for a file where the requested restricted link type is unknown.
-        </Description>
-        <Requests>
-          <RevokeRestrictedLink RestrictedLink="UnknownType">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="501"/>
-            </Validators>
-          </RevokeRestrictedLink>
-        </Requests>
-      </TestCase>
-        
-      <TestCase Name="files.RevokeRestrictedLinkWithInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Simulates a RevokeRestrictedLink request with invalid access token and expects a 404 response.
-        </Description>
-        <Requests>
-          <RevokeRestrictedLink RestrictedLink="FORMS">
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404"/>
-            </Validators>
-          </RevokeRestrictedLink>
-        </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="RevokeRestrictedLinkOfADeletedFile">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>FileEditingPrereq</PrereqTest>
-      <PrereqTest>DeleteFilePrereq</PrereqTest>
-      <PrereqTest>SupportsScenarioLinksPrereq</PrereqTest>
-      <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="RevokeRestrictedLinkOfADeletedFileShouldReturnA404" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Perform a PutRelativeFile operation, then delete it and try to RevokeRestrictedLink on it. The RevokeRestrictedLink operation should fail with a 404 status code.
-        </Description>
-        <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="NewFileUrl" Source="Url" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
-              </JsonResponseContentValidator>
-            </Validators>
-          </PutRelativeFile>
-          <CheckFileInfo OverrideUrl="$State:NewFileUrl">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="200" />
-              <JsonResponseContentValidator>
-                <BooleanProperty Name="SupportsScenarioLinks" ExpectedValue="true" IsRequired="true" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-          <RevokeRestrictedLink OverrideUrl="$State:NewFileUrl" RestrictedLink="FORMS">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404"/>
-            </Validators>
-          </RevokeRestrictedLink>
-        </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="ReadSecureStore">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>SupportsSecureStorePrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="files.ReadSecureStore" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests the ReadSecureStore operation for a file
-        </Description>
-        <Requests>
-          <ReadSecureStore>
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="200" />
-            </Validators>
-          </ReadSecureStore>
-          <ReadSecureStore>
-            <Validators>
-              <JsonSchemaValidator Schema="ReadSecureStoreSchema" />
-            </Validators>
-          </ReadSecureStore>
-        </Requests>
-      </TestCase>
-      
-      <TestCase Name="files.ReadSecureStoreWithInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Simulates a ReadSecureStore request with invalid access token and expects a 401 or 404 response.
-        </Description>
-        <Requests>
-          <ReadSecureStore>
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <Or>
-                <ResponseCodeValidator ExpectedCode="401" />
-                <ResponseCodeValidator ExpectedCode="404" />
-              </Or>
-            </Validators>
-          </ReadSecureStore>
         </Requests>
       </TestCase>
     </TestCases>

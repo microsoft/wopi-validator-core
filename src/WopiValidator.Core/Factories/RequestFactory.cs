@@ -51,7 +51,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 				UrlType = (string)definition.Attribute("UrlType"),
 				Validators = validators ?? GetDefaultValidators(),
 				WopiSrc = (string)definition.Attribute("WopiSrc"),
-				RestrictedLink = (string)definition.Attribute("RestrictedLink")
+				RestrictedLinkType = (string)definition.Attribute("RestrictedLink")
 			};
 
 			if (requestBodyDefinition != null && !String.IsNullOrEmpty(requestBodyDefinition.Value))
@@ -73,6 +73,16 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 						PutRelativeFileMode.Conflicting,
 						parsedMode));
 				}
+			}
+
+			if (!string.IsNullOrEmpty(ConfigParser.UsingRestrictedScenario))
+			{
+				wopiRequestParams.UsingRestrictedScenario = ConfigParser.UsingRestrictedScenario;
+			}
+
+			if (!string.IsNullOrEmpty(ConfigParser.ApplicationId))
+			{
+				wopiRequestParams.ApplicationId = ConfigParser.ApplicationId;
 			}
 
 			switch (elementName)

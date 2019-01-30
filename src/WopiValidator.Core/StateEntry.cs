@@ -60,6 +60,10 @@ namespace Microsoft.Office.WopiValidator.Core
 			{
 				JObject jObject = JObject.Parse(jsonString);
 				JToken token = jObject.SelectToken(Source);
+
+				if (token.Type == JTokenType.Array)
+					return token.ToString();
+
 				return token.Value<string>();
 			}
 			catch

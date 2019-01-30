@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Office.WopiValidator.Core.Requests
 {
@@ -15,15 +17,25 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		public string UrlType { get; private set; }
 		public override string Name { get { return Constants.Requests.GetShareUrl; } }
 		protected override string WopiOverrideValue { get { return Constants.Overrides.GetShareUrl; } }
-		protected override IEnumerable<KeyValuePair<string, string>> DefaultHeaders
+
+		protected override IEnumerable<KeyValuePair<string, string>> GetCustomHeaders(Dictionary<string, string> savedState, IResourceManager resourceManager)
 		{
-			get
+			if (!string.IsNullOrEmpty(this.UrlType) && this.UrlType.StartsWith(Constants.StateOverrides.StateToken))
 			{
-				return new Dictionary<string, string>
-				{
-					{Constants.Headers.UrlType, UrlType}
-				};
+				string setting = this.UrlType.Substring(Constants.StateOverrides.StateToken.Length);
+
+				string urlTypes;
+				savedState.TryGetValue(setting, out urlTypes);
+				JArray array = JArray.Parse(urlTypes);
+
+				int index = new System.Random().Next(0, array.Count);
+				this.UrlType = array[index].ToString();
 			}
+
+			return new Dictionary<string, string>
+			{
+				{ Constants.Headers.UrlType, UrlType}
+			};
 		}
 	}
 }

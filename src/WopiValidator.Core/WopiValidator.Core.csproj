@@ -17,11 +17,13 @@
   <ItemGroup>
     <None Remove="JsonSchemas\CheckFileInfoSchema.json" />
     <None Remove="JsonSchemas\ReadSecureStoreSchema.json" />
+    <None Remove="JsonSchemas\MS-WOPICheckFileInfoSchema.json" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="JsonSchemas\ReadSecureStoreSchema.json" />
     <EmbeddedResource Include="JsonSchemas\CheckFileInfoSchema.json" />
+    <EmbeddedResource Include="JsonSchemas\MS-WOPICheckFileInfoSchema.json" />
   </ItemGroup>
 
   <ItemGroup>

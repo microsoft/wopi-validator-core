@@ -9,20 +9,27 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 	{
 		public GetRestrictedLinkRequest(WopiRequestParam param) : base(param)
 		{
-			this.RestrictedLink = param.RestrictedLink;
+			this.RestrictedLinkType = param.RestrictedLinkType;
+			this.UsingRestrictedScenario = param.UsingRestrictedScenario;
 		}
 
-		public string RestrictedLink { get; private set; }
+		public string RestrictedLinkType { get; private set; }
+		public string UsingRestrictedScenario { get; private set; }
 		public override string Name { get { return Constants.Requests.GetRestrictedLink; } }
 		protected override string WopiOverrideValue { get { return Constants.Overrides.GetRestrictedLink; } }
 		protected override IEnumerable<KeyValuePair<string, string>> DefaultHeaders
 		{
 			get
 			{
-				return new Dictionary<string, string>
+				Dictionary<string, string> headers = new Dictionary<string, string>();
+				headers.Add(Constants.Headers.RestrictedLink, RestrictedLinkType);
+
+				if (!string.IsNullOrEmpty(UsingRestrictedScenario))
 				{
-					{Constants.Headers.RestrictedLink, RestrictedLink}
-				};
+					headers.Add(Constants.Headers.UsingRestrictedScenario, UsingRestrictedScenario);
+				}
+
+				return headers;
 			}
 		}
 	}

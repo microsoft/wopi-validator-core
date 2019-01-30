@@ -289,6 +289,7 @@
                     <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
                   </xs:sequence>
                   <xs:attribute name="Lock" type="xs:string" />
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
                 </xs:complexType>
               </xs:element>
               <xs:element name="PutFile">
@@ -300,6 +301,7 @@
                   </xs:sequence>
                   <xs:attribute name="Lock" type="xs:string" />
                   <xs:attribute name="ResourceId" type="xs:string" use="required" />
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
                 </xs:complexType>
               </xs:element>
               <xs:element name="PutRelativeFile">

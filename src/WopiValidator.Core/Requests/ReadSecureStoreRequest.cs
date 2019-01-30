@@ -9,9 +9,22 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 	{
 		public ReadSecureStoreRequest(WopiRequestParam param) : base(param)
 		{
+			this.ApplicationId = param.ApplicationId;
 		}
 
+		public string ApplicationId { get; private set; }
 		public override string Name { get { return Constants.Requests.ReadSecureStore; } }
 		protected override string WopiOverrideValue { get { return Constants.Overrides.ReadSecureStore; } }
+
+		protected override IEnumerable<KeyValuePair<string, string>> DefaultHeaders
+		{
+			get
+			{
+				return new Dictionary<string, string>
+				{
+					{Constants.Headers.ApplicationId, this.ApplicationId}
+				};
+			}
+		}
 	}
 }
