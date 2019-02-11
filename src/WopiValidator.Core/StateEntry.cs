@@ -9,8 +9,7 @@ namespace Microsoft.Office.WopiValidator.Core
 	public enum StateSourceType
 	{
 		JsonBody,
-		Header,
-		RequestContent
+		Header
 	}
 
 	class StateEntry : IStateEntry

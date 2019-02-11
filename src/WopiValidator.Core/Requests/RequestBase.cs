@@ -50,8 +50,6 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 
 		public IEnumerable<IStateEntry> State { get; protected set; }
 
-		public string RequestContent { get; set; }
-
 		/// <summary>
 		/// Executes request and gathers response data.
 		/// </summary>
@@ -85,10 +83,6 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 				{
 					content.Seek(0, SeekOrigin.Begin);
 					content.CopyTo(requestStream);
-
-					content.Seek(0, SeekOrigin.Begin);
-					StreamReader reader = new StreamReader(content);
-					RequestContent = reader.ReadToEnd();
 				}
 			}
 			else

@@ -85,8 +85,13 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			// At this point we have the final uri and accessTokenToUse values.  We'll use them later in proof key signing
 
 			List<KeyValuePair<string, string>> headers = DefaultHeaders.ToList();
-			if (RequestHeaders != null)
-				headers.AddRange(RequestHeaders);
+
+			if (this.Name == Constants.Requests.ReadSecureStore
+				&& (headers[0].Key != Constants.Headers.ApplicationId || string.IsNullOrEmpty(headers[0].Value)))
+			{
+				throw new Exception("No value provided for header 'X-WOPI-ApplicationId' in ReadSecureStore request! \n Provide value for header 'X-WOPI-ApplicationId' by using command line argument '--ApplicationId'.");
+			}
+
 			IEnumerable<KeyValuePair<string, string>> customHeaders = GetCustomHeaders(savedState, resourceManager);
 			if (customHeaders != null)
 				headers.AddRange(customHeaders);

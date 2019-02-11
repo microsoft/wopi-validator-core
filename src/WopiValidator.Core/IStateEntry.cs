@@ -9,8 +9,6 @@ namespace Microsoft.Office.WopiValidator.Core
 
 		string Source { get; }
 
-		StateSourceType SourceType { get; }
-
 		string GetValue(IResponseData data);
 	}
 }

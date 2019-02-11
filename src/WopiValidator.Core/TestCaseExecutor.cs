@@ -119,6 +119,12 @@ namespace Microsoft.Office.WopiValidator.Core
 
 					requestDetails.Add(requestInfo);
 
+					// Save any state that was requested
+					foreach (IStateEntry stateSaver in request.State)
+					{
+						savedState[stateSaver.Name] = stateSaver.GetValue(responseData);
+					}
+
 					// return on the first request that fails
 					if (validationFailures.Any())
 					{
@@ -133,19 +139,6 @@ namespace Microsoft.Office.WopiValidator.Core
 							validationFailures.SelectMany(x => x.Errors),
 							ResultStatus.Fail);
 						break;
-					}
-
-					// Save any state that was requested
-					foreach (IStateEntry stateSaver in request.State)
-					{
-						if (stateSaver.SourceType == StateSourceType.RequestContent)
-						{
-							savedState[stateSaver.Name] = request.RequestContent;
-						}
-						else
-						{
-							savedState[stateSaver.Name] = stateSaver.GetValue(responseData);
-						}
 					}
 				}
 			}

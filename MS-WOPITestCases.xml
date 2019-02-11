@@ -290,30 +290,6 @@
           </CheckFileInfo>
         </Requests>
       </TestCase>
-      
-      <TestCase Name="HostUrls" Document="WordBlankDocument" Category="OfficeOnline">
-        <Description>
-          This tests that the Host* URLs provided by the host are not Office Online action URLs.
-        </Description>
-        <Requests>
-          <CheckFileInfo>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringRegexProperty Name="CloseUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="DownloadUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="FileSharingUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="FileUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="HostEditUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="HostEmbeddedViewUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="HostViewUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="SignInUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="SignoutUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-                <StringRegexProperty Name="WorkflowUrl" ExpectedValue="^https:\/\/.*?\.officeapps(-df)?\.live\.com.+" IsRequired="false" ShouldMatch="false" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-        </Requests>
-      </TestCase>
 
       <TestCase Name="CheckFileWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
         <Description>
@@ -438,8 +414,8 @@
           <PutRelativeFile PutRelativeFileMode="Suggested" Name=".wopitestx" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
-              <State Name="RequestStringContent" SourceType="RequestContent" />
             </SaveState>
+            <RequestBody>FileContentForPutRelativeFile.SuggestedExtension</RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" EndsWith=".wopitestx" IsRequired="true"/>
@@ -451,7 +427,7 @@
           </PutRelativeFile>
           <GetFile OverrideUrl="$State:NewFileUrl">
             <Validators>
-              <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
+              <ResponseContentValidator ExpectedBodyContent="FileContentForPutRelativeFile.SuggestedExtension" />
             </Validators>
           </GetFile>
         </Requests>
@@ -469,8 +445,8 @@
           <PutRelativeFile PutRelativeFileMode="Suggested" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
-              <State Name="RequestStringContent" SourceType="RequestContent" />
             </SaveState>
+            <RequestBody>FileContentForPutRelativeFile.SuggestedName</RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" EndsWith="wopitest" IsRequired="true"/>
@@ -482,7 +458,7 @@
           </PutRelativeFile>
           <GetFile OverrideUrl="$State:NewFileUrl">
             <Validators>
-              <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
+              <ResponseContentValidator ExpectedBodyContent="FileContentForPutRelativeFile.SuggestedName" />
             </Validators>
           </GetFile>
         </Requests>
@@ -697,8 +673,8 @@
           <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument" OverwriteRelative="true">
             <SaveState>
               <State Name="NewUrl2" Source="Url" />
-              <State Name="RequestStringContent" SourceType="RequestContent" />
             </SaveState>
+            <RequestBody>FileContentForPutRelativeFile.RelativeNameConflictOverwriteTrue</RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" EndsWith=".wopitestx" ExpectedValue="madeupname.wopitestx" IsRequired="true"/>
@@ -715,7 +691,7 @@
           </CheckFileInfo>
           <GetFile OverrideUrl="$State:NewUrl2">
             <Validators>
-              <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
+              <ResponseContentValidator ExpectedBodyContent="FileContentForPutRelativeFile.RelativeNameConflictOverwriteTrue" />
             </Validators>
           </GetFile>
         </Requests>
@@ -796,13 +772,11 @@
         </Description>
         <Requests>      
           <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="RequestStringContent" SourceType="RequestContent" />
-            </SaveState>
+            <RequestBody>FileContentForPutUnlockFile</RequestBody>
           </PutFile>
           <GetFile>
             <Validators>
-              <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
+              <ResponseContentValidator ExpectedBodyContent="FileContentForPutUnlockFile" />
             </Validators>
           </GetFile>
         </Requests>
@@ -815,14 +789,12 @@
         <Requests>
           <Lock Lock="LockString" />
           <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="RequestStringContent" SourceType="RequestContent" />
-            </SaveState>
+            <RequestBody>FileContentForPutFileAfterLock</RequestBody>
           </PutFile>
           <Unlock Lock="LockString" />
           <GetFile>
             <Validators>
-              <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
+              <ResponseContentValidator ExpectedBodyContent="FileContentForPutFileAfterLock" />
             </Validators>
           </GetFile>
         </Requests>
@@ -839,13 +811,11 @@
           <Lock Lock="LockString" />
           <UnlockAndRelock NewLock="NewLockString" OldLock="LockString" />
           <PutFile Lock="NewLockString" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="RequestStringContent" SourceType="RequestContent" />
-            </SaveState>
+            <RequestBody>FileContentForPutFileAfterUnlockAndRelock</RequestBody>
           </PutFile>
           <GetFile>
             <Validators>
-              <ResponseContentValidator ExpectedBodyContent="$State:RequestStringContent" />
+              <ResponseContentValidator ExpectedBodyContent="FileContentForPutFileAfterUnlockAndRelock" />
             </Validators>
           </GetFile>
         </Requests>
@@ -1171,7 +1141,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="LockMismatchAfterUnlockAndRelockRequest" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="X-WOPI-LockHeaderIncludedWhenLockMismatchAfterUnlockAndRelockRequest" Document="WordBlankDocument" Category="WopiCore">
         <Description>
           This tests that X-WOPI-Lock header is returned when unlock with old lock.
         </Description>
@@ -1199,10 +1169,9 @@
       <PrereqTest>FileEditingPrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="LockMismatchOnPutFileRequest" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="X-WOPI-LockHeaderIncludedWhenLockMismatchOnPutFileRequest" Document="WordBlankDocument" Category="WopiCore">
         <Description>
-          Simulates a lock mismatch when trying to refresh the lock.
-          Validates that the current lock ID is returned as response header.
+          This tests that X-WOPI-Lock header is returned when put file with incorrect lock ID.
         </Description>
         <Requests>
           <Lock Lock="LockString" />

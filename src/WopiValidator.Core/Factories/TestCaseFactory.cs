@@ -67,7 +67,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			IEnumerable<IRequest> cleanupRequests = null;
 			XElement cleanupRequestsDefinition = definition.Element("CleanupRequests");
 			if (cleanupRequestsDefinition != null)
-				cleanupRequests = RequestFactory.GetRequests(cleanupRequestsDefinition);
+				cleanupRequests = RequestFactory.GetRequests(cleanupRequestsDefinition);			
 
 			ITestCase testCase = new TestCase(resourceId,
 				requests,
