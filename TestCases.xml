@@ -4325,7 +4325,8 @@
     <TestCases>
       <TestCase Name="ProofKeys.CurrentValid.OldValid" Document="WordBlankDocument" Category="OfficeOnline">
         <Description>
-          The base case - sends the current proof key with no manipulation.
+          Tests that hosts accept requests where the X-WOPI-Proof value is correctly signed with the current proof key,
+          and the X-WOPI-ProofOld value is signed with the old proof key.
         </Description>
         <Requests>
           <CheckFileInfo />
@@ -4334,8 +4335,10 @@
 
       <TestCase Name="ProofKeys.CurrentValid.OldInvalid" Document="WordBlankDocument" Category="OfficeOnline">
         <Description>
-          Tests that hosts do accept invalid old proof key. This scenario should not
-          happen, but it is still a valid WOPI request and should be accepted.
+          Tests that hosts accept requests where the X-WOPI-Proof value is correctly signed with the current proof key,
+          but the X-WOPI-ProofOld value is invalid. This scenario is unusual and should not happen in a production
+          environment, but since the X-WOPI-Proof value is signed with the current public key, the request should be
+          accepted.
         </Description>
         <Requests>
           <CheckFileInfo>
@@ -4348,8 +4351,9 @@
 
       <TestCase Name="ProofKeys.CurrentInvalid.OldValidSignedWithCurrentKey" Document="WordBlankDocument" Category="OfficeOnline">
         <Description>
-          Tests that hosts accept when current key is invalid but old proof is signed with the current key.
-          This can happen when a client has updated proof keys but the host hasn't rerun discovery yet.
+          Tests that hosts accept requests where the X-WOPI-Proof value is invalid but the X-WOPI-ProofOld value is
+          signed with current public key. This can happen when a WOPI client such as Office Online has rotated proof keys
+          but the host hasn't re-run WOPI discovery yet.
         </Description>
         <Requests>
           <CheckFileInfo>
@@ -4362,10 +4366,10 @@
 
       <TestCase Name="ProofKeys.CurrentValidSignedWithOldKey.OldInvalid" Document="WordBlankDocument" Category="OfficeOnline">
         <Description>
-          Tests that hosts do accept when current proof key is invalid but old proof
-          key is signed with current public key. This can happen when a client has updated proof keys, host has
-          rerun discovery and has the updated proof keys, but the datacenter machine making the WOPI
-          request does not have the updated proof keys yet.
+          Tests that hosts accept requests where the X-WOPI-ProofOld value is invalid but the X-WOPI-Proof value is
+          signed with old public key. This can happen when a WOPI client has rotated proof keys, the host has re-run
+          WOPI discovery and has the updated keys, but the datacenter machine making the WOPI request does not yet have
+          the updated keys.
         </Description>
         <Requests>
           <CheckFileInfo>
@@ -4378,9 +4382,9 @@
 
       <TestCase Name="ProofKeys.CurrentInvalid.OldValidSignedWithOldKey" Document="WordBlankDocument" Category="OfficeOnline">
         <Description>
-          Tests that hosts do not accept an invalid current proof key although the old proof key
-          is valid, but with the old public key. This scenario should not happen and WOPI
-          requests should be rejected.
+          Tests that hosts reject requests where the X-WOPI-Proof value is invalid, and the X-WOPI-ProofOld value
+          is signed with the old public key. This scenario is unusual and should not happen in a production
+          environment; such requests should be rejected.
         </Description>
         <Requests>
           <CheckFileInfo>
@@ -4396,9 +4400,7 @@
 
       <TestCase Name="ProofKeys.CurrentInvalid.OldInvalid" Document="WordBlankDocument" Category="OfficeOnline">
         <Description>
-          Tests that hosts don't accept invalid current and old proof keys. This
-          scenario should not happen and is an invalid WOPI request and should
-          be rejected.
+          Tests that hosts reject requests with invalid current and old proof keys.
         </Description>
         <Requests>
           <CheckFileInfo>
@@ -4414,7 +4416,7 @@
 
       <TestCase Name="ProofKeys.TimestampOlderThan20Min" Document="WordBlankDocument" Category="OfficeOnline">
         <Description>
-          Tests that hosts reject requests with an X-WOPI-Timestamp value older than 20 minutes.
+          Tests that hosts reject requests with an X-WOPI-Timestamp value that represents a time more than 20 minutes old.
         </Description>
         <Requests>
           <CheckFileInfo>
