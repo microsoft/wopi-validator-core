@@ -6,7 +6,7 @@ using System;
 
 namespace Microsoft.Office.WopiValidator.Core
 {
-	public enum StateSourceType
+	enum StateSourceType
 	{
 		JsonBody,
 		Header

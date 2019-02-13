@@ -43,6 +43,9 @@
     <Content Include="..\..\FeatureTestCases.xml" Link="FeatureTestCases.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\MS-WOPIFoldersTestCases.xml" Link="MS-WOPIFoldersTestCases.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\..\MS-WOPITestCases.xml" Link="MS-WOPITestCases.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

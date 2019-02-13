@@ -392,6 +392,7 @@
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element name="Validators" type="ValidatorsType" minOccurs="0"/>
+                    <xs:element name="SaveState" type="SaveStateType" minOccurs="0" />
                   </xs:sequence>
                   <xs:attribute name="OverrideUrl" type="xs:string" />
                   <xs:attribute name="FileExtensionFilterList" type="xs:string" />
@@ -497,6 +498,13 @@
                     <xs:element name="Validators" type="ValidatorsType" />
                   </xs:sequence>
                   <xs:attribute name="OverrideUrl" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="CheckFolderInfo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
+                  </xs:sequence>
                 </xs:complexType>
               </xs:element>
               <xs:element name="AddActivities">
