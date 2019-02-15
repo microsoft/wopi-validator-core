@@ -464,6 +464,70 @@
           </CheckFileInfo>
         </Requests>
       </TestCase>
+
+      <!-- Access token related testcases -->
+      <TestCase Name="CheckFileWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          Simulates a CheckFileInfo request with invalid access token and expects a 401 or 404 response.
+        </Description>
+        <Requests>
+          <CheckFileInfo>
+            <Mutators>
+              <AccessToken Mutation="INVALID" />
+            </Mutators>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
+            </Validators>
+          </CheckFileInfo>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="BaseWopiViewing">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+    </PrereqTests>
+    <!-- Full Viewer app sequences -->
+    <TestCases>
+      <TestCase Name="ViewOnlySupport" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Standard sequence of requests made by a WOPI client to render a document.
+        </Description>
+        <Requests>
+          <CheckFileInfo>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="BaseFileName" IsRequired="true" />
+                <StringProperty Name="OwnerId" IsRequired="true" />
+                <LongProperty Name="Size" IsRequired="true" />
+                <StringProperty Name="Version" IsRequired="true" />
+
+                <AbsoluteUrlProperty Name="BreadcrumbBrandUrl" />
+                <AbsoluteUrlProperty Name="BreadcrumbDocUrl" />
+                <AbsoluteUrlProperty Name="BreadcrumbFolderUrl" />
+                <AbsoluteUrlProperty Name="DownloadUrl" />
+                <AbsoluteUrlProperty Name="CloseUrl" />
+                <AbsoluteUrlProperty Name="HostEditUrl" />
+                <AbsoluteUrlProperty Name="HostViewUrl" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+          <GetFile />
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="GetUnlockedFile" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          GetFile requests on a file that wasn't locked before - necessary for Viewing and Editing.
+        </Description>
+        <Requests>
+          <GetFile />
+        </Requests>
+      </TestCase>
     </TestCases>
   </TestGroup>
 
@@ -670,79 +734,13 @@
           <Unlock Lock="IncorrectLockString" />
         </CleanupRequests>
       </TestCase>
-    </TestCases>
-  </TestGroup>
 
-  <TestGroup Name="AccessTokens">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>LocksPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <!-- Access token related testcases -->
-      <TestCase Name="CheckFileWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Simulates a CheckFileInfo request with invalid access token and expects a 401 or 404 response.
-        </Description>
-        <Requests>
-          <CheckFileInfo>
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <Or>
-                <ResponseCodeValidator ExpectedCode="401" />
-                <ResponseCodeValidator ExpectedCode="404" />
-              </Or>
-            </Validators>
-          </CheckFileInfo>
-        </Requests>
-      </TestCase>
-
-      <TestCase Name="GetPutFileWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Simulates Get and PutFile requests with invalid access token and expects a 401 or 404 response.
-        </Description>
-        <Requests>
-          <CheckFileInfo />
-          <Lock Lock="LockString" />
-          <GetFile Lock="LockString">
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <Or>
-                <ResponseCodeValidator ExpectedCode="401" />
-                <ResponseCodeValidator ExpectedCode="404" />
-              </Or>
-            </Validators>
-          </GetFile>
-          <GetFile Lock="LockString" />
-          <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <Or>
-                <ResponseCodeValidator ExpectedCode="401" />
-                <ResponseCodeValidator ExpectedCode="404" />
-              </Or>
-            </Validators>
-          </PutFile>
-          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
-          <Unlock Lock="LockString" />
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
+      <!-- Invalid access token on Lock requests -->
       <TestCase Name="LockFileWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
         <Description>
-          Simulates Lock and Unlock request with invalid access token and expects a 401 or 404 response.
+          Tests Lock operation with an invalid access token and expects a 401 or 404 response.
         </Description>
         <Requests>
-          <CheckFileInfo />
           <Lock Lock="LockString">
             <Mutators>
               <AccessToken Mutation="INVALID" />
@@ -754,6 +752,18 @@
               </Or>
             </Validators>
           </Lock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- Invalid access token on Unlock requests -->
+      <TestCase Name="UnlockFileWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          Tests Unlock operation with an invalid access token and expects a 401 or 404 response.
+        </Description>
+        <Requests>
           <Lock Lock="LockString" />
           <Unlock Lock="LockString">
             <Mutators>
@@ -775,46 +785,97 @@
     </TestCases>
   </TestGroup>
 
-  <TestGroup Name="BaseWopiViewing">
+  <!-- Contains GetLock test cases -->
+  <TestGroup Name="GetLock">
     <PrereqTests>
       <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+      <PrereqTest>GetLockPrereq</PrereqTest>
     </PrereqTests>
-    <!-- Full Viewer app sequences -->
     <TestCases>
-      <TestCase Name="ViewOnlySupport" Document="WordBlankDocument" Category="WopiCore">
+      <!-- /files/GetLock -->
+      <TestCase Name="files.GetLock" Document="WordBlankDocument" Category="WopiCore">
         <Description>
-          Standard sequence of requests made by a WOPI client to render a document.
+          Tests the standard GetLock flow; Lock, GetLock, then Unlock.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <GetLock>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="LockString" IsRequired="true" ShouldMatch="true" />
+            </Validators>
+          </GetLock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="files.GetLockAfterChange" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that the lock ID GetLock returns changes after it's changed by UnlockAndRelock.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <UnlockAndRelock NewLock="NewLockString" OldLock="LockString" />
+          <GetLock>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="NewLockString" IsRequired="true" ShouldMatch="true" />
+            </Validators>
+          </GetLock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="NewLockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="files.GetLockOnUnlockedFile" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests GetLock after a file has been locked and unlocked.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <Unlock Lock="LockString" />
+          <GetLock>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="" IsRequired="true" ShouldMatch="true" />
+            </Validators>
+          </GetLock>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="ExtendedLockLength">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+      <PrereqTest>GetLockPrereq</PrereqTest>
+      <PrereqTest>ExtendedLockLengthPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <!-- /files/Lock: test new 1024 character lock length -->
+      <TestCase Name="files.ExtendedLockLengthValidation" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that the WOPI host is capable of handling WOPI Lock IDs of 1024 characters.
         </Description>
         <Requests>
           <CheckFileInfo>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="BaseFileName" IsRequired="true" />
-                <StringProperty Name="OwnerId" IsRequired="true" />
-                <LongProperty Name="Size" IsRequired="true" />
-                <StringProperty Name="Version" IsRequired="true" />
-
-                <AbsoluteUrlProperty Name="BreadcrumbBrandUrl" />
-                <AbsoluteUrlProperty Name="BreadcrumbDocUrl" />
-                <AbsoluteUrlProperty Name="BreadcrumbFolderUrl" />
-                <AbsoluteUrlProperty Name="DownloadUrl" />
-                <AbsoluteUrlProperty Name="CloseUrl" />
-                <AbsoluteUrlProperty Name="HostEditUrl" />
-                <AbsoluteUrlProperty Name="HostViewUrl" />
+                <BooleanProperty Name="SupportsExtendedLockLength" ExpectedValue="true" IsRequired="true" />
               </JsonResponseContentValidator>
             </Validators>
           </CheckFileInfo>
-          <GetFile />
+          <Lock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
+          <GetLock />
+          <Unlock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
         </Requests>
-      </TestCase>
-
-      <TestCase Name="GetUnlockedFile" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          GetFile requests on a file that wasn't locked before - necessary for Viewing and Editing.
-        </Description>
-        <Requests>
-          <GetFile />
-        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
+        </CleanupRequests>
       </TestCase>
     </TestCases>
   </TestGroup>
@@ -931,6 +992,217 @@
         <CleanupRequests>
           <Unlock Lock="LockString" />
         </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="GetPutFileWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
+        <Description>
+          Simulates Get and PutFile requests with invalid access token and expects a 401 or 404 response.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <GetFile Lock="LockString">
+            <Mutators>
+              <AccessToken Mutation="INVALID" />
+            </Mutators>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
+            </Validators>
+          </GetFile>
+          <GetFile Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
+            <Mutators>
+              <AccessToken Mutation="INVALID" />
+            </Mutators>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
+            </Validators>
+          </PutFile>
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <!-- Contains FileVersion test cases to verify X-WOPI-ItemVersion value -->
+  <TestGroup Name="FileVersion">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+
+      <!-- /files/GetFile returns X-WOPI-ItemVersion -->
+      <TestCase Name="files.GetFileReturnsVersion" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          /files/GetFile should return the current version of the file
+        </Description>
+        <Requests>
+          <GetFile>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
+            </Validators>
+          </GetFile>
+        </Requests>
+      </TestCase>
+
+      <!-- /files/Lock and /files/Unlock return X-WOPI-ItemVersion -->
+      <TestCase Name="files.LockReturnsVersion" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          /files/Lock should return the current version of the file
+        </Description>
+        <Requests>
+          <Lock Lock="LockString">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
+            </Validators>
+          </Lock>
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="files.UnlockReturnsVersion" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          /files/Unlock should return the current version of the file
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <Unlock Lock="LockString">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
+            </Validators>
+          </Unlock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- /files/PutFile returns X-WOPI-ItemVersion -->
+      <TestCase Name="files.PutFileReturnsVersion" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          /files/PutFile should return the current version of the file
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
+            </Validators>
+          </PutFile>
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- /files/PutFile returns a different X-WOPI-ItemVersion -->
+      <TestCase Name="files.PutFileReturnsDifferentVersion" Document="WordBlankDocument" Category="OfficeNativeClient">
+        <Description>
+          Performs consecutive PutFile operations to verify that the X-WOPI-ItemVersion header value is changed with every PutFile operation.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <CheckFileInfo>
+            <SaveState>
+              <State Name="OriginalVersion" Source="Version" />
+            </SaveState>
+          </CheckFileInfo>
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="SecondVersion" Source="X-WOPI-ItemVersion" SourceType="Header" />
+            </SaveState>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" ShouldMatch="false" />
+            </Validators>
+          </PutFile>
+          <PutFile Lock="LockString" ResourceId="WordComplexDocument">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="SecondVersion" ShouldMatch="false" />
+            </Validators>
+          </PutFile>
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- /files/GetFile, /files/Lock and /files/Unlock returns the same X-WOPI-ItemVersion -->
+      <TestCase Name="files.LockAndUnlockAfterGetFileReturnsSameVersion" Document="WordBlankDocument" Category="OfficeNativeClient">
+        <Description>
+          Performs Lock and Unlock operations after a GetFile operation to verify that the X-WOPI-ItemVersion header value is unchanged.
+        </Description>
+        <Requests>
+          <CheckFileInfo>
+            <SaveState>
+              <State Name="OriginalVersion" Source="Version" />
+            </SaveState>
+          </CheckFileInfo>
+          <GetFile>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" />
+            </Validators>
+          </GetFile>
+          <Lock Lock="LockString">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" />
+            </Validators>
+          </Lock>
+          <Unlock Lock="LockString">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" />
+            </Validators>
+          </Unlock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <!-- Contains PutUserInfo test cases -->
+  <TestGroup Name="PutUserInfo">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>SupportsUserInfoPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+
+      <!-- PutUserInfo call returns 200 and subsequent CheckFileInfo calls return the correct value -->
+      <TestCase Name="PutUserInfoSucceeds" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          PutUserInfo call returns 200 and subsequent CheckFileInfo calls return the correct value
+        </Description>
+        <Requests>
+          <PutUserInfo>
+            <RequestBody>PutUserInfoTest</RequestBody>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+            </Validators>
+          </PutUserInfo>
+          <CheckFileInfo>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="UserInfo" ExpectedValue="PutUserInfoTest" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+        </Requests>
       </TestCase>
 
     </TestCases>
@@ -1434,101 +1706,6 @@
             </Validators>
           </PutRelativeFile>
         </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <!-- Contains GetLock test cases -->
-  <TestGroup Name="GetLock">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>FileEditingPrereq</PrereqTest>
-      <PrereqTest>LocksPrereq</PrereqTest>
-      <PrereqTest>GetLockPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <!-- /files/GetLock -->
-      <TestCase Name="files.GetLock" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests the standard GetLock flow; Lock, GetLock, then Unlock.
-        </Description>
-        <Requests>
-          <Lock Lock="LockString" />
-          <GetLock>
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="LockString" IsRequired="true" ShouldMatch="true" />
-            </Validators>
-          </GetLock>
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <TestCase Name="files.GetLockAfterChange" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests that the lock ID GetLock returns changes after it's changed by UnlockAndRelock.
-        </Description>
-        <Requests>
-          <Lock Lock="LockString" />
-          <UnlockAndRelock NewLock="NewLockString" OldLock="LockString" />
-          <GetLock>
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="NewLockString" IsRequired="true" ShouldMatch="true" />
-            </Validators>
-          </GetLock>
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="NewLockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <TestCase Name="files.GetLockOnUnlockedFile" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests GetLock after a file has been locked and unlocked.
-        </Description>
-        <Requests>
-          <Lock Lock="LockString" />
-          <Unlock Lock="LockString" />
-          <GetLock>
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="" IsRequired="true" ShouldMatch="true" />
-            </Validators>
-          </GetLock>
-        </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="ExtendedLockLength">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>FileEditingPrereq</PrereqTest>
-      <PrereqTest>LocksPrereq</PrereqTest>
-      <PrereqTest>GetLockPrereq</PrereqTest>
-      <PrereqTest>ExtendedLockLengthPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <!-- /files/Lock: test new 1024 character lock length -->
-      <TestCase Name="files.ExtendedLockLengthValidation" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests that the WOPI host is capable of handling WOPI Lock IDs of 1024 characters.
-        </Description>
-        <Requests>
-          <CheckFileInfo>
-            <Validators>
-              <JsonResponseContentValidator>
-                <BooleanProperty Name="SupportsExtendedLockLength" ExpectedValue="true" IsRequired="true" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-          <Lock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
-          <GetLock />
-          <Unlock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
-        </CleanupRequests>
       </TestCase>
     </TestCases>
   </TestGroup>
@@ -2088,181 +2265,6 @@
         <CleanupRequests>
           <DeleteFile OverrideUrl="$State:NewFileUrl" />
         </CleanupRequests>
-      </TestCase>
-
-    </TestCases>
-  </TestGroup>
-
-  <!-- Contains FileVersion test cases to verify X-WOPI-ItemVersion value -->
-  <TestGroup Name="FileVersion">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>LocksPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-
-      <!-- /files/GetFile returns X-WOPI-ItemVersion -->
-      <TestCase Name="files.GetFileReturnsVersion" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          /files/GetFile should return the current version of the file
-        </Description>
-        <Requests>
-          <GetFile>
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
-            </Validators>
-          </GetFile>
-        </Requests>
-      </TestCase>
-
-      <!-- /files/Lock and /files/Unlock return X-WOPI-ItemVersion -->
-      <TestCase Name="files.LockReturnsVersion" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          /files/Lock should return the current version of the file
-        </Description>
-        <Requests>
-          <Lock Lock="LockString">
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
-            </Validators>
-          </Lock>
-          <Unlock Lock="LockString" />
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <TestCase Name="files.UnlockReturnsVersion" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          /files/Unlock should return the current version of the file
-        </Description>
-        <Requests>
-          <Lock Lock="LockString" />
-          <Unlock Lock="LockString">
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
-            </Validators>
-          </Unlock>
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <!-- /files/PutFile returns X-WOPI-ItemVersion -->
-      <TestCase Name="files.PutFileReturnsVersion" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          /files/PutFile should return the current version of the file
-        </Description>
-        <Requests>
-          <Lock Lock="LockString" />
-          <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
-            </Validators>
-          </PutFile>
-          <Unlock Lock="LockString" />
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <!-- /files/PutFile returns a different X-WOPI-ItemVersion -->
-      <TestCase Name="files.PutFileReturnsDifferentVersion" Document="WordBlankDocument" Category="OfficeNativeClient">
-        <Description>
-          Performs consecutive PutFile operations to verify that the X-WOPI-ItemVersion header value is changed with every PutFile operation.
-        </Description>
-        <Requests>
-          <Lock Lock="LockString" />
-          <CheckFileInfo>
-            <SaveState>
-              <State Name="OriginalVersion" Source="Version" />
-            </SaveState>
-          </CheckFileInfo>
-          <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="SecondVersion" Source="X-WOPI-ItemVersion" SourceType="Header" />
-            </SaveState>
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" ShouldMatch="false" />
-            </Validators>
-          </PutFile>
-          <PutFile Lock="LockString" ResourceId="WordComplexDocument">
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="SecondVersion" ShouldMatch="false" />
-            </Validators>
-          </PutFile>
-          <Unlock Lock="LockString" />
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <!-- /files/GetFile, /files/Lock and /files/Unlock returns the same X-WOPI-ItemVersion -->
-      <TestCase Name="files.LockAndUnlockAfterGetFileReturnsSameVersion" Document="WordBlankDocument" Category="OfficeNativeClient">
-        <Description>
-          Performs Lock and Unlock operations after a GetFile operation to verify that the X-WOPI-ItemVersion header value is unchanged.
-        </Description>
-        <Requests>
-          <CheckFileInfo>
-            <SaveState>
-              <State Name="OriginalVersion" Source="Version" />
-            </SaveState>
-          </CheckFileInfo>
-          <GetFile>
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" />
-            </Validators>
-          </GetFile>
-          <Lock Lock="LockString">
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" />
-            </Validators>
-          </Lock>
-          <Unlock Lock="LockString">
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" />
-            </Validators>
-          </Unlock>
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <!-- Contains PutUserInfo test cases -->
-  <TestGroup Name="PutUserInfo">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>SupportsUserInfoPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-
-      <!-- PutUserInfo call returns 200 and subsequent CheckFileInfo calls return the correct value -->
-      <TestCase Name="PutUserInfoSucceeds" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          PutUserInfo call returns 200 and subsequent CheckFileInfo calls return the correct value
-        </Description>
-        <Requests>
-          <PutUserInfo>
-            <RequestBody>PutUserInfoTest</RequestBody>
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="200" />
-            </Validators>
-          </PutUserInfo>
-          <CheckFileInfo>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="UserInfo" ExpectedValue="PutUserInfoTest" IsRequired="true" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-        </Requests>
       </TestCase>
 
     </TestCases>
