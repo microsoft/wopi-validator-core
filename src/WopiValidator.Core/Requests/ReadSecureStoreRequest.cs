@@ -10,9 +10,11 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		public ReadSecureStoreRequest(WopiRequestParam param) : base(param)
 		{
 			this.ApplicationId = param.ApplicationId;
+			this.PerfTraceRequested = param.PerfTraceRequested;
 		}
 
 		public string ApplicationId { get; private set; }
+		public bool PerfTraceRequested { get; private set; }
 		public override string Name { get { return Constants.Requests.ReadSecureStore; } }
 		protected override string WopiOverrideValue { get { return Constants.Overrides.ReadSecureStore; } }
 
@@ -20,10 +22,15 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		{
 			get
 			{
-				return new Dictionary<string, string>
+				Dictionary<string, string> headers = new Dictionary<string, string>();
+				headers.Add(Constants.Headers.ApplicationId, this.ApplicationId);
+
+				if (this.PerfTraceRequested)
 				{
-					{Constants.Headers.ApplicationId, this.ApplicationId}
-				};
+					headers.Add(Constants.Headers.PerfTraceRequested, System.Boolean.TrueString);
+				}
+
+				return headers;
 			}
 		}
 	}

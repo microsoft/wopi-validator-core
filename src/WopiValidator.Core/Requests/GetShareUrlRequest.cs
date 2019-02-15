@@ -32,9 +32,12 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 				this.UrlType = array[index].ToString();
 			}
 
+			if (string.IsNullOrEmpty(this.UrlType))
+				return null;
+
 			return new Dictionary<string, string>
 			{
-				{ Constants.Headers.UrlType, UrlType}
+				{ Constants.Headers.UrlType, this.UrlType}
 			};
 		}
 	}

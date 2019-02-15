@@ -498,6 +498,7 @@
                     <xs:element name="Validators" type="ValidatorsType" />
                   </xs:sequence>
                   <xs:attribute name="OverrideUrl" type="xs:string" />
+                  <xs:attribute name="PerfTraceRequested" type="xs:boolean" />
                 </xs:complexType>
               </xs:element>
               <xs:element name="CheckFolderInfo">

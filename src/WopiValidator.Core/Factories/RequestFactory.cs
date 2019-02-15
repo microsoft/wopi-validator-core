@@ -51,7 +51,8 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 				UrlType = (string)definition.Attribute("UrlType"),
 				Validators = validators ?? GetDefaultValidators(),
 				WopiSrc = (string)definition.Attribute("WopiSrc"),
-				RestrictedLinkType = (string)definition.Attribute("RestrictedLink")
+				RestrictedLinkType = (string)definition.Attribute("RestrictedLink"),
+				PerfTraceRequested = string.IsNullOrEmpty((string)definition.Attribute("PerfTraceRequested")) ? false : Boolean.Parse((string)definition.Attribute("PerfTraceRequested"))
 			};
 
 			if (requestBodyDefinition != null && !String.IsNullOrEmpty(requestBodyDefinition.Value))

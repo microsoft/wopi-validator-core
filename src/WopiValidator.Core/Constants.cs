@@ -38,6 +38,7 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const string RestrictedLink = "X-WOPI-RestrictedLink";
 			public const string UsingRestrictedScenario = "X-WOPI-UsingRestrictedScenario";
 			public const string ApplicationId = "X-WOPI-ApplicationId";
+			public const string PerfTraceRequested = "X-WOPI-PerfTraceRequested";
 
 			// This is not an official WOPI header; it is used to pass exception information
 			// back to the validator UI. See the ExceptionHelper class for more details.

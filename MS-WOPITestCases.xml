@@ -286,6 +286,8 @@
                 <!-- FileExtension, if provided, should start with a "."; using this as a shortcut to test for that. -->
                 <StringProperty Name="FileExtension" ExpectedValue=".wopitest" IsRequired="false" />
               </JsonResponseContentValidator>
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
             </Validators>
           </CheckFileInfo>
         </Requests>
@@ -370,6 +372,8 @@
           <GetFile>
             <Validators>
               <ContentLengthValidator ExpectedStateKey="FileSize" />
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
             </Validators>
           </GetFile>
         </Requests>
@@ -423,6 +427,8 @@
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
             </Validators>
           </PutRelativeFile>
           <GetFile OverrideUrl="$State:NewFileUrl">
@@ -762,6 +768,7 @@
     <PrereqTests>
       <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>NotReadOnlyPrereq</PrereqTest>      
       <PrereqTest>UserCanWritePrereq</PrereqTest>
       <PrereqTest>LocksPrereq</PrereqTest>
     </PrereqTests>
@@ -773,6 +780,10 @@
         <Requests>      
           <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
             <RequestBody>FileContentForPutUnlockFile</RequestBody>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
+            </Validators>
           </PutFile>
           <GetFile>
             <Validators>
@@ -889,10 +900,30 @@
           Simulates a successful sequence of lock-related requests: Lock, RefreshLock, UnlockAndRelock, Unlock.
         </Description>
         <Requests>
-          <Lock Lock="LockString" />
-          <RefreshLock Lock="LockString" />
-          <UnlockAndRelock NewLock="NewLockString" OldLock="LockString" />
-          <Unlock Lock="NewLockString" />
+          <Lock Lock="LockString" >
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
+            </Validators>
+          </Lock>
+          <RefreshLock Lock="LockString" >
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
+            </Validators>
+          </RefreshLock>
+          <UnlockAndRelock NewLock="NewLockString" OldLock="LockString" >
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
+            </Validators>
+          </UnlockAndRelock>
+          <Unlock Lock="NewLockString" >
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
+            </Validators>
+          </Unlock>
         </Requests>
         <CleanupRequests>
           <Unlock Lock="LockString" />
@@ -1206,6 +1237,8 @@
           <GetLock>
             <Validators>
               <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="LockString" IsRequired="true" ShouldMatch="true" />
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
             </Validators>
           </GetLock>
         </Requests>
@@ -1552,8 +1585,10 @@
   <TestGroup Name="GetLockForUnknownFile">
     <PrereqTests>
       <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
       <PrereqTest>FileEditingPrereq</PrereqTest>
       <PrereqTest>GetLockPrereq</PrereqTest>
+      <PrereqTest>SupportsFoldersPrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
       <TestCase Name="GetLockForUnknownFile" Document="WordSimpleDocument" Category="WopiCore">
@@ -1633,6 +1668,8 @@
             <RequestBody>PutUserInfoTest</RequestBody>
             <Validators>
               <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
             </Validators>
           </PutUserInfo>
           <CheckFileInfo>
@@ -1744,6 +1781,8 @@
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" ExpectedValue="ValidatorTestFileRenamed" IsRequired="true" />
               </JsonResponseContentValidator>
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
             </Validators>
           </RenameFile>
           <DeleteFile OverrideUrl="$State:NewFileUrl" />
@@ -1982,6 +2021,8 @@
           <GetRestrictedLink RestrictedLink="FORMS">
             <Validators>
               <ResponseHeaderValidator Header="X-WOPI-RestrictedUseLink" IsRequired="true" IsUrl="true" />
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
             </Validators>
           </GetRestrictedLink>
         </Requests>
@@ -2080,6 +2121,8 @@
           <RevokeRestrictedLink RestrictedLink="FORMS">
             <Validators>
               <ResponseCodeValidator ExpectedCode="200"/>
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
             </Validators>
           </RevokeRestrictedLink>
         </Requests>
@@ -2178,6 +2221,8 @@
           <ReadSecureStore>
             <Validators>
               <JsonSchemaValidator Schema="ReadSecureStoreSchema" />
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
             </Validators>
           </ReadSecureStore>
         </Requests>
@@ -2204,6 +2249,41 @@
     </TestCases>
   </TestGroup>
 
+  <TestGroup Name="ReadSecureStoreBaseOnUnknownFile">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>SupportsFoldersPrereq</PrereqTest>
+      <PrereqTest>SupportsSecureStorePrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="ReadSecureStoreBaseOnUnknownFile" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests ReadSecureStore operation returns 404 status code if file is unknown.
+        </Description>
+        <Requests>
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="NewFileUrl" Source="Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
+              </JsonResponseContentValidator>
+            </Validators>
+          </PutRelativeFile>
+          <DeleteFile OverrideUrl="$State:NewFileUrl" />
+          <ReadSecureStore OverrideUrl="$State:NewFileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="404" />
+            </Validators>
+          </ReadSecureStore>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
   <TestGroup Name="GetShareUrl">
     <PrereqTests>
       <PrereqTest>WopiValidatorPrereq</PrereqTest>
@@ -2223,8 +2303,36 @@
           <GetShareUrl UrlType="$State:ShareUrlTypes">
             <Validators>
               <JsonResponseContentValidator>
-                <AbsoluteUrlProperty Name="ShareUrl" IsRequired="true"/>
+                <AbsoluteUrlProperty Name="ShareUrl" IsRequired="false"/>
               </JsonResponseContentValidator>
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
+            </Validators>
+          </GetShareUrl>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="GetShareUrlForUnknownUrlType" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the GetShareUrl operation for a file where the requested share url type is unknown.
+        </Description>
+        <Requests>
+          <GetShareUrl UrlType="xUnknownTypex">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="501"/>
+            </Validators>
+          </GetShareUrl>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="GetShareUrlWithoutUrlType" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the GetShareUrl operation for a file where the X-WOPI-UrlType header is not present.
+        </Description>
+        <Requests>
+          <GetShareUrl>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="501"/>
             </Validators>
           </GetShareUrl>
         </Requests>
@@ -2295,5 +2403,25 @@
       </TestCase>
     </TestCases>
   </TestGroup>
- 
+
+  <TestGroup Name="PerfTraceRequested">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>SupportsSecureStorePrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="X-WOPI-PerfTraceHeaderReturnedWhenX-WOPI-PerfTraceRequestedIsTrue" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests host returns a value for X-WOPI-PerfTrace if the header X-WOPI-PerfTraceRequested in the request is present and equal to "true".
+        </Description>
+        <Requests>
+          <ReadSecureStore PerfTraceRequested="true">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-PerfTrace" IsRequired="true" />
+            </Validators>
+          </ReadSecureStore>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
 </WopiValidation>

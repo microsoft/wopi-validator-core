@@ -15,6 +15,8 @@
           <CheckFolderInfo>
             <Validators>
               <JsonSchemaValidator Schema="MS-WOPICheckFolderInfoSchema" />
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
             </Validators>
           </CheckFolderInfo>
         </Requests>
@@ -36,6 +38,8 @@
                 <AbsoluteUrlProperty Name="Children[0].Url" IsRequired="true" MustIncludeAccessToken="true" />
                 <StringProperty Name="Children[0].Version" IsRequired="true" />
               </JsonResponseContentValidator>
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
             </Validators>
           </EnumerateChildren>
         </Requests>
