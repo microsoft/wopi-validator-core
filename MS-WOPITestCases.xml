@@ -267,6 +267,36 @@
         </CheckFileInfo>
       </Requests>
     </TestCase>
+
+    <TestCase Name="ShareUrlTypeReadOnlyForFilePrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the host declares support for the "ReadOnly" Share Url type for the file.
+      </Description>
+      <Requests>
+        <CheckFileInfo>
+          <Validators>
+            <JsonResponseContentValidator>
+              <ArrayProperty Name="SupportedShareUrlTypes" ContainsValue="ReadOnly" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFileInfo>
+      </Requests>
+    </TestCase>
+
+    <TestCase Name="ShareUrlTypeReadWriteForFilePrereq" Document="WordBlankDocument" Category="WopiCore">
+      <Description>
+        Prereq WOPI Validation test to check if the host declares support for the "ReadWrite" Share Url type for the file.
+      </Description>
+      <Requests>
+        <CheckFileInfo>
+          <Validators>
+            <JsonResponseContentValidator>
+              <ArrayProperty Name="SupportedShareUrlTypes" ContainsValue="ReadWrite" IsRequired="true" />
+            </JsonResponseContentValidator>
+          </Validators>
+        </CheckFileInfo>
+      </Requests>
+    </TestCase>
   </PrereqCases>
 
   <TestGroup Name="CheckFileInfo">
@@ -342,7 +372,7 @@
           <CheckFileInfo>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Version" IsRequired="true" UnexpectedValue="$State:VersionBeforeUpdate" />
+                <StringProperty Name="Version" IsRequired="true" ExpectedStateKey="VersionBeforeUpdate" ShouldMatch="false" />
               </JsonResponseContentValidator>
             </Validators>
           </CheckFileInfo>
@@ -371,7 +401,7 @@
           </CheckFileInfo>
           <GetFile>
             <Validators>
-              <ContentLengthValidator ExpectedStateKey="FileSize" />
+              <ResponseHeaderValidator Header="Content-Length" ExpectedStateKey="FileSize" IsRequired="true" ShouldMatch="true" />
               <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
               <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
             </Validators>
@@ -419,7 +449,6 @@
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
-            <RequestBody>FileContentForPutRelativeFile.SuggestedExtension</RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" EndsWith=".wopitestx" IsRequired="true"/>
@@ -433,7 +462,7 @@
           </PutRelativeFile>
           <GetFile OverrideUrl="$State:NewFileUrl">
             <Validators>
-              <ResponseContentValidator ExpectedBodyContent="FileContentForPutRelativeFile.SuggestedExtension" />
+              <ResponseContentValidator ExpectedDocumentId="WordSimpleDocument" />
             </Validators>
           </GetFile>
         </Requests>
@@ -452,7 +481,6 @@
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
-            <RequestBody>FileContentForPutRelativeFile.SuggestedName</RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" EndsWith="wopitest" IsRequired="true"/>
@@ -464,7 +492,7 @@
           </PutRelativeFile>
           <GetFile OverrideUrl="$State:NewFileUrl">
             <Validators>
-              <ResponseContentValidator ExpectedBodyContent="FileContentForPutRelativeFile.SuggestedName" />
+              <ResponseContentValidator ExpectedDocumentId="WordSimpleDocument" />
             </Validators>
           </GetFile>
         </Requests>
@@ -676,11 +704,10 @@
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordSimpleDocument" OverwriteRelative="true">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitestx" ResourceId="WordComplexDocument" OverwriteRelative="true">
             <SaveState>
               <State Name="NewUrl2" Source="Url" />
             </SaveState>
-            <RequestBody>FileContentForPutRelativeFile.RelativeNameConflictOverwriteTrue</RequestBody>
             <Validators>
               <JsonResponseContentValidator>
                 <StringProperty Name="Name" EndsWith=".wopitestx" ExpectedValue="madeupname.wopitestx" IsRequired="true"/>
@@ -697,7 +724,7 @@
           </CheckFileInfo>
           <GetFile OverrideUrl="$State:NewUrl2">
             <Validators>
-              <ResponseContentValidator ExpectedBodyContent="FileContentForPutRelativeFile.RelativeNameConflictOverwriteTrue" />
+              <ResponseContentValidator ExpectedDocumentId="WordComplexDocument" />
             </Validators>
           </GetFile>
         </Requests>
@@ -779,7 +806,6 @@
         </Description>
         <Requests>      
           <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
-            <RequestBody>FileContentForPutUnlockFile</RequestBody>
             <Validators>
               <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
               <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
@@ -787,7 +813,7 @@
           </PutFile>
           <GetFile>
             <Validators>
-              <ResponseContentValidator ExpectedBodyContent="FileContentForPutUnlockFile" />
+              <ResponseContentValidator ExpectedDocumentId="WordSimpleDocument" />
             </Validators>
           </GetFile>
         </Requests>
@@ -799,13 +825,11 @@
         </Description>
         <Requests>
           <Lock Lock="LockString" />
-          <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
-            <RequestBody>FileContentForPutFileAfterLock</RequestBody>
-          </PutFile>
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
           <Unlock Lock="LockString" />
           <GetFile>
             <Validators>
-              <ResponseContentValidator ExpectedBodyContent="FileContentForPutFileAfterLock" />
+              <ResponseContentValidator ExpectedDocumentId="WordSimpleDocument" />
             </Validators>
           </GetFile>
         </Requests>
@@ -821,12 +845,10 @@
         <Requests>
           <Lock Lock="LockString" />
           <UnlockAndRelock NewLock="NewLockString" OldLock="LockString" />
-          <PutFile Lock="NewLockString" ResourceId="WordSimpleDocument">
-            <RequestBody>FileContentForPutFileAfterUnlockAndRelock</RequestBody>
-          </PutFile>
+          <PutFile Lock="NewLockString" ResourceId="WordSimpleDocument" />
           <GetFile>
             <Validators>
-              <ResponseContentValidator ExpectedBodyContent="FileContentForPutFileAfterUnlockAndRelock" />
+              <ResponseContentValidator ExpectedDocumentId="WordSimpleDocument" />
             </Validators>
           </GetFile>
         </Requests>
@@ -1785,7 +1807,6 @@
               <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
             </Validators>
           </RenameFile>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
         </Requests>
         <CleanupRequests>
           <DeleteFile OverrideUrl="$State:NewFileUrl" />
@@ -2284,23 +2305,18 @@
     </TestCases>
   </TestGroup>
 
-  <TestGroup Name="GetShareUrl">
+  <TestGroup Name="GetShareUrlForFileWithTypeReadOnly">
     <PrereqTests>
       <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>SupportedShareUrlTypesForFilePrereq</PrereqTest>
+      <PrereqTest>ShareUrlTypeReadOnlyForFilePrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="GetShareUrlSucceeds" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="GetShareUrlForReadOnlyUrlType" Document="WordBlankDocument" Category="WopiCore">
         <Description>
-          Tests the GetShareUrl operation for a file.
+          Tests the GetShareUrl operation for a file where the requested share url type is "ReadOnly".
         </Description>
         <Requests>
-          <CheckFileInfo>
-            <SaveState>
-              <State Name="ShareUrlTypes" Source="SupportedShareUrlTypes" />
-            </SaveState>
-          </CheckFileInfo>
-          <GetShareUrl UrlType="$State:ShareUrlTypes">
+          <GetShareUrl UrlType="ReadOnly">
             <Validators>
               <JsonResponseContentValidator>
                 <AbsoluteUrlProperty Name="ShareUrl" IsRequired="false"/>
@@ -2308,16 +2324,87 @@
               <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
               <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
             </Validators>
-          </GetShareUrl>
+          </GetShareUrl>        
         </Requests>
       </TestCase>
 
+      <TestCase Name="GetShareUrlForReadOnlyUrlTypeWithInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that a GetShareUrl request for "ReadOnly" url type with invalid access token expects a 401 or 404 response.
+        </Description>
+        <Requests>
+          <GetShareUrl UrlType="ReadOnly">
+            <Mutators>
+              <AccessToken Mutation="INVALID" />
+            </Mutators>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
+            </Validators>
+          </GetShareUrl>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="GetShareUrlForFileWithTypeReadWrite">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>ShareUrlTypeReadWriteForFilePrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="GetShareUrlForReadWriteUrlType" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests the GetShareUrl operation for a file where the requested share url type is "ReadWrite".
+        </Description>
+        <Requests>
+          <GetShareUrl UrlType="ReadWrite">
+            <Validators>
+              <JsonResponseContentValidator>
+                <AbsoluteUrlProperty Name="ShareUrl" IsRequired="false"/>
+              </JsonResponseContentValidator>
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
+            </Validators>
+          </GetShareUrl>        
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="GetShareUrlForReadWriteUrlTypeWithInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Tests that a GetShareUrl request for "ReadWrite" url type with invalid access token expects a 401 or 404 response.
+        </Description>
+        <Requests>
+          <GetShareUrl UrlType="ReadWrite">
+            <Mutators>
+              <AccessToken Mutation="INVALID" />
+            </Mutators>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
+            </Validators>
+          </GetShareUrl>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="GetShareUrlForFileWithUnknownType">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>SupportedShareUrlTypesForFilePrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
       <TestCase Name="GetShareUrlForUnknownUrlType" Document="WordBlankDocument" Category="WopiCore">
         <Description>
           Tests the GetShareUrl operation for a file where the requested share url type is unknown.
         </Description>
         <Requests>
-          <GetShareUrl UrlType="xUnknownTypex">
+          <GetShareUrl UrlType="UnknownType">
             <Validators>
               <ResponseCodeValidator ExpectedCode="501"/>
             </Validators>
@@ -2337,33 +2424,9 @@
           </GetShareUrl>
         </Requests>
       </TestCase>
-
-      <TestCase Name="GetShareUrlWithInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests that a GetShareUrl request with invalid access token expects a 401 or 404 response.
-        </Description>
-        <Requests>
-          <CheckFileInfo>
-            <SaveState>
-              <State Name="ShareUrlTypes" Source="SupportedShareUrlTypes" />
-            </SaveState>
-          </CheckFileInfo>
-          <GetShareUrl UrlType="$State:ShareUrlTypes">
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <Or>
-                <ResponseCodeValidator ExpectedCode="401" />
-                <ResponseCodeValidator ExpectedCode="404" />
-              </Or>
-            </Validators>
-          </GetShareUrl>
-        </Requests>
-      </TestCase>
     </TestCases>
   </TestGroup>
-
+  
   <TestGroup Name="GetShareUrlForUnknownFile">
     <PrereqTests>
       <PrereqTest>WopiValidatorPrereq</PrereqTest>

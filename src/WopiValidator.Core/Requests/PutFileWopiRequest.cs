@@ -4,7 +4,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Microsoft.Office.WopiValidator.Core.Requests
 {
@@ -14,12 +13,10 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		{
 			this.LockString = param.LockString;
 			this.ResourceId = param.ResourceId;
-			this.RequestBody = param.RequestBody;
 		}
 
 		public string LockString { get; private set; }
 		public string ResourceId { get; private set; }
-		public string RequestBody { get; private set; }
 		public override string Name { get { return Constants.Requests.PutFile; } }
 		protected override string PathOverride { get { return "/contents"; } }
 		protected override string WopiOverrideValue { get { return Constants.Overrides.Put; } }
@@ -40,12 +37,6 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 
 		protected override MemoryStream GetRequestContent(IResourceManager resourceManager)
 		{
-			if (this.RequestBody != null)
-			{
-				byte[] bodyAsBytes = Encoding.UTF8.GetBytes(this.RequestBody);
-				return new MemoryStream(bodyAsBytes);
-			}
-
 			return resourceManager.GetContentStream(ResourceId);
 		}
 	}

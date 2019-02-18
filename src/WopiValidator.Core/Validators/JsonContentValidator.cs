@@ -65,7 +65,7 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 
 				return new ValidationResult(errors.ToArray());
 			}
-			catch(JsonReaderException ex)
+			catch (JsonReaderException ex)
 			{
 				return new ValidationResult($"{Name}: {ex.GetType().Name} thrown while parsing JSON. Are you sure the response is JSON?");
 			}
@@ -239,7 +239,7 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 					isValid = false;
 				}
 
-				errorMessage = string.Format(CultureInfo.CurrentCulture, "Expected: '{0}', Actual: '{1}'", FormattedExpectedValue, formattedActualValue);
+				errorMessage = string.Format(CultureInfo.CurrentCulture, "Expected: '{0}', Actual: '{1}'", FormatValue(expectedValue), formattedActualValue);
 				return isValid;
 			}
 
@@ -296,13 +296,13 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 		public class JsonStringPropertyValidator : JsonPropertyEqualityValidator<string>
 		{
 			private readonly string _endsWithValue;
-			private readonly string _unexpectedValue;
+			private readonly bool _shouldMatch;
 
-			public JsonStringPropertyValidator(string key, bool isRequired, string expectedValue, bool hasExpectedValue, string endsWithValue, string expectedStateKey, string unexpectedValue = null)
+			public JsonStringPropertyValidator(string key, bool isRequired, string expectedValue, bool hasExpectedValue, string endsWithValue, string expectedStateKey, bool shouldMatch = true)
 				: base(key, isRequired, expectedValue, hasExpectedValue, expectedStateKey)
 			{
 				_endsWithValue = endsWithValue;
-				_unexpectedValue = unexpectedValue;
+				_shouldMatch = shouldMatch;
 			}
 
 			public override string FormatValue(string value)
@@ -312,36 +312,24 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 
 			public override bool Validate(JToken actualValue, Dictionary<string, string> savedState, out string errorMessage)
 			{
-				if (!base.Validate(actualValue, savedState, out errorMessage))
+				if (_shouldMatch & !base.Validate(actualValue, savedState, out errorMessage))
 					return false;
+				else if (!_shouldMatch & base.Validate(actualValue, savedState, out errorMessage))
+				{
+					errorMessage = errorMessage.Replace("Expected", "Unexpected");
+					return false;
+				}
 
 				errorMessage = "";
+				if (String.IsNullOrWhiteSpace(_endsWithValue))
+					return true;
+
 				string typedActualValue = actualValue.Value<string>();
 				string formattedActualValue = FormatValue(typedActualValue);
 
-				if (!String.IsNullOrWhiteSpace(_endsWithValue))
+				if (!formattedActualValue.EndsWith(_endsWithValue))
 				{
-					if (!formattedActualValue.EndsWith(_endsWithValue))
-					{
-						errorMessage = string.Format("Expected to end with: '{0}', Actual: '{1}'", _endsWithValue, formattedActualValue);
-						return false;
-					}
-				}
-
-				string setting = null;
-				if (_unexpectedValue != null && _unexpectedValue.StartsWith(Constants.StateOverrides.StateToken))
-					setting = _unexpectedValue.Substring(Constants.StateOverrides.StateToken.Length);
-
-				string unexpectedValue = _unexpectedValue;
-				if (!String.IsNullOrEmpty(setting) &&
-					!savedState.TryGetValue(setting, out unexpectedValue))
-				{
-					throw new InvalidOperationException("OverrideUrl specified in definition but not found in state dictionary.  Did it depend on a request that failed?");
-				}
-
-				if (unexpectedValue != null && formattedActualValue.Equals(unexpectedValue))
-				{
-					errorMessage = string.Format("Expected to be not:'{0}, Actual: '{1}''", _unexpectedValue, formattedActualValue);
+					errorMessage = string.Format("Expected to end with: '{0}', Actual: '{1}'", _endsWithValue, formattedActualValue);
 					return false;
 				}
 

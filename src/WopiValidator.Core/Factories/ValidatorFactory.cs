@@ -43,8 +43,6 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 					return GetOrValidator(definition);
 				case Constants.Validators.ResponseContent:
 					return GetResponseContentValidator(definition);
-				case Constants.Validators.ContentLength:
-					return GetContentLengthValidator(definition);
 				default:
 					throw new ArgumentException(string.Format("Unknown validator: '{0}'", elementName));
 			}
@@ -67,15 +65,6 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			string documentId = (string)definition.Attribute("ExpectedDocumentId");
 			string expectedBodyContent = (string)definition.Attribute("ExpectedBodyContent");
 			return new ResponseContentValidator(documentId, expectedBodyContent);
-		}
-
-		/// <summary>
-		/// Parses ContentLength validator information.
-		/// </summary>
-		private static IValidator GetContentLengthValidator(XElement definition)
-		{
-			string expectedStateKey = (string)definition.Attribute("ExpectedStateKey");
-			return new ContentLengthValidator(expectedStateKey);
 		}
 
 		/// <summary>
@@ -150,7 +139,6 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			bool isRequired = ((bool?)definition.Attribute("IsRequired")) ?? false;
 			string endsWithValue = (string)definition.Attribute("EndsWith");
 			string expectedStateKey = (string)definition.Attribute("ExpectedStateKey");
-			string unexpectedValue = (string)definition.Attribute("UnexpectedValue");
 			string containsValue = (string)definition.Attribute("ContainsValue");
 			bool shouldMatch = ((bool?)definition.Attribute("ShouldMatch")) ?? true;
 			bool hasContainsValue = containsValue != null;
@@ -186,7 +174,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 						hasExpectedValue,
 						endsWithValue,
 						expectedStateKey,
-						unexpectedValue);
+						shouldMatch);
 
 				case Constants.Validators.Properties.StringRegexProperty:
 					return new JsonContentValidator.JsonStringRegexPropertyValidator(key,

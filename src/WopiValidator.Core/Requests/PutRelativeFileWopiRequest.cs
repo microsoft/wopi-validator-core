@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Microsoft.Office.WopiValidator.Core.Requests
 {
@@ -18,7 +17,6 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			this.RequestedName = param.RequestedName;
 			this.RequestType = param.PutRelativeFileMode;
 			this.OverwriteRelative = param.OverwriteRelative;
-			this.RequestBody = param.RequestBody;
 		}
 
 		public PutRelativeFileMode RequestType { get; private set; }
@@ -26,19 +24,12 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		public string RequestedName { get; private set; }
 		public string LockString { get; private set; }
 		public string ResourceId { get; private set; }
-		public string RequestBody { get; private set; }
 		public override string Name { get { return Constants.Requests.PutRelativeFile; } }
 		protected override string WopiOverrideValue { get { return Constants.Overrides.PutRelative; } }
 		protected override bool HasRequestContent { get { return true; } }
 
 		protected override MemoryStream GetRequestContent(IResourceManager resourceManager)
 		{
-			if (this.RequestBody != null)
-			{
-				byte[] bodyAsBytes = Encoding.UTF8.GetBytes(this.RequestBody);
-				return new MemoryStream(bodyAsBytes);
-			}
-
 			return resourceManager.GetContentStream(ResourceId);
 		}
 

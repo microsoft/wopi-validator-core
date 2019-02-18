@@ -18,20 +18,22 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		public override string Name { get { return Constants.Requests.ReadSecureStore; } }
 		protected override string WopiOverrideValue { get { return Constants.Overrides.ReadSecureStore; } }
 
-		protected override IEnumerable<KeyValuePair<string, string>> DefaultHeaders
+		protected override IEnumerable<KeyValuePair<string, string>> GetCustomHeaders(Dictionary<string, string> savedState, IResourceManager resourceManager)
 		{
-			get
+			if (string.IsNullOrEmpty(this.ApplicationId))
 			{
-				Dictionary<string, string> headers = new Dictionary<string, string>();
-				headers.Add(Constants.Headers.ApplicationId, this.ApplicationId);
-
-				if (this.PerfTraceRequested)
-				{
-					headers.Add(Constants.Headers.PerfTraceRequested, System.Boolean.TrueString);
-				}
-
-				return headers;
+				throw new System.Exception("No value provided for header 'X-WOPI-ApplicationId' in ReadSecureStore request! \n Provide value for header 'X-WOPI-ApplicationId' by using command line argument '--ApplicationId'.");
 			}
+
+			Dictionary<string, string> headers = new Dictionary<string, string>();
+			headers.Add(Constants.Headers.ApplicationId, this.ApplicationId);
+
+			if (this.PerfTraceRequested)
+			{
+				headers.Add(Constants.Headers.PerfTraceRequested, System.Boolean.TrueString);
+			}
+
+			return headers;
 		}
 	}
 }

@@ -49,7 +49,7 @@
                         <xs:attribute name="EndsWith" type="xs:string" use="optional" />
                         <xs:attribute name="ExpectedStateKey" type="xs:string" use="optional" />
                         <xs:attribute name="ExpectedValue" type="xs:string" use="optional" />
-                        <xs:attribute name="UnexpectedValue" type="xs:string" use="optional" />
+                        <xs:attribute name="ShouldMatch" type="xs:boolean" use="optional" default="true" />
                         <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="false" />
                       </xs:complexType>
                     </xs:element>
@@ -298,7 +298,6 @@
                     <xs:element name="SaveState" type="SaveStateType" minOccurs="0"/>
                     <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
                     <xs:element name="Validators" type="ValidatorsType" />
-                    <xs:element minOccurs="0" maxOccurs="1" name="RequestBody" type="xs:string" />
                   </xs:sequence>
                   <xs:attribute name="Lock" type="xs:string" />
                   <xs:attribute name="ResourceId" type="xs:string" use="required" />
@@ -311,7 +310,6 @@
                     <xs:element name="SaveState" type="SaveStateType" minOccurs="0"/>
                     <xs:element name="Mutators" type="MutatorsType" minOccurs="0"/>
                     <xs:element name="Validators" type="ValidatorsType" minOccurs="0"/>
-                    <xs:element minOccurs="0" maxOccurs="1" name="RequestBody" type="xs:string" />
                   </xs:sequence>
                   <xs:attribute name="Name" type="xs:string" use="required" />
                   <xs:attribute name="ResourceId" type="xs:string" use="required" />

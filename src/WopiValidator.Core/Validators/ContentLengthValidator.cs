@@ -11,16 +11,9 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 	/// </summary>
 	class ContentLengthValidator : IValidator
 	{
-		public readonly string ExpectedStateKey;
-
 		public string Name
 		{
 			get { return "ContentLengthValidator"; }
-		}
-
-		public ContentLengthValidator(string expectedStateKey = null)
-		{
-			ExpectedStateKey = expectedStateKey;
 		}
 
 		public ValidationResult Validate(IResponseData data, IResourceManager resourceManager, Dictionary<string, string> savedState)
@@ -28,13 +21,6 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 			long actualContentLength = data.ResponseStream.Length;
 			string expectedContentLengthString;
 			data.Headers.TryGetValue("Content-Length", out expectedContentLengthString);
-
-			if (!string.IsNullOrEmpty(ExpectedStateKey) && savedState.ContainsKey(ExpectedStateKey) && !savedState[ExpectedStateKey].Equals(actualContentLength.ToString()))
-			{
-				return new ValidationResult(string.Format("Actual content length '{0}' of response does not match value expected '{1}'",
-					actualContentLength, savedState[ExpectedStateKey]));
-			}
-
 			if (expectedContentLengthString == null)
 			{
 				// Content-Length header is optional, so pass if it's not specified.
