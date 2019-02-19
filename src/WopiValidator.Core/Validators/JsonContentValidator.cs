@@ -239,7 +239,7 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 					isValid = false;
 				}
 
-				errorMessage = string.Format(CultureInfo.CurrentCulture, "Expected: '{0}', Actual: '{1}'", FormattedExpectedValue, formattedActualValue);
+				errorMessage = string.Format(CultureInfo.CurrentCulture, "Expected: '{0}', Actual: '{1}'", FormatValue(expectedValue), formattedActualValue);
 				return isValid;
 			}
 
@@ -296,11 +296,13 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 		public class JsonStringPropertyValidator : JsonPropertyEqualityValidator<string>
 		{
 			private readonly string _endsWithValue;
+			private readonly bool _shouldMatch;
 
-			public JsonStringPropertyValidator(string key, bool isRequired, string expectedValue, bool hasExpectedValue, string endsWithValue, string expectedStateKey)
+			public JsonStringPropertyValidator(string key, bool isRequired, string expectedValue, bool hasExpectedValue, string endsWithValue, string expectedStateKey, bool shouldMatch = true)
 				: base(key, isRequired, expectedValue, hasExpectedValue, expectedStateKey)
 			{
 				_endsWithValue = endsWithValue;
+				_shouldMatch = shouldMatch;
 			}
 
 			public override string FormatValue(string value)
@@ -310,8 +312,13 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 
 			public override bool Validate(JToken actualValue, Dictionary<string, string> savedState, out string errorMessage)
 			{
-				if (!base.Validate(actualValue, savedState, out errorMessage))
+				if (_shouldMatch & !base.Validate(actualValue, savedState, out errorMessage))
 					return false;
+				else if (!_shouldMatch & base.Validate(actualValue, savedState, out errorMessage))
+				{
+					errorMessage = errorMessage.Replace("Expected", "Unexpected");
+					return false;
+				}
 
 				errorMessage = "";
 				if (String.IsNullOrWhiteSpace(_endsWithValue))

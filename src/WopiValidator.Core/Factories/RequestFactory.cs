@@ -51,6 +51,8 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 				UrlType = (string)definition.Attribute("UrlType"),
 				Validators = validators ?? GetDefaultValidators(),
 				WopiSrc = (string)definition.Attribute("WopiSrc"),
+				RestrictedLinkType = (string)definition.Attribute("RestrictedLink"),
+				PerfTraceRequested = string.IsNullOrEmpty((string)definition.Attribute("PerfTraceRequested")) ? false : Boolean.Parse((string)definition.Attribute("PerfTraceRequested"))
 			};
 
 			if (requestBodyDefinition != null && !String.IsNullOrEmpty(requestBodyDefinition.Value))
@@ -72,6 +74,16 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 						PutRelativeFileMode.Conflicting,
 						parsedMode));
 				}
+			}
+
+			if (!string.IsNullOrEmpty(ConfigParser.UsingRestrictedScenario))
+			{
+				wopiRequestParams.UsingRestrictedScenario = ConfigParser.UsingRestrictedScenario;
+			}
+
+			if (!string.IsNullOrEmpty(ConfigParser.ApplicationId))
+			{
+				wopiRequestParams.ApplicationId = ConfigParser.ApplicationId;
 			}
 
 			switch (elementName)
@@ -128,7 +140,12 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 					return new AddActivitiesRequest(wopiRequestParams);
 				case Constants.Requests.PutUserInfo:
 					return new PutUserInfoRequest(wopiRequestParams);
-
+				case Constants.Requests.GetRestrictedLink:
+					return new GetRestrictedLinkRequest(wopiRequestParams);
+				case Constants.Requests.RevokeRestrictedLink:
+					return new RevokeRestrictedLinkRequest(wopiRequestParams);
+				case Constants.Requests.ReadSecureStore:
+					return new ReadSecureStoreRequest(wopiRequestParams);
 				default:
 					throw new ArgumentException(string.Format("Unknown request: '{0}'", elementName));
 			}

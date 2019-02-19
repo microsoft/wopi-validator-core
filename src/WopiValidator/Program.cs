@@ -62,6 +62,9 @@ namespace Microsoft.Office.WopiValidator
 
 		private static ExitCode Execute(Options options)
 		{
+			ConfigParser.UsingRestrictedScenario = options.UsingRestrictedScenario;
+			ConfigParser.ApplicationId = options.ApplicationId;
+
 			// get run configuration from XML
 			IEnumerable<TestExecutionData> testData = ConfigParser.ParseExecutionData(options.RunConfigurationFilePath, options.TestCategory);
 

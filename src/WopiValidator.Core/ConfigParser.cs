@@ -10,6 +10,9 @@ namespace Microsoft.Office.WopiValidator.Core
 {
 	public static class ConfigParser
 	{
+		public static string UsingRestrictedScenario { get; set; }
+		public static string ApplicationId { get; set; }
+
 		public static IEnumerable<TestExecutionData> ParseExecutionData(string filePath, TestCategory targetTestCategory, string testGroupName = "")
 		{
 			return ParseExecutionData(filePath, new ResourceManagerFactory(), new TestCaseFactory(), testGroupName, targetTestCategory);

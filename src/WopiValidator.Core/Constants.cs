@@ -35,6 +35,10 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const string OverwriteRelative = "X-WOPI-OverwriteRelativeTarget";
 			public const string Version = "X-WOPI-ItemVersion";
 			public const string UrlType = "X-WOPI-UrlType";
+			public const string RestrictedLink = "X-WOPI-RestrictedLink";
+			public const string UsingRestrictedScenario = "X-WOPI-UsingRestrictedScenario";
+			public const string ApplicationId = "X-WOPI-ApplicationId";
+			public const string PerfTraceRequested = "X-WOPI-PerfTraceRequested";
 
 			// This is not an official WOPI header; it is used to pass exception information
 			// back to the validator UI. See the ExceptionHelper class for more details.
@@ -65,6 +69,9 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const string GetShareUrl = "GET_SHARE_URL";
 			public const string AddActivities = "ADD_ACTIVITIES";
 			public const string PutUserInfo = "PUT_USER_INFO";
+			public const string GetRestrictedLink = "GET_RESTRICTED_LINK";
+			public const string RevokeRestrictedLink = "REVOKE_RESTRICTED_LINK";
+			public const string ReadSecureStore = "READ_SECURE_STORE";
 		}
 
 		public static class RequestMethods
@@ -101,6 +108,9 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const string GetShareUrl = "GetShareUrl";
 			public const string AddActivities = "AddActivities";
 			public const string PutUserInfo = "PutUserInfo";
+			public const string GetRestrictedLink = "GetRestrictedLink";
+			public const string RevokeRestrictedLink = "RevokeRestrictedLink";
+			public const string ReadSecureStore = "ReadSecureStore";
 		}
 
 		public static class Validators

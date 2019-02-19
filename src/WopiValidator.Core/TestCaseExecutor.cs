@@ -119,6 +119,12 @@ namespace Microsoft.Office.WopiValidator.Core
 
 					requestDetails.Add(requestInfo);
 
+					// Save any state that was requested
+					foreach (IStateEntry stateSaver in request.State)
+					{
+						savedState[stateSaver.Name] = stateSaver.GetValue(responseData);
+					}
+
 					// return on the first request that fails
 					if (validationFailures.Any())
 					{
@@ -135,11 +141,7 @@ namespace Microsoft.Office.WopiValidator.Core
 						break;
 					}
 
-					// Save any state that was requested
-					foreach (IStateEntry stateSaver in request.State)
-					{
-						savedState[stateSaver.Name] = stateSaver.GetValue(responseData);
-					}
+
 				}
 			}
 			finally
