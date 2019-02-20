@@ -1,0 +1,144 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Full WOPI CheckFolderInfo JSON Schema",
+  "description": "A WOPI CheckFolderInfo JSON response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "FolderName",
+    "OwnerId"
+  ],
+  "properties": {
+    "FolderName": {
+      "type": "string"
+    },
+    "BreadcrumbBrandIconUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "BreadcrumbBrandName": {
+      "type": "string",
+      "default": ""
+    },
+    "BreadcrumbBrandUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "BreadcrumbDocName": {
+      "type": "string",
+      "default": ""
+    },
+    "BreadcrumbDocUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "BreadcrumbFolderName": {
+      "type": "string",
+      "default": ""
+    },
+    "BreadcrumbFolderUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "ClientUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "CloseButtonClosesWindow": {
+      "type": "boolean",
+      "default": false
+    },
+    "CloseUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "FileSharingUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "HostAuthenticationId": {
+      "type": "string",
+      "default": ""
+    },
+    "HostEditUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "HostEmbeddedEditUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "HostEmbeddedViewUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "HostName": {
+      "type": "string",
+      "default": ""
+    },
+    "HostViewUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "OwnerId": {
+      "type": "string"
+    },
+    "PresenceProvider": {
+      "type": "string",
+      "default": ""
+    },
+    "PresenceUserId": {
+      "type": "string",
+      "default": ""
+    },
+    "PrivacyUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "SignoutUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "SupportsSecureStore": {
+      "type": "boolean",
+      "default": false
+    },
+    "TenantId": {
+      "type": "string",
+      "default": ""
+    },
+    "TermsOfUseUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "UserCanWrite": {
+      "type": "boolean",
+      "default": false
+    },
+    "UserFriendlyName": {
+      "type": "string",
+      "default": ""
+    },
+    "UserId": {
+      "type": "string",
+      "default": ""
+    },
+    "WebEditingDisabled": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

@@ -111,6 +111,7 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const string GetRestrictedLink = "GetRestrictedLink";
 			public const string RevokeRestrictedLink = "RevokeRestrictedLink";
 			public const string ReadSecureStore = "ReadSecureStore";
+			public const string CheckFolderInfo = "CheckFolderInfo";
 		}
 
 		public static class Validators

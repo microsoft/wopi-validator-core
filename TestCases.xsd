@@ -490,6 +490,13 @@
                   <xs:attribute name="PerfTraceRequested" type="xs:boolean" />
                 </xs:complexType>
               </xs:element>
+              <xs:element name="CheckFolderInfo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
               <xs:element name="AddActivities">
                 <xs:complexType>
                   <xs:sequence minOccurs="1">

@@ -146,6 +146,8 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 					return new RevokeRestrictedLinkRequest(wopiRequestParams);
 				case Constants.Requests.ReadSecureStore:
 					return new ReadSecureStoreRequest(wopiRequestParams);
+				case Constants.Requests.CheckFolderInfo:
+					return new CheckFolderInfoRequest(wopiRequestParams);
 				default:
 					throw new ArgumentException(string.Format("Unknown request: '{0}'", elementName));
 			}
