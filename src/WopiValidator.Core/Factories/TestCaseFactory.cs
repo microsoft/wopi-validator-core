@@ -53,14 +53,10 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		{
 			string category = (string)definition.Attribute("Category");
 			string name = (string)definition.Attribute("Name");
-			string resourceId = (string)definition.Attribute("Document");
 			string description = (string)definition.Element("Description");
 			string uiScreenshot = (string)definition.Attribute("UiScreenshot");
 			string documentationLink = (string)definition.Attribute("DocumentationLink");
 			string failMessage = (string)definition.Attribute("FailMessage");
-
-			bool uploadDocumentOnSetup = (bool?)definition.Attribute("UploadDocumentOnSetup") ?? true;
-			bool deleteDocumentOnTeardown = (bool?)definition.Attribute("DeleteDocumentOnTeardown") ?? true;
 
 			XElement requestsDefinition = definition.Element("Requests");
 			IEnumerable<IRequest> requests = RequestFactory.GetRequests(requestsDefinition);
@@ -70,18 +66,16 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			if (cleanupRequestsDefinition != null)
 				cleanupRequests = RequestFactory.GetRequests(cleanupRequestsDefinition);
 
-			ITestCase testCase = new TestCase(resourceId,
-				requests,
+			ITestCase testCase = new TestCase(requests,
 				cleanupRequests,
 				name,
 				CondenseMultiLineString(description),
-				uploadDocumentOnSetup,
-				deleteDocumentOnTeardown,
-				category);
-
-			testCase.UiScreenShot = uiScreenshot;
-			testCase.DocumentationLink = documentationLink;
-			testCase.FailMessage = failMessage;
+				category)
+			{
+				UiScreenShot = uiScreenshot,
+				DocumentationLink = documentationLink,
+				FailMessage = failMessage
+			};
 
 			return testCase;
 		}
