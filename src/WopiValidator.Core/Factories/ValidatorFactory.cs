@@ -62,9 +62,9 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		/// </summary>
 		private static IValidator GetResponseContentValidator(XElement definition)
 		{
-			string documentId = (string)definition.Attribute("ExpectedDocumentId");
+			string resourceId = (string)definition.Attribute("ExpectedResourceId");
 			string expectedBodyContent = (string)definition.Attribute("ExpectedBodyContent");
-			return new ResponseContentValidator(documentId, expectedBodyContent);
+			return new ResponseContentValidator(resourceId, expectedBodyContent);
 		}
 
 		/// <summary>

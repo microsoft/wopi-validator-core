@@ -128,7 +128,7 @@
           <xs:complexType>
             <xs:complexContent>
               <xs:extension base="ValidatorBaseType">
-                <xs:attribute name="ExpectedDocumentId" type="xs:string" use="optional" />
+                <xs:attribute name="ExpectedResourceId" type="xs:string" use="optional" />
                 <xs:attribute name="ExpectedBodyContent" type="xs:string" use="optional" />
               </xs:extension>
             </xs:complexContent>
