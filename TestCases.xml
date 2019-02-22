@@ -961,7 +961,7 @@
           <PutFile ResourceId="WordBlankDocument" />
           <GetFile>
             <Validators>
-              <ResponseContentValidator ExpectedDocumentId="WordBlankDocument" />
+              <ResponseContentValidator ExpectedResourceId="WordBlankDocument" />
             </Validators>
           </GetFile>
         </Requests>
@@ -3452,7 +3452,7 @@
           <Unlock Lock="LockString" />
           <GetFromFileUrl OverrideUrl="$State:FileUrl">
             <Validators>
-              <ResponseContentValidator ExpectedDocumentId="WordSimpleDocument" />
+              <ResponseContentValidator ExpectedResourceId="WordSimpleDocument" />
             </Validators>
           </GetFromFileUrl>
         </Requests>
