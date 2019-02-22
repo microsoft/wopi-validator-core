@@ -142,6 +142,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			bool shouldMatch = ((bool?)definition.Attribute("ShouldMatch")) ?? true;
 			bool hasContainsValue = containsValue != null;
 			bool mustIncludeAccessToken = ((bool?)definition.Attribute("MustIncludeAccessToken")) ?? false;
+			bool ignoreCase = ((bool?)definition.Attribute("IgnoreCase")) ?? false;
 
 			switch (elementName)
 			{
@@ -172,7 +173,8 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 						expectedValue,
 						hasExpectedValue,
 						endsWithValue,
-						expectedStateKey);
+						expectedStateKey,
+						ignoreCase);
 
 				case Constants.Validators.Properties.StringRegexProperty:
 					return new JsonContentValidator.JsonStringRegexPropertyValidator(key,
@@ -180,7 +182,8 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 						expectedValue,
 						hasExpectedValue,
 						expectedStateKey,
-						shouldMatch);
+						shouldMatch,
+						ignoreCase);
 
 				case Constants.Validators.Properties.AbsoluteUrlProperty:
 					return new JsonContentValidator.JsonAbsoluteUrlPropertyValidator(key,

@@ -296,11 +296,15 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 		public class JsonStringPropertyValidator : JsonPropertyEqualityValidator<string>
 		{
 			private readonly string _endsWithValue;
+			private readonly bool _ignoreCase;
+			private readonly StringComparison _comparisonType;
 
-			public JsonStringPropertyValidator(string key, bool isRequired, string expectedValue, bool hasExpectedValue, string endsWithValue, string expectedStateKey)
+			public JsonStringPropertyValidator(string key, bool isRequired, string expectedValue, bool hasExpectedValue, string endsWithValue, string expectedStateKey, bool ignoreCase = false)
 				: base(key, isRequired, expectedValue, hasExpectedValue, expectedStateKey)
 			{
 				_endsWithValue = endsWithValue;
+				_ignoreCase = ignoreCase;
+				_comparisonType = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture;
 			}
 
 			public override string FormatValue(string value)
@@ -320,13 +324,26 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 				string typedActualValue = actualValue.Value<string>();
 				string formattedActualValue = FormatValue(typedActualValue);
 
-				if (!formattedActualValue.EndsWith(_endsWithValue))
+				if (!formattedActualValue.EndsWith(_endsWithValue, _comparisonType))
 				{
 					errorMessage = string.Format("Expected to end with: '{0}', Actual: '{1}'", _endsWithValue, formattedActualValue);
 					return false;
 				}
 
 				return true;
+			}
+
+			protected override bool Compare(JToken actualValue, string expectedValue, out string errorMessage)
+			{
+				if (!_ignoreCase)
+				{
+					return base.Compare(actualValue, expectedValue, out errorMessage);
+				}
+
+				string formattedActualValue = FormatValue(actualValue.Value<string>());
+				bool isValid = formattedActualValue.Equals(expectedValue, _comparisonType);
+				errorMessage = string.Format(CultureInfo.CurrentCulture, "Expected: '{0} (case-insensitive)', Actual: '{1}'", expectedValue, formattedActualValue);
+				return isValid;
 			}
 		}
 
@@ -335,10 +352,16 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 			private readonly Regex _regex;
 			private readonly bool _shouldMatch;
 
-			public JsonStringRegexPropertyValidator(string key, bool isRequired, string expectedValue, bool hasExpectedValue, string expectedStateKey, bool shouldMatch)
+			public JsonStringRegexPropertyValidator(string key, bool isRequired, string expectedValue, bool hasExpectedValue, string expectedStateKey, bool shouldMatch, bool ignoreCase = false)
 				: base(key, isRequired, expectedValue, hasExpectedValue, expectedStateKey)
 			{
-				_regex = new Regex(expectedValue, RegexOptions.Compiled);
+				RegexOptions options = RegexOptions.Compiled;
+
+				if (ignoreCase)
+				{
+					options = options | RegexOptions.IgnoreCase;
+				}
+				_regex = new Regex(expectedValue, options | RegexOptions.Compiled);
 				_shouldMatch = shouldMatch;
 			}
 
