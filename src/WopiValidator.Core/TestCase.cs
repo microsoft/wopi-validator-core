@@ -13,18 +13,12 @@ namespace Microsoft.Office.WopiValidator.Core
 	class TestCase : ITestCase
 	{
 		public TestCase(
-			string resourceId,
 			IEnumerable<IRequest> requests,
 			IEnumerable<IRequest> cleanupRequests,
 			string name,
 			string description,
-			bool uploadDocumentOnSetup,
-			bool deleteDocumentOnTearDown,
 			string category)
 		{
-			DeleteDocumentOnTearDown = deleteDocumentOnTearDown;
-			UploadDocumentOnSetup = uploadDocumentOnSetup;
-
 			if (requests == null)
 				throw new ArgumentNullException("requests");
 			Requests = requests.ToArray();
@@ -34,10 +28,6 @@ namespace Microsoft.Office.WopiValidator.Core
 			if (cleanupRequests == null)
 				cleanupRequests = Enumerable.Empty<IRequest>();
 			CleanupRequests = cleanupRequests.ToArray();
-
-			if (string.IsNullOrEmpty(resourceId))
-				throw new ArgumentException("ResourceId cannot be empty.", "resourceId");
-			ResourceId = resourceId;
 
 			if (string.IsNullOrEmpty(name))
 				throw new ArgumentException("Name cannot be empty.", "name");
@@ -54,12 +44,9 @@ namespace Microsoft.Office.WopiValidator.Core
 		public IEnumerable<IRequest> CleanupRequests { get; private set; }
 		public string Name { get; private set; }
 		public string Description { get; private set; }
-		public string ResourceId { get; private set; }
 		public string UiScreenShot { get; set; }
 		public string DocumentationLink { get; set; }
 		public string FailMessage {get; set; }
-		public bool UploadDocumentOnSetup { get; private set; }
-		public bool DeleteDocumentOnTearDown { get; private set; }
 		public string Category { get; private set; }
 	}
 }

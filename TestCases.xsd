@@ -504,13 +504,10 @@
       </xs:element>
     </xs:sequence>
     <xs:attribute name="Name" type="xs:string" use="required" />
-    <xs:attribute name="Document" type="xs:string" use="required" />
     <xs:attribute name="Category" type="xs:string" use="optional" />
     <xs:attribute name="UiScreenshot" type="xs:string" use="optional" />
     <xs:attribute name="DocumentationLink" type="xs:string" use="optional" />
     <xs:attribute name="FailMessage" type="xs:string" use="optional" />
-    <xs:attribute name="UploadDocumentOnSetup" type="xs:boolean" use="optional" default="false" />
-    <xs:attribute name="DeleteDocumentOnTeardown" type="xs:boolean" use="optional" default="false" />
   </xs:complexType>
 
   <!-- Concrete definition of the entire WopiValidation -->
