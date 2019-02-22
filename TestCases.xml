@@ -1727,13 +1727,13 @@
           Perform a PutRelativeFile operation, then rename and delete it. The rename operation should succeed.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -1806,13 +1806,13 @@
           Perform a PutRelativeFile operation, then lock it and try to rename it with the correct lock ID. The rename operation should succeed.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -1849,13 +1849,13 @@
           The rename operation should fail with a Conflict - 409 status code.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -1888,13 +1888,13 @@
           Perform a PutRelativeFile operation, then delete it and try to rename it. The rename operation should fail with a 404 status code.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -1924,13 +1924,13 @@
           Perform a PutRelativeFile operation, then rename and delete it. The rename operation should not change the file extension of the file.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -1954,8 +1954,8 @@
           <CheckFileInfo OverrideUrl="$State:NewFileUrl">
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="BaseFileName" ExpectedValue="ValidatorTestFileRenamed.docx" IsRequired="true" />
-                <StringProperty Name="FileExtension" ExpectedValue=".docx" IsRequired="false" />
+                <StringProperty Name="BaseFileName" ExpectedValue="ValidatorTestFileRenamed.wopitest" IsRequired="true" />
+                <StringProperty Name="FileExtension" ExpectedValue=".wopitest" IsRequired="false" />
               </JsonResponseContentValidator>
             </Validators>
           </CheckFileInfo>
@@ -1992,13 +1992,13 @@
               <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
             </SaveState>
           </EnumerateAncestors>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
@@ -2085,13 +2085,13 @@
               <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
             </SaveState>
           </EnumerateAncestors>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
@@ -2135,13 +2135,13 @@
               <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
             </SaveState>
           </EnumerateAncestors>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
@@ -2181,13 +2181,13 @@
               <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
             </SaveState>
           </EnumerateAncestors>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
@@ -2224,13 +2224,13 @@
               <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
             </SaveState>
           </EnumerateAncestors>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
@@ -2255,8 +2255,8 @@
           <CheckFileInfo OverrideUrl="$State:NewFileUrl">
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="BaseFileName" ExpectedValue="ValidatorTestFileRenamed.docx" IsRequired="true" />
-                <StringProperty Name="FileExtension" ExpectedValue=".docx" IsRequired="false" />
+                <StringProperty Name="BaseFileName" ExpectedValue="ValidatorTestFileRenamed.wopitest" IsRequired="true" />
+                <StringProperty Name="FileExtension" ExpectedValue=".wopitest" IsRequired="false" />
               </JsonResponseContentValidator>
             </Validators>
           </CheckFileInfo>
@@ -2877,7 +2877,7 @@
               </JsonResponseContentValidator>
             </Validators>
           </CheckContainerInfo>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="Suggested" Name="CreateChildFileTestFile.docx">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="Suggested" Name="CreateChildFileTestFile.wopitest">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
