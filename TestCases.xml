@@ -1118,7 +1118,7 @@
       </TestCase>
 
       <!-- /files/PutFile returns a different X-WOPI-ItemVersion -->
-      <TestCase Name="files.PutFileReturnsDifferentVersion" Category="OfficeNativeClient">
+      <TestCase Name="files.PutFileReturnsDifferentVersion" Category="WopiCore">
         <Description>
           Performs consecutive PutFile operations to verify that the X-WOPI-ItemVersion header value is changed with every PutFile operation.
         </Description>
@@ -1143,6 +1143,13 @@
             </Validators>
           </PutFile>
           <Unlock Lock="LockString" />
+          <CheckFileInfo>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Version" ExpectedStateKey="SecondVersion" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
         </Requests>
         <CleanupRequests>
           <Unlock Lock="LockString" />
@@ -1150,7 +1157,7 @@
       </TestCase>
 
       <!-- /files/GetFile, /files/Lock and /files/Unlock returns the same X-WOPI-ItemVersion -->
-      <TestCase Name="files.LockAndUnlockAfterGetFileReturnsSameVersion" Category="OfficeNativeClient">
+      <TestCase Name="files.LockAndUnlockAfterGetFileReturnsSameVersion" Category="WopiCore">
         <Description>
           Performs Lock and Unlock operations after a GetFile operation to verify that the X-WOPI-ItemVersion header value is unchanged.
         </Description>
