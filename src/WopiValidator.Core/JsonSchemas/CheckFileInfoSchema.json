@@ -45,9 +45,6 @@
       "format": "uri",
       "type": "string"
     },
-    "CloseButtonClosesWindow": {
-      "type": "boolean"
-    },
     "ClosePostMessage": {
       "type": "boolean"
     },
