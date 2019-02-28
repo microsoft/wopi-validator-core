@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 using Newtonsoft.Json;
@@ -14,7 +14,7 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 	/// <summary>
 	/// Validates that response content is a JSON encoded string that contains provided set of properties with values matching expecting ones.
 	/// </summary>
-	class JsonContentValidator : IValidator
+	internal class JsonContentValidator : IValidator
 	{
 		private readonly IJsonPropertyValidator[] _propertyValidators;
 
@@ -65,7 +65,7 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 
 				return new ValidationResult(errors.ToArray());
 			}
-			catch(JsonReaderException ex)
+			catch (JsonReaderException ex)
 			{
 				return new ValidationResult($"{Name}: {ex.GetType().Name} thrown while parsing JSON. Are you sure the response is JSON?");
 			}
@@ -379,6 +379,13 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 
 				errorMessage = "";
 				string typedActualValue = actualValue.Value<string>();
+
+				if (string.IsNullOrEmpty(typedActualValue))
+				{
+					errorMessage = $"Value null doesn't match the expected regular expression '{_regex}'";
+					return false;
+				}
+
 				string formattedActualValue = FormatValue(typedActualValue);
 
 				bool isMatch = _regex.IsMatch(typedActualValue);
