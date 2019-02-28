@@ -433,6 +433,9 @@
             <Validators>
               <JsonSchemaValidator Schema="CheckFileInfoSchema" />
               <JsonResponseContentValidator>
+                <!-- BaseFileName should *not* start with a "."; it should be a full file name. -->
+                <StringRegexProperty Name="BaseFileName" ExpectedValue="^\..*$" IsRequired="false" ShouldMatch="false" />
+
                 <!-- FileExtension, if provided, should start with a "."; using this as a shortcut to test for that. -->
                 <StringProperty Name="FileExtension" ExpectedValue=".wopitest" IsRequired="false" />
               </JsonResponseContentValidator>
