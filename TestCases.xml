@@ -1142,11 +1142,15 @@
               <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="SecondVersion" ShouldMatch="false" />
             </Validators>
           </PutFile>
-          <Unlock Lock="LockString" />
+          <Unlock Lock="LockString">
+            <SaveState>
+              <State Name="VersionOnUnlock" Source="X-WOPI-ItemVersion" SourceType="Header" />
+            </SaveState>
+          </Unlock>
           <CheckFileInfo>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Version" ExpectedStateKey="SecondVersion" />
+                <StringProperty Name="Version" ExpectedStateKey="VersionOnUnlock" />
               </JsonResponseContentValidator>
             </Validators>
           </CheckFileInfo>
