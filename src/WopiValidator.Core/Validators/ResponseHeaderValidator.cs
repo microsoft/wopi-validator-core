@@ -18,8 +18,9 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 		public readonly bool IsRequired;
 		public readonly bool ShouldMatch;
 		public readonly bool IsUrl;
+		public readonly bool IsExcluded;
 
-		public ResponseHeaderValidator(string key, string expectedValue, string expectedStateKey, bool isRequired = true, bool shouldMatch = true, bool isUrl = false)
+		public ResponseHeaderValidator(string key, string expectedValue, string expectedStateKey, bool isRequired = true, bool shouldMatch = true, bool isUrl = false, bool isExcluded = false)
 		{
 			Key = key;
 			DefaultExpectedValue = expectedValue;
@@ -27,6 +28,7 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 			IsRequired = isRequired;
 			ShouldMatch = shouldMatch;
 			IsUrl = isUrl;
+			IsExcluded = isExcluded;
 		}
 
 		public string Name
@@ -40,14 +42,19 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 
 			if (!data.Headers.TryGetValue(Key, out headerValue))
 			{
-				if (IsRequired)
-				{
-					return new ValidationResult(string.Format(CultureInfo.CurrentCulture, "'{0}' header is not present on the response", Key));
-				}
-				else
+				if (IsExcluded || !IsRequired)
 				{
 					return new ValidationResult();
 				}
+				else
+				{
+					return new ValidationResult(string.Format(CultureInfo.CurrentCulture, "'{0}' header is not present on the response", Key));
+				}
+			}
+
+			if (IsExcluded)
+			{
+				return new ValidationResult(string.Format(CultureInfo.CurrentCulture, "'{0}' header should not be present on the response", Key));
 			}
 
 			if (IsUrl)

@@ -12,21 +12,6 @@
   </Resources>
   
   <PrereqCases>
-    <TestCase Name="WopiValidatorPrereq" Document="WordBlankDocument" Category="WopiCore">
-      <Description>
-        The prereq WOPI validation that must pass prior to running the (potentially destructive) test suite.
-      </Description>
-      <Requests>
-        <CheckFileInfo>
-          <Validators>
-            <JsonResponseContentValidator>
-              <StringProperty Name="BaseFileName" EndsWith=".wopitest" IsRequired="true" />
-            </JsonResponseContentValidator>
-          </Validators>
-        </CheckFileInfo>
-      </Requests>
-    </TestCase>
-
     <TestCase Name="UserCanWritePrereq" Document="WordBlankDocument" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the user has permission to perform Write operation.
@@ -118,36 +103,6 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="GetLockPrereq" Document="WordBlankDocument" Category="WopiCore">
-      <Description>
-        Prereq WOPI Validation test to check if host declares support for GetLock operation.
-      </Description>
-      <Requests>
-        <CheckFileInfo>
-          <Validators>
-            <JsonResponseContentValidator>
-              <BooleanProperty Name="SupportsGetLock" ExpectedValue="true" IsRequired="true"/>
-            </JsonResponseContentValidator>
-          </Validators>
-        </CheckFileInfo>
-      </Requests>
-    </TestCase>
-
-    <TestCase Name="ExtendedLockLengthPrereq" Document="WordBlankDocument" Category="WopiCore">
-      <Description>
-        Prereq WOPI Validation test to check if host declares support for extended lock lengths.
-      </Description>
-      <Requests>
-        <CheckFileInfo>
-          <Validators>
-            <JsonResponseContentValidator>
-              <BooleanProperty Name="SupportsExtendedLockLength" ExpectedValue="true" IsRequired="true" />
-            </JsonResponseContentValidator>
-          </Validators>
-        </CheckFileInfo>
-      </Requests>
-    </TestCase>
-
     <TestCase Name="BusinessFlowPrereq" Document="WordBlankDocument" Category="WopiCore">
       <Description>
         The prereq BusinessFlowPrereq must pass prior to running the feature validations related to business flows.
@@ -202,21 +157,6 @@
           <Validators>
             <JsonResponseContentValidator>
               <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
-            </JsonResponseContentValidator>
-          </Validators>
-        </CheckFileInfo>
-      </Requests>
-    </TestCase>
-
-    <TestCase Name="SupportsUserInfoPrereq" Document="WordBlankDocument" Category="WopiCore">
-      <Description>
-        The host must support /files/PutUserInfo.
-      </Description>
-      <Requests>
-        <CheckFileInfo>
-          <Validators>
-            <JsonResponseContentValidator>
-              <BooleanProperty Name="SupportsUserInfo" ExpectedValue="true" IsRequired="true" />
             </JsonResponseContentValidator>
           </Validators>
         </CheckFileInfo>
@@ -300,9 +240,6 @@
   </PrereqCases>
 
   <TestGroup Name="CheckFileInfo">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-    </PrereqTests>
     <TestCases>
       <TestCase Name="FullCheckFileInfoSchema" Document="WordBlankDocument" Category="WopiCore">
         <Description>
@@ -312,10 +249,6 @@
           <CheckFileInfo>
             <Validators>
               <JsonSchemaValidator Schema="MS-WOPICheckFileInfoSchema" />
-              <JsonResponseContentValidator>
-                <!-- FileExtension, if provided, should start with a "."; using this as a shortcut to test for that. -->
-                <StringProperty Name="FileExtension" ExpectedValue=".wopitest" IsRequired="false" />
-              </JsonResponseContentValidator>
               <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
               <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
             </Validators>
@@ -346,7 +279,6 @@
 
   <TestGroup Name="VersionInCheckFileInfoResponseChangedAfterFileContentChanged">
     <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>FileEditingPrereq</PrereqTest>
       <PrereqTest>UserCanWritePrereq</PrereqTest>
     </PrereqTests>
@@ -385,9 +317,6 @@
   </TestGroup>
 
   <TestGroup Name="GetFile">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-    </PrereqTests>
     <TestCases>
       <TestCase Name="GetFile" Document="WordSimpleDocument" Category="WopiCore">
         <Description>
@@ -432,7 +361,6 @@
 
   <TestGroup Name="PutRelativeFile">
     <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>FileEditingPrereq</PrereqTest>
       <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
       <PrereqTest>LocksPrereq</PrereqTest>
@@ -529,7 +457,7 @@
             <Validators>
               <ResponseCodeValidator ExpectedCode="200"/>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" EndsWith="wopitest" UnexpectedValue="madeupname.wopitest" IsRequired="true"/>
+                <StringProperty Name="Name" EndsWith="wopitest" ExpectedValue="madeupname.wopitest" IsRequired="true" ShouldMatch="false"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
                 <AbsoluteUrlProperty Name="HostViewUrl" IsRequired="false"/>
                 <AbsoluteUrlProperty Name="HostEditUrl" IsRequired="false"/>
@@ -793,7 +721,6 @@
 
   <TestGroup Name="PutFile">
     <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>FileEditingPrereq</PrereqTest>
       <PrereqTest>NotReadOnlyPrereq</PrereqTest>      
       <PrereqTest>UserCanWritePrereq</PrereqTest>
@@ -885,7 +812,6 @@
 
   <TestGroup Name="LockMismatchOnPutFileRequest">
     <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>FileEditingPrereq</PrereqTest>
       <PrereqTest>LocksPrereq</PrereqTest>
       <PrereqTest>UserCanWritePrereq</PrereqTest>
@@ -913,7 +839,6 @@
 
   <TestGroup Name="Locks">
     <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>LocksPrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
@@ -950,36 +875,6 @@
         <CleanupRequests>
           <Unlock Lock="LockString" />
           <Unlock Lock="NewLockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <TestCase Name="DoubleLockSequence" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Two Lock calls in a row with the same Lock ID should work.
-        </Description>
-        <Requests>
-          <Lock Lock="LockString" />
-          <Lock Lock="LockString" />
-          <Unlock Lock="LockString" />
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <TestCase Name="UnlockUnlockedFile" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Responses to Unlock requests on an unlocked file should include the X-WOPI-Lock header set to the empty string.
-        </Description>
-        <Requests>
-          <Unlock Lock="LockString">
-            <Validators>
-              <LockMismatchValidator ExpectedLock="" />
-            </Validators>
-          </Unlock>
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
         </CleanupRequests>
       </TestCase>
 
@@ -1116,7 +1011,6 @@
 
   <TestGroup Name="X-WOPI-LockHeaderReturnedWhenLocksLockMismatch">
     <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>LocksPrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
@@ -1141,204 +1035,121 @@
 
       <TestCase Name="X-WOPI-LockHeaderIncludedWhenLockMismatchOnUnlockRequest" Document="WordBlankDocument" Category="WopiCore">
         <Description>
-          This tests that X-WOPI-Lock header is returned when lock mismatch for Unlock request.
+          This tests that X-WOPI-Lock header is included when responding with the 409 status code for Unlock request if no lock exists on the file. 
         </Description>
         <Requests>
-          <Lock Lock="LockString" />
           <Unlock Lock="IncorrectLockString">
             <Validators>
-              <LockMismatchValidator ExpectedLock="LockString" />
+              <LockMismatchValidator ExpectedLock="" />
             </Validators>
           </Unlock>
         </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-          <Unlock Lock="IncorrectLockString" />
-        </CleanupRequests>
       </TestCase>
 
       <TestCase Name="X-WOPI-LockHeaderIncludedWhenLockMismatchOnRefreshLockRequest" Document="WordBlankDocument" Category="WopiCore">
         <Description>
-          This tests that X-WOPI-Lock header is returned when lock mismatch for RefreshLock request.
+          This tests that X-WOPI-Lock header is included when responding with the 409 status code for RefreshLock request if no lock exists on the file.
         </Description>
         <Requests>
-          <Lock Lock="LockString" />
           <RefreshLock Lock="IncorrectLockString">
             <Validators>
-              <LockMismatchValidator ExpectedLock="LockString" />
+              <LockMismatchValidator ExpectedLock="" />
             </Validators>
           </RefreshLock>
         </Requests>
         <CleanupRequests>
-          <Unlock Lock="LockString" />
           <Unlock Lock="IncorrectLockString" />
         </CleanupRequests>
       </TestCase>
 
       <TestCase Name="X-WOPI-LockHeaderIncludedWhenLockMismatchOnUnlockAndRelockRequest" Document="WordBlankDocument" Category="WopiCore">
         <Description>
-          This tests that X-WOPI-Lock header is returned when lock mismatch for UnlockAndRelock request.
+          This tests that X-WOPI-Lock header is included when responding with the 409 status code for UnlockAndRelock request if no lock exists on the file.
         </Description>
         <Requests>
-          <Lock Lock="LockString" />
           <UnlockAndRelock OldLock="IncorrectLockString" NewLock="NewLockString">
             <Validators>
-              <LockMismatchValidator ExpectedLock="LockString" />
+              <LockMismatchValidator ExpectedLock="" />
             </Validators>
           </UnlockAndRelock>
         </Requests>
         <CleanupRequests>
-          <Unlock Lock="LockString" />
-          <Unlock Lock="IncorrectLockString" />
           <Unlock Lock="NewLockString" />
         </CleanupRequests>
       </TestCase>
+    </TestCases>
+  </TestGroup>
 
-      <TestCase Name="X-WOPI-LockHeaderIncludedWhenLockMismatchAfterUnlockAndRelockRequest" Document="WordBlankDocument" Category="WopiCore">
+  <TestGroup Name="X-WOPI-LockHeaderIsNotReturnedWhenLocksSuccess">
+    <PrereqTests>
+      <PrereqTest>LocksPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="X-WOPI-LockHeaderIsNotReturnedWhenLockSuccess" Document="WordBlankDocument" Category="WopiCore">
         <Description>
-          This tests that X-WOPI-Lock header is returned when unlock with old lock.
+          This tests that X-WOPI-Lock header is not returned when lock success.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-Lock" IsExcluded="true" />
+            </Validators>
+          </Lock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="X-WOPI-LockHeaderIsNotReturnedWhenUnlockSuccess" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          This tests that X-WOPI-Lock header is not returned when Unlock success.
         </Description>
         <Requests>
           <Lock Lock="LockString" />
-          <UnlockAndRelock OldLock="LockString" NewLock="NewLockString" />
           <Unlock Lock="LockString">
             <Validators>
-              <LockMismatchValidator ExpectedLock="NewLockString" />
+              <ResponseHeaderValidator Header="X-WOPI-Lock" IsExcluded="true" />
             </Validators>
           </Unlock>
         </Requests>
         <CleanupRequests>
           <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="X-WOPI-LockHeaderIsNotReturnedWhenRefreshLockSuccess" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          This tests that X-WOPI-Lock header is not returned when RefreshLock success.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <RefreshLock Lock="LockString">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-Lock" IsExcluded="true" />
+            </Validators>
+          </RefreshLock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="X-WOPI-LockHeaderIsNotReturnedWhenUnlockAndRelockSuccess" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          This tests that X-WOPI-Lock header is not returned when UnlockAndRelock succeess.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <UnlockAndRelock OldLock="LockString" NewLock="NewLockString">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-Lock" IsExcluded="true" />
+            </Validators>
+          </UnlockAndRelock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
           <Unlock Lock="NewLockString" />
-        </CleanupRequests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="X-WOPI-LockHeaderReturnedWhenPutFileLockMismatch">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>LocksPrereq</PrereqTest>
-      <PrereqTest>FileEditingPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="X-WOPI-LockHeaderIncludedWhenLockMismatchOnPutFileRequest" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          This tests that X-WOPI-Lock header is returned when put file with incorrect lock ID.
-        </Description>
-        <Requests>
-          <Lock Lock="LockString" />
-          <PutFile Lock="IncorrectLockString" ResourceId="WordBlankDocument">
-            <Validators>
-              <LockMismatchValidator ExpectedLock="LockString" />
-            </Validators>
-          </PutFile>
-          <Unlock Lock="LockString" />
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-          <Unlock Lock="IncorrectLockString" />
-        </CleanupRequests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="GetLock">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>LocksPrereq</PrereqTest>
-      <PrereqTest>GetLockPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="GetLock" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests the standard GetLock flow; Lock, GetLock, then Unlock.
-        </Description>
-        <Requests>
-          <Lock Lock="LockString" />
-          <GetLock>
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="LockString" IsRequired="true" ShouldMatch="true" />
-              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
-              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
-            </Validators>
-          </GetLock>
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <TestCase Name="GetLockAfterChange" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests that the lock ID GetLock returns changes after it's changed by UnlockAndRelock.
-        </Description>
-        <Requests>
-          <Lock Lock="LockString" />
-          <UnlockAndRelock NewLock="NewLockString" OldLock="LockString" />
-          <GetLock>
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="NewLockString" IsRequired="true" ShouldMatch="true" />
-            </Validators>
-          </GetLock>
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="NewLockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <TestCase Name="GetLockWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Tests that host returns status code 401 or 404 when get lock with invalid access token.
-        </Description>
-        <Requests>
-          <Lock Lock="LockString" />
-          <GetLock>
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <Or>
-                <ResponseCodeValidator ExpectedCode="401" />
-                <ResponseCodeValidator ExpectedCode="404" />
-              </Or>
-            </Validators>
-          </GetLock>
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="ExtendedLockLength">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>FileEditingPrereq</PrereqTest>
-      <PrereqTest>LocksPrereq</PrereqTest>
-      <PrereqTest>GetLockPrereq</PrereqTest>
-      <PrereqTest>ExtendedLockLengthPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="ExtendedLockLengthValidation" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests that the host is capable of handling WOPI Lock IDs of 1024 characters.
-        </Description>
-        <Requests>
-          <CheckFileInfo>
-            <Validators>
-              <JsonResponseContentValidator>
-                <BooleanProperty Name="SupportsExtendedLockLength" ExpectedValue="true" IsRequired="true" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-          <Lock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
-          <GetLock />
-          <Unlock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
         </CleanupRequests>
       </TestCase>
     </TestCases>
@@ -1346,7 +1157,6 @@
   
   <TestGroup Name="OperatesOnUnknownFile">
     <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
       <PrereqTest>FileEditingPrereq</PrereqTest>
       <PrereqTest>SupportsFoldersPrereq</PrereqTest>
@@ -1464,7 +1274,6 @@
 
   <TestGroup Name="LocksUnknownFile">
     <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
       <PrereqTest>LocksPrereq</PrereqTest>
       <PrereqTest>FileEditingPrereq</PrereqTest>
@@ -1604,44 +1413,8 @@
     </TestCases>
   </TestGroup>
 
-  <TestGroup Name="GetLockForUnknownFile">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
-      <PrereqTest>FileEditingPrereq</PrereqTest>
-      <PrereqTest>GetLockPrereq</PrereqTest>
-      <PrereqTest>SupportsFoldersPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="GetLockForUnknownFile" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Tests that host returns status code 404 when get lock for unknown file.
-        </Description>
-        <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="NewFileUrl" Source="Url" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
-              </JsonResponseContentValidator>
-            </Validators>
-          </PutRelativeFile>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-          <GetLock  OverrideUrl="$State:NewFileUrl">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404" />
-            </Validators>
-          </GetLock>
-        </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
   <TestGroup Name="PutUnknownFile">
     <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
       <PrereqTest>LocksPrereq</PrereqTest>
       <PrereqTest>FileEditingPrereq</PrereqTest>
@@ -1674,102 +1447,11 @@
     </TestCases>
   </TestGroup>
 
-  <TestGroup Name="PutUserInfo">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>SupportsUserInfoPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-
-      <TestCase Name="PutUserInfoSucceeds" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          This tests that PutUserInfo call returns 200 and subsequent CheckFileInfo calls return the correct value
-        </Description>
-        <Requests>
-          <PutUserInfo>
-            <RequestBody>PutUserInfoTest</RequestBody>
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="200" />
-              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
-              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
-            </Validators>
-          </PutUserInfo>
-          <CheckFileInfo>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="UserInfo" ExpectedValue="PutUserInfoTest" IsRequired="true" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-        </Requests>
-      </TestCase>
-
-      <TestCase Name="PutUserInfoWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          This tests that PutUserInfo request with invalid access token expects a 401 or 404 response.
-        </Description>
-        <Requests>
-          <PutUserInfo>
-            <RequestBody>PutUserInfoTest</RequestBody>
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <Or>
-                <ResponseCodeValidator ExpectedCode="401" />
-                <ResponseCodeValidator ExpectedCode="404" />
-              </Or>
-            </Validators>
-          </PutUserInfo>
-        </Requests>
-      </TestCase>
-
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="PutUserInfoOnUnknownFile">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>SupportsUserInfoPrereq</PrereqTest>
-      <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
-      <PrereqTest>FileEditingPrereq</PrereqTest>
-      <PrereqTest>SupportsFoldersPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="PutUserInfoOnUnknownFile" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Tests that host returns status code 404 when put user info based on unknown file.
-        </Description>
-        <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="NewFileUrl" Source="Url" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
-              </JsonResponseContentValidator>
-            </Validators>
-          </PutRelativeFile>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-          <PutUserInfo  OverrideUrl="$State:NewFileUrl">
-            <RequestBody>PutUserInfoTest</RequestBody>
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404" />
-            </Validators>
-          </PutUserInfo>
-        </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
   <TestGroup Name="RenameFile">
     <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>FileEditingPrereq</PrereqTest>
       <PrereqTest>LocksPrereq</PrereqTest>
       <PrereqTest>SupportsFoldersPrereq</PrereqTest>
-      <PrereqTest>RenameFilePrereq</PrereqTest>
       <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
@@ -1797,6 +1479,7 @@
               </JsonResponseContentValidator>
             </Validators>
           </CheckFileInfo>
+          <Lock Lock="LockString"  OverrideUrl="$State:NewFileUrl" />
           <RenameFile OverrideUrl="$State:NewFileUrl" Lock="LockString" Name="ValidatorTestFileRenamed">
             <Validators>
               <ResponseCodeValidator ExpectedCode="200" />
@@ -1809,6 +1492,7 @@
           </RenameFile>
         </Requests>
         <CleanupRequests>
+          <Unlock Lock="LockString"  OverrideUrl="$State:NewFileUrl" />
           <DeleteFile OverrideUrl="$State:NewFileUrl" />
         </CleanupRequests>
       </TestCase>
@@ -1818,13 +1502,13 @@
           Tests that file name is encoded correctly after rename file.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeup_name.wopitestx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeup_name.docx" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeup_name.wopitestx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="madeup_name.docx" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -1837,6 +1521,7 @@
               </JsonResponseContentValidator>
             </Validators>
           </CheckFileInfo>
+          <Lock Lock="LockString"  OverrideUrl="$State:NewFileUrl" />
           <RenameFile OverrideUrl="$State:NewFileUrl" Lock="LockString" Name="madeup_renamed">
             <Validators>
               <ResponseCodeValidator ExpectedCode="200" />
@@ -1847,46 +1532,7 @@
           </RenameFile>
         </Requests>
         <CleanupRequests>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-        </CleanupRequests>
-      </TestCase>
-
-      <TestCase Name="RenameFileAfterLock" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests that rename file with correct lock ID successfully after lock it.
-        </Description>
-        <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="NewFileUrl" Source="Url" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
-              </JsonResponseContentValidator>
-            </Validators>
-          </PutRelativeFile>
-          <CheckFileInfo OverrideUrl="$State:NewFileUrl">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="200" />
-              <JsonResponseContentValidator>
-                <BooleanProperty Name="SupportsRename" ExpectedValue="true" IsRequired="true" />
-                <BooleanProperty Name="UserCanRename" ExpectedValue="true" IsRequired="true" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-          <Lock OverrideUrl="$State:NewFileUrl" Lock="LockString" />
-          <RenameFile OverrideUrl="$State:NewFileUrl" Lock="LockString" Name="ValidatorTestFileRenamed">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="200" />
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFileRenamed" IsRequired="true" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </RenameFile>
-        </Requests>
-        <CleanupRequests>
-          <Unlock OverrideUrl="$State:NewFileUrl" Lock="LockString" />
+          <Unlock Lock="LockString"  OverrideUrl="$State:NewFileUrl" />
           <DeleteFile OverrideUrl="$State:NewFileUrl" />
         </CleanupRequests>
       </TestCase>
@@ -2002,13 +1648,14 @@
               </JsonResponseContentValidator>
             </Validators>
           </CheckFileInfo>
+          <Lock Lock="LockString"  OverrideUrl="$State:NewFileUrlForRename" />
           <RenameFile OverrideUrl="$State:NewFileUrlForRename" Lock="LockString" Name="ValidatorTestFile">
             <Validators>
               <Or>
                 <And>
                   <ResponseCodeValidator ExpectedCode="200" />
                   <JsonResponseContentValidator>
-                    <StringProperty Name="Name" IsRequired="true" UnexpectedValue="ValidatorTestFile" />
+                    <StringProperty Name="Name" IsRequired="true" ExpectedValue="ValidatorTestFile"  ShouldMatch="false" />
                   </JsonResponseContentValidator>
                 </And>
                 <And>
@@ -2020,6 +1667,7 @@
           </RenameFile>
         </Requests>
         <CleanupRequests>
+          <Unlock Lock="LockString"  OverrideUrl="$State:NewFileUrlForRename" />
           <DeleteFile OverrideUrl="$State:NewFileUrl" />
           <DeleteFile OverrideUrl="$State:NewFileUrlForRename" />
         </CleanupRequests>
@@ -2029,7 +1677,6 @@
 
   <TestGroup Name="GetRestrictedLink">
     <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>SupportsScenarioLinksPrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
@@ -2049,20 +1696,6 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="GetRestrictedLinkForUnknownRestrictedLinkType" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests the GetRestrictedLink operation for a file where the requested restricted link type is unknown.
-        </Description>
-        <Requests>
-          <CheckFileInfo />
-          <GetRestrictedLink RestrictedLink="UnknownType">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="501"/>
-            </Validators>
-          </GetRestrictedLink>
-        </Requests>
-      </TestCase>
-
       <TestCase Name="GetRestrictedLinkWithInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
         <Description>
           Simulates a GetRestrictedLink request with invalid access token and expects a 404 response.
@@ -2073,7 +1706,10 @@
               <AccessToken Mutation="INVALID" />
             </Mutators>
             <Validators>
-              <ResponseCodeValidator ExpectedCode="404"/>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
             </Validators>
           </GetRestrictedLink>
         </Requests>
@@ -2083,7 +1719,6 @@
 
   <TestGroup Name="GetRestrictedLinkOfADeletedFile">
     <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>FileEditingPrereq</PrereqTest>
       <PrereqTest>SupportsFoldersPrereq</PrereqTest>
       <PrereqTest>SupportsScenarioLinksPrereq</PrereqTest>
@@ -2129,7 +1764,6 @@
 
   <TestGroup Name="RevokeRestrictedLink">
     <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>SupportsScenarioLinksPrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
@@ -2149,19 +1783,6 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="RevokeRestrictedLinkForUnknownRestrictedLinkType" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests the RevokeRestrictedLink operation for a file where the requested restricted link type is unknown.
-        </Description>
-        <Requests>
-          <RevokeRestrictedLink RestrictedLink="UnknownType">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="501"/>
-            </Validators>
-          </RevokeRestrictedLink>
-        </Requests>
-      </TestCase>
-
       <TestCase Name="RevokeRestrictedLinkWithInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
         <Description>
           Tests that a RevokeRestrictedLink request with invalid access token expects a 404 response.
@@ -2172,7 +1793,10 @@
               <AccessToken Mutation="INVALID" />
             </Mutators>
             <Validators>
-              <ResponseCodeValidator ExpectedCode="404"/>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
             </Validators>
           </RevokeRestrictedLink>
         </Requests>
@@ -2182,7 +1806,6 @@
 
   <TestGroup Name="RevokeRestrictedLinkOfADeletedFile">
     <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>FileEditingPrereq</PrereqTest>
       <PrereqTest>SupportsFoldersPrereq</PrereqTest>
       <PrereqTest>SupportsScenarioLinksPrereq</PrereqTest>
@@ -2225,7 +1848,6 @@
 
   <TestGroup Name="ReadSecureStore">
     <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>SupportsSecureStorePrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
@@ -2272,7 +1894,6 @@
 
   <TestGroup Name="ReadSecureStoreBaseOnUnknownFile">
     <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
       <PrereqTest>FileEditingPrereq</PrereqTest>
       <PrereqTest>SupportsFoldersPrereq</PrereqTest>
@@ -2305,171 +1926,8 @@
     </TestCases>
   </TestGroup>
 
-  <TestGroup Name="GetShareUrlForFileWithTypeReadOnly">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>ShareUrlTypeReadOnlyForFilePrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="GetShareUrlForReadOnlyUrlType" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests the GetShareUrl operation for a file where the requested share url type is "ReadOnly".
-        </Description>
-        <Requests>
-          <GetShareUrl UrlType="ReadOnly">
-            <Validators>
-              <JsonResponseContentValidator>
-                <AbsoluteUrlProperty Name="ShareUrl" IsRequired="false"/>
-              </JsonResponseContentValidator>
-              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
-              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
-            </Validators>
-          </GetShareUrl>        
-        </Requests>
-      </TestCase>
-
-      <TestCase Name="GetShareUrlForReadOnlyUrlTypeWithInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests that a GetShareUrl request for "ReadOnly" url type with invalid access token expects a 401 or 404 response.
-        </Description>
-        <Requests>
-          <GetShareUrl UrlType="ReadOnly">
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <Or>
-                <ResponseCodeValidator ExpectedCode="401" />
-                <ResponseCodeValidator ExpectedCode="404" />
-              </Or>
-            </Validators>
-          </GetShareUrl>
-        </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="GetShareUrlForFileWithTypeReadWrite">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>ShareUrlTypeReadWriteForFilePrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="GetShareUrlForReadWriteUrlType" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests the GetShareUrl operation for a file where the requested share url type is "ReadWrite".
-        </Description>
-        <Requests>
-          <GetShareUrl UrlType="ReadWrite">
-            <Validators>
-              <JsonResponseContentValidator>
-                <AbsoluteUrlProperty Name="ShareUrl" IsRequired="false"/>
-              </JsonResponseContentValidator>
-              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
-              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
-            </Validators>
-          </GetShareUrl>        
-        </Requests>
-      </TestCase>
-
-      <TestCase Name="GetShareUrlForReadWriteUrlTypeWithInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests that a GetShareUrl request for "ReadWrite" url type with invalid access token expects a 401 or 404 response.
-        </Description>
-        <Requests>
-          <GetShareUrl UrlType="ReadWrite">
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <Or>
-                <ResponseCodeValidator ExpectedCode="401" />
-                <ResponseCodeValidator ExpectedCode="404" />
-              </Or>
-            </Validators>
-          </GetShareUrl>
-        </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="GetShareUrlForFileWithUnknownType">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>SupportedShareUrlTypesForFilePrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="GetShareUrlForUnknownUrlType" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests the GetShareUrl operation for a file where the requested share url type is unknown.
-        </Description>
-        <Requests>
-          <GetShareUrl UrlType="UnknownType">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="501"/>
-            </Validators>
-          </GetShareUrl>
-        </Requests>
-      </TestCase>
-
-      <TestCase Name="GetShareUrlWithoutUrlType" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests the GetShareUrl operation for a file where the X-WOPI-UrlType header is not present.
-        </Description>
-        <Requests>
-          <GetShareUrl>
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="501"/>
-            </Validators>
-          </GetShareUrl>
-        </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-  
-  <TestGroup Name="GetShareUrlForUnknownFile">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>SupportedShareUrlTypesForFilePrereq</PrereqTest>
-      <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
-      <PrereqTest>FileEditingPrereq</PrereqTest>
-      <PrereqTest>SupportsFoldersPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <TestCase Name="GetShareUrlOnADeletedFileShouldReturnA404" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Tests that GetShareUrl operation should fail with a 404 status code for a deleted file.
-        </Description>
-        <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="madeupname.wopitest" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="NewFileUrl" Source="Url" />
-            </SaveState>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="madeupname.wopitest" IsRequired="true"/>
-              </JsonResponseContentValidator>
-            </Validators>
-          </PutRelativeFile>
-          <CheckFileInfo OverrideUrl="$State:NewFileUrl">
-            <SaveState>
-              <State Name="ShareUrlTypes" Source="SupportedShareUrlTypes" />
-            </SaveState>
-          </CheckFileInfo>
-          <DeleteFile OverrideUrl="$State:NewFileUrl" />
-          <GetShareUrl  UrlType="$State:ShareUrlTypes" OverrideUrl="$State:NewFileUrl">
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="404" />
-            </Validators>
-          </GetShareUrl>
-        </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
   <TestGroup Name="PerfTraceRequested">
     <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>SupportsSecureStorePrereq</PrereqTest>
     </PrereqTests>
     <TestCases>

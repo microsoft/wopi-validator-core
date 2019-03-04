@@ -4,7 +4,7 @@
   <Resources>
     <File Id="WordSimpleDocument" Name="WordSimpleDocument.docx" FilePath="Resources\WordSimpleDocument.docx" />
   </Resources>
-  
+
   <TestGroup Name="CheckFolderInfo">
     <TestCases>
       <TestCase Name="FullCheckFolderInfoSchema" Document="WordBlankDocument" Category="WopiCore">
@@ -23,7 +23,7 @@
       </TestCase>
     </TestCases>
   </TestGroup>
-  
+
   <TestGroup Name="EnumerateChildren">
     <TestCases>
       <TestCase Name="EnumerateChildrenSchema" Document="WordBlankDocument" Category="WopiCore">
@@ -88,7 +88,7 @@
           <EnumerateChildren>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Children[0].Version" IsRequired="true" UnexpectedValue="$State:VersionInEnumerateChildrenResponse" />
+                <StringProperty Name="Children[0].Version" IsRequired="true" ExpectedStateKey="VersionInEnumerateChildrenResponse" ShouldMatch="false" />
                 <StringProperty Name="Children[0].Name" IsRequired="true" ExpectedStateKey="NameInEnumerateChildrenResponse" />
               </JsonResponseContentValidator>
             </Validators>

@@ -145,6 +145,7 @@
                 <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="true" />
                 <xs:attribute name="ShouldMatch" type="xs:boolean" use="optional" default="true" />
                 <xs:attribute name="IsUrl" type="xs:boolean" use="optional" />
+                <xs:attribute name="IsExcluded" type="xs:boolean" use="optional" />
               </xs:extension>
             </xs:complexContent>
           </xs:complexType>
