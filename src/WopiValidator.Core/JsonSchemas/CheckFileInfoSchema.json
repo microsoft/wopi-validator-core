@@ -52,6 +52,10 @@
       "format": "uri",
       "type": "string"
     },
+    "CopyRestrictions": {
+      "type": "string",
+      "enum": ["BlockAll", "CurrentDocumentOnly"]
+    },
     "DisablePrint": {
       "type": "boolean"
     },
