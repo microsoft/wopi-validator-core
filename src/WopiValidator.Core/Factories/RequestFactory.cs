@@ -15,15 +15,15 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		/// <summary>
 		/// Parses requests information from XML into a collection of IWopiRequest
 		/// </summary>
-		public static IEnumerable<IRequest> GetRequests(XElement definition)
+		public static IEnumerable<IRequest> GetRequests(XElement definition, string applicationId, string usingRestrictedScenario)
 		{
-			return definition.Elements().Select(GetRequest);
+			return definition.Elements().Select(x => GetRequest(x, applicationId, usingRestrictedScenario));
 		}
 
 		/// <summary>
 		/// Parses single request definition and instantiates proper IWopiRequest instance based on element name
 		/// </summary>
-		private static IRequest GetRequest(XElement definition)
+		private static IRequest GetRequest(XElement definition, string applicationId, string usingRestrictedScenario)
 		{
 			string elementName = definition.Name.LocalName;
 			XElement validatorsDefinition = definition.Element("Validators");
@@ -52,6 +52,8 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 				Validators = validators ?? GetDefaultValidators(),
 				WopiSrc = (string)definition.Attribute("WopiSrc"),
 				RestrictedLinkType = (string)definition.Attribute("RestrictedLink"),
+				ApplicationId = applicationId,
+				UsingRestrictedScenario = usingRestrictedScenario,
 				PerfTraceRequested = string.IsNullOrEmpty((string)definition.Attribute("PerfTraceRequested")) ? false : Boolean.Parse((string)definition.Attribute("PerfTraceRequested"))
 			};
 
@@ -74,16 +76,6 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 						PutRelativeFileMode.Conflicting,
 						parsedMode));
 				}
-			}
-
-			if (!string.IsNullOrEmpty(ConfigParser.UsingRestrictedScenario))
-			{
-				wopiRequestParams.UsingRestrictedScenario = ConfigParser.UsingRestrictedScenario;
-			}
-
-			if (!string.IsNullOrEmpty(ConfigParser.ApplicationId))
-			{
-				wopiRequestParams.ApplicationId = ConfigParser.ApplicationId;
 			}
 
 			switch (elementName)

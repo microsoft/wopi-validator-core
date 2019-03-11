@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 using System;
@@ -12,22 +12,24 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 {
 	public class TestCaseFactory : ITestCaseFactory
 	{
-		public IEnumerable<ITestCase> GetTestCases(XElement definitions)
+		public IEnumerable<ITestCase> GetTestCases(XElement definitions, string applicationId, string usingRestrictedScenario)
 		{
-			return definitions.Elements("TestCase").Select(x => GetTestCase(x));
+			return definitions.Elements("TestCase").Select(x => GetTestCase(x, applicationId, usingRestrictedScenario));
 		}
 
 		public void GetTestCases(
 			XElement definition,
 			Dictionary<string, ITestCase> prereqCasesDictionary,
 			out IEnumerable<ITestCase> prereqTests,
-			out IEnumerable<ITestCase> groupTests)
+			out IEnumerable<ITestCase> groupTests,
+			string applicationId,
+			string usingRestrictedScenario)
 		{
 			XElement prereqsElement = definition.Element("PrereqTests") ?? new XElement("PrereqTests");
 			prereqTests = GetPrereqTests(prereqsElement, prereqCasesDictionary);
 
 			XElement testCasesElement = definition.Element("TestCases") ?? new XElement("TestCases");
-			groupTests = GetTestCases(testCasesElement);
+			groupTests = GetTestCases(testCasesElement, applicationId, usingRestrictedScenario);
 		}
 
 		private static IEnumerable<ITestCase> GetPrereqTests(XElement definition, Dictionary<string, ITestCase> prereqsDictionary)
@@ -48,7 +50,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		///
 		/// User RequestFactory.GetRequests to parse requests defined in that Test Case.
 		/// </summary>
-		private static ITestCase GetTestCase(XElement definition)
+		private static ITestCase GetTestCase(XElement definition, string applicationId, string usingRestrictedScenario)
 		{
 			string category = (string)definition.Attribute("Category");
 			string name = (string)definition.Attribute("Name");
@@ -62,12 +64,12 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			bool deleteDocumentOnTeardown = (bool?)definition.Attribute("DeleteDocumentOnTeardown") ?? true;
 
 			XElement requestsDefinition = definition.Element("Requests");
-			IEnumerable<IRequest> requests = RequestFactory.GetRequests(requestsDefinition);
+			IEnumerable<IRequest> requests = RequestFactory.GetRequests(requestsDefinition, applicationId, usingRestrictedScenario);
 
 			IEnumerable<IRequest> cleanupRequests = null;
 			XElement cleanupRequestsDefinition = definition.Element("CleanupRequests");
 			if (cleanupRequestsDefinition != null)
-				cleanupRequests = RequestFactory.GetRequests(cleanupRequestsDefinition);
+				cleanupRequests = RequestFactory.GetRequests(cleanupRequestsDefinition, applicationId, usingRestrictedScenario);
 
 			ITestCase testCase = new TestCase(resourceId,
 				requests,

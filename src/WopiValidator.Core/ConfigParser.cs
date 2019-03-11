@@ -10,12 +10,9 @@ namespace Microsoft.Office.WopiValidator.Core
 {
 	public static class ConfigParser
 	{
-		public static string UsingRestrictedScenario { get; set; }
-		public static string ApplicationId { get; set; }
-
-		public static IEnumerable<TestExecutionData> ParseExecutionData(string filePath)
+		public static IEnumerable<TestExecutionData> ParseExecutionData(string filePath, string applicationId = null, string usingRestrictedScenario = null)
 		{
-			return ParseExecutionData(filePath, new ResourceManagerFactory(), new TestCaseFactory());
+			return ParseExecutionData(filePath, new ResourceManagerFactory(), new TestCaseFactory(), applicationId, usingRestrictedScenario);
 		}
 
 		/// <summary>
@@ -24,7 +21,9 @@ namespace Microsoft.Office.WopiValidator.Core
 		public static IEnumerable<TestExecutionData> ParseExecutionData(
 			string filePath,
 			IResourceManagerFactory resourceManagerFactory,
-			ITestCaseFactory testCaseFactory)
+			ITestCaseFactory testCaseFactory,
+			string applicationId,
+			string usingRestrictedScenario)
 		{
 			XDocument xDoc = XDocument.Load(filePath);
 
@@ -32,22 +31,24 @@ namespace Microsoft.Office.WopiValidator.Core
 			IResourceManager resourceManager = resourceManagerFactory.GetResourceManager(resourcesElement);
 
 			XElement prereqCasesElement = xDoc.Root.Element("PrereqCases") ?? new XElement("PrereqCases");
-			IEnumerable<ITestCase> prereqCases = testCaseFactory.GetTestCases(prereqCasesElement);
+			IEnumerable<ITestCase> prereqCases = testCaseFactory.GetTestCases(prereqCasesElement, applicationId, usingRestrictedScenario);
 			Dictionary<string, ITestCase> prereqCasesDictionary = prereqCases.ToDictionary(e => e.Name);
 
 			return xDoc.Root.Elements("TestGroup")
-				.SelectMany(x => GetTestExecutionDataForGroup(x, prereqCasesDictionary, testCaseFactory, resourceManager));
+				.SelectMany(x => GetTestExecutionDataForGroup(x, prereqCasesDictionary, testCaseFactory, resourceManager, applicationId, usingRestrictedScenario));
 		}
 
 		private static IEnumerable<TestExecutionData> GetTestExecutionDataForGroup(
 			XElement definition,
 			Dictionary<string, ITestCase> prereqCasesDictionary,
 			ITestCaseFactory testCaseFactory,
-			IResourceManager resourceManager)
+			IResourceManager resourceManager,
+			string applicationId,
+			string usingRestrictedScenario)
 		{
 			IEnumerable<ITestCase> prereqs;
 			IEnumerable<ITestCase> groupTestCases;
-			testCaseFactory.GetTestCases(definition, prereqCasesDictionary, out prereqs, out groupTestCases);
+			testCaseFactory.GetTestCases(definition, prereqCasesDictionary, out prereqs, out groupTestCases, applicationId, usingRestrictedScenario);
 
 			List<ITestCase> prereqList = prereqs.ToList();
 

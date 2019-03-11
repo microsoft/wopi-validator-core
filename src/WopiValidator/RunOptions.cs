@@ -56,13 +56,10 @@ namespace Microsoft.Office.WopiValidator
 		public static ExitCode RunCommand(RunOptions options)
 		{
 			// get run configuration from XML
-			IEnumerable <TestExecutionData> testData = ConfigParser.ParseExecutionData(options.RunConfigurationFilePath);
+			IEnumerable <TestExecutionData> testData = ConfigParser.ParseExecutionData(options.RunConfigurationFilePath, options.ApplicationId, options.UsingRestrictedScenario);
 
 			// Filter the tests
 			IEnumerable<TestExecutionData> executionData = testData.ApplyFilters(options);
-
-			ConfigParser.UsingRestrictedScenario = options.UsingRestrictedScenario;
-			ConfigParser.ApplicationId = options.ApplicationId;
 
 			RSACryptoServiceProvider rsaProvider = null;
 			RSACryptoServiceProvider rsaProviderOld = null;
