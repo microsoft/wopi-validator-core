@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 using System;
@@ -10,7 +10,7 @@ namespace Microsoft.Office.WopiValidator.Core
 	/// <summary>
 	/// Represents a single test case.
 	/// </summary>
-	class TestCase : ITestCase
+	internal class TestCase : ITestCase
 	{
 		public TestCase(
 			string resourceId,
@@ -57,9 +57,20 @@ namespace Microsoft.Office.WopiValidator.Core
 		public string ResourceId { get; private set; }
 		public string UiScreenShot { get; set; }
 		public string DocumentationLink { get; set; }
-		public string FailMessage {get; set; }
+		public string FailMessage { get; set; }
 		public bool UploadDocumentOnSetup { get; private set; }
 		public bool DeleteDocumentOnTearDown { get; private set; }
 		public string Category { get; private set; }
+		public TestCategory TestCategory
+		{
+			get
+			{
+				if (!Enum.TryParse(Category, true /* ignoreCase */, out TestCategory testCategory))
+				{
+					throw new Exception($"Invalid TestCategory: {Category}");
+				}
+				return testCategory;
+			}
+		}
 	}
 }
