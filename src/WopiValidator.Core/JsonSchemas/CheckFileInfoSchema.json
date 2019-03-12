@@ -52,7 +52,7 @@
       "format": "uri",
       "type": "string"
     },
-    "CopyRestrictions": {
+    "CopyPasteRestrictions": {
       "type": "string",
       "enum": ["BlockAll", "CurrentDocumentOnly"]
     },
