@@ -13,7 +13,7 @@ namespace Microsoft.Office.WopiValidator
 	[Verb("discovery", HelpText = "Provide XML that describes the supported abilities of this WOPI client")]
 	internal class DiscoveryOptions : OptionsBase
 	{
-		[Option("port", Required = false, HelpText = "Port number used for discovery")]
+		[Option("port", Required = true, HelpText = "Port number used for discovery")]
 		public string Port { get; set; }
 
 		[Option("progid", Required = false, HelpText = "progid that identifies a folder as being associated with a specific application")]
@@ -27,7 +27,13 @@ namespace Microsoft.Office.WopiValidator
 
 		public static ExitCode DiscoveryCommand(DiscoveryOptions options)
 		{
-			DiscoveryListener listener = new DiscoveryListener(options.ProofKey, options.ProofKeyOld, Convert.ToInt32(options.Port));
+			int port;
+			if (!Int32.TryParse(options.Port, out port))
+			{
+				throw new ArgumentException(string.Format("Value for argument 'port' must be an integer, actual value '{0}'.", options.Port));
+			}
+
+			DiscoveryListener listener = new DiscoveryListener(options.ProofKey, options.ProofKeyOld, port);
 			listener.Start();
 
 			return ExitCode.Success;

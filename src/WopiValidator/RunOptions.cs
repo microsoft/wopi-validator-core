@@ -34,24 +34,14 @@ namespace Microsoft.Office.WopiValidator
 		[Option("ApplicationId", Required = false, HelpText = "Header 'X-WOPI-ApplicationId' indicates id of an application stored in secure store")]
 		public string ApplicationId { get; set; }
 
-		[Option('p', "ProofKey", Required = false, HelpText = "Public key used to decrypt X-WOPI-Proof HTTP header")]
-		public string ProofKey { get; set; }
+		[Option("RSACryptoKeyPairValue", Required = false, HelpText = "key-pairs match the Asymmetric encrypt algorithm used for X-WOPI-Proof header")]
+		public string RSACryptoKeyPairValue { get; set; }
 
-		[Option('o', "ProofKeyOld", Required = false, HelpText = "Public key used to decrypt X-WOPI-ProofOld HTTP header")]
-		public string ProofKeyOld { get; set; }
+		[Option("RSACryptoKeyPairOldValue", Required = false, HelpText = "key-pairs match the Asymmetric encrypt algorithm used for X-WOPI-ProofOld header")]
+		public string RSACryptoKeyPairOldValue { get; set; }
 
 		[Option('s', "ignore-skipped", Required = false, HelpText = "Don't output any info about skipped tests.")]
 		public bool IgnoreSkipped { get; set; }
-
-		/// <summary>
-		/// A string represents the unique key-pairs which is match the Asymmetric encrypt algorithm. It is used for "X-WOPI-Proof" header.
-		/// </summary>
-		private const string AsymmetricEncryptKeypairsOfCurrent = @"BwIAAACkAABSU0EyAAQAAAEAAQBxwXpxCIYvyvtnFmflVBmFEYpn/hhuZCqVH1PhqnAQr/ONAVkiONeMTToP7n2kUi1wntw5MbMaoIPWoNejZOLDgIVUqfjCOH2EbXOMmp6zTN35zAYbGZ3XWgLtmVkHIU60IQGvl7rOEHnEJ4v7a7Q2s6r4IOdVqFMS1T2YpmT6r5W6lKKyvjRKtwu3RClOcoNR9cpQNlzRqP6Tsl1B2UHAlRhNOBB7jEcttjdFFr/C1M6e5+XpDIhDlJt4BMODGN1tEAYZ71eMpnXkUBpUewXyaGZSSi5H/1cSki0srmONVNj7amPdk8QdEnlz+WnhLSjjeyNBHCVhhtVYaKfxd8LLnfRqGmPxGkcLsbTTL9Ngv1fNBFGCq45NsSNq4MGp+eja+2oJSE6duSpjeSOapLQ/vPcfkVZQP3AmOvEvxKV3wHUnzIlbvaklNhbg2LAJOZ2lT7bWVHfrgQ06lcjlapAaAoSNbPBhhhSOdUPrdRy4ebAhoUiriJiXoMNy9NS6GHqploWkCU/HDdVBTYS/yjqVFOAbhQA4edSgzyIT5P1tyIWImQ7ziE+7gFMPbXosoWmDL/iSmaAyuSU3lqun3lrBIWTXuHul48OgGadg2k2c6PBX0y7fqgBfEOAOFSii+c/d1G2umh321WigSaeg0VrsPO5pH1MbFOOFS/ZjMGWmZSYZfopkIOCqXL1UbiNwsIa0OG1FxrIMI9zgQt1aGPV4NK7unMeBz/t9uO2Y9nsrztQnYuje6K0cPTK+HlOExao=";
-
-		/// <summary>
-		/// A string represents the unique key-pairs which is match the Asymmetric encrypt algorithm. It is used for "X-WOPI-ProofOld" header.
-		/// </summary>
-		private const string AsymmetricEncryptKeypairsOfOld = @"BwIAAACkAABSU0EyAAQAAAEAAQC3T8ExrB2fjcvpVJF7ZYbAh9yfsHsXMcqHa/0i0ncEdoejYr1s1NMbZtGbautAmDH2Q5/dUoZ6UHvymDxGh3VypfCHg7heRaPoeBLBrKyhIbG8oy2KUlpUSBGi9s2ZTb4tMyef8ZTA+f5jneAIZDC8U4DZF0mifHJtXrQHqSY9kkHv/7WdvxVsoLToq78tX3CZDR5btKGsOJD8qjwJ0Tthsq3l79rhh39kxci9YzMKVK4rQVlUSAopVtRuWXa2j8X3eOs/YEmObMpUxEPK6yZk8Rj9UYLMm7rmO+iB0vMrTAkKOI7csfDEg+XZKSM3tRmkOJHPyUlxgeLBcR7PDX+9gVPEILISnGGj+2qsHT+ywcmC7/dYiwjhj/VXgzZvl2KjDbfaa2N10CQN6MnBMXzawvsnrSA4x8UGmzLuzLiEuTlg6Ed1WuL7uv3p+Rs9NX/yuj2jPuuFWDNNWlqGb4455eERQv73YXLNFMGRc87peBib/gN2YUO5suH8J5NzyUOGA0YPEvNWHIZo0k0JcJWzY3zVLENdKxHZFjc60bfRbAM0wTl20aWEvUEUBPOikuRmeEFveJNYSGUvcscIefhtgdTzsafiOpUW/2nR+tpxoIQM4gFZXIs85838T46kNCX1M/RBLjailtbAuyjOhA8Dixjm2jL4nndpkKPRl5ZC/pmYnUZGVd/nbh7h9rKglRSLYFzc3+OnPI9Mj0UoDPy72SE4DO6e4QN7npbklrWAKSqGUF4DNT4Y7iw5pibqSw4=";
 
 		public static ExitCode RunCommand(RunOptions options)
 		{
@@ -64,13 +54,13 @@ namespace Microsoft.Office.WopiValidator
 			RSACryptoServiceProvider rsaProvider = null;
 			RSACryptoServiceProvider rsaProviderOld = null;
 
-			if (!string.IsNullOrEmpty(options.ProofKey) && !string.IsNullOrEmpty(options.ProofKeyOld))
+			if (!string.IsNullOrEmpty(options.RSACryptoKeyPairValue) && !string.IsNullOrEmpty(options.RSACryptoKeyPairOldValue))
 			{
 				rsaProvider = new RSACryptoServiceProvider();
-				rsaProvider.ImportCspBlob(Convert.FromBase64String(AsymmetricEncryptKeypairsOfCurrent));
+				rsaProvider.ImportCspBlob(Convert.FromBase64String(options.RSACryptoKeyPairValue));
 
 				rsaProviderOld = new RSACryptoServiceProvider();
-				rsaProviderOld.ImportCspBlob(Convert.FromBase64String(AsymmetricEncryptKeypairsOfOld));
+				rsaProviderOld.ImportCspBlob(Convert.FromBase64String(options.RSACryptoKeyPairOldValue));
 			}		
 
 			// Create executor groups
