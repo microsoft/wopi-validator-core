@@ -57,7 +57,7 @@ namespace Microsoft.Office.WopiValidator.Core
 		{
 			try
 			{
-				JObject jObject = JObject.Parse(jsonString);
+				JObject jObject = jsonString.ParseJObject();
 				JToken token = jObject.SelectToken(Source);
 				return token.Value<string>();
 			}

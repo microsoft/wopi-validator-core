@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 using Newtonsoft.Json;
@@ -46,7 +46,7 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 		{
 			try
 			{
-				JObject jObject = JObject.Parse(jsonString);
+				JObject jObject = jsonString.ParseJObject();
 
 				List<string> errors = new List<string>();
 				foreach (IJsonPropertyValidator propertyValidator in _propertyValidators)
@@ -224,15 +224,6 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 
 			protected virtual bool Compare(JToken actualValue, T expectedValue, out string errorMessage)
 			{
-				// This method doesn't always work properly when JSON.NET deserializes a field as a Date. Skipping it here is hacky
-				// but effective. If the actual value doesn't match, it will be caught by a downstream validator's comparison (i.e.
-				// the subclasses Validate method should catch any real failures.
-				if (actualValue.Type == JTokenType.Date)
-				{
-					errorMessage = "";
-					return true;
-				}
-
 				string formattedActualValue;
 				bool isValid = false;
 				try
