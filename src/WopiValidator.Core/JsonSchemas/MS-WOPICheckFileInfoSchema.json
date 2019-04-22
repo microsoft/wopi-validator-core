@@ -5,7 +5,32 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
+    "AADUserObjectId": {
+      "type": "string",
+      "default": "",
+      "optional": true
+    },
+    "AccessTokenExpiry": {
+      "type": "integer",
+      "default": 0,
+      "optional": true
+    },
+    "AllowAddActivitiesUserBatching": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
     "AllowAdditionalMicrosoftServices": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "AllowEarlyFeatures": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "AllowErrorReportPrompt": {
       "type": "boolean",
       "default": false,
       "optional": true
@@ -15,8 +40,19 @@
       "default": false,
       "optional": true
     },
+    "AppCatalogUrl": {
+      "type": "string",
+      "default": "",
+      "optional": true
+    },
+    "AppliedPolicyId": {
+      "type": "string",
+      "default": "",
+      "optional": true
+    },
     "BaseFileName": {
       "type": "string",
+      "default": "",
       "optional": false
     },
     "BreadcrumbBrandName": {
@@ -74,6 +110,11 @@
       "default": "",
       "optional": true
     },
+    "DirectInvokeDAVUrl": {
+      "type": "string",
+      "default": "",
+      "optional": true
+    },
     "DisableBrowserCachingOfUserContent": {
       "type": "boolean",
       "default": false,
@@ -101,6 +142,11 @@
       "default": "",
       "optional": true
     },
+    "EditingCannotSave": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
     "EditModePostMessage": {
       "type": "boolean",
       "default": false,
@@ -109,6 +155,31 @@
     "EditNotificationPostMessage": {
       "type": "boolean",
       "default": false,
+      "optional": true
+    },
+    "EmbeddingPageOrigin": {
+      "type": "string",
+      "default": "",
+      "optional": true
+    },
+    "EmbeddingPageSessionInfo": {
+      "type": "string",
+      "default": "",
+      "optional": true
+    },
+    "EnabledApplicationFeatures": {
+      "type": "array",
+      "default": [],
+      "optional": true
+    },
+    "FileEmbedCommandPostMessage": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "FileEmbedCommandUrl": {
+      "type": "string",
+      "default": "",
       "optional": true
     },
     "FileExtension": {
@@ -138,7 +209,27 @@
       "default": "",
       "optional": true
     },
+    "FileVersionPostMessage": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "FileVersionUrl": {
+      "type": "string",
+      "default": "",
+      "optional": true
+    },
     "HostAuthenticationId": {
+      "type": "string",
+      "default": "",
+      "optional": true
+    },
+    "HostAuthenticationIdType": {
+      "type": "string",
+      "default": "",
+      "optional": true
+    },
+    "HostDivSyndicationViewUrl": {
       "type": "string",
       "default": "",
       "optional": true
@@ -183,6 +274,11 @@
       "default": "",
       "optional": true
     },
+    "InsertImagePostMessage": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
     "IrmPolicyDescription": {
       "type": "string",
       "default": "",
@@ -193,7 +289,47 @@
       "default": "",
       "optional": true
     },
+    "IsAnonymousUser": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "IsEduUser": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "IsYammerEnabled": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "LastModifiedTime": {
+      "type": "string",
+      "default": "",
+      "optional": true
+    },
     "LicenseCheckForEditIsEnabled": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "LicensedOrganization": {
+      "type": "string",
+      "default": "",
+      "optional": true
+    },
+    "OfficeCollaborationServiceEndpointUrl": {
+      "type": "string",
+      "default": "",
+      "optional": true
+    },
+    "OpenInClientCommandUrl": {
+      "type": "string",
+      "default": "",
+      "optional": true
+    },
+    "OpenInClientPostMessage": {
       "type": "boolean",
       "default": false,
       "optional": true
@@ -201,6 +337,16 @@
     "OwnerId": {
       "type": "string",
       "optional": false
+    },
+    "PermissionsPostMessage": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "PolicyCheckPostMessage": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
     },
     "PostMessageOrigin": {
       "type": "string",
@@ -223,6 +369,11 @@
       "default": "",
       "optional": true
     },
+    "ProtectedFile": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
     "ProtectInClient": {
       "type": "boolean",
       "default": false,
@@ -233,13 +384,29 @@
       "default": false,
       "optional": true
     },
+    "ReportAbusePostMessage": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "ReportAbuseUrl": {
+      "type": "string",
+      "default": "",
+      "optional": true
+    },
     "RestrictedWebViewOnly": {
       "type": "boolean",
       "default": false,
       "optional": true
     },
+    "SafeLinksStatus": {
+      "type": "string",
+      "default": "",
+      "optional": true
+    },
     "SHA256": {
       "type": "string",
+      "default": "",
       "optional": true
     },
     "SignInUrl": {
@@ -256,11 +423,27 @@
     },
     "Size": {
       "type": "integer",
+      "default": -1,
       "optional": false
     },
     "SupportedShareUrlTypes": {
       "type": "array",
       "default": [],
+      "optional": true
+    },
+    "SupportsAddActivities": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "SupportsCheckPolicy": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "SupportsCheckUserAccess": {
+      "type": "boolean",
+      "default": false,
       "optional": true
     },
     "SupportsCoauth": {
@@ -269,6 +452,26 @@
       "optional": true
     },
     "SupportsCobalt": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "SupportsContactsResolution": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "SupportsContainers": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "SupportsDeleteFile": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "SupportsEcosystem": {
       "type": "boolean",
       "default": false,
       "optional": true
@@ -283,7 +486,17 @@
       "default": false,
       "optional": true
     },
+    "SupportsFileUserValue": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
     "SupportsFolders": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "SupportsGetActivities": {
       "type": "boolean",
       "default": false,
       "optional": true
@@ -293,12 +506,27 @@
       "default": false,
       "optional": true
     },
+    "SupportsGrantUserAccess": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
     "SupportsLocks": {
       "type": "boolean",
       "default": false,
       "optional": true
     },
+    "SupportsPolicies": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
     "SupportsRename": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "SupportsReviewing": {
       "type": "boolean",
       "default": false,
       "optional": true
@@ -364,6 +592,11 @@
       "default": false,
       "optional": true
     },
+    "UserCanReview": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
     "UserCanWrite": {
       "type": "boolean",
       "default": false,
@@ -384,11 +617,21 @@
       "default": "",
       "optional": true
     },
+    "UserPrincipalName": {
+      "type": "string",
+      "default": "",
+      "optional": true
+    },
     "Version": {
       "type": "string",
       "optional": false
     },
     "WebEditingDisabled": {
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    "WorkflowPostMessage": {
       "type": "boolean",
       "default": false,
       "optional": true
@@ -400,7 +643,6 @@
     },
     "WorkflowUrl": {
       "type": "string",
-      "format": "uri",
       "default": "",
       "optional": true
     }

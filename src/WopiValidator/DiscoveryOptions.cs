@@ -38,14 +38,5 @@ namespace Microsoft.Office.WopiValidator
 
 			return ExitCode.Success;
 		}
-
-		private static TestCaseExecutor GetTestCaseExecutor(TestExecutionData testExecutionData, RunOptions options, TestCategory inputTestCategory)
-		{
-			bool officeNative = inputTestCategory == TestCategory.OfficeNativeClient ||
-				testExecutionData.TestCase.TestCategory == TestCategory.OfficeNativeClient;
-			string userAgent = officeNative ? Constants.HeaderValues.OfficeNativeClientUserAgent : null;
-
-			return new TestCaseExecutor(testExecutionData, options.WopiEndpoint, options.AccessToken, options.AccessTokenTtl, userAgent);
-		}
 	}
 }

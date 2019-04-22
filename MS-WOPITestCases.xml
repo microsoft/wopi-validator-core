@@ -10,7 +10,7 @@
     <File Id="ExcelBlankWorkbook" Name="ExcelBlankWorkbook.xlsx" FilePath="Resources\ExcelBlankWorkbook.xlsx" />
     <File Id="ZeroByteFile" Name="ZeroByteFile.wopitest" FilePath="Resources\ZeroByteFile.wopitest" />
   </Resources>
-  
+
   <PrereqCases>
     <TestCase Name="UserCanWritePrereq" Document="WordBlankDocument" Category="WopiCore">
       <Description>
@@ -390,7 +390,7 @@
           </PutRelativeFile>
           <GetFile OverrideUrl="$State:NewFileUrl">
             <Validators>
-              <ResponseContentValidator ExpectedDocumentId="WordSimpleDocument" />
+              <ResponseContentValidator ExpectedResourceId="WordSimpleDocument" />
             </Validators>
           </GetFile>
         </Requests>
@@ -420,7 +420,7 @@
           </PutRelativeFile>
           <GetFile OverrideUrl="$State:NewFileUrl">
             <Validators>
-              <ResponseContentValidator ExpectedDocumentId="WordSimpleDocument" />
+              <ResponseContentValidator ExpectedResourceId="WordSimpleDocument" />
             </Validators>
           </GetFile>
         </Requests>
@@ -652,7 +652,7 @@
           </CheckFileInfo>
           <GetFile OverrideUrl="$State:NewUrl2">
             <Validators>
-              <ResponseContentValidator ExpectedDocumentId="WordComplexDocument" />
+              <ResponseContentValidator ExpectedResourceId="WordComplexDocument" />
             </Validators>
           </GetFile>
         </Requests>
@@ -722,7 +722,7 @@
   <TestGroup Name="PutFile">
     <PrereqTests>
       <PrereqTest>FileEditingPrereq</PrereqTest>
-      <PrereqTest>NotReadOnlyPrereq</PrereqTest>      
+      <PrereqTest>NotReadOnlyPrereq</PrereqTest>
       <PrereqTest>UserCanWritePrereq</PrereqTest>
       <PrereqTest>LocksPrereq</PrereqTest>
     </PrereqTests>
@@ -731,7 +731,7 @@
         <Description>
           This tests that put a file successfully.
         </Description>
-        <Requests>      
+        <Requests>
           <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
             <Validators>
               <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
@@ -740,12 +740,12 @@
           </PutFile>
           <GetFile>
             <Validators>
-              <ResponseContentValidator ExpectedDocumentId="WordSimpleDocument" />
+              <ResponseContentValidator ExpectedResourceId="WordSimpleDocument" />
             </Validators>
           </GetFile>
         </Requests>
       </TestCase>
-      
+
       <TestCase Name="PutFileAfterLock" Document="WordBlankDocument" Category="WopiCore">
         <Description>
           This tests that put a file with matching lock value successfully after lock.
@@ -756,7 +756,7 @@
           <Unlock Lock="LockString" />
           <GetFile>
             <Validators>
-              <ResponseContentValidator ExpectedDocumentId="WordSimpleDocument" />
+              <ResponseContentValidator ExpectedResourceId="WordSimpleDocument" />
             </Validators>
           </GetFile>
         </Requests>
@@ -775,7 +775,7 @@
           <PutFile Lock="NewLockString" ResourceId="WordSimpleDocument" />
           <GetFile>
             <Validators>
-              <ResponseContentValidator ExpectedDocumentId="WordSimpleDocument" />
+              <ResponseContentValidator ExpectedResourceId="WordSimpleDocument" />
             </Validators>
           </GetFile>
         </Requests>
@@ -784,7 +784,7 @@
           <Unlock Lock="NewLockString" />
         </CleanupRequests>
       </TestCase>
-          
+
       <TestCase Name="PutFileWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
         <Description>
           This tests that host returns 401 or 404 response for a PutFile request with invalid access token.
@@ -1035,7 +1035,7 @@
 
       <TestCase Name="X-WOPI-LockHeaderIncludedWhenLockMismatchOnUnlockRequest" Document="WordBlankDocument" Category="WopiCore">
         <Description>
-          This tests that X-WOPI-Lock header is included when responding with the 409 status code for Unlock request if no lock exists on the file. 
+          This tests that X-WOPI-Lock header is included when responding with the 409 status code for Unlock request if no lock exists on the file.
         </Description>
         <Requests>
           <Unlock Lock="IncorrectLockString">
@@ -1154,7 +1154,7 @@
       </TestCase>
     </TestCases>
   </TestGroup>
-  
+
   <TestGroup Name="OperatesOnUnknownFile">
     <PrereqTests>
       <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
