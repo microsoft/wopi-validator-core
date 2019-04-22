@@ -51,6 +51,7 @@
                         <xs:attribute name="ExpectedValue" type="xs:string" use="optional" />
                         <xs:attribute name="ShouldMatch" type="xs:boolean" use="optional" default="true" />
                         <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="false" />
+                        <xs:attribute name="IgnoreCase" type="xs:boolean" use="optional" default="false" />
                       </xs:complexType>
                     </xs:element>
                     <xs:element name="StringRegexProperty">
@@ -129,7 +130,7 @@
           <xs:complexType>
             <xs:complexContent>
               <xs:extension base="ValidatorBaseType">
-                <xs:attribute name="ExpectedDocumentId" type="xs:string" use="optional" />
+                <xs:attribute name="ExpectedResourceId" type="xs:string" use="optional" />
                 <xs:attribute name="ExpectedBodyContent" type="xs:string" use="optional" />
               </xs:extension>
             </xs:complexContent>
@@ -240,8 +241,9 @@
               <xs:element name="Lock">
                 <xs:complexType>
                   <xs:sequence minOccurs="0">
+                    <xs:element name="SaveState" type="SaveStateType" minOccurs="0"/>
                     <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
-                    <xs:element name="Validators" type="ValidatorsType" />
+                    <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
                   </xs:sequence>
                   <xs:attribute name="Lock" type="xs:string" use="required" />
                   <xs:attribute name="OverrideUrl" type="xs:string" />
@@ -249,9 +251,10 @@
               </xs:element>
               <xs:element name="Unlock">
                 <xs:complexType>
-                  <xs:sequence minOccurs="0">
+                  <xs:sequence>
+                    <xs:element name="SaveState" type="SaveStateType" minOccurs="0" />
                     <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
-                    <xs:element name="Validators" type="ValidatorsType" />
+                    <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
                   </xs:sequence>
                   <xs:attribute name="Lock" type="xs:string" use="required" />
                   <xs:attribute name="OverrideUrl" type="xs:string" />
@@ -553,13 +556,10 @@
       </xs:element>
     </xs:sequence>
     <xs:attribute name="Name" type="xs:string" use="required" />
-    <xs:attribute name="Document" type="xs:string" use="required" />
     <xs:attribute name="Category" type="xs:string" use="optional" />
     <xs:attribute name="UiScreenshot" type="xs:string" use="optional" />
     <xs:attribute name="DocumentationLink" type="xs:string" use="optional" />
     <xs:attribute name="FailMessage" type="xs:string" use="optional" />
-    <xs:attribute name="UploadDocumentOnSetup" type="xs:boolean" use="optional" default="false" />
-    <xs:attribute name="DeleteDocumentOnTeardown" type="xs:boolean" use="optional" default="false" />
   </xs:complexType>
 
   <!-- Concrete definition of the entire WopiValidation -->

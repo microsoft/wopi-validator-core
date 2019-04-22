@@ -62,9 +62,9 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		/// </summary>
 		private static IValidator GetResponseContentValidator(XElement definition)
 		{
-			string documentId = (string)definition.Attribute("ExpectedDocumentId");
+			string resourceId = (string)definition.Attribute("ExpectedResourceId");
 			string expectedBodyContent = (string)definition.Attribute("ExpectedBodyContent");
-			return new ResponseContentValidator(documentId, expectedBodyContent);
+			return new ResponseContentValidator(resourceId, expectedBodyContent);
 		}
 
 		/// <summary>
@@ -144,6 +144,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			bool shouldMatch = ((bool?)definition.Attribute("ShouldMatch")) ?? true;
 			bool hasContainsValue = containsValue != null;
 			bool mustIncludeAccessToken = ((bool?)definition.Attribute("MustIncludeAccessToken")) ?? false;
+			bool ignoreCase = ((bool?)definition.Attribute("IgnoreCase")) ?? false;
 
 			switch (elementName)
 			{
@@ -169,21 +170,23 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 						expectedStateKey);
 
 				case Constants.Validators.Properties.StringProperty:
-					return new JsonContentValidator.JsonStringPropertyValidator(key,
-						isRequired,
-						expectedValue,
-						hasExpectedValue,
-						endsWithValue,
-						expectedStateKey,
-						shouldMatch);
+                    return new JsonContentValidator.JsonStringPropertyValidator(key,
+                        isRequired,
+                        expectedValue,
+                        hasExpectedValue,
+                        endsWithValue,
+                        expectedStateKey,
+                        ignoreCase,
+                        shouldMatch);
 
-				case Constants.Validators.Properties.StringRegexProperty:
+                case Constants.Validators.Properties.StringRegexProperty:
 					return new JsonContentValidator.JsonStringRegexPropertyValidator(key,
 						isRequired,
 						expectedValue,
 						hasExpectedValue,
 						expectedStateKey,
-						shouldMatch);
+						shouldMatch,
+						ignoreCase);
 
 				case Constants.Validators.Properties.AbsoluteUrlProperty:
 					return new JsonContentValidator.JsonAbsoluteUrlPropertyValidator(key,

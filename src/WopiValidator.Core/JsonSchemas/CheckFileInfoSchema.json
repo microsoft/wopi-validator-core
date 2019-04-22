@@ -45,15 +45,16 @@
       "format": "uri",
       "type": "string"
     },
-    "CloseButtonClosesWindow": {
-      "type": "boolean"
-    },
     "ClosePostMessage": {
       "type": "boolean"
     },
     "CloseUrl": {
       "format": "uri",
       "type": "string"
+    },
+    "CopyRestrictions": {
+      "type": "string",
+      "enum": ["BlockAll", "CurrentDocumentOnly"]
     },
     "DisablePrint": {
       "type": "boolean"

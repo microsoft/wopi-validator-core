@@ -10,7 +10,7 @@
     <File Id="ZeroByteFile" Name="ZeroByteFile.wopitest" FilePath="Resources\ZeroByteFile.wopitest" />
   </Resources>
   <PrereqCases>
-    <TestCase Name="WopiValidatorPrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="WopiValidatorPrereq" Category="WopiCore">
       <Description>
         The prereq WOPI validation that must pass prior to running the (potentially destructive) test suite.
       </Description>
@@ -18,14 +18,14 @@
         <CheckFileInfo>
           <Validators>
             <JsonResponseContentValidator>
-              <StringProperty Name="BaseFileName" EndsWith=".wopitest" IsRequired="true" />
+              <StringProperty Name="BaseFileName" EndsWith=".wopitest" IsRequired="true" IgnoreCase="true" />
             </JsonResponseContentValidator>
           </Validators>
         </CheckFileInfo>
       </Requests>
     </TestCase>
 
-    <TestCase Name="UserCanWritePrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="UserCanWritePrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the user has permission to perform Write operation.
       </Description>
@@ -40,7 +40,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="UserCanNotWriteRelativePrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="UserCanNotWriteRelativePrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the user is denied permission to call PutRelativeFile.
       </Description>
@@ -55,7 +55,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="UserCanWriteRelativePrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="UserCanWriteRelativePrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the user has permission to call PutRelativeFile.
       </Description>
@@ -70,7 +70,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="ContainersPrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="ContainersPrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the host declares support for Containers operations.
       </Description>
@@ -85,7 +85,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="ContainersUnsupportedPrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="ContainersUnsupportedPrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check that the host does NOT support Containers operations.
         This can be used in cases where a test group should be skipped if the host DOES support Containers
@@ -102,7 +102,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="EcosystemPrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="EcosystemPrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the host declares support for Ecosystem operations.
       </Description>
@@ -117,7 +117,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="LocksPrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="LocksPrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the host declares support for Lock/Unlock/RefreshLock/UnlockAndRefreshLock
         operations.
@@ -133,7 +133,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="FileEditingPrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="FileEditingPrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if host declares support for PutFile/PutRelativeFile operations.
       </Description>
@@ -148,7 +148,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="GetLockPrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="GetLockPrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if host declares support for GetLock operation.
       </Description>
@@ -163,7 +163,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="ExtendedLockLengthPrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="ExtendedLockLengthPrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if host declares support for extended lock lengths.
       </Description>
@@ -178,7 +178,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="BusinessFlowPrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="BusinessFlowPrereq" Category="WopiCore">
       <Description>
         The prereq BusinessFlowPrereq must pass prior to running the feature validations related to business flows.
       </Description>
@@ -193,7 +193,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="DeleteFilePrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="DeleteFilePrereq" Category="WopiCore">
       <Description>
         The host must support /files/DeleteFile.
       </Description>
@@ -208,7 +208,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="FileUrlUsagePrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="FileUrlUsagePrereq" Category="WopiCore">
       <Description>
         The host uses FileUrl for direct file access.
       </Description>
@@ -223,7 +223,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="SupportedShareUrlTypesForFilePrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="SupportedShareUrlTypesForFilePrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the host sets SupportedShareUrlTypes in CheckFileInfo to any value.
       </Description>
@@ -238,7 +238,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="ShareUrlTypeReadOnlyForFilePrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="ShareUrlTypeReadOnlyForFilePrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the host declares support for the "ReadOnly" Share Url type for the file.
       </Description>
@@ -253,7 +253,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="ShareUrlTypeReadWriteForFilePrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="ShareUrlTypeReadWriteForFilePrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the host declares support for the "ReadWrite" Share Url type for the file.
       </Description>
@@ -268,7 +268,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="SupportedShareUrlTypesForContainerPrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="SupportedShareUrlTypesForContainerPrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the host sets SupportedShareUrlTypes in CheckContainerInfo to any value.
       </Description>
@@ -289,7 +289,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="ShareUrlTypeReadOnlyForContainerPrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="ShareUrlTypeReadOnlyForContainerPrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the host declares support for the "ReadOnly" Share Url type for the container.
       </Description>
@@ -310,7 +310,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="ShareUrlTypeReadWriteForContainerPrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="ShareUrlTypeReadWriteForContainerPrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the host declares support for the "ReadWrite" Share Url type for the container.
       </Description>
@@ -331,7 +331,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="RenameFilePrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="RenameFilePrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if host declares support for RenameFile operation.
       </Description>
@@ -346,7 +346,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="UserCanCreateChildFilePrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="UserCanCreateChildFilePrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the user has permission to call CreateChildFile operation.
       </Description>
@@ -367,7 +367,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="AddActivitiesPrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="AddActivitiesPrereq" Category="WopiCore">
       <Description>
         The host must support /files/AddActivities.
       </Description>
@@ -382,7 +382,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="UserCanRenameContainerPrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="UserCanRenameContainerPrereq" Category="WopiCore">
       <Description>
         Prereq WOPI Validation test to check if the user has permissions to call RenameContainer.
       </Description>
@@ -402,7 +402,7 @@
       </Requests>
     </TestCase>
 
-    <TestCase Name="SupportsUserInfoPrereq" Document="WordBlankDocument" Category="WopiCore">
+    <TestCase Name="SupportsUserInfoPrereq" Category="WopiCore">
       <Description>
         The host must support /files/PutUserInfo.
       </Description>
@@ -424,7 +424,7 @@
       <PrereqTest>WopiValidatorPrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="FullCheckFileInfoSchema" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="FullCheckFileInfoSchema" Category="WopiCore">
         <Description>
           This tests that hosts' CheckFileInfo responses conform to the JSON schema.
         </Description>
@@ -433,6 +433,9 @@
             <Validators>
               <JsonSchemaValidator Schema="CheckFileInfoSchema" />
               <JsonResponseContentValidator>
+                <!-- BaseFileName should *not* start with a "."; it should be a full file name. -->
+                <StringRegexProperty Name="BaseFileName" ExpectedValue="^\..*$" IsRequired="false" ShouldMatch="false" />
+
                 <!-- FileExtension, if provided, should start with a "."; using this as a shortcut to test for that. -->
                 <StringProperty Name="FileExtension" ExpectedValue=".wopitest" IsRequired="false" />
               </JsonResponseContentValidator>
@@ -440,7 +443,7 @@
           </CheckFileInfo>
         </Requests>
       </TestCase>
-      <TestCase Name="HostUrls" Document="WordBlankDocument" Category="OfficeOnline">
+      <TestCase Name="HostUrls" Category="OfficeOnline">
         <Description>
           This tests that the Host* URLs provided by the host are not Office Online action URLs.
         </Description>
@@ -464,6 +467,70 @@
           </CheckFileInfo>
         </Requests>
       </TestCase>
+
+      <!-- Access token related testcases -->
+      <TestCase Name="CheckFileWithInvalidAccessToken" Category="WopiCore">
+        <Description>
+          Simulates a CheckFileInfo request with invalid access token and expects a 401 or 404 response.
+        </Description>
+        <Requests>
+          <CheckFileInfo>
+            <Mutators>
+              <AccessToken Mutation="INVALID" />
+            </Mutators>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
+            </Validators>
+          </CheckFileInfo>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="BaseWopiViewing">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+    </PrereqTests>
+    <!-- Full Viewer app sequences -->
+    <TestCases>
+      <TestCase Name="ViewOnlySupport" Category="WopiCore">
+        <Description>
+          Standard sequence of requests made by a WOPI client to render a document.
+        </Description>
+        <Requests>
+          <CheckFileInfo>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="BaseFileName" IsRequired="true" />
+                <StringProperty Name="OwnerId" IsRequired="true" />
+                <LongProperty Name="Size" IsRequired="true" />
+                <StringProperty Name="Version" IsRequired="true" />
+
+                <AbsoluteUrlProperty Name="BreadcrumbBrandUrl" />
+                <AbsoluteUrlProperty Name="BreadcrumbDocUrl" />
+                <AbsoluteUrlProperty Name="BreadcrumbFolderUrl" />
+                <AbsoluteUrlProperty Name="DownloadUrl" />
+                <AbsoluteUrlProperty Name="CloseUrl" />
+                <AbsoluteUrlProperty Name="HostEditUrl" />
+                <AbsoluteUrlProperty Name="HostViewUrl" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+          <GetFile />
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="GetUnlockedFile" Category="WopiCore">
+        <Description>
+          GetFile requests on a file that wasn't locked before - necessary for Viewing and Editing.
+        </Description>
+        <Requests>
+          <GetFile />
+        </Requests>
+      </TestCase>
     </TestCases>
   </TestGroup>
 
@@ -475,7 +542,7 @@
     </PrereqTests>
     <TestCases>
       <!-- Lock length validation -->
-      <TestCase Name="LockLengthValidation" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="LockLengthValidation" Category="WopiCore">
         <Description>
           Tests that the WOPI host is capable of handling WOPI Lock IDs of 256 characters.
         </Description>
@@ -489,7 +556,7 @@
       </TestCase>
 
       <!-- Lock format validation -->
-      <TestCase Name="LockFormatValidation" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="LockFormatValidation" Category="WopiCore">
         <Description>
           Tests that Office locks, which happen to be JSON-formatted strings today, are handled properly by the host.
         </Description>
@@ -503,7 +570,7 @@
       </TestCase>
 
       <!-- Lock requests -->
-      <TestCase Name="SuccessfulLockSequence" Document="WordSimpleDocument" Category="WopiCore">
+      <TestCase Name="SuccessfulLockSequence" Category="WopiCore">
         <Description>
           Simulates a successful sequence of lock-related requests: Lock, RefreshLock, UnlockAndRelock, Unlock.
         </Description>
@@ -519,7 +586,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="LockMismatchAfterUnlockAndRelockRequest" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="LockMismatchAfterUnlockAndRelockRequest" Category="WopiCore">
         <Description>
           Simulates a successful UnlockAndRelock followed by Unlock with old lock. This tests that UnlockAndRelock actually changes the lock string
         </Description>
@@ -539,7 +606,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="DoubleLockSequence" Document="WordSimpleDocument" Category="WopiCore">
+      <TestCase Name="DoubleLockSequence" Category="WopiCore">
         <Description>
           Two Lock calls in a row with the same Lock ID should work.
         </Description>
@@ -553,7 +620,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="UnlockUnlockedFile" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="UnlockUnlockedFile" Category="WopiCore">
         <Description>
           Responses to Unlock requests on an unlocked file should include the X-WOPI-Lock header set to the empty string.
         </Description>
@@ -570,7 +637,7 @@
       </TestCase>
 
       <!-- LockMismatch -->
-      <TestCase Name="LockMismatchOnLockRequest" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="LockMismatchOnLockRequest" Category="WopiCore">
         <Description>
           Simulates a lock mismatch when trying to refresh the lock.
           Validates that the current lock ID is returned as response header.
@@ -590,7 +657,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="LockMismatchOnUnlockRequest" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="LockMismatchOnUnlockRequest" Category="WopiCore">
         <Description>
           Simulates a lock mismatch when trying to unlock the file.
           Validates that the current lock ID is returned as response header.
@@ -610,7 +677,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="LockMismatchOnRefreshLockRequest" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="LockMismatchOnRefreshLockRequest" Category="WopiCore">
         <Description>
           Simulates a lock mismatch when trying to refresh the lock.
           Validates that the current lock ID is returned as response header.
@@ -630,7 +697,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="LockMismatchOnUnlockAndRelockRequest" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="LockMismatchOnUnlockAndRelockRequest" Category="WopiCore">
         <Description>
           Simulates a lock mismatch when trying to unlock and relock the file.
           Validates that the current lock ID is returned as response header.
@@ -651,7 +718,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="LockMismatchOnPutFileRequest" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="LockMismatchOnPutFileRequest" Category="WopiCore">
         <Description>
           Simulates a lock mismatch when trying to refresh the lock.
           Validates that the current lock ID is returned as response header.
@@ -670,22 +737,14 @@
           <Unlock Lock="IncorrectLockString" />
         </CleanupRequests>
       </TestCase>
-    </TestCases>
-  </TestGroup>
 
-  <TestGroup Name="AccessTokens">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>LocksPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <!-- Access token related testcases -->
-      <TestCase Name="CheckFileWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
+      <!-- Invalid access token on Lock requests -->
+      <TestCase Name="LockFileWithInvalidAccessToken" Category="WopiCore">
         <Description>
-          Simulates a CheckFileInfo request with invalid access token and expects a 401 or 404 response.
+          Tests Lock operation with an invalid access token and expects a 401 or 404 response.
         </Description>
         <Requests>
-          <CheckFileInfo>
+          <Lock Lock="LockString">
             <Mutators>
               <AccessToken Mutation="INVALID" />
             </Mutators>
@@ -695,16 +754,259 @@
                 <ResponseCodeValidator ExpectedCode="404" />
               </Or>
             </Validators>
-          </CheckFileInfo>
+          </Lock>
         </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="GetPutFileWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
+      <!-- Invalid access token on Unlock requests -->
+      <TestCase Name="UnlockFileWithInvalidAccessToken" Category="WopiCore">
+        <Description>
+          Tests Unlock operation with an invalid access token and expects a 401 or 404 response.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <Unlock Lock="LockString">
+            <Mutators>
+              <AccessToken Mutation="INVALID" />
+            </Mutators>
+            <Validators>
+              <Or>
+                <ResponseCodeValidator ExpectedCode="401" />
+                <ResponseCodeValidator ExpectedCode="404" />
+              </Or>
+            </Validators>
+          </Unlock>
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <!-- Contains GetLock test cases -->
+  <TestGroup Name="GetLock">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+      <PrereqTest>GetLockPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <!-- /files/GetLock -->
+      <TestCase Name="files.GetLock" Category="WopiCore">
+        <Description>
+          Tests the standard GetLock flow; Lock, GetLock, then Unlock.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <GetLock>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="LockString" IsRequired="true" ShouldMatch="true" />
+            </Validators>
+          </GetLock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="files.GetLockAfterChange" Category="WopiCore">
+        <Description>
+          Tests that the lock ID GetLock returns changes after it's changed by UnlockAndRelock.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <UnlockAndRelock NewLock="NewLockString" OldLock="LockString" />
+          <GetLock>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="NewLockString" IsRequired="true" ShouldMatch="true" />
+            </Validators>
+          </GetLock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="NewLockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="files.GetLockOnUnlockedFile" Category="WopiCore">
+        <Description>
+          Tests GetLock after a file has been locked and unlocked.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <Unlock Lock="LockString" />
+          <GetLock>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="" IsRequired="true" ShouldMatch="true" />
+            </Validators>
+          </GetLock>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="ExtendedLockLength">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+      <PrereqTest>GetLockPrereq</PrereqTest>
+      <PrereqTest>ExtendedLockLengthPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <!-- /files/Lock: test new 1024 character lock length -->
+      <TestCase Name="files.ExtendedLockLengthValidation" Category="WopiCore">
+        <Description>
+          Tests that the WOPI host is capable of handling WOPI Lock IDs of 1024 characters.
+        </Description>
+        <Requests>
+          <CheckFileInfo>
+            <Validators>
+              <JsonResponseContentValidator>
+                <BooleanProperty Name="SupportsExtendedLockLength" ExpectedValue="true" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+          <Lock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
+          <GetLock />
+          <Unlock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="EditFlows">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>UserCanWritePrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="BasicEdit" Category="WopiCore">
+        <Description>
+          Standard sequence of requests made by an edit-capable WOPI client as part of application boot and successful saves when user interacts with the document.
+        </Description>
+        <Requests>
+          <CheckFileInfo>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="BaseFileName" IsRequired="true" />
+                <StringProperty Name="OwnerId" IsRequired="true" />
+                <LongProperty Name="Size" IsRequired="true" />
+                <StringProperty Name="Version" IsRequired="true" />
+
+                <AbsoluteUrlProperty Name="BreadcrumbBrandUrl" />
+                <AbsoluteUrlProperty Name="BreadcrumbDocUrl" />
+                <AbsoluteUrlProperty Name="BreadcrumbFolderUrl" />
+                <AbsoluteUrlProperty Name="DownloadUrl" />
+                <AbsoluteUrlProperty Name="CloseUrl" />
+                <AbsoluteUrlProperty Name="HostEditUrl" />
+                <AbsoluteUrlProperty Name="HostViewUrl" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+          <Lock Lock="LockString" />
+          <GetFile Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
+          <Unlock Lock="LockString" />
+          <GetFile>
+            <Validators>
+              <ResponseContentValidator ExpectedResourceId="WordSimpleDocument" />
+            </Validators>
+          </GetFile>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="EditNoChange" Category="WopiCore">
+        <Description>
+          Simulates an editor boot and save with no changes to a file.
+        </Description>
+        <Requests>
+          <CheckFileInfo>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="BaseFileName" IsRequired="true" />
+                <StringProperty Name="OwnerId" IsRequired="true" />
+                <LongProperty Name="Size" IsRequired="true" />
+                <StringProperty Name="Version" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+          <Lock Lock="LockString" />
+          <GetFile Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- Requests to unlocked file -->
+      <TestCase Name="PutUnlockedFile" Category="WopiCore">
+        <Description>
+          Simulates creating a new file on the host, which requires PutFile requests to an unlocked 0-byte file to succeed.
+        </Description>
+        <Requests>
+          <!-- Set up the test -->
+          <Lock Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="ZeroByteFile" />
+          <Unlock Lock="LockString" />
+
+          <!-- Execute the actual test -->
+          <PutFile ResourceId="WordBlankDocument" />
+          <GetFile>
+            <Validators>
+              <ResponseContentValidator ExpectedResourceId="WordBlankDocument" />
+            </Validators>
+          </GetFile>
+        </Requests>
+        <CleanupRequests>
+          <!-- If any of the setup steps fail, subsequent requests won't be issued, leaving the file potentially locked, so unlock it here in a cleanup request. -->
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="PutUnlockedFileNotZeroBytes" Category="WopiCore">
+        <Description>
+          This tests that PutFile requests fail when executed against files that are not zero bytes.
+        </Description>
+        <Requests>
+          <!-- Set up the test -->
+          <Lock Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
+          <Unlock Lock="LockString" />
+
+          <!-- Execute the actual test -->
+          <PutFile ResourceId="WordBlankDocument">
+            <Validators>
+              <!-- Should return a 409 since the file is unlocked and not zero bytes -->
+              <ResponseCodeValidator ExpectedCode="409" />
+            </Validators>
+          </PutFile>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="GetPutFileWithInvalidAccessToken" Category="WopiCore">
         <Description>
           Simulates Get and PutFile requests with invalid access token and expects a 401 or 404 response.
         </Description>
         <Requests>
-          <CheckFileInfo />
           <Lock Lock="LockString" />
           <GetFile Lock="LockString">
             <Mutators>
@@ -736,201 +1038,190 @@
           <Unlock Lock="LockString" />
         </CleanupRequests>
       </TestCase>
-
-      <TestCase Name="LockFileWithInvalidAccessToken" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Simulates Lock and Unlock request with invalid access token and expects a 401 or 404 response.
-        </Description>
-        <Requests>
-          <CheckFileInfo />
-          <Lock Lock="LockString">
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <Or>
-                <ResponseCodeValidator ExpectedCode="401" />
-                <ResponseCodeValidator ExpectedCode="404" />
-              </Or>
-            </Validators>
-          </Lock>
-          <Lock Lock="LockString" />
-          <Unlock Lock="LockString">
-            <Mutators>
-              <AccessToken Mutation="INVALID" />
-            </Mutators>
-            <Validators>
-              <Or>
-                <ResponseCodeValidator ExpectedCode="401" />
-                <ResponseCodeValidator ExpectedCode="404" />
-              </Or>
-            </Validators>
-          </Unlock>
-          <Unlock Lock="LockString" />
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
     </TestCases>
   </TestGroup>
 
-  <TestGroup Name="BaseWopiViewing">
+  <!-- Contains FileVersion test cases to verify X-WOPI-ItemVersion value -->
+  <TestGroup Name="FileVersion">
     <PrereqTests>
       <PrereqTest>WopiValidatorPrereq</PrereqTest>
-    </PrereqTests>
-    <!-- Full Viewer app sequences -->
-    <TestCases>
-      <TestCase Name="ViewOnlySupport" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Standard sequence of requests made by a WOPI client to render a document.
-        </Description>
-        <Requests>
-          <CheckFileInfo>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="BaseFileName" IsRequired="true" />
-                <StringProperty Name="OwnerId" IsRequired="true" />
-                <LongProperty Name="Size" IsRequired="true" />
-                <StringProperty Name="Version" IsRequired="true" />
-
-                <AbsoluteUrlProperty Name="BreadcrumbBrandUrl" />
-                <AbsoluteUrlProperty Name="BreadcrumbDocUrl" />
-                <AbsoluteUrlProperty Name="BreadcrumbFolderUrl" />
-                <AbsoluteUrlProperty Name="DownloadUrl" />
-                <AbsoluteUrlProperty Name="CloseUrl" />
-                <AbsoluteUrlProperty Name="HostEditUrl" />
-                <AbsoluteUrlProperty Name="HostViewUrl" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-          <GetFile />
-        </Requests>
-      </TestCase>
-
-      <TestCase Name="GetUnlockedFile" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          GetFile requests on a file that wasn't locked before - necessary for Viewing and Editing.
-        </Description>
-        <Requests>
-          <GetFile />
-        </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="EditFlows">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>UserCanWritePrereq</PrereqTest>
-      <PrereqTest>FileEditingPrereq</PrereqTest>
       <PrereqTest>LocksPrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="BasicEdit" Document="WordBlankDocument" Category="WopiCore">
+
+      <!-- /files/GetFile returns X-WOPI-ItemVersion -->
+      <TestCase Name="files.GetFileReturnsVersion" Category="WopiCore">
         <Description>
-          Standard sequence of requests made by an edit-capable WOPI client as part of application boot and successful saves when user interacts with the document.
+          /files/GetFile should return the current version of the file
         </Description>
         <Requests>
-          <CheckFileInfo>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="BaseFileName" IsRequired="true" />
-                <StringProperty Name="OwnerId" IsRequired="true" />
-                <LongProperty Name="Size" IsRequired="true" />
-                <StringProperty Name="Version" IsRequired="true" />
-
-                <AbsoluteUrlProperty Name="BreadcrumbBrandUrl" />
-                <AbsoluteUrlProperty Name="BreadcrumbDocUrl" />
-                <AbsoluteUrlProperty Name="BreadcrumbFolderUrl" />
-                <AbsoluteUrlProperty Name="DownloadUrl" />
-                <AbsoluteUrlProperty Name="CloseUrl" />
-                <AbsoluteUrlProperty Name="HostEditUrl" />
-                <AbsoluteUrlProperty Name="HostViewUrl" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-          <Lock Lock="LockString" />
-          <GetFile Lock="LockString" />
-          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
-          <Unlock Lock="LockString" />
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <TestCase Name="EditNoChange" Document="WordSimpleDocument" Category="WopiCore">
-        <Description>
-          Simulates an editor boot and save with no changes to a file.
-        </Description>
-        <Requests>
-          <CheckFileInfo>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="BaseFileName" IsRequired="true" />
-                <StringProperty Name="OwnerId" IsRequired="true" />
-                <LongProperty Name="Size" IsRequired="true" />
-                <StringProperty Name="Version" IsRequired="true" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-          <Lock Lock="LockString" />
-          <GetFile Lock="LockString" />
-          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
-          <Unlock Lock="LockString" />
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <!-- Requests to unlocked file -->
-      <TestCase Name="PutUnlockedFile" Document="WordZeroByteDocument" Category="WopiCore">
-        <Description>
-          Simulates creating a new file on the host, which requires PutFile requests to an unlocked 0-byte file to succeed.
-        </Description>
-        <Requests>
-          <!-- Set up the test -->
-          <Lock Lock="LockString" />
-          <PutFile Lock="LockString" ResourceId="ZeroByteFile" />
-          <Unlock Lock="LockString" />
-
-          <!-- Execute the actual test -->
-          <PutFile ResourceId="WordBlankDocument" />
           <GetFile>
             <Validators>
-              <ResponseContentValidator ExpectedDocumentId="WordBlankDocument" />
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
             </Validators>
           </GetFile>
         </Requests>
-        <CleanupRequests>
-          <!-- If any of the setup steps fail, subsequent requests won't be issued, leaving the file potentially locked, so unlock it here in a cleanup request. -->
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutUnlockedFileNotZeroBytes" Document="WordBlankDocument" Category="WopiCore">
+      <!-- /files/Lock and /files/Unlock return X-WOPI-ItemVersion -->
+      <TestCase Name="files.LockReturnsVersion" Category="WopiCore">
         <Description>
-          This tests that PutFile requests fail when executed against files that are not zero bytes.
+          /files/Lock should return the current version of the file
         </Description>
         <Requests>
-          <!-- Set up the test -->
-          <Lock Lock="LockString" />
-          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
-          <Unlock Lock="LockString" />
-
-          <!-- Execute the actual test -->
-          <PutFile ResourceId="WordBlankDocument">
+          <Lock Lock="LockString">
             <Validators>
-              <!-- Should return a 409 since the file is unlocked and not zero bytes -->
-              <ResponseCodeValidator ExpectedCode="409" />
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
             </Validators>
-          </PutFile>
+          </Lock>
+          <Unlock Lock="LockString" />
         </Requests>
         <CleanupRequests>
           <Unlock Lock="LockString" />
         </CleanupRequests>
+      </TestCase>
+
+      <TestCase Name="files.UnlockReturnsVersion" Category="WopiCore">
+        <Description>
+          /files/Unlock should return the current version of the file
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <Unlock Lock="LockString">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
+            </Validators>
+          </Unlock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- /files/PutFile returns X-WOPI-ItemVersion -->
+      <TestCase Name="files.PutFileReturnsVersion" Category="WopiCore">
+        <Description>
+          /files/PutFile should return the current version of the file
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
+            </Validators>
+          </PutFile>
+          <Unlock Lock="LockString" />
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- /files/PutFile returns a different X-WOPI-ItemVersion -->
+      <TestCase Name="files.PutFileReturnsDifferentVersion" Category="WopiCore">
+        <Description>
+          Performs consecutive PutFile operations to verify that the X-WOPI-ItemVersion header value is changed with every PutFile operation.
+        </Description>
+        <Requests>
+          <Lock Lock="LockString" />
+          <CheckFileInfo>
+            <SaveState>
+              <State Name="OriginalVersion" Source="Version" />
+            </SaveState>
+          </CheckFileInfo>
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
+            <SaveState>
+              <State Name="SecondVersion" Source="X-WOPI-ItemVersion" SourceType="Header" />
+            </SaveState>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" ShouldMatch="false" />
+            </Validators>
+          </PutFile>
+          <PutFile Lock="LockString" ResourceId="WordComplexDocument">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="SecondVersion" ShouldMatch="false" />
+            </Validators>
+          </PutFile>
+          <Unlock Lock="LockString">
+            <SaveState>
+              <State Name="VersionOnUnlock" Source="X-WOPI-ItemVersion" SourceType="Header" />
+            </SaveState>
+          </Unlock>
+          <CheckFileInfo>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Version" ExpectedStateKey="VersionOnUnlock" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+
+      <!-- /files/GetFile, /files/Lock and /files/Unlock returns the same X-WOPI-ItemVersion -->
+      <TestCase Name="files.LockAndUnlockAfterGetFileReturnsSameVersion" Category="WopiCore">
+        <Description>
+          Performs Lock and Unlock operations after a GetFile operation to verify that the X-WOPI-ItemVersion header value is unchanged.
+        </Description>
+        <Requests>
+          <CheckFileInfo>
+            <SaveState>
+              <State Name="OriginalVersion" Source="Version" />
+            </SaveState>
+          </CheckFileInfo>
+          <GetFile>
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" />
+            </Validators>
+          </GetFile>
+          <Lock Lock="LockString">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" />
+            </Validators>
+          </Lock>
+          <Unlock Lock="LockString">
+            <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" />
+            </Validators>
+          </Unlock>
+        </Requests>
+        <CleanupRequests>
+          <Unlock Lock="LockString" />
+        </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <!-- Contains PutUserInfo test cases -->
+  <TestGroup Name="PutUserInfo">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>SupportsUserInfoPrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+
+      <!-- PutUserInfo call returns 200 and subsequent CheckFileInfo calls return the correct value -->
+      <TestCase Name="PutUserInfoSucceeds" Category="WopiCore">
+        <Description>
+          PutUserInfo call returns 200 and subsequent CheckFileInfo calls return the correct value
+        </Description>
+        <Requests>
+          <PutUserInfo>
+            <RequestBody>PutUserInfoTest</RequestBody>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+            </Validators>
+          </PutUserInfo>
+          <CheckFileInfo>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="UserInfo" ExpectedValue="PutUserInfoTest" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+        </Requests>
       </TestCase>
 
     </TestCases>
@@ -946,7 +1237,7 @@
       <PrereqTest>DeleteFilePrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="PutRelativeFile.SuggestedExtension" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFile.SuggestedExtension" Category="WopiCore">
         <Description>
           Tests the basic PutRelativeFile scenario where a suggested extension is specified.
         </Description>
@@ -971,7 +1262,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFile.SuggestedName" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFile.SuggestedName" Category="WopiCore">
         <Description>
           Tests the basic PutRelativeFile scenario where a suggested name is specified.
         </Description>
@@ -996,7 +1287,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFile.SuggestedNameConflict" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFile.SuggestedNameConflict" Category="WopiCore">
         <Description>
           Tests the PutRelativeFile scenario where a suggested name is specified but
           a file with the target name already exists. Expects the request to succeed with the host
@@ -1038,7 +1329,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFile.RelativeName" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFile.RelativeName" Category="WopiCore">
         <Description>
           Tests the PutRelativeFile scenario where a Relative name is specified. Expects the created file to have
           the exact name specified.
@@ -1064,7 +1355,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFile.RelativeNameOverwriteTrueNoEffect" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFile.RelativeNameOverwriteTrueNoEffect" Category="WopiCore">
         <Description>
           Tests the PutRelativeFile scenario where a Relative name is specified and OverwriteRelative
           is set to true. Since no file with target name exists in this scenario, the header should have
@@ -1091,7 +1382,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFile.RelativeNameOverwriteFalseNoEffect" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFile.RelativeNameOverwriteFalseNoEffect" Category="WopiCore">
         <Description>
           Tests the PutRelativeFile scenario where a Relative name is specified and OverwriteRelative
           is set to false. Since no file with target name exists in this scenario, the header should have
@@ -1118,7 +1409,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFile.RelativeNameConflictNoOverwrite" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFile.RelativeNameConflictNoOverwrite" Category="WopiCore">
         <Description>
           Tests the PutRelativeFile scenario where a Relative name is specified and OverwriteRelative
           is not specified. Since a file with target name exists in this scenario, this should return a 409.
@@ -1149,7 +1440,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFile.RelativeNameConflictOverwriteFalse" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFile.RelativeNameConflictOverwriteFalse" Category="WopiCore">
         <Description>
           Tests the PutRelativeFile scenario where a Relative name is specified and OverwriteRelative
           is set to false. Since a file with target name exists in this scenario, this should return a 409.
@@ -1180,7 +1471,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFile.RelativeNameConflictOverwriteTrue" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFile.RelativeNameConflictOverwriteTrue" Category="WopiCore">
         <Description>
           Tests the PutRelativeFile scenario where a Relative name is specified and OverwriteRelative is set to true.
         </Description>
@@ -1224,7 +1515,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFile.ConflictingHeaders" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFile.ConflictingHeaders" Category="WopiCore">
         <Description>
           Tests the PutRelativeFile scenario where both a suggested name and a relative name are specified.
         </Description>
@@ -1241,7 +1532,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFile.RelativeNameConflictOverwriteTrueLocked" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFile.RelativeNameConflictOverwriteTrueLocked" Category="WopiCore">
         <Description>
           Tests the PutRelativeFile scenario where a relative name is specified along with OverwriteRelative
           set to true, but a file with the same target name already exists and is locked.
@@ -1274,7 +1565,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFile.FileNameReturnedIsCorrectlyEncoded" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFile.FileNameReturnedIsCorrectlyEncoded" Category="WopiCore">
         <Description>
           Tests that the host returns a UTF-8 encoded version of the FileName after a PutRelativeFile operation.
         </Description>
@@ -1296,7 +1587,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFile.FileNameLongerThan512Chars" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFile.FileNameLongerThan512Chars" Category="WopiCore">
         <Description>
           Tests that the host handles long file names appropriately by either supporting them or returning a 400.
         </Description>
@@ -1319,7 +1610,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFile.IncludeHostUrls" Document="WordBlankDocument" Category="OfficeOnline">
+      <TestCase Name="PutRelativeFile.IncludeHostUrls" Category="OfficeOnline">
         <Description>
           Tests that the host returns the HostEditUrl and HostViewUrl on their PutRelativeFile response.
         </Description>
@@ -1352,7 +1643,7 @@
       <PrereqTest>UserCanNotWriteRelativePrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="PutRelativeFileUnsupported.SuggestedExtension" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFileUnsupported.SuggestedExtension" Category="WopiCore">
         <Description>
           Tests the basic PutRelativeFile scenario where a suggested extension is specified.
         </Description>
@@ -1366,7 +1657,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFileUnsupported.SuggestedName" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFileUnsupported.SuggestedName" Category="WopiCore">
         <Description>
           Tests the basic PutRelativeFile scenario where a suggested name is specified.
         </Description>
@@ -1380,7 +1671,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFileUnsupported.RelativeName" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFileUnsupported.RelativeName" Category="WopiCore">
         <Description>
           Tests the PutRelativeFile scenario where a Relative name is specified.
         </Description>
@@ -1394,7 +1685,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFileUnsupported.RelativeNameOverwriteTrueNoEffect" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFileUnsupported.RelativeNameOverwriteTrueNoEffect" Category="WopiCore">
         <Description>
           Tests the PutRelativeFile scenario where a Relative name is specified and OverwriteRelative is set to true.
         </Description>
@@ -1408,7 +1699,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFileUnsupported.RelativeNameOverwriteFalseNoEffect" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFileUnsupported.RelativeNameOverwriteFalseNoEffect" Category="WopiCore">
         <Description>
           Tests the PutRelativeFile scenario where a Relative name is specified and OverwriteRelative is set to false.
         </Description>
@@ -1422,7 +1713,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="PutRelativeFileUnsupported.ConflictingHeaders" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeFileUnsupported.ConflictingHeaders" Category="WopiCore">
         <Description>
           Tests the PutRelativeFile scenario where both a suggested name and a relative name are specified.
         </Description>
@@ -1434,101 +1725,6 @@
             </Validators>
           </PutRelativeFile>
         </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <!-- Contains GetLock test cases -->
-  <TestGroup Name="GetLock">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>FileEditingPrereq</PrereqTest>
-      <PrereqTest>LocksPrereq</PrereqTest>
-      <PrereqTest>GetLockPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <!-- /files/GetLock -->
-      <TestCase Name="files.GetLock" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests the standard GetLock flow; Lock, GetLock, then Unlock.
-        </Description>
-        <Requests>
-          <Lock Lock="LockString" />
-          <GetLock>
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="LockString" IsRequired="true" ShouldMatch="true" />
-            </Validators>
-          </GetLock>
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <TestCase Name="files.GetLockAfterChange" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests that the lock ID GetLock returns changes after it's changed by UnlockAndRelock.
-        </Description>
-        <Requests>
-          <Lock Lock="LockString" />
-          <UnlockAndRelock NewLock="NewLockString" OldLock="LockString" />
-          <GetLock>
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="NewLockString" IsRequired="true" ShouldMatch="true" />
-            </Validators>
-          </GetLock>
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="NewLockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <TestCase Name="files.GetLockOnUnlockedFile" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests GetLock after a file has been locked and unlocked.
-        </Description>
-        <Requests>
-          <Lock Lock="LockString" />
-          <Unlock Lock="LockString" />
-          <GetLock>
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="" IsRequired="true" ShouldMatch="true" />
-            </Validators>
-          </GetLock>
-        </Requests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <TestGroup Name="ExtendedLockLength">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>FileEditingPrereq</PrereqTest>
-      <PrereqTest>LocksPrereq</PrereqTest>
-      <PrereqTest>GetLockPrereq</PrereqTest>
-      <PrereqTest>ExtendedLockLengthPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-      <!-- /files/Lock: test new 1024 character lock length -->
-      <TestCase Name="files.ExtendedLockLengthValidation" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          Tests that the WOPI host is capable of handling WOPI Lock IDs of 1024 characters.
-        </Description>
-        <Requests>
-          <CheckFileInfo>
-            <Validators>
-              <JsonResponseContentValidator>
-                <BooleanProperty Name="SupportsExtendedLockLength" ExpectedValue="true" IsRequired="true" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-          <Lock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
-          <GetLock />
-          <Unlock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345612345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234561234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456" />
-        </CleanupRequests>
       </TestCase>
     </TestCases>
   </TestGroup>
@@ -1545,18 +1741,18 @@
       <PrereqTest>UserCanWriteRelativePrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="PutRelativeAndRenameFile.RenameShouldSucceed" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeAndRenameFile.RenameShouldSucceed" Category="WopiCore">
         <Description>
           Perform a PutRelativeFile operation, then rename and delete it. The rename operation should succeed.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -1584,7 +1780,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeAndRenameFile.FileNameAfterRenameIsCorrectlyEncoded" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeAndRenameFile.FileNameAfterRenameIsCorrectlyEncoded" Category="WopiCore">
         <Description>
           Perform a PutRelativeFile operation, then rename it with a file name containing a special character and delete it.
           The rename operation should succeed and the server should return the name as a UTF-8 encoded string.
@@ -1624,18 +1820,18 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeAndRenameFile.RenamingALockedFileWithACorrectLockHeaderValueShouldSucceed" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeAndRenameFile.RenamingALockedFileWithACorrectLockHeaderValueShouldSucceed" Category="WopiCore">
         <Description>
           Perform a PutRelativeFile operation, then lock it and try to rename it with the correct lock ID. The rename operation should succeed.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -1666,19 +1862,19 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeAndRenameFile.RenamingALockedFileWithAnIncorrectLockHeaderValueShouldReturnA409" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeAndRenameFile.RenamingALockedFileWithAnIncorrectLockHeaderValueShouldReturnA409" Category="WopiCore">
         <Description>
           Perform a PutRelativeFile operation, then lock it and try to rename it with an incorrect lock ID.
           The rename operation should fail with a Conflict - 409 status code.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -1706,18 +1902,18 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeAndRenameFile.RenamingADeletedFileShouldReturnA404" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeAndRenameFile.RenamingADeletedFileShouldReturnA404" Category="WopiCore">
         <Description>
           Perform a PutRelativeFile operation, then delete it and try to rename it. The rename operation should fail with a 404 status code.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -1742,18 +1938,18 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="PutRelativeAndRenameFile.RenameShouldNotChangeFileExtension" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="PutRelativeAndRenameFile.RenameShouldNotChangeFileExtension" Category="WopiCore">
         <Description>
           Perform a PutRelativeFile operation, then rename and delete it. The rename operation should not change the file extension of the file.
         </Description>
         <Requests>
-          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx" ResourceId="WordSimpleDocument">
+          <PutRelativeFile PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
               </JsonResponseContentValidator>
             </Validators>
           </PutRelativeFile>
@@ -1777,8 +1973,8 @@
           <CheckFileInfo OverrideUrl="$State:NewFileUrl">
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="BaseFileName" ExpectedValue="ValidatorTestFileRenamed.docx" IsRequired="true" />
-                <StringProperty Name="FileExtension" ExpectedValue=".docx" IsRequired="false" />
+                <StringProperty Name="BaseFileName" ExpectedValue="ValidatorTestFileRenamed.wopitest" IsRequired="true" />
+                <StringProperty Name="FileExtension" ExpectedValue=".wopitest" IsRequired="false" />
               </JsonResponseContentValidator>
             </Validators>
           </CheckFileInfo>
@@ -1804,7 +2000,7 @@
       <PrereqTest>UserCanCreateChildFilePrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="CreateChildFileAndRenameFile.RenameShouldSucceed" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFileAndRenameFile.RenameShouldSucceed" Category="WopiCore">
         <Description>
           Create a file, then rename and delete it. The rename operation should succeed.
         </Description>
@@ -1815,13 +2011,13 @@
               <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
             </SaveState>
           </EnumerateAncestors>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
@@ -1850,7 +2046,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="CreateChildFileAndRenameFile.FileNameAfterRenameIsCorrectlyEncoded" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFileAndRenameFile.FileNameAfterRenameIsCorrectlyEncoded" Category="WopiCore">
         <Description>
           Create a file, then rename it with a file name containing a special character and delete it.
           The rename operation should succeed and the server should return the name as a UTF-8 encoded string.
@@ -1897,7 +2093,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="CreateChildFileAndRenameFile.RenamingALockedFileWithACorrectLockHeaderValueShouldSucceed" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFileAndRenameFile.RenamingALockedFileWithACorrectLockHeaderValueShouldSucceed" Category="WopiCore">
         <Description>
           Create a file, then lock it and try to rename it with the correct lock ID. The rename operation should succeed.
         </Description>
@@ -1908,13 +2104,13 @@
               <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
             </SaveState>
           </EnumerateAncestors>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
@@ -1946,7 +2142,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="CreateChildFileAndRenameFile.RenamingALockedFileWithAnIncorrectLockHeaderValueShouldReturnA409" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFileAndRenameFile.RenamingALockedFileWithAnIncorrectLockHeaderValueShouldReturnA409" Category="WopiCore">
         <Description>
           Create a file, then lock it and try to rename it with an incorrect lock ID.
           The rename operation should fail with a Conflict - 409 status code.
@@ -1958,13 +2154,13 @@
               <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
             </SaveState>
           </EnumerateAncestors>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
@@ -1993,7 +2189,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="CreateChildFileAndRenameFile.RenamingADeletedFileShouldReturnA404" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFileAndRenameFile.RenamingADeletedFileShouldReturnA404" Category="WopiCore">
         <Description>
           Create a file, then delete it and try to rename it. The rename operation should fail with a 404 status code.
         </Description>
@@ -2004,13 +2200,13 @@
               <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
             </SaveState>
           </EnumerateAncestors>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
@@ -2036,7 +2232,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="CreateChildFileAndRenameFile.RenameShouldNotChangeFileExtension" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFileAndRenameFile.RenameShouldNotChangeFileExtension" Category="WopiCore">
         <Description>
           Create a file, then rename and delete it. The rename operation should not change the file extension of the file.
         </Description>
@@ -2047,13 +2243,13 @@
               <State Name="ParentContainerUrl" Source="AncestorsWithRootFirst[-1:].Url" />
             </SaveState>
           </EnumerateAncestors>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.docx">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="ExactName" Name="ValidatorTestFile.wopitest">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.docx" IsRequired="true"/>
+                <StringProperty Name="Name" ExpectedValue="ValidatorTestFile.wopitest" IsRequired="true"/>
                 <AbsoluteUrlProperty Name="Url" IsRequired="true" MustIncludeAccessToken="true"/>
               </JsonResponseContentValidator>
             </Validators>
@@ -2078,8 +2274,8 @@
           <CheckFileInfo OverrideUrl="$State:NewFileUrl">
             <Validators>
               <JsonResponseContentValidator>
-                <StringProperty Name="BaseFileName" ExpectedValue="ValidatorTestFileRenamed.docx" IsRequired="true" />
-                <StringProperty Name="FileExtension" ExpectedValue=".docx" IsRequired="false" />
+                <StringProperty Name="BaseFileName" ExpectedValue="ValidatorTestFileRenamed.wopitest" IsRequired="true" />
+                <StringProperty Name="FileExtension" ExpectedValue=".wopitest" IsRequired="false" />
               </JsonResponseContentValidator>
             </Validators>
           </CheckFileInfo>
@@ -2088,181 +2284,6 @@
         <CleanupRequests>
           <DeleteFile OverrideUrl="$State:NewFileUrl" />
         </CleanupRequests>
-      </TestCase>
-
-    </TestCases>
-  </TestGroup>
-
-  <!-- Contains FileVersion test cases to verify X-WOPI-ItemVersion value -->
-  <TestGroup Name="FileVersion">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>LocksPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-
-      <!-- /files/GetFile returns X-WOPI-ItemVersion -->
-      <TestCase Name="files.GetFileReturnsVersion" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          /files/GetFile should return the current version of the file
-        </Description>
-        <Requests>
-          <GetFile>
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
-            </Validators>
-          </GetFile>
-        </Requests>
-      </TestCase>
-
-      <!-- /files/Lock and /files/Unlock return X-WOPI-ItemVersion -->
-      <TestCase Name="files.LockReturnsVersion" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          /files/Lock should return the current version of the file
-        </Description>
-        <Requests>
-          <Lock Lock="LockString">
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
-            </Validators>
-          </Lock>
-          <Unlock Lock="LockString" />
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <TestCase Name="files.UnlockReturnsVersion" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          /files/Unlock should return the current version of the file
-        </Description>
-        <Requests>
-          <Lock Lock="LockString" />
-          <Unlock Lock="LockString">
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
-            </Validators>
-          </Unlock>
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <!-- /files/PutFile returns X-WOPI-ItemVersion -->
-      <TestCase Name="files.PutFileReturnsVersion" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          /files/PutFile should return the current version of the file
-        </Description>
-        <Requests>
-          <Lock Lock="LockString" />
-          <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" />
-            </Validators>
-          </PutFile>
-          <Unlock Lock="LockString" />
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <!-- /files/PutFile returns a different X-WOPI-ItemVersion -->
-      <TestCase Name="files.PutFileReturnsDifferentVersion" Document="WordBlankDocument" Category="OfficeNativeClient">
-        <Description>
-          Performs consecutive PutFile operations to verify that the X-WOPI-ItemVersion header value is changed with every PutFile operation.
-        </Description>
-        <Requests>
-          <Lock Lock="LockString" />
-          <CheckFileInfo>
-            <SaveState>
-              <State Name="OriginalVersion" Source="Version" />
-            </SaveState>
-          </CheckFileInfo>
-          <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
-            <SaveState>
-              <State Name="SecondVersion" Source="X-WOPI-ItemVersion" SourceType="Header" />
-            </SaveState>
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" ShouldMatch="false" />
-            </Validators>
-          </PutFile>
-          <PutFile Lock="LockString" ResourceId="WordComplexDocument">
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="SecondVersion" ShouldMatch="false" />
-            </Validators>
-          </PutFile>
-          <Unlock Lock="LockString" />
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-
-      <!-- /files/GetFile, /files/Lock and /files/Unlock returns the same X-WOPI-ItemVersion -->
-      <TestCase Name="files.LockAndUnlockAfterGetFileReturnsSameVersion" Document="WordBlankDocument" Category="OfficeNativeClient">
-        <Description>
-          Performs Lock and Unlock operations after a GetFile operation to verify that the X-WOPI-ItemVersion header value is unchanged.
-        </Description>
-        <Requests>
-          <CheckFileInfo>
-            <SaveState>
-              <State Name="OriginalVersion" Source="Version" />
-            </SaveState>
-          </CheckFileInfo>
-          <GetFile>
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" />
-            </Validators>
-          </GetFile>
-          <Lock Lock="LockString">
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" />
-            </Validators>
-          </Lock>
-          <Unlock Lock="LockString">
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" />
-            </Validators>
-          </Unlock>
-        </Requests>
-        <CleanupRequests>
-          <Unlock Lock="LockString" />
-        </CleanupRequests>
-      </TestCase>
-    </TestCases>
-  </TestGroup>
-
-  <!-- Contains PutUserInfo test cases -->
-  <TestGroup Name="PutUserInfo">
-    <PrereqTests>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
-      <PrereqTest>SupportsUserInfoPrereq</PrereqTest>
-    </PrereqTests>
-    <TestCases>
-
-      <!-- PutUserInfo call returns 200 and subsequent CheckFileInfo calls return the correct value -->
-      <TestCase Name="PutUserInfoSucceeds" Document="WordBlankDocument" Category="WopiCore">
-        <Description>
-          PutUserInfo call returns 200 and subsequent CheckFileInfo calls return the correct value
-        </Description>
-        <Requests>
-          <PutUserInfo>
-            <RequestBody>PutUserInfoTest</RequestBody>
-            <Validators>
-              <ResponseCodeValidator ExpectedCode="200" />
-            </Validators>
-          </PutUserInfo>
-          <CheckFileInfo>
-            <Validators>
-              <JsonResponseContentValidator>
-                <StringProperty Name="UserInfo" ExpectedValue="PutUserInfoTest" IsRequired="true" />
-              </JsonResponseContentValidator>
-            </Validators>
-          </CheckFileInfo>
-        </Requests>
       </TestCase>
 
     </TestCases>
@@ -2277,7 +2298,7 @@
     </PrereqTests>
     <TestCases>
       <!-- /files/GetEcosystem -->
-      <TestCase Name="files.GetEcosystem" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.GetEcosystem" Category="WopiCore">
         <Description>
           Tests that GetEcosystem returns a valid response.
         </Description>
@@ -2293,7 +2314,7 @@
       </TestCase>
 
       <!-- /ecosystem/CheckEcosystem -->
-      <TestCase Name="ecosystem.CheckEcosystem" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="ecosystem.CheckEcosystem" Category="WopiCore">
         <Description>
           Tests that CheckEcosystem returns a valid response.
         </Description>
@@ -2317,7 +2338,7 @@
       <!-- No tests -->
 
       <!-- /ecosystem/GetRootContainer -->
-      <TestCase Name="ecosystem.GetRootContainer" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="ecosystem.GetRootContainer" Category="WopiCore">
         <Description>
           Tests that GetRootContainer returns a valid response.
         </Description>
@@ -2338,7 +2359,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="ecosystem.GetRootContainerInvalidAccessToken" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="ecosystem.GetRootContainerInvalidAccessToken" Category="WopiCore">
         <Description>
           Tests that GetRootContainer denies requests with invalid access tokens.
         </Description>
@@ -2373,7 +2394,7 @@
     </PrereqTests>
     <TestCases>
       <!-- /containers/CheckContainerInfo -->
-      <TestCase Name="containers.CheckContainerInfo" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="containers.CheckContainerInfo" Category="WopiCore">
         <Description>
           Tests that CheckContainerInfo returns a valid response.
         </Description>
@@ -2402,7 +2423,7 @@
 
       <!-- /containers/CreateChildContainer -->
       <!-- /containers/DeleteContainer -->
-      <TestCase Name="containers.CreateAndDeleteChildContainer" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="containers.CreateAndDeleteChildContainer" Category="WopiCore">
         <Description>
           Tests creating a child container and deleting it.
         </Description>
@@ -2432,7 +2453,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="containers.CreateAndDeleteChildContainerDupe" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="containers.CreateAndDeleteChildContainerDupe" Category="WopiCore">
         <Description>
           Tests that CreateChildContainer handles 'suggested mode' properly.
         </Description>
@@ -2469,7 +2490,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="containers.CreateAndDeleteChildContainerExactName" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="containers.CreateAndDeleteChildContainerExactName" Category="WopiCore">
         <Description>
           Tests that CreateChildContainer handles 'specific mode' properly.
         </Description>
@@ -2499,7 +2520,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="containers.CreateAndDeleteChildContainerExactNameDupe" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="containers.CreateAndDeleteChildContainerExactNameDupe" Category="WopiCore">
         <Description>
           Tests that CreateChildContainer handles conflicting container names when in 'specific mode' properly.
         </Description>
@@ -2539,7 +2560,7 @@
       </TestCase>
 
       <!-- /containers/GetEcosystem -->
-      <TestCase Name="containers.GetEcosystem" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="containers.GetEcosystem" Category="WopiCore">
         <Description>/files/EnumerateAncestors then /containers/GetEcosystem on each element</Description>
         <Requests>
           <EnumerateAncestors>
@@ -2558,7 +2579,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="containers.LicensingPropertiesOnChildFolderMatchWithParentFolder" Document="WordBlankDocument" Category="OfficeNativeClient">
+      <TestCase Name="containers.LicensingPropertiesOnChildFolderMatchWithParentFolder" Category="OfficeNativeClient">
         <Description>
           Verify that some CheckContainerInfo user properties match between a child container and its parent.
         </Description>
@@ -2613,7 +2634,7 @@
     </PrereqTests>
     <TestCases>
       <!-- /containers/RenameContainer -->
-      <TestCase Name="containers.CreateAndRenameChildContainer" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="containers.CreateAndRenameChildContainer" Category="WopiCore">
         <Description>
           Tests that RenameContainer is handled properly.
         </Description>
@@ -2650,7 +2671,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="containers.CreateAndRenameChildContainerAndVerifyReturnedContainerNameIsCorrectlyEncoded" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="containers.CreateAndRenameChildContainerAndVerifyReturnedContainerNameIsCorrectlyEncoded" Category="WopiCore">
         <Description>
           Tests the Containers.RenameChildContainer scenario where a Relative name is specified. Expect the host to rename
           the container with the exact name as specified. Also ensure that the host returns a UTF-8 encoded version of the ContainerName.
@@ -2699,7 +2720,7 @@
     </PrereqTests>
     <TestCases>
       <!-- /files/EnumerateAncestors -->
-      <TestCase Name="files.EnumerateAncestors" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.EnumerateAncestors" Category="WopiCore">
         <Description>just EnumerateAncestors</Description>
         <Requests>
           <EnumerateAncestors>
@@ -2714,7 +2735,7 @@
       </TestCase>
 
       <!-- /containers/EnumerateChildren -->
-      <TestCase Name="containers.EnumerateChildren" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="containers.EnumerateChildren" Category="WopiCore">
         <Description>/files/EnumerateAncestors then /containers/EnumerateChildren on the parent folder</Description>
         <Requests>
           <EnumerateAncestors>
@@ -2735,7 +2756,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="containers.EnumerateChildrenOnRoot" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="containers.EnumerateChildrenOnRoot" Category="WopiCore">
         <Description>/files/EnumerateAncestors then /containers/EnumerateChildren on the root folder</Description>
         <Requests>
           <EnumerateAncestors>
@@ -2749,7 +2770,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="containers.EnumerateChildrenWithOneFilter" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="containers.EnumerateChildrenWithOneFilter" Category="WopiCore">
         <Description>/files/EnumerateAncestors then /containers/EnumerateChildren on the parent folder with a file extension filter</Description>
         <Requests>
           <EnumerateAncestors>
@@ -2770,7 +2791,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="containers.EnumerateChildrenWithMultipleFilters" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="containers.EnumerateChildrenWithMultipleFilters" Category="WopiCore">
         <Description>/files/EnumerateAncestors then /containers/EnumerateChildren on the parent folder with multiple file extensions filtered</Description>
         <Requests>
           <EnumerateAncestors>
@@ -2792,7 +2813,7 @@
       </TestCase>
 
       <!-- /containers/EnumerateAncestors -->
-      <TestCase Name="containers.EnumerateAncestorsOnRoot" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="containers.EnumerateAncestorsOnRoot" Category="WopiCore">
         <Description>/files/EnumerateAncestors then /containers/EnumerateAncestors on a container which is a root container</Description>
         <Requests>
           <EnumerateAncestors>
@@ -2809,7 +2830,7 @@
       </TestCase>
 
       <!-- /containers/EnumerateAncestors -->
-      <TestCase Name="containers.EnumerateAncestorsOnChildren" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="containers.EnumerateAncestorsOnChildren" Category="WopiCore">
         <Description>/files/EnumerateAncestors then /containers/EnumerateAncestors on a container which is not a root container</Description>
         <Requests>
           <EnumerateAncestors>
@@ -2856,7 +2877,7 @@
     <TestCases>
       <!-- /containers/CreateChildFile -->
       <!-- /files/DeleteFile -->
-      <TestCase Name="CreateChildFileAndDelete" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFileAndDelete" Category="WopiCore">
         <Description>
           /files/EnumerateAncestors then go to a container that has UserCanCreateChildFile=true.
           create a file.  delete it.
@@ -2875,7 +2896,7 @@
               </JsonResponseContentValidator>
             </Validators>
           </CheckContainerInfo>
-          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="Suggested" Name="CreateChildFileTestFile.docx">
+          <CreateChildFile OverrideUrl="$State:ParentContainerUrl" PutRelativeFileMode="Suggested" Name="CreateChildFileTestFile.wopitest">
             <SaveState>
               <State Name="NewFileUrl" Source="Url" />
             </SaveState>
@@ -2884,7 +2905,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="CreateChildFile.SuggestedName" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFile.SuggestedName" Category="WopiCore">
         <Description>
           Tests the Containers.CreateChildFile scenario where a suggested name is specified.
         </Description>
@@ -2921,7 +2942,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="CreateChildFile.SuggestedNameConflict" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFile.SuggestedNameConflict" Category="WopiCore">
         <Description>
           Tests the Containers.CreateChildFile scenario where a suggested name is specified but
           a file with the target name already exists. Expect the request to succeed with the host
@@ -2975,7 +2996,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="CreateChildFile.RelativeName" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFile.RelativeName" Category="WopiCore">
         <Description>
           Tests the Containers.CreateChildFile scenario where a Relative name is specified. Expect the host to create
           a new file with the exact name as specified.
@@ -3013,7 +3034,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="CreateChildFile.RelativeNameOverwriteTrueNoEffect" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFile.RelativeNameOverwriteTrueNoEffect" Category="WopiCore">
         <Description>
           Tests the Containers.CreateChildFile scenario where a Relative name is specified and OverwriteRelative
           is set to true. Since no file with target name exists in this scenario, the header should have
@@ -3052,7 +3073,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="CreateChildFile.RelativeNameOverwriteFalseNoEffect" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFile.RelativeNameOverwriteFalseNoEffect" Category="WopiCore">
         <Description>
           Tests the Containers.CreateChildFile scenario where a Relative name is specified and OverwriteRelative
           is set to false. Since no file with target name exists in this scenario, the header should have
@@ -3091,7 +3112,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="CreateChildFile.RelativeNameConflictNoOverwrite" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFile.RelativeNameConflictNoOverwrite" Category="WopiCore">
         <Description>
           Tests the Containers.CreateChildFile scenario where a Relative name is specified and OverwriteRelative
           is not specified. Since a file with target name exists in this scenario, expect the host to
@@ -3135,7 +3156,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="CreateChildFile.RelativeNameConflictOverwriteFalse" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFile.RelativeNameConflictOverwriteFalse" Category="WopiCore">
         <Description>
           Tests the Containers.CreateChildFile scenario where a Relative name is specified and OverwriteRelative
           is set to false. Since a file with target name exists in this scenario, expect the host to
@@ -3179,7 +3200,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="CreateChildFile.RelativeNameConflictOverwriteTrue" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFile.RelativeNameConflictOverwriteTrue" Category="WopiCore">
         <Description>
           Tests the Containers.CreateChildFile scenario where a Relative name is specified and OverwriteRelative
           is set to true. Since a file with target name exists in this scenario, expect the host to
@@ -3237,7 +3258,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="CreateChildFile.ConflictingHeaders" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFile.ConflictingHeaders" Category="WopiCore">
         <Description>
           Tests the Containers.CreateChildFile scenario where both a suggested name and a relative name are specified.
           Expect the host to fail the request as bad request.
@@ -3264,7 +3285,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="CreateChildFile.RelativeNameConflictOverwriteTrueLocked" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFile.RelativeNameConflictOverwriteTrueLocked" Category="WopiCore">
         <Description>
           Tests the Containers.CreateChildFile scenario where a relative name is specified along with OverwriteRelative
           set to true, but a file with the same target name already exists and is locked. Expect the host
@@ -3310,7 +3331,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="CreateChildFile.FileNameReturnedIsCorrectlyEncoded" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFile.FileNameReturnedIsCorrectlyEncoded" Category="WopiCore">
         <Description>
           Tests the Containers.CreateChildFile scenario where a Relative name is specified. Expect the host to create
           a new file with the exact name as specified. Also ensure that the host returns a UTF-8 encoded version of the FileName.
@@ -3345,7 +3366,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="CreateChildFile.FileNameLongerThan512Characters" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="CreateChildFile.FileNameLongerThan512Characters" Category="WopiCore">
         <Description>
           Tests the Containers.CreateChildFile scenario where a file name is longer than 512 characters, then the host should return a 400 or 200.
         </Description>
@@ -3380,7 +3401,7 @@
         </CleanupRequests>
       </TestCase>
 
-      <TestCase Name="CreateChildFile.LicensingPropertiesOnChildFileMatchWithParentFolder" Document="WordBlankDocument" Category="OfficeNativeClient">
+      <TestCase Name="CreateChildFile.LicensingPropertiesOnChildFileMatchWithParentFolder" Category="OfficeNativeClient">
         <Description>
           Verify that some CheckContainerInfo and CheckFileInfo user properties match between a child file and its parent container.
         </Description>
@@ -3435,7 +3456,7 @@
       <PrereqTest>FileUrlUsagePrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="GetFromFileUrl" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="GetFromFileUrl" Category="WopiCore">
         <Description>
           Use FileUrl if supported by host to directly retrieve the contents of a file instead of using GetFile.
         </Description>
@@ -3450,7 +3471,7 @@
           <Unlock Lock="LockString" />
           <GetFromFileUrl OverrideUrl="$State:FileUrl">
             <Validators>
-              <ResponseContentValidator ExpectedDocumentId="WordSimpleDocument" />
+              <ResponseContentValidator ExpectedResourceId="WordSimpleDocument" />
             </Validators>
           </GetFromFileUrl>
         </Requests>
@@ -3467,7 +3488,7 @@
       <PrereqTest>ShareUrlTypeReadOnlyForFilePrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="files.GetShareUrlForReadOnlyUrlType" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.GetShareUrlForReadOnlyUrlType" Category="WopiCore">
         <Description>
           Tests the GetShareUrl operation for a file where the requested share url type is "ReadOnly".
         </Description>
@@ -3491,7 +3512,7 @@
       <PrereqTest>ShareUrlTypeReadWriteForFilePrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="files.GetShareUrlForReadWriteUrlType" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.GetShareUrlForReadWriteUrlType" Category="WopiCore">
         <Description>
           Tests the GetShareUrl operation for a file where the requested share url type is "ReadWrite".
         </Description>
@@ -3515,7 +3536,7 @@
       <PrereqTest>SupportedShareUrlTypesForFilePrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="files.GetShareUrlForUnknownUrlType" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.GetShareUrlForUnknownUrlType" Category="WopiCore">
         <Description>
           Tests the GetShareUrl operation for a file where the requested share url type is unknown.
         </Description>
@@ -3538,7 +3559,7 @@
       <PrereqTest>ShareUrlTypeReadOnlyForContainerPrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="containers.GetShareUrlForReadOnlyUrlType" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="containers.GetShareUrlForReadOnlyUrlType" Category="WopiCore">
         <Description>
           Tests the GetShareUrl operation for a container where the requested share url type is "ReadOnly".
         </Description>
@@ -3569,7 +3590,7 @@
       <PrereqTest>ShareUrlTypeReadWriteForContainerPrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="containers.GetShareUrlForReadWriteUrlType" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="containers.GetShareUrlForReadWriteUrlType" Category="WopiCore">
         <Description>
           Tests the GetShareUrl operation for a container where the requested share url type is "ReadWrite".
         </Description>
@@ -3600,7 +3621,7 @@
       <PrereqTest>SupportedShareUrlTypesForContainerPrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="containers.GetShareUrlForUnknownUrlType" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="containers.GetShareUrlForUnknownUrlType" Category="WopiCore">
         <Description>
           Tests the GetShareUrl operation for a container where the requested share url type is unknown.
         </Description>
@@ -3631,7 +3652,7 @@
     </PrereqTests>
     <TestCases>
       <!-- /files/AddActivities -->
-      <TestCase Name="files.AddActivitiesSingleMinimalComment" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.AddActivitiesSingleMinimalComment" Category="WopiCore">
         <Description>one comment, minimal properties</Description>
         <Requests>
           <AddActivities>
@@ -3665,7 +3686,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="files.AddActivitiesSingleFullComment" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.AddActivitiesSingleFullComment" Category="WopiCore">
         <Description>one comment with all data properties set</Description>
         <Requests>
           <AddActivities>
@@ -3702,7 +3723,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="files.AddActivitiesAllCapsID" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.AddActivitiesAllCapsID" Category="WopiCore">
         <Description>one comment with all-caps ID GUID</Description>
         <Requests>
           <AddActivities>
@@ -3736,7 +3757,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="files.AddActivitiesMaxLengthContentID" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.AddActivitiesMaxLengthContentID" Category="WopiCore">
         <Description>one comment with max-length ContentID</Description>
         <Requests>
           <AddActivities>
@@ -3770,7 +3791,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="files.AddActivitiesMaxLengthNavigationId" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.AddActivitiesMaxLengthNavigationId" Category="WopiCore">
         <Description>one comment with max-length NavigationId</Description>
         <Requests>
           <AddActivities>
@@ -3805,7 +3826,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="files.AddActivitiesCommentUpdate" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.AddActivitiesCommentUpdate" Category="WopiCore">
         <Description>one comment with ContentAction=update</Description>
         <Requests>
           <AddActivities>
@@ -3839,7 +3860,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="files.AddActivitiesCommentDelete" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.AddActivitiesCommentDelete" Category="WopiCore">
         <Description>one comment with ContentAction=delete</Description>
         <Requests>
           <AddActivities>
@@ -3873,7 +3894,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="files.AddActivitiesWithBonusToplevelProperty" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.AddActivitiesWithBonusToplevelProperty" Category="WopiCore">
         <Description>one comment with bogus additional toplevel property</Description>
         <Requests>
           <AddActivities>
@@ -3908,7 +3929,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="files.AddActivitiesWithBonusDataProperty" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.AddActivitiesWithBonusDataProperty" Category="WopiCore">
         <Description>one comment with bogus additional data property</Description>
         <Requests>
           <AddActivities>
@@ -3943,7 +3964,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="files.AddActivitiesCommentAndPerson" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.AddActivitiesCommentAndPerson" Category="WopiCore">
         <Description>one comment, one person</Description>
         <Requests>
           <AddActivities>
@@ -3985,7 +4006,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="files.AddActivitiesCommentWithThreePeople" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.AddActivitiesCommentWithThreePeople" Category="WopiCore">
         <Description>one comment, three people</Description>
         <Requests>
           <AddActivities>
@@ -4040,7 +4061,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="files.AddActivitiesCommentWithPersonBonusProperty" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.AddActivitiesCommentWithPersonBonusProperty" Category="WopiCore">
         <Description>one comment, one person with bogus additional property</Description>
         <Requests>
           <AddActivities>
@@ -4083,7 +4104,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="files.AddActivitiesCommentWithNonWopiPerson" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.AddActivitiesCommentWithNonWopiPerson" Category="WopiCore">
         <Description>one comment, one person with non-wopi provider and ID</Description>
         <Requests>
           <AddActivities>
@@ -4125,7 +4146,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="files.AddActivitiesUnknownActivityType" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.AddActivitiesUnknownActivityType" Category="WopiCore">
         <Description>one activity with bogus type</Description>
         <Requests>
           <AddActivities>
@@ -4154,7 +4175,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="files.AddActivitiesUnknownNoDataActivity" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.AddActivitiesUnknownNoDataActivity" Category="WopiCore">
         <Description>one activity with bogus type and no data</Description>
         <Requests>
           <AddActivities>
@@ -4184,7 +4205,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="files.AddActivitiesTwoActivitiesOneUnknown" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.AddActivitiesTwoActivitiesOneUnknown" Category="WopiCore">
         <Description>one comment and one activity with bogus type</Description>
         <Requests>
           <AddActivities>
@@ -4243,7 +4264,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="files.AddActivitiesThreeComments" Document="WordBlankDocument" Category="WopiCore">
+      <TestCase Name="files.AddActivitiesThreeComments" Category="WopiCore">
         <Description>three comments</Description>
         <Requests>
           <AddActivities>
@@ -4323,7 +4344,7 @@
       <PrereqTest>WopiValidatorPrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="ProofKeys.CurrentValid.OldValid" Document="WordBlankDocument" Category="OfficeOnline">
+      <TestCase Name="ProofKeys.CurrentValid.OldValid" Category="OfficeOnline">
         <Description>
           Tests that hosts accept requests where the X-WOPI-Proof value is correctly signed with the current proof key,
           and the X-WOPI-ProofOld value is signed with the old proof key.
@@ -4333,7 +4354,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="ProofKeys.CurrentValid.OldInvalid" Document="WordBlankDocument" Category="OfficeOnline">
+      <TestCase Name="ProofKeys.CurrentValid.OldInvalid" Category="OfficeOnline">
         <Description>
           Tests that hosts accept requests where the X-WOPI-Proof value is correctly signed with the current proof key,
           but the X-WOPI-ProofOld value is invalid. This scenario is unusual and should not happen in a production
@@ -4349,7 +4370,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="ProofKeys.CurrentInvalid.OldValidSignedWithCurrentKey" Document="WordBlankDocument" Category="OfficeOnline">
+      <TestCase Name="ProofKeys.CurrentInvalid.OldValidSignedWithCurrentKey" Category="OfficeOnline">
         <Description>
           Tests that hosts accept requests where the X-WOPI-Proof value is invalid but the X-WOPI-ProofOld value is
           signed with current public key. This can happen when a WOPI client such as Office Online has rotated proof keys
@@ -4364,7 +4385,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="ProofKeys.CurrentValidSignedWithOldKey.OldInvalid" Document="WordBlankDocument" Category="OfficeOnline">
+      <TestCase Name="ProofKeys.CurrentValidSignedWithOldKey.OldInvalid" Category="OfficeOnline">
         <Description>
           Tests that hosts accept requests where the X-WOPI-ProofOld value is invalid but the X-WOPI-Proof value is
           signed with old public key. This can happen when a WOPI client has rotated proof keys, the host has re-run
@@ -4380,7 +4401,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="ProofKeys.CurrentInvalid.OldValidSignedWithOldKey" Document="WordBlankDocument" Category="OfficeOnline">
+      <TestCase Name="ProofKeys.CurrentInvalid.OldValidSignedWithOldKey" Category="OfficeOnline">
         <Description>
           Tests that hosts reject requests where the X-WOPI-Proof value is invalid, and the X-WOPI-ProofOld value
           is signed with the old public key. This scenario is unusual and should not happen in a production
@@ -4398,7 +4419,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="ProofKeys.CurrentInvalid.OldInvalid" Document="WordBlankDocument" Category="OfficeOnline">
+      <TestCase Name="ProofKeys.CurrentInvalid.OldInvalid" Category="OfficeOnline">
         <Description>
           Tests that hosts reject requests with invalid current and old proof keys.
         </Description>
@@ -4414,7 +4435,7 @@
         </Requests>
       </TestCase>
 
-      <TestCase Name="ProofKeys.TimestampOlderThan20Min" Document="WordBlankDocument" Category="OfficeOnline">
+      <TestCase Name="ProofKeys.TimestampOlderThan20Min" Category="OfficeOnline">
         <Description>
           Tests that hosts reject requests with an X-WOPI-Timestamp value that represents a time more than 20 minutes old.
         </Description>

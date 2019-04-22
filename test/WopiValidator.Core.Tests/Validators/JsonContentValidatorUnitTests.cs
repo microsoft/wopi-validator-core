@@ -585,6 +585,38 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 		}
 
 		[TestMethod]
+		public void Validate_ValidatingStringPropertyEndsWithCaseInsensitive_ValidationSucceeds()
+		{
+			// Arrange
+			const string content = "{ propertyName: 'propertyValueSuffix' }";
+			JsonContentValidator validator = new JsonContentValidator(
+				new JsonContentValidator.JsonStringPropertyValidator("propertyName", true, "propertyValueSuffix", true, "suffix", null, ignoreCase: true));
+			ResponseDataMock responseData = CreateDefaultResponseDataMock(content);
+
+			// Act
+			ValidationResult validationResult = validator.Validate(responseData, null, null);
+
+			// Assert
+			Assert.IsFalse(validationResult.HasFailures);
+		}
+
+		[TestMethod]
+		public void Validate_ValidatingStringPropertyEndsWithCaseSensitive_ValidationFails()
+		{
+			// Arrange
+			const string content = "{ propertyName: 'propertyValueSuffix' }";
+			JsonContentValidator validator = new JsonContentValidator(
+				new JsonContentValidator.JsonStringPropertyValidator("propertyName", true, "propertyValueSuffix", true, "suffix", null));
+			ResponseDataMock responseData = CreateDefaultResponseDataMock(content);
+
+			// Act
+			ValidationResult validationResult = validator.Validate(responseData, null, null);
+
+			// Assert
+			Assert.IsTrue(validationResult.HasFailures);
+		}
+
+		[TestMethod]
 		public void Validate_ValidatingStringPropertyWithNoExpectedValueAndNoExpectedStateKey_ValidationSucceeds()
 		{
 			// Arrange
@@ -658,6 +690,70 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string content = "{ propertyName: 'value' }";
 			JsonContentValidator validator = new JsonContentValidator(
 				new JsonContentValidator.JsonStringPropertyValidator("propertyName", true, "value", false, null, null));
+			ResponseDataMock responseData = CreateDefaultResponseDataMock(content);
+
+			// Act
+			ValidationResult validationResult = validator.Validate(responseData, null, null);
+
+			// Assert
+			Assert.IsFalse(validationResult.HasFailures);
+		}
+
+		[TestMethod]
+		public void Validate_ValidatingStringPropertyCaseInsensitive_ValidationSucceeds()
+		{
+			// Arrange
+			const string content = "{ propertyName: '.CaseInsensitive' }";
+			JsonContentValidator validator = new JsonContentValidator(
+				new JsonContentValidator.JsonStringPropertyValidator("propertyName", true, "caseinsensitive", false, null, null, ignoreCase: true));
+			ResponseDataMock responseData = CreateDefaultResponseDataMock(content);
+
+			// Act
+			ValidationResult validationResult = validator.Validate(responseData, null, null);
+
+			// Assert
+			Assert.IsFalse(validationResult.HasFailures);
+		}
+
+		[TestMethod]
+		public void Validate_ValidatingStringPropertyCaseInsensitive_ValidationFails()
+		{
+			// Arrange
+			const string content = "{ propertyName: 'CaseInsensitive' }";
+			JsonContentValidator validator = new JsonContentValidator(
+				new JsonContentValidator.JsonStringPropertyValidator("propertyName", true, "_caseinsensitive", false, null, null, ignoreCase: true));
+			ResponseDataMock responseData = CreateDefaultResponseDataMock(content);
+
+			// Act
+			ValidationResult validationResult = validator.Validate(responseData, null, null);
+
+			// Assert
+			Assert.IsFalse(validationResult.HasFailures);
+		}
+
+		[TestMethod]
+		public void Validate_ValidatingStringPropertyCaseSensitive_ValidationSucceeds()
+		{
+			// Arrange
+			const string content = "{ propertyName: 'CaseSensitive' }";
+			JsonContentValidator validator = new JsonContentValidator(
+				new JsonContentValidator.JsonStringPropertyValidator("propertyName", true, "CaseSensitive", false, null, null));
+			ResponseDataMock responseData = CreateDefaultResponseDataMock(content);
+
+			// Act
+			ValidationResult validationResult = validator.Validate(responseData, null, null);
+
+			// Assert
+			Assert.IsFalse(validationResult.HasFailures);
+		}
+
+		[TestMethod]
+		public void Validate_ValidatingStringPropertyCaseSensitive_ValidationFails()
+		{
+			// Arrange
+			const string content = "{ propertyName: 'CaseSensitive' }";
+			JsonContentValidator validator = new JsonContentValidator(
+				new JsonContentValidator.JsonStringPropertyValidator("propertyName", true, "casesensitive", false, null, null));
 			ResponseDataMock responseData = CreateDefaultResponseDataMock(content);
 
 			// Act

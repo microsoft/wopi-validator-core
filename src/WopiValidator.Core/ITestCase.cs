@@ -15,17 +15,11 @@ namespace Microsoft.Office.WopiValidator.Core
 
 		IEnumerable<IRequest> CleanupRequests { get; }
 
-		string ResourceId { get; }
-
 		string UiScreenShot { get; set; }
 
 		string DocumentationLink { get; set; }
 
 		string FailMessage { get; set; }
-
-		bool UploadDocumentOnSetup { get; }
-
-		bool DeleteDocumentOnTearDown { get; }
 
 		string Category { get; }
 
