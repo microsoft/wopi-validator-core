@@ -77,8 +77,10 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			string expectedValue = (string)definition.Attribute("ExpectedValue");
 			bool isRequired = ((bool?)definition.Attribute("IsRequired")) ?? true;
 			bool shouldMatch = ((bool?)definition.Attribute("ShouldMatch")) ?? true;
+			bool isUrl = ((bool?)definition.Attribute("IsUrl")) ?? false;
+			bool isExcluded = ((bool?)definition.Attribute("IsExcluded")) ?? false;
 
-			return new ResponseHeaderValidator(header, expectedValue, expectedStateKey, isRequired, shouldMatch);
+			return new ResponseHeaderValidator(header, expectedValue, expectedStateKey, isRequired, shouldMatch, isUrl, isExcluded);
 		}
 
 		/// <summary>
@@ -172,7 +174,8 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 						expectedValue,
 						hasExpectedValue,
 						endsWithValue,
-						expectedStateKey);
+						expectedStateKey,
+						shouldMatch);
 
 				case Constants.Validators.Properties.StringRegexProperty:
 					return new JsonContentValidator.JsonStringRegexPropertyValidator(key,

@@ -19,10 +19,14 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		{
 			get
 			{
-				return new Dictionary<string, string>
+				Dictionary<string, string> headers = new Dictionary<string, string>();
+
+				if (!string.IsNullOrEmpty(this.UrlType))
 				{
-					{Constants.Headers.UrlType, UrlType}
-				};
+					headers.Add(Constants.Headers.UrlType, UrlType);
+				}
+
+				return headers;
 			}
 		}
 	}
