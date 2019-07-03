@@ -1,6 +1,6 @@
 language: csharp
 solution: WopiValidator.sln
-dotnet: 2.1
+dotnet: 2.2
 mono: none
 script:
   - dotnet build -c Release -f netcoreapp2.0
