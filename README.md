@@ -9,6 +9,18 @@
 This project contains the core logic of the [WOPI validator](https://wopi.readthedocs.io/en/latest/build_test_ship/validator.html)
 as well as a command-line interface to it.
 
+## Quick start using Docker
+
+You can quickly run the validator using Docker. First, pull the Docker image:
+
+`docker pull tylerbutler/wopi-validator`
+
+Then run the validator using a command like the following:
+
+`docker run -it --rm tylerbutler/wopi-validator -- -w http://localhost:5000/wopi/files/1 -t myToken -l 0 -s`
+
+Note the `--`; parameters after the `--` will be passed to the validator itself
+
 ## Building the project
 
 The project can be built in Visual Studio 2017, Visual Studio Code, or using `dotnet build`:
@@ -18,7 +30,7 @@ The project can be built in Visual Studio 2017, Visual Studio Code, or using `do
 The resulting build will be output to `src\WopiValidator\bin\Release\netcoreapp2.0\`. Omit the `-c Release`
 portion if you want to build the debug version instead.
 
-### Building self-contained package
+### Building a self-contained package
 
 To build a [self-contained package][1] for Linux or macOS, use the `dotnet publish` command:
 
@@ -44,6 +56,15 @@ with other platforms as needed).
 
 [1]: https://docs.microsoft.com/en-us/dotnet/core/deploying/deploy-with-cli
 
+### Building a Docker image
+
+You can build a Docker image locally from the Dockerfile in the root of the repository like so:
+
+```bash
+dotnet build -c Release
+docker build -t wopi-validator:latest -f Dockerfile .
+```
+
 ## Running tests
 
 Basic unit tests can be run using the `dotnet test` command:
@@ -64,7 +85,11 @@ Note: if you see any errors, you may need to build the project first, as describ
 
 There are several ways to run the validator.
 
-### Option 1: `dotnet`
+### Option 1: Docker
+
+See [the quick start](#quick-start-using-docker).
+
+### Option 2: `dotnet`
 
 After building the projects as described above, you can run the resulting `Microsoft.Office.WopiValidator.dll`
 using the `dotnet` command. For example:
@@ -73,7 +98,7 @@ using the `dotnet` command. For example:
 
 Note: the Microsoft.Office.WopiValidator.dll file can be found in `src\WopiValidator\bin\Release\netcoreapp2.0\`.
 
-### Option 2: `dotnet run --project`
+### Option 3: `dotnet run --project`
 
 You can also use the `dotnet run` command, passing the path to the `WopiValidator.csproj` file using the `--project`
 option. Arguments to the validator itself can be passed in by separating them from the `dotnet run` arguments with
@@ -81,7 +106,7 @@ a `--`. For example:
 
 `dotnet run --project ./src/WopiValidator/WopiValidator.csproj --framework netcoreapp2.0 -- -t MyAccessToken -l 0 -w http://localhost:5000/wopi/files/1 -e OfficeOnline -s`
 
-### Option 3: self-contained package
+### Option 4: self-contained package
 
 Another option is to build a self-contained package for your OS (see above) and execute the resulting executable
 file, which be called `Microsoft.Office.Validator.exe` on Windows and `Microsoft.Office.Validator` on Linux and macOS.
