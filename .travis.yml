@@ -1,7 +1,9 @@
 language: csharp
-solution: WopiValidator.sln
 dotnet: 2.2
 mono: none
+solution: WopiValidator.sln
+sudo: required
+dist: xenial
 script:
   - dotnet build -c Release -f netcoreapp2.0
   - dotnet test ./test/WopiValidator.Core.Tests/WopiValidator.Core.Tests.csproj -c Release -f netcoreapp2.0
