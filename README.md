@@ -21,6 +21,9 @@ Then run the validator using a command like the following:
 
 Note the `--`; parameters after the `--` will be passed to the validator itself
 
+**Tip:** Depending on your network configuration, you may also need to use the `--add-host` parameter to ensure
+the docker image can resolve your WOPI host domain name. Arguments to the `--add-host` parameter are of the form `host:IP`.
+
 ## Building the project
 
 The project can be built in Visual Studio 2017, Visual Studio Code, or using `dotnet build`:
