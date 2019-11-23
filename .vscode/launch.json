@@ -1,28 +1,73 @@
 {
-   // Use IntelliSense to find out which attributes exist for C# debugging
-   // Use hover for the description of the existing attributes
-   // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
-   "version": "0.2.0",
-   "configurations": [
-        {
-            "name": ".NET Core Launch (console)",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/WopiValidator/bin/Debug/netcoreapp2.0/Microsoft.Office.WopiValidator.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}/src/WopiValidator",
-            // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
-            "console": "internalConsole",
-            "stopAtEntry": false,
-            "internalConsoleOptions": "openOnSessionStart"
-        },
-        {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach",
-            "processId": "${command:pickProcess}"
-        }
-    ,]
+  // Use IntelliSense to find out which attributes exist for C# debugging
+  // Use hover for the description of the existing attributes
+  // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "All Tests",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      // If you have changed target frameworks, make sure to update the program path.
+      "program": "${workspaceFolder}/src/WopiValidator/bin/Debug/netcoreapp2.0/Microsoft.Office.WopiValidator.dll",
+      "args": [
+        "-w",
+        "http://localhost:5000/wopi/files/1",
+        "-t",
+        "kthxbye",
+        "-l",
+        "0",
+        "-s"
+      ],
+      "cwd": "${workspaceFolder}/",
+      // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Run with Args",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      // If you have changed target frameworks, make sure to update the program path.
+      "program": "${workspaceFolder}/src/WopiValidator/bin/Debug/netcoreapp2.0/Microsoft.Office.WopiValidator.dll",
+      "args": [
+        "-w",
+        "http://localhost:5000/wopi/files/1",
+        "-t",
+        "kthxbye",
+        "-l",
+        "0",
+        "-g",
+        "FileUrlUsage"
+      ],
+      "cwd": "${workspaceFolder}/",
+      // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Run No Args",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      // If you have changed target frameworks, make sure to update the program path.
+      "program": "${workspaceFolder}/src/WopiValidator/bin/Debug/netcoreapp2.0/Microsoft.Office.WopiValidator.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/",
+      // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "stopAtEntry": false
+    },
+    {
+      "name": ".NET Core Attach",
+      "type": "coreclr",
+      "request": "attach",
+      "processId": "${command:pickProcess}"
+    },
+  ]
 }
