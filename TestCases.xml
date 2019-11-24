@@ -3453,12 +3453,16 @@
 
   <TestGroup Name="FileUrlUsage">
     <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>UserCanWritePrereq</PrereqTest>
+      <PrereqTest>FileEditingPrereq</PrereqTest>
+      <PrereqTest>LocksPrereq</PrereqTest>
       <PrereqTest>FileUrlUsagePrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
-      <TestCase Name="GetFromFileUrl" Category="WopiCore">
+      <TestCase Name="GetFromFileUrlAfterPutFile" Document="WordBlankDocument" Category="WopiCore">
         <Description>
-          Use FileUrl if supported by host to directly retrieve the contents of a file instead of using GetFile.
+          Tests that the FileUrl returns updated content after a PutFile request, since FileUrl is intended to be a drop in replacement for GetFile.
         </Description>
         <Requests>
           <CheckFileInfo>
@@ -3478,6 +3482,32 @@
         <CleanupRequests>
           <Unlock Lock="LockString"/>
         </CleanupRequests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="FileUrlViewOnly">
+    <PrereqTests>
+      <PrereqTest>WopiValidatorPrereq</PrereqTest>
+      <PrereqTest>FileUrlUsagePrereq</PrereqTest>
+    </PrereqTests>
+    <TestCases>
+      <TestCase Name="GetFromFileUrl" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          Use FileUrl, if provided, to directly retrieve the contents of a file instead of using GetFile.
+        </Description>
+        <Requests>
+          <CheckFileInfo>
+            <SaveState>
+              <State Name="FileUrl" Source="FileUrl" />
+            </SaveState>
+          </CheckFileInfo>
+          <GetFromFileUrl OverrideUrl="$State:FileUrl">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200"/>
+            </Validators>
+          </GetFromFileUrl>
+        </Requests>
       </TestCase>
     </TestCases>
   </TestGroup>
