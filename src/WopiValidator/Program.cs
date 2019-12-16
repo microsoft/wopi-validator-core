@@ -9,7 +9,9 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Microsoft.Office.WopiValidator
 {
@@ -21,7 +23,7 @@ namespace Microsoft.Office.WopiValidator
 
 	internal class Program
 	{
-		private static TestCaseExecutor GetTestCaseExecutor(TestExecutionData testExecutionData, Options options, TestCategory inputTestCategory)
+		private static TestCaseExecutor GetTestCaseExecutor(TestExecutionData testExecutionData, Options options, TestCategory inputTestCategory, RSACryptoServiceProvider proofKeyProviderNew, RSACryptoServiceProvider proofKeyProviderOld)
 		{
 			TestCategory testCategory;
 			if (!Enum.TryParse(testExecutionData.TestCase.Category, true /* ignoreCase */, out testCategory))
@@ -31,7 +33,7 @@ namespace Microsoft.Office.WopiValidator
 
 			string userAgent = (inputTestCategory == TestCategory.OfficeNativeClient || testCategory == TestCategory.OfficeNativeClient) ? Constants.HeaderValues.OfficeNativeClientUserAgent : null;
 
-			return new TestCaseExecutor(testExecutionData, options.WopiEndpoint, options.AccessToken, options.AccessTokenTtl, userAgent);
+			return new TestCaseExecutor(testExecutionData, options.WopiEndpoint, options.AccessToken, options.AccessTokenTtl, userAgent, proofKeyProviderNew, proofKeyProviderOld);
 		}
 
 		private static int Main(string[] args)
@@ -62,6 +64,17 @@ namespace Microsoft.Office.WopiValidator
 
 		private static ExitCode Execute(Options options)
 		{
+			RSACryptoServiceProvider proofKeyProviderNew = null;
+			RSACryptoServiceProvider proofKeyProviderOld = null;
+
+			const string proofKeysFilePath = "proof-keys.xml";
+			if (System.IO.File.Exists(proofKeysFilePath))
+			{
+				var proofKeyData = XDocument.Load(proofKeysFilePath);
+				proofKeyProviderNew = CreateProofCSP(proofKeyData, "new");
+				proofKeyProviderOld = CreateProofCSP(proofKeyData, "old");
+			}
+
 			// get run configuration from XML
 			IEnumerable<TestExecutionData> testData = ConfigParser.ParseExecutionData(options.RunConfigurationFilePath, options.TestCategory);
 
@@ -85,7 +98,7 @@ namespace Microsoft.Office.WopiValidator
 				.Select(g => new
 				{
 					Name = g.Key,
-					Executors = g.Select(x => GetTestCaseExecutor(x, options, options.TestCategory))
+					Executors = g.Select(x => GetTestCaseExecutor(x, options, options.TestCategory, proofKeyProviderNew, proofKeyProviderOld))
 				});
 
 			ConsoleColor baseColor = ConsoleColor.White;
@@ -164,6 +177,14 @@ namespace Microsoft.Office.WopiValidator
 				return ExitCode.Failure;
 			}
 			return ExitCode.Success;
+		}
+
+		private static RSACryptoServiceProvider CreateProofCSP(XDocument proofKeyData, string name)
+		{
+			var key = proofKeyData.Root.Element(name).Value;
+			var csp = new RSACryptoServiceProvider();
+			csp.ImportCspBlob(Convert.FromBase64String(key));
+			return csp;
 		}
 
 		private static void WriteToConsole(string message, ConsoleColor color, int indentLevel = 0)
