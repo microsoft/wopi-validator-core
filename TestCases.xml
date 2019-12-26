@@ -962,14 +962,14 @@
         <Requests>
           <!-- Set up the test -->
           <Lock Lock="LockString" />
-          <PutFile Lock="LockString" ResourceId="ZeroByteFile" />
+          <PutFile Lock="LockString" ResourceId="WordSimpleDocument" />
           <Unlock Lock="LockString" />
 
           <!-- Execute the actual test -->
-          <PutFile ResourceId="WordBlankDocument" />
+          <PutFile ResourceId="ZeroByteFile" />
           <GetFile>
             <Validators>
-              <ResponseContentValidator ExpectedResourceId="WordBlankDocument" />
+              <ResponseContentValidator ExpectedResourceId="ZeroByteFile" />
             </Validators>
           </GetFile>
         </Requests>
@@ -1123,12 +1123,16 @@
           Performs consecutive PutFile operations to verify that the X-WOPI-ItemVersion header value is changed with every PutFile operation.
         </Description>
         <Requests>
+          <!-- Set up the test -->
           <Lock Lock="LockString" />
+          <PutFile Lock="LockString" ResourceId="WordBlankDocument" />
           <CheckFileInfo>
             <SaveState>
               <State Name="OriginalVersion" Source="Version" />
             </SaveState>
           </CheckFileInfo>
+
+          <!-- Execute the actual test -->
           <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="SecondVersion" Source="X-WOPI-ItemVersion" SourceType="Header" />
