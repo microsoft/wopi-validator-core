@@ -1124,18 +1124,10 @@
         </Description>
         <Requests>
           <Lock Lock="LockString" />
-          <CheckFileInfo>
-            <SaveState>
-              <State Name="OriginalVersion" Source="Version" />
-            </SaveState>
-          </CheckFileInfo>
           <PutFile Lock="LockString" ResourceId="WordSimpleDocument">
             <SaveState>
               <State Name="SecondVersion" Source="X-WOPI-ItemVersion" SourceType="Header" />
             </SaveState>
-            <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-ItemVersion" ExpectedStateKey="OriginalVersion" ShouldMatch="false" />
-            </Validators>
           </PutFile>
           <PutFile Lock="LockString" ResourceId="WordComplexDocument">
             <Validators>
