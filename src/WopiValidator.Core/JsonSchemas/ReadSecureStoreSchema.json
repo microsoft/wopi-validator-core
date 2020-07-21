@@ -1,0 +1,25 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Full WOPI ReadSecureStore JSON Schema",
+  "description": "A WOPI ReadSecureStore JSON response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "UserName",
+    "Password"
+  ],
+  "properties": {
+    "UserName": {
+      "type": "string"
+    },
+    "Password": {
+      "type": "string"
+    },
+    "IsWindowsCredentials": {
+      "type": "boolean"
+    },
+    "IsGroup": {
+      "type": "boolean"
+    }
+  }
+}

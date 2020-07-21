@@ -10,9 +10,9 @@ namespace Microsoft.Office.WopiValidator.Core
 {
 	public static class ConfigParser
 	{
-		public static IEnumerable<TestExecutionData> ParseExecutionData(string filePath, TestCategory targetTestCategory, string testGroupName = "")
+		public static IEnumerable<TestExecutionData> ParseExecutionData(string filePath, string applicationId = null, string usingRestrictedScenario = null)
 		{
-			return ParseExecutionData(filePath, new ResourceManagerFactory(), new TestCaseFactory(), testGroupName, targetTestCategory);
+			return ParseExecutionData(filePath, new ResourceManagerFactory(), new TestCaseFactory(), applicationId, usingRestrictedScenario);
 		}
 
 		/// <summary>
@@ -22,8 +22,8 @@ namespace Microsoft.Office.WopiValidator.Core
 			string filePath,
 			IResourceManagerFactory resourceManagerFactory,
 			ITestCaseFactory testCaseFactory,
-			string testGroupName,
-			TestCategory targetTestCategory)
+			string applicationId,
+			string usingRestrictedScenario)
 		{
 			XDocument xDoc = XDocument.Load(filePath);
 
@@ -31,11 +31,11 @@ namespace Microsoft.Office.WopiValidator.Core
 			IResourceManager resourceManager = resourceManagerFactory.GetResourceManager(resourcesElement);
 
 			XElement prereqCasesElement = xDoc.Root.Element("PrereqCases") ?? new XElement("PrereqCases");
-			IEnumerable<ITestCase> prereqCases = testCaseFactory.GetTestCases(prereqCasesElement, targetTestCategory);
+			IEnumerable<ITestCase> prereqCases = testCaseFactory.GetTestCases(prereqCasesElement, applicationId, usingRestrictedScenario);
 			Dictionary<string, ITestCase> prereqCasesDictionary = prereqCases.ToDictionary(e => e.Name);
 
 			return xDoc.Root.Elements("TestGroup")
-				.SelectMany(x => GetTestExecutionDataForGroup(x, prereqCasesDictionary, testCaseFactory, resourceManager, targetTestCategory));
+				.SelectMany(x => GetTestExecutionDataForGroup(x, prereqCasesDictionary, testCaseFactory, resourceManager, applicationId, usingRestrictedScenario));
 		}
 
 		private static IEnumerable<TestExecutionData> GetTestExecutionDataForGroup(
@@ -43,11 +43,12 @@ namespace Microsoft.Office.WopiValidator.Core
 			Dictionary<string, ITestCase> prereqCasesDictionary,
 			ITestCaseFactory testCaseFactory,
 			IResourceManager resourceManager,
-			TestCategory targetTestCategory)
+			string applicationId,
+			string usingRestrictedScenario)
 		{
 			IEnumerable<ITestCase> prereqs;
 			IEnumerable<ITestCase> groupTestCases;
-			testCaseFactory.GetTestCases(definition, prereqCasesDictionary, out prereqs, out groupTestCases, targetTestCategory);
+			testCaseFactory.GetTestCases(definition, prereqCasesDictionary, out prereqs, out groupTestCases, applicationId, usingRestrictedScenario);
 
 			List<ITestCase> prereqList = prereqs.ToList();
 

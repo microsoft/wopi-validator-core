@@ -16,10 +16,16 @@
 
   <ItemGroup>
     <None Remove="JsonSchemas\CheckFileInfoSchema.json" />
+    <None Remove="JsonSchemas\MS-WOPICheckFileInfoSchema.json" />
+    <None Remove="JsonSchemas\MS-WOPICheckFolderInfoSchema.json" />
+    <None Remove="JsonSchemas\ReadSecureStoreSchema.json" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="JsonSchemas\CheckFileInfoSchema.json" />
+    <EmbeddedResource Include="JsonSchemas\MS-WOPICheckFileInfoSchema.json" />
+    <EmbeddedResource Include="JsonSchemas\MS-WOPICheckFolderInfoSchema.json" />
+    <EmbeddedResource Include="JsonSchemas\ReadSecureStoreSchema.json" />
   </ItemGroup>
 
   <ItemGroup>

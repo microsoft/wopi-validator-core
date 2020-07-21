@@ -7,14 +7,6 @@ using System.Linq;
 
 namespace Microsoft.Office.WopiValidator.Core
 {
-	public enum TestCategory
-	{
-		All = 0,
-		WopiCore = 1,
-		OfficeOnline = 2,
-		OfficeNativeClient = 3
-	}
-
 	public class TestExecutionData
 	{
 		internal TestExecutionData(ITestCase testCase, IEnumerable<ITestCase> prereqCases, IResourceManager resourceManager, string testGroupName)

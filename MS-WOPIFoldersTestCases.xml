@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Test cases for CheckFolderInfo and EnumerateChildren in [MS-WOPI]. Command line argument -w (wopisrc) must in format of HTTP://server/<...>/wopi*/folders/<id> -->
+<WopiValidation>
+  <Resources>
+    <File Id="WordSimpleDocument" Name="WordSimpleDocument.docx" FilePath="Resources\WordSimpleDocument.docx" />
+  </Resources>
+
+  <TestGroup Name="CheckFolderInfo">
+    <TestCases>
+      <TestCase Name="FullCheckFolderInfoSchema" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          This tests that hosts' CheckFolderInfo responses conform to the JSON schema.
+        </Description>
+        <Requests>
+          <CheckFolderInfo>
+            <Validators>
+              <JsonSchemaValidator Schema="MS-WOPICheckFolderInfoSchema" />
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
+            </Validators>
+          </CheckFolderInfo>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+
+  <TestGroup Name="EnumerateChildren">
+    <TestCases>
+      <TestCase Name="EnumerateChildrenSchema" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          This tests that hosts' EnumerateChildren responses conform to the JSON schema.
+        </Description>
+        <Requests>
+          <EnumerateChildren>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Children[0].Name" IsRequired="true" />
+                <AbsoluteUrlProperty Name="Children[0].Url" IsRequired="true" MustIncludeAccessToken="true" />
+                <StringProperty Name="Children[0].Version" IsRequired="true" />
+              </JsonResponseContentValidator>
+              <ResponseHeaderValidator Header="X-WOPI-ServerVersion" IsRequired="true" />
+              <ResponseHeaderValidator Header="X-WOPI-MachineName" IsRequired="true" />
+            </Validators>
+          </EnumerateChildren>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="VersionInEnumerateChildrenResponseMatchesVersionInCheckFileInfoResponse" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          This tests that Version in EnumerateChildren response matches the value in Version field in CheckFileInfo response.
+        </Description>
+        <Requests>
+          <EnumerateChildren>
+            <SaveState>
+              <State Name="VersionInEnumerateChildrenResponse" Source="Children[0].Version" />
+              <State Name="UrlInEnumerateChildrenResponse" Source="Children[0].Url" />
+            </SaveState>
+            <Validators>
+              <JsonResponseContentValidator>
+                <AbsoluteUrlProperty Name="Children[0].Url" IsRequired="true" MustIncludeAccessToken="true" />
+                <StringProperty Name="Children[0].Version" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </EnumerateChildren>
+          <CheckFileInfo OverrideUrl="$State:UrlInEnumerateChildrenResponse">
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Version" IsRequired="true" ExpectedStateKey="VersionInEnumerateChildrenResponse" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </CheckFileInfo>
+        </Requests>
+      </TestCase>
+
+      <TestCase Name="VersionInEnumerateChildrenResponseChangesWhenFileChanges" Document="WordBlankDocument" Category="WopiCore">
+        <Description>
+          This tests that Version in EnumerateChildren response changes when the file changes.
+        </Description>
+        <Requests>
+          <EnumerateChildren>
+            <SaveState>
+              <State Name="VersionInEnumerateChildrenResponse" Source="Children[0].Version" />
+              <State Name="UrlInEnumerateChildrenResponse" Source="Children[0].Url" />
+              <State Name="NameInEnumerateChildrenResponse" Source="Children[0].Name" />
+            </SaveState>
+          </EnumerateChildren>
+          <PutFile OverrideUrl="$State:UrlInEnumerateChildrenResponse" Lock="LockString" ResourceId="WordSimpleDocument" />
+          <EnumerateChildren>
+            <Validators>
+              <JsonResponseContentValidator>
+                <StringProperty Name="Children[0].Version" IsRequired="true" ExpectedStateKey="VersionInEnumerateChildrenResponse" ShouldMatch="false" />
+                <StringProperty Name="Children[0].Name" IsRequired="true" ExpectedStateKey="NameInEnumerateChildrenResponse" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </EnumerateChildren>
+        </Requests>
+      </TestCase>
+    </TestCases>
+  </TestGroup>
+</WopiValidation>

@@ -3,23 +3,17 @@
 
 using CommandLine;
 using Microsoft.Office.WopiValidator.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.Office.WopiValidator
 {
 	/// <summary>
-	/// Represents set of command line arguments that can be used to modify behavior of the application.
+	/// Options shared by all commands
 	/// </summary>
-	class Options
+	internal abstract class OptionsBase : IFilterOptions
 	{
-		[Option('w', "wopisrc", Required = true, HelpText = "WopiSrc URL for a wopitest file")]
-		public string WopiEndpoint { get; set; }
-
-		[Option('t', "token", Required = true, HelpText = "WOPI access token")]
-		public string AccessToken { get; set; }
-
-		[Option('l', "token_ttl", Required = true, HelpText = "WOPI access token ttl")]
-		public long AccessTokenTtl { get; set; }
-
 		[Option('c', "config", Required = false, Default = "TestCases.xml", HelpText = "Path to XML file with test definitions")]
 		public string RunConfigurationFilePath { get; set; }
 
@@ -29,10 +23,20 @@ namespace Microsoft.Office.WopiValidator
 		[Option('n', "testname", Required = false, HelpText = "Run only the test specified (cannot be used with testgroup)")]
 		public string TestName { get; set; }
 
-		[Option('e', "testcategory", Required = false, Default = TestCategory.All, HelpText = "Run only the tests in the specified category")]
+		[Option('e', "testcategory", Required = false, Default = Core.TestCategory.All, HelpText = "Run only the tests in the specified category")]
 		public TestCategory TestCategory { get; set; }
 
-		[Option('s', "ignore-skipped", Required = false, HelpText = "Don't output any info about skipped tests.")]
-		public bool IgnoreSkipped { get; set; }
+		TestCategory? IFilterOptions.TestCategory
+		{
+			get { return TestCategory; }
+			set
+			{
+				if (!value.HasValue)
+				{
+					TestCategory = TestCategory.All;
+				}
+				TestCategory = value.Value;
+			}
+		}
 	}
 }

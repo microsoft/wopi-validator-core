@@ -26,6 +26,10 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		public IEnumerable<IValidator> Validators { get; set; }
 		public string WopiSrc { get; set; }
 		public string UrlType { get; set; }
+		public string RestrictedLinkType { get; set; }
+		public string UsingRestrictedScenario { get; set; }
+		public string ApplicationId { get; set; }
+		public bool PerfTraceRequested { get; set; }
 	}
 
 	public enum PutRelativeFileMode

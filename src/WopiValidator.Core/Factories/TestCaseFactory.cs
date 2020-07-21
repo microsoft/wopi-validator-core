@@ -12,9 +12,9 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 {
 	public class TestCaseFactory : ITestCaseFactory
 	{
-		public IEnumerable<ITestCase> GetTestCases(XElement definitions, TestCategory targetTestCategory)
+		public IEnumerable<ITestCase> GetTestCases(XElement definitions, string applicationId, string usingRestrictedScenario)
 		{
-			return definitions.Elements("TestCase").Where(x => DoesTestCategoryMatchTargetTestCategory(x, targetTestCategory)).Select(x => GetTestCase(x));
+			return definitions.Elements("TestCase").Select(x => GetTestCase(x, applicationId, usingRestrictedScenario));
 		}
 
 		public void GetTestCases(
@@ -22,13 +22,14 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			Dictionary<string, ITestCase> prereqCasesDictionary,
 			out IEnumerable<ITestCase> prereqTests,
 			out IEnumerable<ITestCase> groupTests,
-			TestCategory targetTestCategory)
+			string applicationId,
+			string usingRestrictedScenario)
 		{
 			XElement prereqsElement = definition.Element("PrereqTests") ?? new XElement("PrereqTests");
 			prereqTests = GetPrereqTests(prereqsElement, prereqCasesDictionary);
 
 			XElement testCasesElement = definition.Element("TestCases") ?? new XElement("TestCases");
-			groupTests = GetTestCases(testCasesElement, targetTestCategory);
+			groupTests = GetTestCases(testCasesElement, applicationId, usingRestrictedScenario);
 		}
 
 		private static IEnumerable<ITestCase> GetPrereqTests(XElement definition, Dictionary<string, ITestCase> prereqsDictionary)
@@ -49,7 +50,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		///
 		/// User RequestFactory.GetRequests to parse requests defined in that Test Case.
 		/// </summary>
-		private static ITestCase GetTestCase(XElement definition)
+		private static ITestCase GetTestCase(XElement definition, string applicationId, string usingRestrictedScenario)
 		{
 			string category = (string)definition.Attribute("Category");
 			string name = (string)definition.Attribute("Name");
@@ -59,12 +60,12 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			string failMessage = (string)definition.Attribute("FailMessage");
 
 			XElement requestsDefinition = definition.Element("Requests");
-			IEnumerable<IRequest> requests = RequestFactory.GetRequests(requestsDefinition);
+			IEnumerable<IRequest> requests = RequestFactory.GetRequests(requestsDefinition, applicationId, usingRestrictedScenario);
 
 			IEnumerable<IRequest> cleanupRequests = null;
 			XElement cleanupRequestsDefinition = definition.Element("CleanupRequests");
 			if (cleanupRequestsDefinition != null)
-				cleanupRequests = RequestFactory.GetRequests(cleanupRequestsDefinition);
+				cleanupRequests = RequestFactory.GetRequests(cleanupRequestsDefinition, applicationId, usingRestrictedScenario);
 
 			ITestCase testCase = new TestCase(requests,
 				cleanupRequests,
@@ -78,31 +79,6 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			};
 
 			return testCase;
-		}
-
-		///<summary>
-		/// This function helps ensure that,
-		/// We are getting all the TestCases if the targetTestCategory is set to "All"
-		/// We are getting all the TestCases with "WopiCore" as their "Category", regardless of the targetTestCategory.
-		/// The rest of the test cases are picked up if their "Category" matches the targetTestCategory.
-		///</summary>
-		private static bool DoesTestCategoryMatchTargetTestCategory(XElement definition, TestCategory targetTestCategory)
-		{
-			string category = (string)definition.Attribute("Category");
-			string name = (string)definition.Attribute("Name");
-
-			if (string.IsNullOrEmpty(category))
-			{
-				throw new Exception(string.Format(CultureInfo.InvariantCulture, "The category of {0} TestCase is empty", name));
-			}
-
-			TestCategory testCaseCategory;
-			if (!Enum.TryParse(category, true /* ignoreCase */, out testCaseCategory))
-			{
-				throw new Exception(string.Format(CultureInfo.InvariantCulture, "The category of {0} TestCase is invalid", name));
-			}
-
-			return targetTestCategory == TestCategory.All || testCaseCategory == TestCategory.WopiCore || targetTestCategory == testCaseCategory;
 		}
 
 		/// <summary>

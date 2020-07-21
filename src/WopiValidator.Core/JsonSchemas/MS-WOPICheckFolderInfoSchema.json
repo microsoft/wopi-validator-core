@@ -1,0 +1,265 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Full WOPI CheckFolderInfo JSON Schema",
+  "description": "A WOPI CheckFolderInfo JSON response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "FolderName",
+    "OwnerId"
+  ],
+  "properties": {
+    "AADUserObjectId": {
+      "type": "string",
+      "default": ""
+    },
+    "AccessTokenExpiry": {
+      "type": "integer",
+      "default": 0
+    },
+    "AllowEarlyFeatures": {
+      "type": "boolean",
+      "default": false
+    },
+    "AllowExternalMarketplace": {
+      "type": "boolean",
+      "default": false
+    },
+    "AppCatalogUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "FolderName": {
+      "type": "string",
+      "default": ""
+    },
+    "BreadcrumbBrandIconUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "BreadcrumbBrandName": {
+      "type": "string",
+      "default": ""
+    },
+    "BreadcrumbBrandUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "BreadcrumbDocName": {
+      "type": "string",
+      "default": ""
+    },
+    "BreadcrumbDocUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "BreadcrumbFolderName": {
+      "type": "string",
+      "default": ""
+    },
+    "BreadcrumbFolderUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "ClientUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "CloseButtonClosesWindow": {
+      "type": "boolean",
+      "default": false
+    },
+    "ClosePostMessage": {
+      "type": "boolean",
+      "default": false
+    },
+    "CloseUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "DirectInvokeDAVUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "DisablePrint": {
+      "type": "boolean",
+      "default": false
+    },
+    "EditNotificationPostMessage": {
+      "type": "boolean",
+      "default": false
+    },
+    "FileSharingPostMessage": {
+      "type": "boolean",
+      "default": false
+    },
+    "FileSharingUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "FileVersionPostMessage": {
+      "type": "boolean",
+      "default": false
+    },
+    "FileVersionUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "HostAuthenticationId": {
+      "type": "string",
+      "default": ""
+    },
+    "HostAuthenticationIdType": {
+      "type": "string",
+      "default": ""
+    },
+    "HostEditUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "HostEmbeddedEditUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "HostEmbeddedViewUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "HostName": {
+      "type": "string",
+      "default": ""
+    },
+    "HostNotes": {
+      "type": "string",
+      "default": ""
+    },
+    "HostViewUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "IrmPolicyDescription": {
+      "type": "string",
+      "default": ""
+    },
+    "IrmPolicyTitle": {
+      "type": "string",
+      "default": ""
+    },
+    "IsAnonymousUser": {
+      "type": "boolean",
+      "default": false
+    },
+    "OpenInClientCommandUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "OpenInClientPostMessage": {
+      "type": "boolean",
+      "default": false
+    },
+    "OwnerId": {
+      "type": "string"
+    },
+    "PostMessageOrigin": {
+      "type": "string",
+      "default": ""
+    },
+    "PresenceProvider": {
+      "type": "string",
+      "default": ""
+    },
+    "PresenceUserId": {
+      "type": "string",
+      "default": ""
+    },
+    "PrivacyUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "ProtectInClient": {
+      "type": "boolean",
+      "default": false
+    },
+    "ReportAbusePostMessage": {
+      "type": "boolean",
+      "default": false
+    },
+    "ReportAbuseUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "SafeLinksStatus": {
+      "type": "string",
+      "default": ""
+    },
+    "SignoutUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "SupportsFileUserValue": {
+      "type": "boolean",
+      "default": false
+    },
+    "SupportsSecureStore": {
+      "type": "boolean",
+      "default": false
+    },
+    "TenantId": {
+      "type": "string",
+      "default": ""
+    },
+    "TermsOfUseUrl": {
+      "type": "string",
+      "format": "uri",
+      "default": ""
+    },
+    "UserCanReview": {
+      "type": "boolean",
+      "default": false
+    },
+    "UserCanWrite": {
+      "type": "boolean",
+      "default": false
+    },
+    "UserFriendlyName": {
+      "type": "string",
+      "default": ""
+    },
+    "UserId": {
+      "type": "string",
+      "default": ""
+    },
+    "UserPrincipalName": {
+      "type": "string",
+      "default": ""
+    },
+    "WebEditingDisabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "WorkflowPostMessage": {
+      "type": "boolean",
+      "default": false
+    },
+    "WorkflowType": {
+      "type": "array",
+      "default": []
+    },
+    "WorkflowUrl": {
+      "type": "string",
+      "default": ""
+    }
+  }
+}

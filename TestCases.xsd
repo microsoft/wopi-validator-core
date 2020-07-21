@@ -49,6 +49,7 @@
                         <xs:attribute name="EndsWith" type="xs:string" use="optional" />
                         <xs:attribute name="ExpectedStateKey" type="xs:string" use="optional" />
                         <xs:attribute name="ExpectedValue" type="xs:string" use="optional" />
+                        <xs:attribute name="ShouldMatch" type="xs:boolean" use="optional" default="true" />
                         <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="false" />
                         <xs:attribute name="IgnoreCase" type="xs:boolean" use="optional" default="false" />
                       </xs:complexType>
@@ -144,6 +145,8 @@
                 <xs:attribute name="ExpectedValue" type="xs:string" use="optional" />
                 <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="true" />
                 <xs:attribute name="ShouldMatch" type="xs:boolean" use="optional" default="true" />
+                <xs:attribute name="IsUrl" type="xs:boolean" use="optional" />
+                <xs:attribute name="IsExcluded" type="xs:boolean" use="optional" />
               </xs:extension>
             </xs:complexContent>
           </xs:complexType>
@@ -281,6 +284,7 @@
                     <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
                   </xs:sequence>
                   <xs:attribute name="Lock" type="xs:string" />
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
                 </xs:complexType>
               </xs:element>
               <xs:element name="PutFile">
@@ -292,6 +296,7 @@
                   </xs:sequence>
                   <xs:attribute name="Lock" type="xs:string" />
                   <xs:attribute name="ResourceId" type="xs:string" use="required" />
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
                 </xs:complexType>
               </xs:element>
               <xs:element name="PutRelativeFile">
@@ -305,6 +310,7 @@
                   <xs:attribute name="ResourceId" type="xs:string" use="required" />
                   <xs:attribute name="PutRelativeFileMode" type="PutRelativeFileModeType" use="required" />
                   <xs:attribute name="OverwriteRelative" type="xs:boolean" use="optional"/>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
                 </xs:complexType>
               </xs:element>
               <xs:element name="GetLock">
@@ -377,6 +383,7 @@
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element name="Validators" type="ValidatorsType" minOccurs="0"/>
+                    <xs:element name="SaveState" type="SaveStateType" minOccurs="0" />
                   </xs:sequence>
                   <xs:attribute name="OverrideUrl" type="xs:string" />
                   <xs:attribute name="FileExtensionFilterList" type="xs:string" />
@@ -420,6 +427,7 @@
               <xs:element name="RenameFile">
                 <xs:complexType>
                   <xs:sequence>
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
                     <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
                   </xs:sequence>
                   <xs:attribute name="OverrideUrl" type="xs:string" />
@@ -451,6 +459,43 @@
                   </xs:sequence>
                   <xs:attribute name="OverrideUrl" type="xs:string" />
                   <xs:attribute name="UrlType" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="GetRestrictedLink">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                  <xs:attribute name="RestrictedLink" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="RevokeRestrictedLink">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                  <xs:attribute name="RestrictedLink" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="ReadSecureStore">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="Mutators" type="MutatorsType" minOccurs="0" />
+                    <xs:element name="Validators" type="ValidatorsType" />
+                  </xs:sequence>
+                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                  <xs:attribute name="PerfTraceRequested" type="xs:boolean" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="CheckFolderInfo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
+                  </xs:sequence>
                 </xs:complexType>
               </xs:element>
               <xs:element name="AddActivities">
