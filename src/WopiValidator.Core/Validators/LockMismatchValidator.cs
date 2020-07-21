@@ -17,7 +17,7 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 		{
 			return new IValidator[] {
 				new ResponseCodeValidator(409),
-				new ResponseHeaderValidator(Constants.Headers.Lock, expectedLock, null)
+				new ResponseHeaderValidator(Constants.Headers.Lock, expectedLock, null, isRequired: !string.IsNullOrEmpty(expectedLock))
 			};
 		}
 
