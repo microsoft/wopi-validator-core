@@ -21,7 +21,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		{
 			return new Dictionary<string, string>
 				{
-					{ Constants.Headers.RequestedName, Encoding.UTF8.GetString(Encoding.UTF7.GetBytes(RequestedName)) },
+					{ Constants.Headers.RequestedName, Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(RequestedName)) },
 				};
 		}
 	}

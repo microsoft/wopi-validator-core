@@ -138,7 +138,7 @@ namespace Microsoft.Office.WopiValidator.Core
 		{
 			ProofKeyOutput output = GetProofData(proofData);
 
-			using (SHA256CryptoServiceProvider hashAlg = new SHA256CryptoServiceProvider())
+			using (SHA256 hashAlg = SHA256.Create())
 			{
 				byte[] signedProofBytes = rsaAlg.SignData(output.PreSigningBytes, hashAlg);
 				output.SignedBase64ProofKey = Convert.ToBase64String(signedProofBytes);

@@ -212,7 +212,7 @@ namespace Microsoft.Office.WopiValidator.Core
 				return inputData;
 			}
 
-			return Uri.UnescapeDataString(HttpUtility.UrlEncode(inputData, Encoding.UTF7));
+			return Uri.UnescapeDataString(HttpUtility.UrlEncode(inputData, Encoding.UTF8));
 		}
 
 		private static void UrlEncodeUnicodeChar(
