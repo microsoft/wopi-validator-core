@@ -9,6 +9,10 @@
 This project contains the core logic of the [WOPI validator](https://wopi.readthedocs.io/en/latest/build_test_ship/validator.html)
 as well as a command-line interface to it.
 
+## Notes
+
+In the examples below `<id>` must be an id that refers to a file named "test.wopitest". The file must exist.
+
 ## Quick start using Docker
 
 You can quickly run the validator using Docker. First, pull the Docker image:
@@ -17,7 +21,7 @@ You can quickly run the validator using Docker. First, pull the Docker image:
 
 Then run the validator using a command like the following:
 
-`docker run -it --rm tylerbutler/wopi-validator -- -w http://localhost:5000/wopi/files/1 -t myToken -l 0 -s`
+`docker run -it --rm tylerbutler/wopi-validator -- -w http://localhost:5000/wopi/files/<id> -t myToken -l 0 -s`
 
 Note the `--`; parameters after the `--` will be passed to the validator itself
 
@@ -97,7 +101,7 @@ See [the quick start](#quick-start-using-docker).
 After building the projects as described above, you can run the resulting `Microsoft.Office.WopiValidator.dll`
 using the `dotnet` command. For example:
 
-`dotnet Microsoft.Office.WopiValidator.dll --token MyAccessToken --token_ttl 0 --wopisrc http://localhost:5000/wopi/files/1 --testcategory OfficeOnline --ignore-skipped`
+`dotnet Microsoft.Office.WopiValidator.dll --token MyAccessToken --token_ttl 0 --wopisrc http://localhost:5000/wopi/files/<id> --testcategory OfficeOnline --ignore-skipped`
 
 Note: the Microsoft.Office.WopiValidator.dll file can be found in `src\WopiValidator\bin\Release\net6.0\`.
 
@@ -107,7 +111,7 @@ You can also use the `dotnet run` command, passing the path to the `WopiValidato
 option. Arguments to the validator itself can be passed in by separating them from the `dotnet run` arguments with
 a `--`. For example:
 
-`dotnet run --project ./src/WopiValidator/WopiValidator.csproj --framework net6.0 -- -t MyAccessToken -l 0 -w http://localhost:5000/wopi/files/1 -e OfficeOnline -s`
+`dotnet run --project ./src/WopiValidator/WopiValidator.csproj --framework net6.0 -- -t MyAccessToken -l 0 -w http://localhost:5000/wopi/files/<id> -e OfficeOnline -s`
 
 ### Option 4: self-contained package
 
@@ -115,7 +119,7 @@ Another option is to build a self-contained package for your OS (see above) and 
 file, which be called `Microsoft.Office.Validator.exe` on Windows and `Microsoft.Office.Validator` on Linux and macOS.
 Arguments to the validator can be passed in directly. For example:
 
-`Microsoft.Office.Validator.exe -t MyAccessToken -l 0 -w http://localhost:5000/wopi/files/1 -e OfficeOnline -s`
+`Microsoft.Office.Validator.exe -t MyAccessToken -l 0 -w http://localhost:5000/wopi/files/<id> -e OfficeOnline -s`
 
 ### Full usage options
 
