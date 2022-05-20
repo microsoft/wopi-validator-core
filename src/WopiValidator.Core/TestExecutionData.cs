@@ -12,23 +12,26 @@ namespace Microsoft.Office.WopiValidator.Core
 		All = 0,
 		WopiCore = 1,
 		OfficeOnline = 2,
-		OfficeNativeClient = 3
+		OfficeNativeClient = 3,
+		WopiCoauth
 	}
 
 	public class TestExecutionData
 	{
-		internal TestExecutionData(ITestCase testCase, IEnumerable<ITestCase> prereqCases, IResourceManager resourceManager, string testGroupName)
+		internal TestExecutionData(ITestCase testCase, IEnumerable<ITestCase> prereqCases, IResourceManager resourceManager, string testGroupName, bool testGroupHasDelay)
 		{
 			TestCase = testCase;
 			PrereqCases = prereqCases;
 			ResourceManager = resourceManager;
 			TestGroupName = testGroupName;
+			TestGroupHasDelay = testGroupHasDelay;
 		}
 
 		public ITestCase TestCase { get; set; }
 		public IResourceManager ResourceManager { get; private set; }
 		public IEnumerable<ITestCase> PrereqCases { get; set; }
 		public string TestGroupName { get; set; }
+		public bool TestGroupHasDelay { get; set; }
 
 		public static TestExecutionData GetDataForSpecificTest(
 			IEnumerable<TestExecutionData> testData,

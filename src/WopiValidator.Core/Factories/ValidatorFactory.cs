@@ -4,6 +4,7 @@
 using Microsoft.Office.WopiValidator.Core.Validators;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -43,6 +44,8 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 					return GetOrValidator(definition);
 				case Constants.Validators.ResponseContent:
 					return GetResponseContentValidator(definition);
+				case Constants.Validators.FramesValidator:
+					return GetFramesValidator(definition);
 				default:
 					throw new ArgumentException(string.Format("Unknown validator: '{0}'", elementName));
 			}
@@ -68,17 +71,53 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		}
 
 		/// <summary>
+		/// Parses ResponseContent validator information.
+		/// This is used for incremental file transfer scenario, where responseContent is frame list wrapped up in stream.
+		/// FramesValidator checks the frame list schema and pre-process responseContent,
+		/// then it passes the processed content to FramePayloadValidator to check payload content for a specific streamId
+		/// </summary>
+		private static IValidator GetFramesValidator(XElement definition)
+		{
+			IEnumerable<FramesValidator.ContentStreamValidator> contentStreamValidators = definition.Elements()
+				.Where((childDefinition) => string.Equals(childDefinition.Name.LocalName, Constants.Validators.ContentStreamValidator, StringComparison.OrdinalIgnoreCase))
+				.Select((childDefinition) => new FramesValidator.ContentStreamValidator(
+					(string)childDefinition.Attribute("StreamId"),
+					(string)childDefinition.Attribute("ExpectedChunkingScheme"),
+					(string)childDefinition.Attribute("ExpectedContent"),
+					(string)childDefinition.Attribute("ExpectedContentResourceId"),
+					(string)childDefinition.Attribute("AlreadyExistingContent"),
+					(string)childDefinition.Attribute("AlreadyExistingContentResourceId")
+				));
+
+			IEnumerable<FramesValidator.ContentPropertyValidator> contentPropertyValidators = definition.Elements()
+				.Where((childDefinition) => string.Equals(childDefinition.Name.LocalName, Constants.Validators.ContentPropertyValidator, StringComparison.OrdinalIgnoreCase))
+				.Select((childDefinition) => new FramesValidator.ContentPropertyValidator(
+					(string)childDefinition.Attribute("Name"),
+					(string)childDefinition.Attribute("ExpectedValue") ?? string.Empty,
+					(string)childDefinition.Attribute("ExpectedRetention") ?? string.Empty,
+					(bool?)childDefinition.Attribute("ShouldBeReturned") ?? true
+				));
+
+			return new FramesValidator(
+				(string)definition.Attribute("MessageJsonPayloadSchema"),
+				(int?)definition.Attribute("ExpectedHostBlobsCount"),
+				contentStreamValidators,
+				contentPropertyValidators);
+		}
+
+		/// <summary>
 		/// Parses ResponseHeader validator information.
 		/// </summary>
 		private static IValidator GetResponseHeaderValidator(XElement definition)
 		{
 			string header = (string)definition.Attribute("Header");
+			string comparator = (string)definition.Attribute("Comparator");
 			string expectedStateKey = (string)definition.Attribute("ExpectedStateKey");
 			string expectedValue = (string)definition.Attribute("ExpectedValue");
 			bool isRequired = ((bool?)definition.Attribute("IsRequired")) ?? true;
 			bool shouldMatch = ((bool?)definition.Attribute("ShouldMatch")) ?? true;
 
-			return new ResponseHeaderValidator(header, expectedValue, expectedStateKey, isRequired, shouldMatch);
+			return new ResponseHeaderValidator(header, expectedValue, expectedStateKey, comparator, isRequired, shouldMatch);
 		}
 
 		/// <summary>
@@ -113,8 +152,9 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		/// </summary>
 		private static IValidator GetJsonResponseContentValidator(XElement definition)
 		{
+			bool shouldExist = ((bool?)definition.Attribute("ShouldExist")) ?? true;
 			IEnumerable<JsonContentValidator.IJsonPropertyValidator> propertyValidators = definition.Elements().Select(GetJsonPropertyValidator);
-			return new JsonContentValidator(propertyValidators);
+			return new JsonContentValidator(propertyValidators, shouldExist);
 		}
 
 		/// <summary>
@@ -196,6 +236,20 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 						isRequired,
 						containsValue,
 						hasContainsValue,
+						expectedStateKey);
+
+				case Constants.Validators.Properties.ResponseBodyProperty:
+					return new JsonContentValidator.JsonResponseBodyPropertyValidator(key,
+						isRequired,
+						expectedValue,
+						hasExpectedValue,
+						expectedStateKey);
+
+				case Constants.Validators.Properties.ArrayLengthProperty:
+					return new JsonContentValidator.ArrayLengthPropertyValidator(key,
+						isRequired,
+						hasExpectedValue ? (int)definition.Attribute("ExpectedValue") : 0,
+						hasExpectedValue,
 						expectedStateKey);
 
 				default:

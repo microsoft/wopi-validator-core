@@ -34,5 +34,8 @@ namespace Microsoft.Office.WopiValidator
 
 		[Option('s', "ignore-skipped", Required = false, HelpText = "Don't output any info about skipped tests.")]
 		public bool IgnoreSkipped { get; set; }
+
+		[Option('d', "include-delaytests", Required = false, HelpText = "Run test cases with delay")]
+		public bool IncludeTestCasesWithDelay { get; set; }
 	}
 }

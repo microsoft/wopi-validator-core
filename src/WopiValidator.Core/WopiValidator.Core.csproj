@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp2.0;netcoreapp2.2;net45</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../WopiValidatorSigningKey.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
@@ -14,25 +13,55 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="JsonSchemas\CheckFileInfoSchema.json" />
+    <None Remove="JsonSchemas\CoauthTableSchema.json" />
+    <None Remove="JsonSchemas\GetChunkedFileResponseSchema.json" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="JsonSchemas\CheckFileInfoSchema.json" />
+    <EmbeddedResource Include="JsonSchemas\CoauthTableSchema.json" />
+    <EmbeddedResource Include="JsonSchemas\GetChunkedFileResponseSchema.json" />
+    <!-- Excel Zip Chunking Resources -->
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteExcel\Version1\MainContent\ChunkIds.txt" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteExcel\Version1\MainContent\FileStream" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteExcel\Version1\AltContent\ChunkIds.txt" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteExcel\Version1\AltContent\FileStream" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteExcel\Version2\MainContent\ChunkIds.txt" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteExcel\Version2\MainContent\FileStream" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteExcel\Version2\AltContent\ChunkIds.txt" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteExcel\Version2\AltContent\FileStream" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteExcel\Version3\MainContent\ChunkIds.txt" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteExcel\Version3\MainContent\FileStream" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteExcel\Version3\AltContent\ChunkIds.txt" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteExcel\Version3\AltContent\FileStream" />
+    <!-- Ppt Zip Chunking Resources -->
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroBytePpt\Version1\MainContent\ChunkIds.txt" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroBytePpt\Version1\MainContent\FileStream" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroBytePpt\Version2\MainContent\ChunkIds.txt" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroBytePpt\Version2\MainContent\FileStream" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroBytePpt\Version3\MainContent\ChunkIds.txt" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroBytePpt\Version3\MainContent\FileStream" />
+    <!-- Word Zip Chunking Resources -->
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteWord\Version1\MainContent\ChunkIds.txt" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteWord\Version1\MainContent\FileStream" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteWord\Version2\MainContent\ChunkIds.txt" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteWord\Version2\MainContent\FileStream" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteWord\Version3\MainContent\ChunkIds.txt" />
+    <EmbeddedResource Include="Resources\ZipChunking\NonZeroByteWord\Version3\MainContent\FileStream" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="NJsonSchema" Version="6.8.6197.43075" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
-    <Reference Include="System" />
-    <Reference Include="System.Collections.Concurrent" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Web" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
   <ItemGroup>

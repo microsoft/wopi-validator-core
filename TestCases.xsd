@@ -8,6 +8,7 @@
 
   <xs:complexType name="ValidatorBaseType">
     <xs:attribute name="ValidationMessage" type="xs:string" use="optional"/>
+    <xs:attribute name="ShouldExist" type="xs:boolean" use="optional"/>
   </xs:complexType>
 
   <xs:group name="ValidatorsGroup">
@@ -18,7 +19,7 @@
             <xs:complexContent>
               <xs:extension base="ValidatorBaseType">
                 <xs:sequence>
-                  <xs:choice maxOccurs="unbounded">
+                  <xs:choice minOccurs="0" maxOccurs="unbounded">
                     <xs:element name="BooleanProperty">
                       <xs:complexType>
                         <xs:attribute name="Name" type="xs:string" use="required" />
@@ -75,6 +76,22 @@
                         <xs:attribute name="Name" type="xs:string" use="required" />
                         <xs:attribute name="ExpectedStateKey" type="xs:string" use="optional" />
                         <xs:attribute name="ContainsValue" type="xs:string" use="optional" />
+                        <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="false" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ResponseBodyProperty">
+                      <xs:complexType>
+                        <xs:attribute name="Name" type="xs:string" use="required" />
+                        <xs:attribute name="ExpectedStateKey" type="xs:string" use="optional" />
+                        <xs:attribute name="ExpectedValue" type="xs:string" use="required" />
+                        <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="false" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ArrayLengthProperty">
+                      <xs:complexType>
+                        <xs:attribute name="Name" type="xs:string" use="required" />
+                        <xs:attribute name="ExpectedStateKey" type="xs:string" use="optional" />
+                        <xs:attribute name="ExpectedValue" type="xs:int" use="optional" />
                         <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="false" />
                       </xs:complexType>
                     </xs:element>
@@ -140,10 +157,25 @@
             <xs:complexContent>
               <xs:extension base="ValidatorBaseType">
                 <xs:attribute name="Header" type="xs:string" use="required" />
+                <xs:attribute name="Comparator" type="Comparator" use="optional" />
                 <xs:attribute name="ExpectedStateKey" type="xs:string" use="optional" />
-                <xs:attribute name="ExpectedValue" type="xs:string" use="optional" />
+                <xs:attribute name="ExpectedValue" type="xs:string" use="optional"  />
                 <xs:attribute name="IsRequired" type="xs:boolean" use="optional" default="true" />
                 <xs:attribute name="ShouldMatch" type="xs:boolean" use="optional" default="true" />
+              </xs:extension>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="FramesValidator">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="ValidatorBaseType">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                  <xs:element name="ContentStreamValidator" type="ContentStreamValidator" minOccurs="0" maxOccurs="unbounded" />
+                  <xs:element name="ContentPropertyValidator" type="ContentPropertyValidator" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+                <xs:attribute name="MessageJsonPayloadSchema" type="xs:string" use="required" />
+                <xs:attribute name="ExpectedHostBlobsCount" type="xs:int" use="optional" />
               </xs:extension>
             </xs:complexContent>
           </xs:complexType>
@@ -172,7 +204,7 @@
       </xs:element>
     </xs:sequence>
   </xs:complexType>
-
+  
   <!-- MutatorsType: type definition for the Mutators elements -->
   <xs:complexType name="MutatorsType">
     <xs:choice>
@@ -217,6 +249,186 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <!-- CoauthLockType: type definition for the Coauth Lock attributes -->
+  <xs:simpleType name="CoauthLockType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Coauth" />
+      <xs:enumeration value="CoauthExclusive" />
+      <xs:enumeration value="None" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- ChunkingScheme: type definition for the ChunkingScheme attribute -->
+  <xs:simpleType name="ChunkingScheme">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="FullFile" />
+      <xs:enumeration value="Zip" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- ChunksToReturn: type definition for the ChunksToReturn attribute -->
+  <xs:simpleType name="ChunksToReturn">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="All" />
+      <xs:enumeration value="None" />
+      <xs:enumeration value="LastZipChunk" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Retention: type definition for the Retention attribute -->
+  <xs:simpleType name="Retention">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DeleteOnContentChange" />
+      <xs:enumeration value="KeepOnContentChange" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Comparator: type definition for Comparator attribute-->
+  <xs:simpleType name="Comparator">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="&gt;" />
+      <xs:enumeration value="&gt;=" />
+      <xs:enumeration value="&lt;" />
+      <xs:enumeration value="&lt;=" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="ContentPropertiesToReturn">
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="ContentPropertyToReturn" type="ContentPropertyToReturn" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ContentPropertyToReturn">
+    <xs:attribute name="Value" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="ContentFilters">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element name="ContentFilter" type="ContentFilter" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ContentFilter">
+    <xs:attribute name="ChunkingScheme" type="ChunkingScheme" use="required" />
+    <xs:attribute name="StreamId" type="xs:string" use="required" />
+    <xs:attribute name="ChunksToReturn" type="ChunksToReturn" use="required" />
+    <xs:attribute name="AlreadyExistingContent" type="xs:string" use="optional"/>
+    <xs:attribute name="AlreadyExistingContentResourceId" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="ContentProperties">
+    <xs:sequence  minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="ContentProperty" type="ContentProperty" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name ="ContentProperty">
+    <xs:attribute name="Name" type="xs:string" use="required" />
+    <xs:attribute name="Value" type="xs:string" use="required"/>
+    <xs:attribute name="Retention" type="Retention" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="ContentStreams">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element name="ContentStream" type="ContentStream"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ContentStream">
+    <xs:attribute name="ChunkingScheme" type="ChunkingScheme" use="required" />
+    <xs:attribute name="StreamId" type="xs:string" use="required" />
+    <xs:attribute name="NewContent" type="xs:string" use="optional"/>
+    <xs:attribute name="LastKnownHostContent" type="xs:string" use="optional"/>
+    <xs:attribute name="NewContentResourceId" type="xs:string" use="optional"/>
+    <xs:attribute name="LastKnownHostContentResourceId" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="UploadSessionTokenToCommit">
+    <xs:attribute name="Value" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="ContentStreamValidator">
+    <xs:attribute name="StreamId" type="xs:string" use="required" />
+    <xs:attribute name="ExpectedChunkingScheme" type="xs:string" use="required" />
+    <xs:attribute name="AlreadyExistingContent" type="xs:string" use="optional" />
+    <xs:attribute name="AlreadyExistingContentResourceId" type="xs:string" use="optional" />
+    <xs:attribute name="ExpectedContent" type="xs:string" use="optional" />
+    <xs:attribute name="ExpectedContentResourceId" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="ContentPropertyValidator">
+    <xs:attribute name="Name" type="xs:string" use="required" />
+    <xs:attribute name="ShouldBeReturned" type="xs:boolean" use="optional" />
+    <xs:attribute name="ExpectedValue" type="xs:string" use="optional" />
+    <xs:attribute name="ExpectedRetention" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="GetCoauthLock">
+    <xs:sequence>
+      <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
+      <xs:element name="SaveState" type="SaveStateType" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="OverrideUrl" type="xs:string" />
+    <xs:attribute name="CoauthLockType" type="CoauthLockType" use="required" />
+    <xs:attribute name="CoauthLockMetadata" type="xs:string" use="optional"/>
+    <xs:attribute name="CoauthLockId" type="xs:string" use="required"/>
+    <xs:attribute name="CoauthLockExpirationTimeout" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="GetCoauthTable">
+    <xs:sequence>
+      <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
+      <xs:element name="SaveState" type="SaveStateType" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="OverrideUrl" type="xs:string" />
+    <xs:attribute name="CoauthTableVersion" type="xs:string" use="optional" />
+    <xs:attribute name="CoauthTableVersionStateKey" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="RefreshCoauthLock">
+    <xs:sequence>
+      <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
+      <xs:element name="SaveState" type="SaveStateType" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="OverrideUrl" type="xs:string" />
+    <xs:attribute name="CoauthLockMetadata" type="xs:string" use="optional"/>
+    <xs:attribute name="CoauthLockId" type="xs:string" use="required"/>
+    <xs:attribute name="CoauthLockExpirationTimeout" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="UnlockCoauthLock">
+    <xs:sequence>
+      <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="OverrideUrl" type="xs:string" />
+    <xs:attribute name="CoauthLockId" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="PutChunkedFile">
+    <xs:sequence>
+      <xs:element name="ContentProperties" type="ContentProperties" minOccurs="0" />
+      <xs:element name="ContentStreams" type="ContentStreams" />
+      <xs:element name="UploadSessionTokenToCommit" type="UploadSessionTokenToCommit" minOccurs="0" />
+      <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
+      <xs:element name="SaveState" type="SaveStateType" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="SequenceNumber" type="xs:string" use="optional" />
+    <xs:attribute name="SequenceNumberStateKey" type="xs:string" use="optional" />
+    <xs:attribute name="Lock" type="xs:string" use="optional" />
+    <xs:attribute name="CoauthLockId" type="xs:string" use="optional" />
+    <xs:attribute name="Editors" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="GetChunkedFile">
+    <xs:sequence>
+      <xs:element name="ContentPropertiesToReturn" type="ContentPropertiesToReturn" minOccurs="0" />
+      <xs:element name="ContentFilters" type="ContentFilters" />
+      <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
+      <xs:element name="SaveState" type="SaveStateType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <!-- TestCaseType: type definition for the TestCase elements -->
   <xs:complexType name="TestCaseType">
     <xs:sequence>
@@ -244,6 +456,7 @@
                   </xs:sequence>
                   <xs:attribute name="Lock" type="xs:string" use="required" />
                   <xs:attribute name="OverrideUrl" type="xs:string" />
+                  <xs:attribute name="LockUserVisible" type="xs:boolean" use="optional" />
                 </xs:complexType>
               </xs:element>
               <xs:element name="Unlock">
@@ -422,9 +635,10 @@
                   <xs:sequence>
                     <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
                   </xs:sequence>
-                  <xs:attribute name="OverrideUrl" type="xs:string" />
+                  <xs:attribute name="OverrideUrl" type="xs:string" use="optional"/>
                   <xs:attribute name="Name" type="xs:string" />
                   <xs:attribute name="Lock" type="xs:string" use="optional"/>
+                  <xs:attribute name="CoauthLockId" type="xs:string" use="optional"/>
                 </xs:complexType>
               </xs:element>
               <xs:element name="GetFromFileUrl">
@@ -469,6 +683,17 @@
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
+              <xs:element name="GetCoauthLock" type="GetCoauthLock" />
+              <xs:element name="GetCoauthTable" type="GetCoauthTable" />
+              <xs:element name="RefreshCoauthLock" type="RefreshCoauthLock" />
+              <xs:element name="UnlockCoauthLock" type="UnlockCoauthLock" />
+              <xs:element name="GetChunkedFile" type="GetChunkedFile" />
+              <xs:element name="PutChunkedFile" type="PutChunkedFile" />
+              <xs:element name="Delay">
+                <xs:complexType>
+                  <xs:attribute name="DelayTimeInSeconds" type="xs:int" use="optional" />
+                </xs:complexType>
+              </xs:element>
             </xs:choice>
           </xs:sequence>
         </xs:complexType>
@@ -479,6 +704,9 @@
             <xs:choice maxOccurs="unbounded">
               <xs:element name="Unlock">
                 <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Validators" type="ValidatorsType" minOccurs="0" />
+                  </xs:sequence>
                   <xs:attribute name="Lock" type="xs:string" use="required" />
                   <xs:attribute name="OverrideUrl" type="xs:string" />
                 </xs:complexType>
@@ -500,6 +728,9 @@
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
+              <xs:element name="GetCoauthLock" type="GetCoauthLock" />
+              <xs:element name="UnlockCoauthLock" type="UnlockCoauthLock" />
+              <xs:element name="PutChunkedFile" type="PutChunkedFile" />
             </xs:choice>
           </xs:sequence>
         </xs:complexType>
@@ -555,6 +786,7 @@
               </xs:element>
             </xs:sequence>
             <xs:attribute name="Name" type="xs:string" />
+            <xs:attribute name="HasDelay" type="xs:boolean" use="optional" />
           </xs:complexType>
         </xs:element>
       </xs:sequence>

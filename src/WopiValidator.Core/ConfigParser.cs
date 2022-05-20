@@ -50,9 +50,10 @@ namespace Microsoft.Office.WopiValidator.Core
 			testCaseFactory.GetTestCases(definition, prereqCasesDictionary, out prereqs, out groupTestCases, targetTestCategory);
 
 			List<ITestCase> prereqList = prereqs.ToList();
-
+			bool hasDelay = definition.Attribute("HasDelay") != null ? (bool) definition.Attribute("HasDelay") : false;
+			
 			return groupTestCases.Select(testcase =>
-				new TestExecutionData(testcase, prereqList, resourceManager, (string) definition.Attribute("Name")));
+				new TestExecutionData(testcase, prereqList, resourceManager, (string) definition.Attribute("Name"), hasDelay));
 		}
 	}
 }

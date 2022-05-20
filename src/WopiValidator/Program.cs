@@ -81,18 +81,31 @@ namespace Microsoft.Office.WopiValidator
 			}
 
 			// Create executor groups
-			var executorGroups = executionData.GroupBy(d => d.TestGroupName)
+			var executorGroups = executionData.GroupBy(d => new
+				{
+					d.TestGroupName,
+					d.TestGroupHasDelay
+				})
 				.Select(g => new
 				{
-					Name = g.Key,
+					Name = g.Key.TestGroupName,
+					HasDelay = g.Key.TestGroupHasDelay,
 					Executors = g.Select(x => GetTestCaseExecutor(x, options, options.TestCategory))
-				});
+				}); ;
 
 			ConsoleColor baseColor = ConsoleColor.White;
 			HashSet<ResultStatus> resultStatuses = new HashSet<ResultStatus>();
 			foreach (var group in executorGroups)
 			{
 				WriteToConsole($"\nTest group: {group.Name}\n", ConsoleColor.White);
+
+				// skip test groups using delay
+				if (group.HasDelay && !options.IncludeTestCasesWithDelay)
+				{
+					baseColor = ConsoleColor.Yellow;
+					WriteToConsole($"All tests skipped: {group.Name} uses delay.\n", baseColor, 1);
+					continue;
+				}
 
 				// define execution query - evaluation is lazy; test cases are executed one at a time
 				// as you iterate over returned collection

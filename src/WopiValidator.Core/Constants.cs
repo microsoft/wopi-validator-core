@@ -12,6 +12,7 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const int FileUnknown = 404;
 			public const int UserUnauthorized = 404;
 			public const int LockMismatch = 409;
+			public const int PreconditionFailed = 412;
 			public const int ServerError = 500;
 			public const int Unsupported = 501;
 		}
@@ -35,10 +36,22 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const string OverwriteRelative = "X-WOPI-OverwriteRelativeTarget";
 			public const string Version = "X-WOPI-ItemVersion";
 			public const string UrlType = "X-WOPI-UrlType";
+			public const string LockUserVisible = "X-WOPI-LockUserVisible";
 
 			// This is not an official WOPI header; it is used to pass exception information
 			// back to the validator UI. See the ExceptionHelper class for more details.
 			public const string ValidatorError = "X-WOPI-ValidatorError";
+			// coauth lock headers
+			public const string CoauthLockId = "X-WOPI-CoauthLockId";
+			public const string CoauthLockType = "X-WOPI-CoauthLockType";
+			public const string CoauthLockExpirationTimeout = "X-WOPI-CoauthLockExpirationTimeout";
+			public const string CoauthLockMetadata = "X-WOPI-CoauthLockMetadata";
+			public const string CoauthTableVersion = "X-WOPI-CoauthTableVersion";
+
+			// incremental file transfer header
+			public const string SequenceNumber = "X-WOPI-SequenceNumber";
+			public const string ConflictingMechanism = "X-WOPI-ConflictingMechanism";
+			public const string Editors = "X-WOPI-Editors"; // "X-WOPI-Editors" is an optional field
 		}
 
 		public static class HeaderValues
@@ -65,6 +78,13 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const string GetShareUrl = "GET_SHARE_URL";
 			public const string AddActivities = "ADD_ACTIVITIES";
 			public const string PutUserInfo = "PUT_USER_INFO";
+			public const string GetCoauthLock = "GET_COAUTH_LOCK";
+			public const string GetCoauthTable = "GET_COAUTH_TABLE";
+			public const string RefreshCoauthLock = "REFRESH_COAUTH_LOCK";
+			public const string UnlockCoauthLock = "UNLOCK_COAUTH_LOCK";
+			public const string GetChunkedFile = "GET_CHUNKED_FILE";
+			public const string PutChunkedFile = "PUT_CHUNKED_FILE";
+			public const string GetSequenceNumber = "GET_SEQUENCE_NUMBER";
 		}
 
 		public static class RequestMethods
@@ -101,6 +121,14 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const string GetShareUrl = "GetShareUrl";
 			public const string AddActivities = "AddActivities";
 			public const string PutUserInfo = "PutUserInfo";
+			public const string GetCoauthLock = "GetCoauthLock";
+			public const string GetCoauthTable = "GetCoauthTable";
+			public const string RefreshCoauthLock = "RefreshCoauthLock";
+			public const string UnlockCoauthLock = "UnlockCoauthLock";
+			public const string GetChunkedFile = "GetChunkedFile";
+			public const string PutChunkedFile = "PutChunkedFile";
+			public const string GetSequenceNumber = "GetSequenceNumber";
+			public const string Delay = "Delay";
 		}
 
 		public static class Validators
@@ -113,14 +141,19 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const string ResponseCode = "ResponseCodeValidator";
 			public const string ResponseContent = "ResponseContentValidator";
 			public const string ResponseHeader = "ResponseHeaderValidator";
+			public const string FramesValidator = "FramesValidator";
+			public const string ContentStreamValidator = "ContentStreamValidator";
+			public const string ContentPropertyValidator = "ContentPropertyValidator";
 
 			public static class Properties
 			{
 				public const string AbsoluteUrlProperty = "AbsoluteUrlProperty";
 				public const string ArrayProperty = "ArrayProperty";
+				public const string ArrayLengthProperty = "ArrayLengthProperty";
 				public const string BooleanProperty = "BooleanProperty";
 				public const string IntegerProperty = "IntegerProperty";
 				public const string LongProperty = "LongProperty";
+				public const string ResponseBodyProperty = "ResponseBodyProperty";
 				public const string StringRegexProperty = "StringRegexProperty";
 				public const string StringProperty = "StringProperty";
 			}
@@ -138,6 +171,44 @@ namespace Microsoft.Office.WopiValidator.Core
 		{
 			public const string AccessToken = "AccessToken";
 			public const string ProofKey = "ProofKey";
+		}
+
+		public static class JsonSchema
+		{
+			public const string CheckFileInfoSchema = "CheckFileInfoSchema";
+			public const string GetChunkedFileResponseSchema = "GetChunkedFileResponseSchema";
+		}
+
+		public static class FrameHeaderConstants
+		{
+			public const int FrameHeaderLengthInBytes = 16;
+			public static class MessageJSON
+			{
+				public const int ExtendedHeaderSizeInBytes = 0;
+			}
+
+			public static class Chunk
+			{
+				public const int ExtendedHeaderSizeInBytes = 16;
+			}
+
+			public static class ChunkRange
+			{
+				public const int ExtendedHeaderSizeInBytes = 36;
+			}
+
+			public static class EndFrame
+			{
+				public const int ExtendedHeaderSizeInBytes = 0;
+				public const int PayloadSizeInBytes = 0;
+			}
+		}
+
+		public static class ZipChunkingResourceFiles
+		{
+			public const string ChunkIds = "ChunkIds.txt";
+			public const string FileStream = "FileStream";
+			public const string ZeroByteOfficeDocumentResourceId = "ZeroByteOfficeDocument";
 		}
 	}
 }

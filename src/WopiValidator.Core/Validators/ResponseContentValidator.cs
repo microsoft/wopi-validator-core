@@ -43,7 +43,9 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 				expectedContent = resourceManager.GetContentStream(ResourceId);
 			}
 
-			bool areEqual = StreamEquals(expectedContent, data.ResponseStream);
+			expectedContent.Seek(0, SeekOrigin.Begin);
+			data.ResponseStream.Seek(0, SeekOrigin.Begin);
+			bool areEqual = StreamUtil.StreamEquals(expectedContent, data.ResponseStream);
 
 			if (!areEqual)
 				return new ValidationResult(
@@ -51,30 +53,6 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 						expectedContent.Length, data.ResponseStream.Length));
 
 			return new ValidationResult();
-		}
-
-		static bool StreamEquals(Stream stream1, Stream stream2)
-		{
-			stream1.Seek(0, SeekOrigin.Begin);
-			stream2.Seek(0, SeekOrigin.Begin);
-
-			const int bufferSize = 2048;
-			byte[] buffer1 = new byte[bufferSize]; //buffer size
-			byte[] buffer2 = new byte[bufferSize];
-			while (true)
-			{
-				int count1 = stream1.Read(buffer1, 0, bufferSize);
-				int count2 = stream2.Read(buffer2, 0, bufferSize);
-
-				if (count1 != count2)
-					return false;
-
-				if (count1 == 0)
-					return true;
-
-				if (!buffer1.Take(count1).SequenceEqual(buffer2.Take(count2)))
-					return false;
-			}
 		}
 	}
 }

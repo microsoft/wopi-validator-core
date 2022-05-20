@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.Office.WopiValidator.Core.IncrementalFileTransfer;
 using Microsoft.Office.WopiValidator.Core.Logging;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,27 @@ namespace Microsoft.Office.WopiValidator.Core.ResourceManagement
 				return resource.GetContentStream(_logger);
 
 			throw new ArgumentException(string.Format("Resource with resourceId '{0}' doesn't exist.", resourceId), "resourceId");
+		}
+
+		public void GetZipChunkingBlobs(string resourceId, out string[] blobIds, out IReadOnlyDictionary<string, IBlob> blobs)
+		{
+			Resource resource;
+			if (TryGetResource(resourceId, out resource))
+			{
+				resource.GetZipChunkingBlobs(_logger, out blobIds, out blobs);
+				return;
+			}
+
+			throw new ArgumentException($"{nameof(ResourceManager.GetZipChunkingBlobs)} Resource with resourceId '{resourceId}' doesn't exist.");
+		}
+
+		public Stream GetZipChunkingResourceStream(string resourceId)
+		{
+			Resource resource;
+			if (TryGetResource(resourceId, out resource))
+				return resource.GetZipChunkingResourceStream(_logger);
+
+			throw new ArgumentException($"{nameof(ResourceManager.GetZipChunkingResourceStream)} Resource with resourceId '{resourceId}' doesn't exist.");
 		}
 
 		public string GetFileName(string resourceId)

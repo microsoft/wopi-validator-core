@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.Office.WopiValidator.Core.Requests;
 using Microsoft.Office.WopiValidator.Core.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading;
 
 namespace Microsoft.Office.WopiValidator.Core
 {
@@ -80,6 +82,12 @@ namespace Microsoft.Office.WopiValidator.Core
 			{
 				foreach (IRequest request in testCase.Requests)
 				{
+					if (request is DelayRequest delayRequest)
+					{
+						Thread.Sleep((int)delayRequest.DelayTimeInSeconds * 1000);
+						continue;
+					}
+
 					IResponseData responseData;
 
 					try

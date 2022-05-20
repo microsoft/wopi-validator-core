@@ -13,6 +13,9 @@
     "Version"
   ],
   "properties": {
+    "AccessTokenExpiry": {
+      "type": "number"
+    },
     "AllowAdditionalMicrosoftServices": {
       "type": "boolean"
     },
@@ -52,9 +55,12 @@
       "format": "uri",
       "type": "string"
     },
+    "ComplianceDomainPrefix": {
+      "type": "string"
+    },
     "CopyPasteRestrictions": {
       "type": "string",
-      "enum": ["BlockAll", "CurrentDocumentOnly"]
+      "enum": [ "BlockAll", "CurrentDocumentOnly" ]
     },
     "DisablePrint": {
       "type": "boolean"
@@ -72,6 +78,9 @@
       "type": "boolean"
     },
     "FileExtension": {
+      "type": "string"
+    },
+    "FileGeoLocationCode": {
       "type": "string"
     },
     "FileNameMaxLength": {
@@ -123,6 +132,10 @@
     "OwnerId": {
       "type": "string"
     },
+    "OfficeCollaborationServiceEndpointUrl": {
+      "format": "uri",
+      "type": "string"
+    },
     "PostMessageOrigin": {
       "format": "uri",
       "type": "string"
@@ -130,11 +143,25 @@
     "ReadOnly": {
       "type": "boolean"
     },
+    "RealTimeChannelEndpointUrl": {
+      "format": "uri",
+      "type": "string"
+    },
     "RestrictedWebViewOnly": {
       "type": "boolean"
     },
     "SHA256": {
       "type": "string"
+    },
+    "SequenceNumber": {
+      "type": "number"
+    },
+    "ServerTime": {
+      "type": "number"
+    },
+    "SharingStatus": {
+      "type": "string",
+      "enum": [ "Private", "Shared" ]
     },
     "SignInUrl": {
       "format": "uri",
@@ -155,6 +182,9 @@
       }
     },
     "SupportsAddActivities": {
+      "type": "boolean"
+    },
+    "SupportsCoauth": {
       "type": "boolean"
     },
     "SupportsCobalt": {

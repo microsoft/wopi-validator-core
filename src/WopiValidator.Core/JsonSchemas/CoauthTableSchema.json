@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Coauth Table JSON Schema",
+  "description": "A WOPI CoauthTable JSON response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "CoauthTable"
+  ],
+  "properties": {
+    "CoauthTable": {
+      "additionalProperties": false,
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "CoauthLockId",
+          "CoauthLockMetadata",
+          "CoauthLockType",
+          "UserFriendlyName",
+          "CoauthLockTime"
+        ],
+        "properties": {
+          "CoauthLockId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "CoauthLockMetadata": {
+            "type": "string"
+          },
+          "CoauthLockType": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "UserFriendlyName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "CoauthLockTime": {
+            "minLength": 1,
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}

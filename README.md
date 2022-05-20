@@ -17,9 +17,9 @@ You can quickly run the validator using Docker. First, pull the Docker image:
 
 Then run the validator using a command like the following:
 
-`docker run -it --rm tylerbutler/wopi-validator -- -w http://localhost:5000/wopi/files/1 -t myToken -l 0 -s`
+`docker run -it --rm tylerbutler/wopi-validator -- -w http://localhost:5000/wopi/files/<id> -t myToken -l 0 -s`
 
-Note the `--`; parameters after the `--` will be passed to the validator itself
+Note : The `--`; parameters after the `--` will be passed to the validator itself. The '<id>' must be an id that refers to a file with wopitest extension. The file must exist.
 
 **Tip:** Depending on your network configuration, you may also need to use the `--add-host` parameter to ensure
 the docker image can resolve your WOPI host domain name. Arguments to the `--add-host` parameter are of the form `host:IP`.
@@ -30,7 +30,7 @@ The project can be built in Visual Studio 2017, Visual Studio Code, or using `do
 
 `dotnet build -c Release`
 
-The resulting build will be output to `src\WopiValidator\bin\Release\netcoreapp2.0\`. Omit the `-c Release`
+The resulting build will be output to `src\WopiValidator\bin\Release\net6.0\`. Omit the `-c Release`
 portion if you want to build the debug version instead.
 
 ### Building a self-contained package
@@ -38,15 +38,15 @@ portion if you want to build the debug version instead.
 To build a [self-contained package][1] for Linux or macOS, use the `dotnet publish` command:
 
 ```text
-dotnet publish -c Release -f netcoreapp2.0 -r linux-x64
-dotnet publish -c Release -f netcoreapp2.0 -r osx-x64
-dotnet publish -c Release -f netcoreapp2.0 -r win-x64
+dotnet publish -c Release -f net6.0 -r linux-x64
+dotnet publish -c Release -f net6.0 -r osx-x64
+dotnet publish -c Release -f net6.0 -r win-x64
 ```
 
 Note: you may see an error on build like this:
 
 ```text
-error MSB3030: Could not copy the file "obj\Release\netcoreapp2.0\win-x64\Microsoft.Office.WopiValidator.dll"
+error MSB3030: Could not copy the file "obj\Release\net6.0\win-x64\Microsoft.Office.WopiValidator.dll"
 because it was not found.
 ```
 
@@ -54,7 +54,7 @@ If you see this error, you should re-build the app using the same `-r` option us
 if you were trying to package the Linux self-contained package, first build the app using
 `dotnet build -c Release -r linux-x64`, then publish it using `dotnet publish -c Release -r linux-x64`.
 
-The output will be placed in `src/WopiValidator/bin/Release/netcoreapp2.0/linux-x64/publish` (replace `linux-x64`
+The output will be placed in `src/WopiValidator/bin/Release/net6.0/linux-x64/publish` (replace `linux-x64`
 with other platforms as needed).
 
 [1]: https://docs.microsoft.com/en-us/dotnet/core/deploying/deploy-with-cli
@@ -97,7 +97,7 @@ See [the quick start](#quick-start-using-docker).
 After building the projects as described above, you can run the resulting `Microsoft.Office.WopiValidator.dll`
 using the `dotnet` command. For example:
 
-`dotnet Microsoft.Office.WopiValidator.dll --token MyAccessToken --token_ttl 0 --wopisrc http://localhost:5000/wopi/files/1 --testcategory OfficeOnline --ignore-skipped`
+`dotnet Microsoft.Office.WopiValidator.dll --token MyAccessToken --token_ttl 0 --wopisrc http://localhost:5000/wopi/files/<id> --testcategory OfficeOnline --ignore-skipped`
 
 Note: the Microsoft.Office.WopiValidator.dll file can be found in `src\WopiValidator\bin\Release\netcoreapp2.0\`.
 
@@ -107,7 +107,7 @@ You can also use the `dotnet run` command, passing the path to the `WopiValidato
 option. Arguments to the validator itself can be passed in by separating them from the `dotnet run` arguments with
 a `--`. For example:
 
-`dotnet run --project ./src/WopiValidator/WopiValidator.csproj --framework netcoreapp2.0 -- -t MyAccessToken -l 0 -w http://localhost:5000/wopi/files/1 -e OfficeOnline -s`
+`dotnet run --project ./src/WopiValidator/WopiValidator.csproj --framework net6.0 -- -t MyAccessToken -l 0 -w http://localhost:5000/wopi/files/<id> -e OfficeOnline -s`
 
 ### Option 4: self-contained package
 
@@ -115,7 +115,7 @@ Another option is to build a self-contained package for your OS (see above) and 
 file, which be called `Microsoft.Office.Validator.exe` on Windows and `Microsoft.Office.Validator` on Linux and macOS.
 Arguments to the validator can be passed in directly. For example:
 
-`Microsoft.Office.Validator.exe -t MyAccessToken -l 0 -w http://localhost:5000/wopi/files/1 -e OfficeOnline -s`
+`Microsoft.Office.Validator.exe -t MyAccessToken -l 0 -w http://localhost:5000/wopi/files/<id> -e OfficeOnline -s`
 
 ### Full usage options
 

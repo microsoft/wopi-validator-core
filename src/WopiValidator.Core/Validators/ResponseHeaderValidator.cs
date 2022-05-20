@@ -13,18 +13,23 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 	class ResponseHeaderValidator : IValidator
 	{
 		public readonly string Key;
+		public readonly string Comparator;
 		public readonly string DefaultExpectedValue;
 		public readonly string ExpectedStateKey;
 		public readonly bool IsRequired;
 		public readonly bool ShouldMatch;
 
-		public ResponseHeaderValidator(string key, string expectedValue, string expectedStateKey, bool isRequired = true, bool shouldMatch = true)
+		public ResponseHeaderValidator(string key, string expectedValue, string expectedStateKey, string comparator = "=", bool isRequired = true, bool shouldMatch = true)
 		{
 			Key = key;
+			Comparator = comparator;
 			DefaultExpectedValue = expectedValue;
 			ExpectedStateKey = expectedStateKey;
 			IsRequired = isRequired;
 			ShouldMatch = shouldMatch;
+
+			if (String.IsNullOrWhiteSpace(comparator))
+				Comparator = "=";
 		}
 
 		public string Name
@@ -56,6 +61,62 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 				savedState.ContainsKey(ExpectedStateKey) &&
 				!string.IsNullOrEmpty(savedState[ExpectedStateKey]) ? savedState[ExpectedStateKey] : DefaultExpectedValue;
 
+			switch (this.Comparator)
+			{
+				case "=":
+					return CheckEqual(headerValue, expectedValue);
+				case ">":
+				case "<":
+				case ">=":
+				case "<=":
+					// Only support integer comparison
+					return CheckNumericComparison(headerValue, this.Comparator, expectedValue);
+				default:
+					return new ValidationResult(string.Format(CultureInfo.CurrentCulture, "Comparator '{0}' is not valid", this.Comparator));
+			}
+		}
+
+		private ValidationResult CheckNumericComparison(string headerValue, string comparator, string expectedValue)
+		{
+			if (!int.TryParse(headerValue, out int parsedHeaderValue))
+			{
+				return new ValidationResult(String.Format(CultureInfo.CurrentCulture, "'{0}' header is present, but its value '{1}' can not be parsed to integer", this.Key, headerValue));
+			}
+
+			if (!int.TryParse(expectedValue, out int parsedExpectedValue))
+			{
+				return new ValidationResult(String.Format(CultureInfo.CurrentCulture, "expected value '{0}' can not be parsed to integer", expectedValue));
+			}
+
+			string assertionError = String.Format(CultureInfo.CurrentCulture, "headerVal:{0} {1} comparedValue:{2} comparison failed", parsedHeaderValue, comparator, parsedExpectedValue);
+
+			switch (comparator)
+			{
+				case "<":
+					if (parsedHeaderValue < parsedExpectedValue)
+						return new ValidationResult();
+					break;
+				case "<=":
+					if (parsedHeaderValue <= parsedExpectedValue)
+						return new ValidationResult();
+					break;
+				case ">":
+					if (parsedHeaderValue > parsedExpectedValue)
+						return new ValidationResult();
+					break;
+				case ">=":
+					if (parsedHeaderValue >= parsedExpectedValue)
+						return new ValidationResult();
+					break;
+				default:
+					return new ValidationResult(String.Format(CultureInfo.CurrentCulture, "comparator:{0} shouldn't be in CheckNumericComparison method", comparator));
+			}
+
+			return new ValidationResult(assertionError);
+		}
+
+		private ValidationResult CheckEqual(string headerValue, string expectedValue)
+		{
 			if (expectedValue == null)
 			{
 				return new ValidationResult();

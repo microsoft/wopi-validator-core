@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.Office.WopiValidator.Core.IncrementalFileTransfer;
 using System.Collections.Generic;
 
 namespace Microsoft.Office.WopiValidator.Core.Requests
@@ -13,6 +14,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		public string FileExtensionFilterList { get; set; }
 		public string FolderName { get; set; }
 		public string LockString { get; set; }
+		public bool? LockUserVisible { get; set; }
 		public IEnumerable<IMutator> Mutators { get; set; }
 		public string NewLockString { get; set; }
 		public string OldLockString { get; set; }
@@ -26,6 +28,22 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		public IEnumerable<IValidator> Validators { get; set; }
 		public string WopiSrc { get; set; }
 		public string UrlType { get; set; }
+		public CoauthLockType? CoauthLockType { get; set; }
+		public string CoauthLockMetadata { get; set; }
+		public string Lock { get; set; }
+		public string CoauthLockId { get; set; }
+		public string Editors { get; set; }
+		public uint? CoauthLockExpirationTimeout { get; set; }
+		public string CoauthTableVersion { get; set; }
+		public string CoauthTableVersionStateKey { get; set; }
+		public string SequenceNumber { get; set; }
+		public string SequenceNumberStateKey { get; set; }
+		public IEnumerable<XMLContentPropertyToReturn> ContentPropertiesToReturn { get; set; }
+		public IEnumerable<XMLContentFilter> ContentFilters { get; set; }
+		public IEnumerable<XMLContentProperty> ContentProperties { get; set; }
+		public IEnumerable<XMLContentStream> ContentStreams { get; set; }
+		public string UploadSessionTokenToCommit { get; set; }
+		public uint? DelayTimeInSeconds { get; set; }
 	}
 
 	public enum PutRelativeFileMode
@@ -34,5 +52,12 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		Conflicting,
 		Suggested,
 		ExactName,
+	}
+
+	public enum CoauthLockType
+	{
+		Coauth,
+		CoauthExclusive,
+		None
 	}
 }

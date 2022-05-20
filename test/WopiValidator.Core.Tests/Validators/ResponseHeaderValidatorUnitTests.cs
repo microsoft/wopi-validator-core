@@ -20,7 +20,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string expectedValue = "value";
 			const string actualValue = expectedValue;
 			const bool shouldMatch = true;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, false, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, null, false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -42,7 +42,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string expectedValue = "value";
 			const string actualValue = expectedValue;
 			const bool shouldMatch = false;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, false, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, null, false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -63,7 +63,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string headerKey = "key";
 			const string expectedValue = "value";
 			const bool shouldMatch = true;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, true, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, null, true, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -84,7 +84,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string headerKey = "key";
 			const string expectedValue = "value";
 			const bool shouldMatch = true;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, false, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, null, false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -106,7 +106,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string expectedValue = "value";
 			const string actualValue = "differentValue";
 			const bool shouldMatch = true;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, false, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, null, false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -128,7 +128,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string expectedValue = "value";
 			const string actualValue = "differentValue";
 			const bool shouldMatch = false;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, false, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, null, false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -150,7 +150,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string expectedValue = "value";
 			const string actualValue = "differentValue";
 			const bool shouldMatch = true;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, false, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, null, false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -173,7 +173,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string expectedValue = "value";
 			const string actualValue = "differentValue";
 			const bool shouldMatch = true;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, false, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, null, false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -196,7 +196,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string expectedValue = "value";
 			const string actualValue = "differentValue";
 			const bool shouldMatch = true;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, false, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, null, false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -219,7 +219,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string expectedValue = "value";
 			const string actualValue = "differentValue";
 			const bool shouldMatch = true;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, false, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, null, false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -242,7 +242,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string expectedValue = "value";
 			const string actualValue = expectedValue;
 			const bool shouldMatch = false;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, false, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, null, false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -265,7 +265,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string expectedValue = "value";
 			const string actualValue = expectedValue;
 			const bool shouldMatch = false;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, false, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, null, false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -288,7 +288,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string expectedValue = "testvalue";
 			const string actualValue = expectedValue;
 			const bool shouldMatch = false;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, false, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, null, false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -311,7 +311,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string expectedValue = "value";
 			const string actualValue = "Value";
 			const bool shouldMatch = true;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, false, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, null, false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -334,7 +334,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string expectedValue = "value";
 			const string actualValue = expectedValue;
 			const bool shouldMatch = true;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, false, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, null, null, false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -356,7 +356,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string actualValue = null;
 			const bool shouldMatch = true;
 			const bool isRequired = true;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, null, null, isRequired, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, null, null, null, isRequired, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -378,7 +378,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string actualValue = null;
 			const bool shouldMatch = false;
 			const bool isRequired = false;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, null, null, isRequired, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, null, null, null, isRequired, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -400,7 +400,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string actualValue = null;
 			const bool shouldMatch = true;
 			const bool isRequired = true;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, "value", null, isRequired, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, "value", null, null, isRequired, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -423,7 +423,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string actualValue = "";
 			const bool shouldMatch = true;
 			const bool isRequired = true;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, null, null, isRequired, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, null, null, null, isRequired, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -445,7 +445,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string actualValue = "";
 			const bool shouldMatch = false;
 			const bool isRequired = false;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, null, null, isRequired, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, null, null, null, isRequired, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -467,7 +467,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string actualValue = "";
 			const bool shouldMatch = true;
 			const bool isRequired = true;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, "", null, isRequired, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, "", null, null, isRequired, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -489,7 +489,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string actualValue = "value";
 			const bool shouldMatch = true;
 			const bool isRequired = true;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, "", null, isRequired, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, "", null, null, isRequired, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -512,7 +512,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string actualValue = "";
 			const bool shouldMatch = false;
 			const bool isRequired = true;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, "", null, isRequired, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, "", null, null, isRequired, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -535,7 +535,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string actualValue = null;
 			const bool shouldMatch = false;
 			const bool isRequired = true;
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, "", null, isRequired, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, "", null, null, isRequired, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -559,7 +559,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string expectedValue = actualValue;
 			const bool shouldMatch = true;
 			Dictionary<string, string> savedState = new Dictionary<string, string>() { { "StateKey", "incorrect value" } };
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, "StateKey", false, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, "StateKey", null, false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -583,7 +583,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string expectedValue = "incorrect expected value";
 			const bool shouldMatch = true;
 			Dictionary<string, string> savedState = new Dictionary<string, string>() { { "StateKey", "value" } };
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, "IncorrectStateKey", false, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, expectedValue, "IncorrectStateKey", null, false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
@@ -606,7 +606,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			const string actualValue = "value";
 			const bool shouldMatch = true;
 			Dictionary<string, string> savedState = new Dictionary<string, string>() { { "StateKey", actualValue } };
-			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, null, "StateKey", false, shouldMatch);
+			ResponseHeaderValidator validator = new ResponseHeaderValidator(headerKey, null, "StateKey", null, false, shouldMatch);
 
 			ResponseDataMock responseData = new ResponseDataMock
 			{
