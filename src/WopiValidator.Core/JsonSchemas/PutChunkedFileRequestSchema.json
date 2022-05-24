@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "JSON schema for PutChunkedFile request message frame",
+  "type": "object",
+  "required": [ "ContentProperties", "Signatures", "UploadSessionTokenToCommit" ],
+  "properties": {
+    "ContentProperties": {
+      "title": "JSON schema for PutChunkedFileRequestMessage.ContentProperties",
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "required": [ "Retention", "Name", "Value" ],
+        "properties": {
+          "Retention": {
+            "type": "string",
+            "enum": [ "DeleteOnContentChange", "KeepOnContentChange" ]
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Value": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Signatures": {
+      "title": "JSON schema for PutChunkedFileRequestMessage.Signatures",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [ "StreamId", "ChunkingScheme", "ChunkSignatures" ],
+        "properties": {
+          "StreamId": {
+            "type": "string"
+          },
+          "ChunkingScheme": {
+            "type": "string",
+            "enum": [ "FullFile", "Zip" ]
+          },
+          "ChunkSignatures": {
+            "type": "array",
+            "minItems": 0, // If no content, ChunkSignatures will be empty array
+            "items": {
+              "type": "object",
+              "required": [ "ChunkId", "Length" ],
+              "properties": {
+                "ChunkId": {
+                  "type": "string"
+                },
+                "Length": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "UploadSessionTokenToCommit": {
+      "title": "JSON schema for PutChunkedFileRequestMessage.UploadSessionTokenToCommit",
+      "type": "string"
+    }
+  }
+}

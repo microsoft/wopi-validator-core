@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "JSON schema for GetChunkedFile request message frame",
+  "type": "object",
+  "required": [ "ContentPropertiesToReturn", "ContentFilters" ],
+  "properties": {
+    "ContentPropertiesToReturn": {
+      "title": "JSON schema for GetChunkedFileRequestMessage.ContentPropertiesToReturn",
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "string"
+      }
+    },
+    "ContentFilters": {
+      "title": "JSON schema for GetChunkedFileRequestMessage.ContentFilters",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [ "StreamId", "ChunkingScheme", "ChunksToReturn", "AlreadyKnownChunks" ],
+        "properties": {
+          "StreamId": {
+            "type": "string"
+          },
+          "ChunkingScheme": {
+            "type": "string",
+            "enum": [ "FullFile", "Zip" ]
+          },
+          "ChunksToReturn": {
+            "type": "string",
+            "enum": [ "None", "All", "LastZipChunk" ]
+          },
+          "AlreadyKnownChunks": {
+            "type": "array",
+            "minItems": 0, // If no content, AlreadyKnownChunks will be empty array
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

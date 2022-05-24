@@ -5,5 +5,5 @@ solution: WopiValidator.sln
 sudo: required
 dist: xenial
 script:
-  - dotnet build -c Release -f netcoreapp2.0
-  - dotnet test ./test/WopiValidator.Core.Tests/WopiValidator.Core.Tests.csproj -c Release -f netcoreapp2.0
+  - dotnet build -c Release -f net6.0
+  - dotnet test ./test/WopiValidator.Core.Tests/WopiValidator.Core.Tests.csproj -c Release -f net6.0

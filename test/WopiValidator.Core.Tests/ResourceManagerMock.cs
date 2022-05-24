@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.Office.WopiValidator.Core;
+using Microsoft.Office.WopiValidator.Core.IncrementalFileTransfer;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +17,16 @@ namespace Microsoft.Office.WopiValidator.UnitTests
 		}
 
 		public string GetFileName(string resourceId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void GetZipChunkingBlobs(string resourceId, out string[] blobIds, out IReadOnlyDictionary<string, IBlob> blobs)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Stream GetZipChunkingResourceStream(string resourceId)
 		{
 			throw new NotImplementedException();
 		}

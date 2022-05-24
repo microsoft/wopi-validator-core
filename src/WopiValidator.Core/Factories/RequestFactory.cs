@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.Office.WopiValidator.Core.IncrementalFileTransfer;
 using Microsoft.Office.WopiValidator.Core.Requests;
 using Microsoft.Office.WopiValidator.Core.Validators;
 using System;
@@ -35,11 +36,27 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			IEnumerable<IStateEntry> stateSavers = stateDefinition == null ? null : StateFactory.GetStateExpressions(stateDefinition);
 			IEnumerable<IMutator> mutators = mutatorsDefinition == null ? null : MutatorFactory.GetMutators(mutatorsDefinition);
 
+			// GetChunkedFile XML schema parse
+			XElement contentPropertiesToReturnDefinition = definition.Element("ContentPropertiesToReturn");
+			XElement contentFiltersDefinition = definition.Element("ContentFilters");
+			IEnumerable<XMLContentPropertyToReturn> contentPropertiesToReturn = (contentPropertiesToReturnDefinition == null ? null : ContentPropertyToReturnFactory.GetContentPropertiesToReturn(contentPropertiesToReturnDefinition));
+			IEnumerable<XMLContentFilter> contentFilters = (contentFiltersDefinition == null ? null : ContentFilterFactory.GetContentFilters(contentFiltersDefinition));
+
+			// PutChunkedFile XML schema parse
+			XElement contentPropertiesDefinition = definition.Element("ContentProperties");
+			XElement contentStreamsDefinition = definition.Element("ContentStreams");
+			XElement uploadSessionTokenToCommitDefinition = definition.Element("UploadSessionTokenToCommit");
+			IEnumerable<XMLContentProperty> contentProperties = (contentPropertiesDefinition == null ? null : ContentPropertyFactory.GetContentProperties(contentPropertiesDefinition));
+			IEnumerable<XMLContentStream> contentStreams = (contentStreamsDefinition == null ? null : ContentStreamFactory.GetContentStreams(contentStreamsDefinition));
+			string uploadSessionTokenToCommit = (uploadSessionTokenToCommitDefinition == null ? null : (string)uploadSessionTokenToCommitDefinition.Attribute("Value"));
+
+
 			var wopiRequestParams = new WopiRequestParam
 			{
 				FileExtensionFilterList = (string)definition.Attribute("FileExtensionFilterList"),
 				FolderName = (string)definition.Attribute("FolderName"),
 				LockString = (string)definition.Attribute("Lock"),
+				LockUserVisible = (bool?)definition.Attribute("LockUserVisible"),
 				Mutators = mutators,
 				NewLockString = (string)definition.Attribute("NewLock"),
 				OldLockString = (string)definition.Attribute("OldLock"),
@@ -51,6 +68,22 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 				UrlType = (string)definition.Attribute("UrlType"),
 				Validators = validators ?? GetDefaultValidators(),
 				WopiSrc = (string)definition.Attribute("WopiSrc"),
+				// Used for request header
+				SequenceNumber = (string)definition.Attribute("SequenceNumber"),
+				SequenceNumberStateKey = (string)definition.Attribute("SequenceNumberStateKey"),
+				CoauthLockMetadata = (string)definition.Attribute("CoauthLockMetadata"),
+				Lock = (string)definition.Attribute("Lock"),
+				CoauthLockId = (string)definition.Attribute("CoauthLockId"),
+				Editors = (string)definition.Attribute("Editors"),
+				CoauthTableVersion = (string)definition.Attribute("CoauthTableVersion"),
+				CoauthTableVersionStateKey = (string)definition.Attribute("CoauthTableVersionStateKey"),
+				// Used for GetChunkedFile request body
+				ContentPropertiesToReturn = contentPropertiesToReturn,
+				ContentFilters = contentFilters,
+				// Used for PutChunkedFile request body
+				ContentProperties = contentProperties,
+				ContentStreams = contentStreams,
+				UploadSessionTokenToCommit = uploadSessionTokenToCommit
 			};
 
 			if (requestBodyDefinition != null && !String.IsNullOrEmpty(requestBodyDefinition.Value))
@@ -71,6 +104,53 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 						PutRelativeFileMode.ExactName,
 						PutRelativeFileMode.Conflicting,
 						parsedMode));
+				}
+			}
+
+			string delayTimeInSeconds = (string)definition.Attribute("DelayTimeInSeconds");
+
+			if (!string.IsNullOrEmpty(delayTimeInSeconds))
+			{
+				if (uint.TryParse(delayTimeInSeconds, out uint parsedDelayTimeInSeconds))
+				{
+					wopiRequestParams.DelayTimeInSeconds = parsedDelayTimeInSeconds;
+				}
+				else
+				{
+					throw new ArgumentException(String.Format("DelayTimeInSeconds expected to be uint'{0}'",
+						parsedDelayTimeInSeconds));
+				}
+			}
+
+			string coauthLockExpirationTimeout = (string)definition.Attribute("CoauthLockExpirationTimeout");
+
+			if (!string.IsNullOrEmpty(coauthLockExpirationTimeout))
+			{
+				if (uint.TryParse(coauthLockExpirationTimeout, out uint parsedCoauthLockExpirationTimeout))
+				{
+					wopiRequestParams.CoauthLockExpirationTimeout = parsedCoauthLockExpirationTimeout;
+				}
+				else
+				{
+					throw new ArgumentException(String.Format("CoauthLockExpirationTimeout expected to be uint'{0}'",
+						parsedCoauthLockExpirationTimeout));
+				}
+			}
+
+			string coauthLockType = (string)definition.Attribute("CoauthLockType");
+			if (!string.IsNullOrEmpty(coauthLockType))
+			{
+				if (Enum.TryParse(coauthLockType, true, out CoauthLockType parsedCoauthLockType))
+				{
+					wopiRequestParams.CoauthLockType = parsedCoauthLockType;
+				}
+				else
+				{
+					throw new ArgumentException(String.Format("CoauthLockType expected to be one of '{0}' or '{1}' or '{2}' but is actually '{3}'",
+						CoauthLockType.Coauth,
+						CoauthLockType.CoauthExclusive,
+						CoauthLockType.None,
+						parsedCoauthLockType));
 				}
 			}
 
@@ -128,7 +208,22 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 					return new AddActivitiesRequest(wopiRequestParams);
 				case Constants.Requests.PutUserInfo:
 					return new PutUserInfoRequest(wopiRequestParams);
-
+				case Constants.Requests.GetCoauthLock:
+					return new GetCoauthLockRequest(wopiRequestParams);
+				case Constants.Requests.GetCoauthTable:
+					return new GetCoauthTableRequest(wopiRequestParams);
+				case Constants.Requests.RefreshCoauthLock:
+					return new RefreshCoauthLock(wopiRequestParams);
+				case Constants.Requests.UnlockCoauthLock:
+					return new UnlockCoauthLockRequest(wopiRequestParams);
+				case Constants.Requests.GetChunkedFile:
+					return new GetChunkedFileRequest(wopiRequestParams);
+				case Constants.Requests.PutChunkedFile:
+					return new PutChunkedFileRequest(wopiRequestParams);
+				case Constants.Requests.GetSequenceNumber:
+					return new GetSequenceNumberRequest(wopiRequestParams);
+				case Constants.Requests.Delay:
+					return new DelayRequest(wopiRequestParams);
 				default:
 					throw new ArgumentException(string.Format("Unknown request: '{0}'", elementName));
 			}

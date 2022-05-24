@@ -5,9 +5,9 @@ using Microsoft.Office.WopiValidator.Core.ResourceManagement;
 using NJsonSchema;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-
 using JsonValidation = NJsonSchema.Validation;
 
 namespace Microsoft.Office.WopiValidator.Core.Validators
@@ -32,14 +32,15 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 		public ValidationResult Validate(IResponseData data, IResourceManager resourceManager, Dictionary<string, string> savedState)
 		{
 			string responseContentString = data.GetResponseContentAsString();
-			if(!data.IsTextResponse)
+
+			if (!data.IsTextResponse)
 			{
-				throw new NotSupportedException("The JsonSchemaValidator can only be used on requests that have a JSON response.");
+				throw new NotSupportedException(String.Format(CultureInfo.CurrentCulture, "The JsonSchemaValidator can only be used on requests that have a JSON response."));
 			}
 
 			if (String.IsNullOrEmpty(responseContentString))
 			{
-				return new ValidationResult("Couldn't read response content.");
+				return new ValidationResult(String.Format(CultureInfo.CurrentCulture, "Couldn't read response content."));
 			}
 
 			return ValidateJsonContent(responseContentString);
@@ -56,10 +57,10 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 			List<string> errorMessages = new List<string>();
 			var grouped = errors.GroupBy(error => error.Kind);
 
-			foreach (var theGroup in grouped)
+			foreach (var group in grouped)
 			{
-				var errorKind = ValidationErrorKindString(theGroup.Key);
-				var properties = theGroup.Select(error => error.Property);
+				var errorKind = ValidationErrorKindString(group.Key);
+				var properties = group.Select(error => error.Property);
 				string propertiesString = String.Join(", ", properties);
 				errorMessages.Add($"{errorKind}: {propertiesString}");
 			}

@@ -17,15 +17,18 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 	internal class JsonContentValidator : IValidator
 	{
 		private readonly IJsonPropertyValidator[] _propertyValidators;
+		private readonly bool _shouldExist;
 
 		public JsonContentValidator(IJsonPropertyValidator propertyValidator = null)
 		{
 			_propertyValidators = propertyValidator == null ? new IJsonPropertyValidator[0] : new[] { propertyValidator };
+			_shouldExist = true;
 		}
 
-		public JsonContentValidator(IEnumerable<IJsonPropertyValidator> propertyValidators)
+		public JsonContentValidator(IEnumerable<IJsonPropertyValidator> propertyValidators, bool shouldExist)
 		{
 			_propertyValidators = (propertyValidators ?? Enumerable.Empty<IJsonPropertyValidator>()).ToArray();
+			_shouldExist = shouldExist;
 		}
 
 		public string Name
@@ -37,7 +40,21 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 		{
 			string responseContentString = data.GetResponseContentAsString();
 			if (!data.IsTextResponse || String.IsNullOrEmpty(responseContentString))
-				return new ValidationResult("Couldn't read resource content.");
+			{
+				if (_shouldExist)
+				{
+					return new ValidationResult("Response body should exist, but couldn't read resource content.");
+				}
+				else
+				{
+					return new ValidationResult();
+				}
+			}
+
+			if (!_shouldExist)
+			{
+				return new ValidationResult("Response body shouldn't exist.");
+			}
 
 			return ValidateJsonContent(responseContentString, savedState);
 		}
@@ -126,7 +143,7 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 				{
 					if (IsRequired)
 					{
-						errorMessage = string.Format("Value is required but not provided.");
+						errorMessage = "Value is required but not provided.";
 						return false;
 					}
 
@@ -444,6 +461,146 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 			public override string FormatValue(string value)
 			{
 				return value;
+			}
+		}
+
+		public class JsonResponseBodyPropertyValidator : JsonPropertyEqualityValidator<string>
+		{
+			public JsonResponseBodyPropertyValidator(string key, bool isRequired, string expectedValue, bool hasExpectedValue, string expectedStateKey)
+				: base(key, isRequired, expectedValue, hasExpectedValue, expectedStateKey)
+			{
+			}
+
+			public override bool Validate(JToken actualValue, Dictionary<string, string> savedState, out string errorMessage)
+			{
+				errorMessage = "";
+
+				if (actualValue == null)
+				{
+					if (IsRequired)
+					{
+						errorMessage = "Value is required but not provided.";
+						return false;
+					}
+					return true;
+				}
+
+				JToken expectedValue = JToken.Parse(this.DefaultExpectedValue);
+				HashSet<string> propertyValuesToOmit = new HashSet<string>();
+
+				JsonOmitProcessor(expectedValue, propertyValuesToOmit, false);
+				JsonOmitProcessor(actualValue, propertyValuesToOmit, true);
+
+				JToken sortedExpectedValue = JsonSort(expectedValue);
+				JToken sortedActualValue = JsonSort(actualValue);
+
+				if (JToken.DeepEquals(sortedExpectedValue, sortedActualValue))
+				{
+					return true;
+				}
+
+				errorMessage = string.Format("\nExpected: '{0}', \nActual: '{1}'", sortedExpectedValue.ToString(), sortedActualValue.ToString());
+				return false;
+			}
+
+			public override string FormatValue(string value)
+			{
+				return value;
+			}
+
+			private void JsonOmitProcessor(JToken node, HashSet<string> propertyValuesToOmit, bool shouldReplace)
+			{
+				if (node.Type == JTokenType.Object)
+				{
+					foreach (JProperty property in node.Children<JProperty>())
+					{
+						if (shouldReplace && propertyValuesToOmit.Contains(property.Name))
+						{
+							property.Value = "*";
+						}
+						else if (property.Value.ToString().Equals("*"))
+						{
+							propertyValuesToOmit.Add(property.Name);
+						}
+						JsonOmitProcessor(property.Value, propertyValuesToOmit, shouldReplace);
+					}
+				}
+				else if (node.Type == JTokenType.Array)
+				{
+					foreach (JToken child in node.Children())
+					{
+						foreach (JProperty property in child.Children<JProperty>())
+						{
+							if (shouldReplace && propertyValuesToOmit.Contains(property.Name))
+							{
+								property.Value = "*";
+							}
+							else if (property.Value.ToString().Equals("*"))
+							{
+								propertyValuesToOmit.Add(property.Name);
+							}
+							JsonOmitProcessor(property.Value, propertyValuesToOmit, shouldReplace);
+						}
+					}
+				}
+			}
+
+			private JToken JsonSort(JToken node)
+			{
+				if (!node.HasValues)
+				{
+					return node;
+				}
+
+				return new JArray(node.OrderBy(obj => (string)obj["CoauthLockId"]));
+			}
+		}
+		public class ArrayLengthPropertyValidator : JsonPropertyEqualityValidator<int>
+		{
+			public ArrayLengthPropertyValidator(string key, bool isRequired, int expectedValue, bool hasExpectedValue, string expectedStateKey)
+				: base(key, isRequired, expectedValue, hasExpectedValue, expectedStateKey)
+			{
+			}
+
+			public override bool Validate(JToken actualValue, Dictionary<string, string> savedState, out string errorMessage)
+			{
+				errorMessage = "";
+
+				if (actualValue == null)
+				{
+					if (IsRequired)
+					{
+						errorMessage = "Value is required but not provided.";
+						return false;
+					}
+					return true;
+				}
+
+				if (actualValue.Type != JTokenType.Array)
+				{
+					if (IsRequired)
+					{
+						errorMessage = string.Format("Value is of '{0}' type and is not an array type", actualValue.Type);
+						return false;
+					}
+					return true;
+				}
+
+				JArray responseObject = (JArray)actualValue;
+				int responseLength = responseObject.Count;
+
+				if (this.DefaultExpectedValue == responseLength)
+				{
+					return true;
+				}
+
+				errorMessage = string.Format("Expected array to be of length '{0}', Actual: '{1}'", this.DefaultExpectedValue, responseLength);
+				return false;
+			}
+
+			public override string FormatValue(int value)
+			{
+				return value.ToString(CultureInfo.InvariantCulture);
 			}
 		}
 	}
