@@ -4,17 +4,18 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Microsoft.Office.WopiValidator.Core.Requests
 {
 	class PutRelativeFileWopiRequest : WopiRequest
 	{
-		public PutRelativeFileWopiRequest(WopiRequestParam param) : base(param)
+		public PutRelativeFileWopiRequest(WopiRequestParam param, string guid) : base(param)
 		{
 			this.ResourceId = param.ResourceId;
 			if (string.IsNullOrEmpty(param.RequestedName))
 				throw new ArgumentException("Requested name for a PutRelativeFile Wopi request cannot be null or empty");
-			this.RequestedName = param.RequestedName;
+			this.RequestedName = string.Format("{0}-{1}", param.RequestedName, guid);
 			this.RequestType = param.PutRelativeFileMode;
 			this.OverwriteRelative = param.OverwriteRelative;
 		}

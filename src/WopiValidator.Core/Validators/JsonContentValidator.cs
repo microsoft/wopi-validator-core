@@ -260,7 +260,7 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 				return isValid;
 			}
 
-			public T DefaultExpectedValue { get; private set; }
+			public T DefaultExpectedValue { get; protected set; }
 
 			public bool HasExpectedValue { get; private set; }
 
@@ -362,6 +362,18 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 				errorMessage = string.Format(CultureInfo.CurrentCulture, "Expected: '{0} (case-insensitive)', Actual: '{1}'", expectedValue, formattedActualValue);
 				return isValid;
 			}
+		}
+
+		public class JsonFileNamePropertyValidator : JsonStringPropertyValidator
+		{
+			public JsonFileNamePropertyValidator(string key, string expectedValue, string guid, bool ignoreCase = false)
+				: base(key, true, expectedValue, true, null, null, ignoreCase)
+				{
+					DefaultExpectedValue = string.Format("{0}-{1}{2}",
+						System.IO.Path.GetFileNameWithoutExtension(DefaultExpectedValue),
+						guid,
+						System.IO.Path.GetExtension(DefaultExpectedValue));
+				}
 		}
 
 		public class JsonStringRegexPropertyValidator : JsonPropertyEqualityValidator<string>

@@ -156,6 +156,7 @@ namespace Microsoft.Office.WopiValidator.Core
 				public const string ResponseBodyProperty = "ResponseBodyProperty";
 				public const string StringRegexProperty = "StringRegexProperty";
 				public const string StringProperty = "StringProperty";
+				public const string FileNameProperty = "FileNameProperty";
 			}
 		}
 

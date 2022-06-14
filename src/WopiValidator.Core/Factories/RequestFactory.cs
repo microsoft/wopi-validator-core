@@ -16,15 +16,15 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		/// <summary>
 		/// Parses requests information from XML into a collection of IWopiRequest
 		/// </summary>
-		public static IEnumerable<IRequest> GetRequests(XElement definition)
+		public static IEnumerable<IRequest> GetRequests(XElement definition, string fileNameGuid)
 		{
-			return definition.Elements().Select(GetRequest);
+			return definition.Elements().Select(x => GetRequest(x, fileNameGuid));
 		}
 
 		/// <summary>
 		/// Parses single request definition and instantiates proper IWopiRequest instance based on element name
 		/// </summary>
-		private static IRequest GetRequest(XElement definition)
+		private static IRequest GetRequest(XElement definition, string fileNameGuid)
 		{
 			string elementName = definition.Name.LocalName;
 			XElement validatorsDefinition = definition.Element("Validators");
@@ -32,7 +32,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			XElement mutatorsDefinition = definition.Element("Mutators");
 			XElement requestBodyDefinition = definition.Element("RequestBody");
 
-			IEnumerable<IValidator> validators = validatorsDefinition == null ? null : ValidatorFactory.GetValidators(validatorsDefinition);
+			IEnumerable<IValidator> validators = validatorsDefinition == null ? null : ValidatorFactory.GetValidators(validatorsDefinition, fileNameGuid);
 			IEnumerable<IStateEntry> stateSavers = stateDefinition == null ? null : StateFactory.GetStateExpressions(stateDefinition);
 			IEnumerable<IMutator> mutators = mutatorsDefinition == null ? null : MutatorFactory.GetMutators(mutatorsDefinition);
 
@@ -173,7 +173,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 				case Constants.Requests.PutFile:
 					return new PutFileWopiRequest(wopiRequestParams);
 				case Constants.Requests.PutRelativeFile:
-					return new PutRelativeFileWopiRequest(wopiRequestParams);
+					return new PutRelativeFileWopiRequest(wopiRequestParams, fileNameGuid);
 				case Constants.Requests.CheckEcosystem:
 					return new CheckEcosystemRequest(wopiRequestParams);
 				case Constants.Requests.GetNewAccessToken:
@@ -191,7 +191,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 				case Constants.Requests.CreateChildContainer:
 					return new CreateChildContainerRequest(wopiRequestParams);
 				case Constants.Requests.CreateChildFile:
-					return new CreateChildFileRequest(wopiRequestParams);
+					return new CreateChildFileRequest(wopiRequestParams, fileNameGuid);
 				case Constants.Requests.DeleteFile:
 					return new DeleteFileRequest(wopiRequestParams);
 				case Constants.Requests.DeleteContainer:
@@ -199,7 +199,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 				case Constants.Requests.RenameContainer:
 					return new RenameContainerRequest(wopiRequestParams);
 				case Constants.Requests.RenameFile:
-					return new RenameFileRequest(wopiRequestParams);
+					return new RenameFileRequest(wopiRequestParams, fileNameGuid);
 				case Constants.Requests.GetFromFileUrl:
 					return new GetFromFileUrlRequest(wopiRequestParams);
 				case Constants.Requests.GetShareUrl:

@@ -57,14 +57,15 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			string uiScreenshot = (string)definition.Attribute("UiScreenshot");
 			string documentationLink = (string)definition.Attribute("DocumentationLink");
 			string failMessage = (string)definition.Attribute("FailMessage");
+			string fileNameGuid = Guid.NewGuid().ToString();
 
 			XElement requestsDefinition = definition.Element("Requests");
-			IEnumerable<IRequest> requests = RequestFactory.GetRequests(requestsDefinition);
+			IEnumerable<IRequest> requests = RequestFactory.GetRequests(requestsDefinition, fileNameGuid);
 
 			IEnumerable<IRequest> cleanupRequests = null;
 			XElement cleanupRequestsDefinition = definition.Element("CleanupRequests");
 			if (cleanupRequestsDefinition != null)
-				cleanupRequests = RequestFactory.GetRequests(cleanupRequestsDefinition);
+				cleanupRequests = RequestFactory.GetRequests(cleanupRequestsDefinition, fileNameGuid);
 
 			ITestCase testCase = new TestCase(requests,
 				cleanupRequests,

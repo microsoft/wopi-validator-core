@@ -54,6 +54,13 @@
                         <xs:attribute name="IgnoreCase" type="xs:boolean" use="optional" default="false" />
                       </xs:complexType>
                     </xs:element>
+                    <xs:element name="FileNameProperty">
+                      <xs:complexType>
+                        <xs:attribute name="Name" type="xs:string" use="required" />
+                        <xs:attribute name="ExpectedValue" type="xs:string" use="required" />
+                        <xs:attribute name="IgnoreCase" type="xs:boolean" use="optional" default="false" />
+                      </xs:complexType>
+                    </xs:element>
                     <xs:element name="StringRegexProperty">
                       <xs:complexType>
                         <xs:attribute name="Name" type="xs:string" use="required" />

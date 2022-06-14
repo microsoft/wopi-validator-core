@@ -12,17 +12,17 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 {
 	static class ValidatorFactory
 	{
-		public static IEnumerable<IValidator> GetValidators(XElement definition)
+		public static IEnumerable<IValidator> GetValidators(XElement definition, string fileNameGuid)
 		{
 			var validators = new List<IValidator> { new ExceptionValidator() };
-			validators.AddRange(definition.Elements().Select(GetValidator));
+			validators.AddRange(definition.Elements().Select(x => GetValidator(x, fileNameGuid)));
 			return validators;
 		}
 
 		/// <summary>
 		/// Parses single Validator information and instantiates proper IValidator instance based on element's name.
 		/// </summary>
-		private static IValidator GetValidator(XElement definition)
+		private static IValidator GetValidator(XElement definition, string fileNameGuid)
 		{
 			string elementName = definition.Name.LocalName;
 
@@ -37,7 +37,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 				case Constants.Validators.ResponseHeader:
 					return GetResponseHeaderValidator(definition);
 				case Constants.Validators.JsonResponseContent:
-					return GetJsonResponseContentValidator(definition);
+					return GetJsonResponseContentValidator(definition, fileNameGuid);
 				case Constants.Validators.JsonSchema:
 					return GetJsonSchemaValidator(definition);
 				case Constants.Validators.Or:
@@ -56,7 +56,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		/// </summary>
 		private static IValidator GetAndValidator(XElement definition)
 		{
-			IEnumerable<IValidator> validators = definition.Elements().Select(x => GetValidator(x));
+			IEnumerable<IValidator> validators = definition.Elements().Select(x => GetValidator(x, null));
 			return new AndValidator(validators.ToArray());
 		}
 
@@ -134,7 +134,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		/// </summary>
 		private static IValidator GetOrValidator(XElement definition)
 		{
-			IEnumerable<IValidator> validators = definition.Elements().Select(x => GetValidator(x));
+			IEnumerable<IValidator> validators = definition.Elements().Select(x => GetValidator(x, null));
 			return new OrValidator(validators.ToArray());
 		}
 
@@ -150,10 +150,10 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		/// <summary>
 		/// Parses JsonResponseContent validator information.
 		/// </summary>
-		private static IValidator GetJsonResponseContentValidator(XElement definition)
+		private static IValidator GetJsonResponseContentValidator(XElement definition, string fileNameGuid)
 		{
 			bool shouldExist = ((bool?)definition.Attribute("ShouldExist")) ?? true;
-			IEnumerable<JsonContentValidator.IJsonPropertyValidator> propertyValidators = definition.Elements().Select(GetJsonPropertyValidator);
+			IEnumerable<JsonContentValidator.IJsonPropertyValidator> propertyValidators = definition.Elements().Select(x => GetJsonPropertyValidator(x, fileNameGuid));
 			return new JsonContentValidator(propertyValidators, shouldExist);
 		}
 
@@ -169,7 +169,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 		/// <summary>
 		/// Parses Json property information for JsonResponseContent validator information.
 		/// </summary>
-		private static JsonContentValidator.IJsonPropertyValidator GetJsonPropertyValidator(XElement definition)
+		private static JsonContentValidator.IJsonPropertyValidator GetJsonPropertyValidator(XElement definition, string fileNameGuid)
 		{
 			string elementName = definition.Name.LocalName;
 			string key = (string)definition.Attribute("Name");
@@ -206,6 +206,12 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 						hasExpectedValue ? (long)definition.Attribute("ExpectedValue") : 0,
 						hasExpectedValue,
 						expectedStateKey);
+
+				case Constants.Validators.Properties.FileNameProperty:
+					return new JsonContentValidator.JsonFileNamePropertyValidator(key,
+						expectedValue,
+						fileNameGuid,
+						ignoreCase);
 
 				case Constants.Validators.Properties.StringProperty:
 					return new JsonContentValidator.JsonStringPropertyValidator(key,

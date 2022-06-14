@@ -8,9 +8,12 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 {
 	class CreateChildFileRequest : WopiRequest
 	{
-		public CreateChildFileRequest(WopiRequestParam param) : base(param)
+		public CreateChildFileRequest(WopiRequestParam param, string guid) : base(param)
 		{
-			this.RequestedName = param.RequestedName;
+			this.RequestedName = string.Format("{0}-{1}{2}",
+				System.IO.Path.GetFileNameWithoutExtension(param.RequestedName),
+				guid,
+				System.IO.Path.GetExtension(param.RequestedName));
 			this.RequestType = param.PutRelativeFileMode;
 			this.OverwriteRelative = param.OverwriteRelative;
 		}

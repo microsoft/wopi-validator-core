@@ -8,11 +8,11 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 {
 	class RenameFileRequest : WopiRequest
 	{
-		public RenameFileRequest(WopiRequestParam param) : base(param)
+		public RenameFileRequest(WopiRequestParam param, string guid) : base(param)
 		{
 			this.LockString = param.LockString;
 			this.CoauthLockId = param.CoauthLockId;
-			this.RequestedName = param.RequestedName;
+			this.RequestedName = string.Format("{0}-{1}", param.RequestedName, guid);
 		}
 
 		public string LockString { get; private set; }
