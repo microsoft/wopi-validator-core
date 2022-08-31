@@ -4,6 +4,14 @@
     <AssemblyName>Microsoft.Office.WopiValidator.Core</AssemblyName>
     <RootNamespace>Microsoft.Office.WopiValidator.Core</RootNamespace>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <Company>Sikri AS</Company>
+    <Version>1.0.0</Version>
+    <Description>Elements Microsoft Office WopiValidator</Description>
+    <Copyright>Copyright © Sikri AS © 2018-2022</Copyright>
+    <PackageId>Elements.Microsoft.Office.WopiValidator.Core</PackageId>
+  </PropertyGroup>
   
   <PropertyGroup>
     <IncludeSymbols>True</IncludeSymbols>
