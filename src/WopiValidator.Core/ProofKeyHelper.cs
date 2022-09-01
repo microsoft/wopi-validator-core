@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -86,7 +87,7 @@ namespace Microsoft.Office.WopiValidator.Core
 
 			// Get the final values we'll operate on
 			string accessToken = proofData.AccessToken;
-			string hostUrl = proofData.Url.ToUpperInvariant();
+			string hostUrl = GetUriStringWithEscapedAccessToken(proofData.Url).ToUpperInvariant();
 			long timeStamp = proofData.Timestamp;
 
 			// Encode values from headers into byte[]
@@ -155,6 +156,42 @@ namespace Microsoft.Office.WopiValidator.Core
 		private static byte[] EncodeNumber(long value)
 		{
 			return BitConverter.GetBytes(System.Net.IPAddress.HostToNetworkOrder(value));
+		}
+
+		private static string GetUriStringWithEscapedAccessToken(string requestUriString)
+		{
+			//For the purposes of calculating proof keys, the access_token in the URL is aggressively escaped.
+			//All non-alphanumeric characters (that is, those outside the range [a-zA-Z0-9]) are URL-encoded
+			//(see https://github.com/microsoft/Office-Online-Test-Tools-and-Documentation/issues/129).
+			//Hence, take the request's left part from the current URL and escape all non-alphanumeric characters in the access_token query parameter
+			//except %: in this case we assume that a character is already escaped.
+
+			var requestUri = new Uri(requestUriString);
+			var query = requestUri.Query;
+			if (string.IsNullOrEmpty(query) || !query.Contains("access_token"))
+			{
+				return requestUriString;
+			}
+
+			var keyValuePairs = query.Substring(1).Split('&').Select(keyValuePair =>
+			{
+				if (!keyValuePair.Contains("access_token"))
+				{
+					return keyValuePair;
+				}
+
+				var pair = keyValuePair.Split('=');
+				var (key, value) = (pair[0], pair[1]);
+
+				var escapedAccessToken = UrlHelper.UrlKeyValueEncode(value);
+
+				return $"{key}={escapedAccessToken}";
+			});
+
+			var originalUrlString = requestUri.GetLeftPart(UriPartial.Path);
+			originalUrlString += $"?{string.Join("&", keyValuePairs)}";
+
+			return originalUrlString;
 		}
 	}
 
