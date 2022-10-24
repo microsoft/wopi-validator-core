@@ -276,4 +276,25 @@ namespace Microsoft.Office.WopiValidator.Core.IncrementalFileTransfer
 				Length);
 		}
 	}
+
+
+	[DataContract]
+	internal class WopiCoauthLockMetadata
+	{
+		/// <summary>
+		/// A string set by client when requesting the lock
+		/// </summary>
+		[DataMember]
+		public string CoauthLockMetadata { get; set; }
+
+		public WopiCoauthLockMetadata()
+		{
+			CoauthLockMetadata = string.Empty;
+		}
+
+		public override string ToString()
+		{
+			return string.Format("CoauthLockMetadata: {0}", CoauthLockMetadata);
+		}
+	}
 }

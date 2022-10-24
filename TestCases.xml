@@ -858,7 +858,7 @@
           <Unlock Lock="LockString" />
           <GetLock>
             <Validators>
-              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="" IsRequired="true" ShouldMatch="true" />
+              <ResponseHeaderValidator Header="X-WOPI-Lock" ExpectedValue="" ShouldMatch="true" />
             </Validators>
           </GetLock>
         </Requests>
@@ -5512,6 +5512,290 @@
           </Unlock>
         </CleanupRequests>
       </TestCase>
+      <TestCase Name="CoauthLock.CoauthLockMetadataSentAsBody" Category="WopiCoauth">
+        <Description>
+          Tests that a coauth lock's metadata is handled properly when coauthlockmetadata is sent as part of body.
+        </Description>
+        <Requests>
+          <GetCoauthLock CoauthLockId="Client1" CoauthLockExpirationTimeout="120" CoauthLockMetadataAsBody="CoauthLockMetadataAsBody" CoauthLockType="Coauth">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+            </Validators>
+          </GetCoauthLock>
+          <GetCoauthTable>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+              <JsonSchemaValidator Schema="CoauthTableSchema" />
+              <JsonResponseContentValidator>
+                <ResponseBodyProperty Name="CoauthTable" ExpectedValue="[{CoauthLockId:'Client1', CoauthLockMetadata:'CoauthLockMetadataAsBody', CoauthLockType:'Coauth', UserFriendlyName:'*', CoauthLockTime:'*'}]" IsRequired="true" />
+                <ArrayLengthProperty Name="CoauthTable" ExpectedValue="1" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </GetCoauthTable>
+        </Requests>
+        <CleanupRequests>
+          <UnlockCoauthLock CoauthLockId="Client1">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+            </Validators>
+          </UnlockCoauthLock>
+        </CleanupRequests>
+      </TestCase>
+      <TestCase Name="CoauthLock.CoauthLockMetadataSentAsBodyForRefreshCoauthLock" Category="WopiCoauth">
+        <Description>
+          Tests that a coauth lock's metadata is handled properly when coauthlockmetadata is sent as part of body.
+        </Description>
+        <Requests>
+          <GetCoauthLock CoauthLockId="Client1" CoauthLockExpirationTimeout="120" CoauthLockMetadataAsBody="CoauthLockMetadataAsBody" CoauthLockType="Coauth">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+            </Validators>
+          </GetCoauthLock>
+          <RefreshCoauthLock CoauthLockId="Client1" CoauthLockExpirationTimeout="120" CoauthLockMetadataAsBody="CoauthLockMetadataAsBody2">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+            </Validators>
+          </RefreshCoauthLock>
+          <GetCoauthTable>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+              <JsonSchemaValidator Schema="CoauthTableSchema" />
+              <JsonResponseContentValidator>
+                <ResponseBodyProperty Name="CoauthTable" ExpectedValue="[{CoauthLockId:'Client1', CoauthLockMetadata:'CoauthLockMetadataAsBody2', CoauthLockType:'Coauth', UserFriendlyName:'*', CoauthLockTime:'*'}]" IsRequired="true" />
+                <ArrayLengthProperty Name="CoauthTable" ExpectedValue="1" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </GetCoauthTable>
+        </Requests>
+        <CleanupRequests>
+          <UnlockCoauthLock CoauthLockId="Client1">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+            </Validators>
+          </UnlockCoauthLock>
+        </CleanupRequests>
+      </TestCase>
+      <TestCase Name="CoauthLock.CoauthLockMetadataSentAsBodyAndHeader" Category="WopiCoauth">
+        <Description>
+          Tests that a coauth lock's metadata is handled properly when coauthlockmetadata is sent as part of body and header. Body value is given preference over header
+        </Description>
+        <Requests>
+          <GetCoauthLock CoauthLockId="Client1" CoauthLockExpirationTimeout="120" CoauthLockMetadata="CoauthLockMetadata" CoauthLockMetadataAsBody="CoauthLockMetadataAsBody" CoauthLockType="Coauth">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+            </Validators>
+          </GetCoauthLock>
+          <GetCoauthTable>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+              <JsonSchemaValidator Schema="CoauthTableSchema" />
+              <JsonResponseContentValidator>
+                <ResponseBodyProperty Name="CoauthTable" ExpectedValue="[{CoauthLockId:'Client1', CoauthLockMetadata:'CoauthLockMetadataAsBody', CoauthLockType:'Coauth', UserFriendlyName:'*', CoauthLockTime:'*'}]" IsRequired="true" />
+                <ArrayLengthProperty Name="CoauthTable" ExpectedValue="1" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </GetCoauthTable>
+        </Requests>
+        <CleanupRequests>
+          <UnlockCoauthLock CoauthLockId="Client1">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+            </Validators>
+          </UnlockCoauthLock>
+        </CleanupRequests>
+      </TestCase>
+      <TestCase Name="CoauthLock.CoauthLockMetadataSentAsBodyAndHeaderForRefreshCoauthLock" Category="WopiCoauth">
+        <Description>
+          Tests that a coauth lock's metadata is handled properly when coauthlockmetadata is sent as part of body and header. Body value is given preference over header.
+        </Description>
+        <Requests>
+          <GetCoauthLock CoauthLockId="Client1" CoauthLockExpirationTimeout="120" CoauthLockMetadata="CoauthLockMetadata" CoauthLockMetadataAsBody="CoauthLockMetadataAsBody" CoauthLockType="Coauth">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+            </Validators>
+          </GetCoauthLock>
+          <RefreshCoauthLock CoauthLockId="Client1" CoauthLockExpirationTimeout="120" CoauthLockMetadata="CoauthLockMetadata2" CoauthLockMetadataAsBody="CoauthLockMetadataAsBody2">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+            </Validators>
+          </RefreshCoauthLock>
+          <GetCoauthTable>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+              <JsonSchemaValidator Schema="CoauthTableSchema" />
+              <JsonResponseContentValidator>
+                <ResponseBodyProperty Name="CoauthTable" ExpectedValue="[{CoauthLockId:'Client1', CoauthLockMetadata:'CoauthLockMetadataAsBody2', CoauthLockType:'Coauth', UserFriendlyName:'*', CoauthLockTime:'*'}]" IsRequired="true" />
+                <ArrayLengthProperty Name="CoauthTable" ExpectedValue="1" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </GetCoauthTable>
+        </Requests>
+        <CleanupRequests>
+          <UnlockCoauthLock CoauthLockId="Client1">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+            </Validators>
+          </UnlockCoauthLock>
+        </CleanupRequests>
+      </TestCase>
+      <TestCase Name="CoauthLock.CoauthLockMetadataSentAsBodyAndHeaderForMultipleLocks" Category="WopiCoauth">
+        <Description>
+          Tests that a coauth lock's metadata is handled properly when coauthlockmetadata is sent as part of body and header. Body value is given preference over header.
+        </Description>
+        <Requests>
+          <GetCoauthLock CoauthLockId="Client1" CoauthLockExpirationTimeout="120" CoauthLockMetadata="CoauthLockMetadata" CoauthLockMetadataAsBody="CoauthLockMetadataAsBody" CoauthLockType="Coauth">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+            </Validators>
+          </GetCoauthLock>
+          <RefreshCoauthLock CoauthLockId="Client1" CoauthLockExpirationTimeout="120" CoauthLockMetadata="CoauthLockMetadata2" CoauthLockMetadataAsBody="CoauthLockMetadataAsBodyClient1">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+            </Validators>
+          </RefreshCoauthLock>
+          <GetCoauthLock CoauthLockId="Client2" CoauthLockExpirationTimeout="120" CoauthLockMetadataAsBody="CoauthLockMetadataAsBodyClient2" CoauthLockType="Coauth">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+            </Validators>
+          </GetCoauthLock>
+          <GetCoauthTable>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+              <JsonSchemaValidator Schema="CoauthTableSchema" />
+              <JsonResponseContentValidator>
+                <ResponseBodyProperty Name="CoauthTable" ExpectedValue="[{CoauthLockId:'Client1', CoauthLockMetadata:'CoauthLockMetadataAsBodyClient1', CoauthLockType:'Coauth', UserFriendlyName:'*', CoauthLockTime:'*'},{CoauthLockId:'Client2', CoauthLockMetadata:'CoauthLockMetadataAsBodyClient2', CoauthLockType:'Coauth', UserFriendlyName:'*', CoauthLockTime:'*'}]" IsRequired="true" />
+                <ArrayLengthProperty Name="CoauthTable" ExpectedValue="2" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </GetCoauthTable>
+        </Requests>
+        <CleanupRequests>
+          <UnlockCoauthLock CoauthLockId="Client1">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+            </Validators>
+          </UnlockCoauthLock>
+          <UnlockCoauthLock CoauthLockId="Client2">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+            </Validators>
+          </UnlockCoauthLock>
+        </CleanupRequests>
+      </TestCase>
+      <TestCase Name="CoauthLock.CoauthLockMetadataSentAsBodyAndHeaderSetToEmpty" Category="WopiCoauth">
+        <Description>
+          Tests that a coauth lock's metadata is handled properly when coauthlockmetadata is sent as part of body and header. Body value is given preference over header and set to empty.
+        </Description>
+        <Requests>
+          <GetCoauthLock CoauthLockId="Client1" CoauthLockExpirationTimeout="120" CoauthLockMetadata="CoauthLockMetadata" CoauthLockMetadataAsBody="" CoauthLockType="Coauth">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+            </Validators>
+          </GetCoauthLock>
+          <GetCoauthTable>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+              <JsonSchemaValidator Schema="CoauthTableSchema" />
+              <JsonResponseContentValidator>
+                <ResponseBodyProperty Name="CoauthTable" ExpectedValue="[{CoauthLockId:'Client1', CoauthLockMetadata:'', CoauthLockType:'Coauth', UserFriendlyName:'*', CoauthLockTime:'*'}]" IsRequired="true" />
+                <ArrayLengthProperty Name="CoauthTable" ExpectedValue="1" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </GetCoauthTable>
+        </Requests>
+        <CleanupRequests>
+          <UnlockCoauthLock CoauthLockId="Client1">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+            </Validators>
+          </UnlockCoauthLock>
+        </CleanupRequests>
+      </TestCase>
+      <TestCase Name="CoauthLock.CoauthLockMetadataSentAsBodySetToEmpty" Category="WopiCoauth">
+        <Description>
+          Tests that a coauth lock's metadata is handled properly when coauthlockmetadata is sent as part of body. Body value is set to empty.
+        </Description>
+        <Requests>
+          <GetCoauthLock CoauthLockId="Client1" CoauthLockExpirationTimeout="120" CoauthLockMetadataAsBody="" CoauthLockType="Coauth">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+            </Validators>
+          </GetCoauthLock>
+          <GetCoauthTable>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+              <JsonSchemaValidator Schema="CoauthTableSchema" />
+              <JsonResponseContentValidator>
+                <ResponseBodyProperty Name="CoauthTable" ExpectedValue="[{CoauthLockId:'Client1', CoauthLockMetadata:'', CoauthLockType:'Coauth', UserFriendlyName:'*', CoauthLockTime:'*'}]" IsRequired="true" />
+                <ArrayLengthProperty Name="CoauthTable" ExpectedValue="1" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </GetCoauthTable>
+        </Requests>
+        <CleanupRequests>
+          <UnlockCoauthLock CoauthLockId="Client1">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+            </Validators>
+          </UnlockCoauthLock>
+        </CleanupRequests>
+      </TestCase>
+      <TestCase Name="CoauthLock.CoauthLockMetadataSentAsBodySetToEmptyRefreshCoauthLock" Category="WopiCoauth">
+        <Description>
+          Tests that a coauth lock's metadata is handled properly when coauthlockmetadata is sent as part of body. Body value is set to empty.
+          If present and empty or null, the CoauthLockMetadata value remains unchanged. If present and is set to a non-empty string, CoauthLockMetadata is overwritten with that value.
+        </Description>
+        <Requests>
+          <GetCoauthLock CoauthLockId="Client1" CoauthLockExpirationTimeout="120" CoauthLockMetadataAsBody="CoauthLockMetadataAsBody" CoauthLockType="Coauth">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+            </Validators>
+          </GetCoauthLock>
+          <RefreshCoauthLock CoauthLockId="Client1" CoauthLockExpirationTimeout="120" CoauthLockMetadataAsBody="">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+            </Validators>
+          </RefreshCoauthLock>
+          <GetCoauthTable>
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+              <ResponseHeaderValidator Header="X-WOPI-CoauthTableVersion" IsRequired="true" />
+              <JsonSchemaValidator Schema="CoauthTableSchema" />
+              <JsonResponseContentValidator>
+                <ResponseBodyProperty Name="CoauthTable" ExpectedValue="[{CoauthLockId:'Client1', CoauthLockMetadata:'CoauthLockMetadataAsBody', CoauthLockType:'Coauth', UserFriendlyName:'*', CoauthLockTime:'*'}]" IsRequired="true" />
+                <ArrayLengthProperty Name="CoauthTable" ExpectedValue="1" IsRequired="true" />
+              </JsonResponseContentValidator>
+            </Validators>
+          </GetCoauthTable>
+        </Requests>
+        <CleanupRequests>
+          <UnlockCoauthLock CoauthLockId="Client1">
+            <Validators>
+              <ResponseCodeValidator ExpectedCode="200" />
+            </Validators>
+          </UnlockCoauthLock>
+        </CleanupRequests>
+      </TestCase>
     </TestCases>
   </TestGroup>
 
@@ -5857,6 +6141,7 @@
               <ContentStream ChunkingScheme="FullFile" StreamId="MainContent" NewContent="SampleTextVersion-1" LastKnownHostContent="" />
             </ContentStreams>
             <Validators>
+              <ResponseHeaderValidator Header="X-WOPI-SequenceNumber" IsRequired="true" />
               <ResponseCodeValidator ExpectedCode="412" />
             </Validators>
           </PutChunkedFile>
