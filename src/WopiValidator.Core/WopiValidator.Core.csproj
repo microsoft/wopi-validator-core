@@ -23,14 +23,12 @@
 
   <ItemGroup>
     <None Remove="JsonSchemas\CheckFileInfoSchema.json" />
-    <None Remove="JsonSchemas\CoauthLockMetadataSchema.json" />
     <None Remove="JsonSchemas\CoauthTableSchema.json" />
     <None Remove="JsonSchemas\GetChunkedFileResponseSchema.json" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="JsonSchemas\CheckFileInfoSchema.json" />
-    <EmbeddedResource Include="JsonSchemas\CoauthLockMetadataSchema.json" />
     <EmbeddedResource Include="JsonSchemas\CoauthTableSchema.json" />
     <EmbeddedResource Include="JsonSchemas\GetChunkedFileResponseSchema.json" />
     <!-- Excel Zip Chunking Resources -->
