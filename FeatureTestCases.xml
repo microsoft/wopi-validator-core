@@ -30,7 +30,7 @@
         Name="Feature.FileSharing"
         Document="WordBlankDocument"
         UiScreenshot="Feature.FileSharing.png"
-        DocumentationLink="https://wopi.readthedocs.org/en/latest/wopi/files/CheckFileInfo.html?highlight=sharing#term-filesharingurl"
+        DocumentationLink="https://docs.microsoft.com/en-us/microsoft-365/cloud-storage-partner-program/rest/files/checkfileinfo/checkfileinfo-response#filesharingurl"
         FailMessage="File sharing not available."
         Category="WopiCore">
         <Description>Checks the support for the file sharing feature</Description>
@@ -54,7 +54,7 @@
         Name="Feature.Download"
         Document="WordBlankDocument"
         UiScreenshot="Feature.Download.png"
-        DocumentationLink="https://wopi.readthedocs.org/en/latest/wopi/files/CheckFileInfo.html?highlight=downloadurl#term-downloadurl"
+        DocumentationLink="https://docs.microsoft.com/en-us/microsoft-365/cloud-storage-partner-program/rest/files/checkfileinfo/checkfileinfo-response#downloadurl"
         FailMessage="Download is not available."
         Category="WopiCore">
         <Description>Checks the support for the download functionality (Download a Copy, Download as PDF and Download as ODT features).</Description>
@@ -73,7 +73,7 @@
         Name="Feature.Rename"
         Document="WordBlankDocument"
         UiScreenshot="Feature.Rename.png"
-        DocumentationLink="https://wopi.readthedocs.org/en/latest/wopi/files/RenameFile.html#renamefile"
+        DocumentationLink="https://docs.microsoft.com/en-us/microsoft-365/cloud-storage-partner-program/rest/files/renamefile"
         FailMessage="Rename not available."
         Category="WopiCore">
         <Description>Checks the support for the 'Rename' functionality.</Description>
@@ -92,7 +92,7 @@
       <TestCase
         Name="Feature.PostMessage"
         Document="WordBlankDocument"
-        DocumentationLink="https://wopi.readthedocs.org/en/latest/scenarios/postmessage.html#postmessage"
+        DocumentationLink="https://docs.microsoft.com/en-us/microsoft-365/cloud-storage-partner-program/online/scenarios/postmessage"
         FailMessage="PostMessage not available."
         Category="WopiCore">
         <Description>
@@ -114,7 +114,7 @@
         Name="Feature.ExcelSaveAs"
         Document="ExcelBlankWorkbook"
         UiScreenshot="Feature.ExcelSaveAs.png"
-        DocumentationLink="https://wopi.readthedocs.org/en/latest/wopi/files/PutRelativeFile.html?highlight=excel"
+        DocumentationLink="https://docs.microsoft.com/en-us/microsoft-365/cloud-storage-partner-program/rest/files/putrelativefile"
         FailMessage="Save As in Excel not available."
         Category="WopiCore">
         <Description>
@@ -151,7 +151,7 @@
         Name="Feature.AllowExternalSpellCheckService"
         Document="WordBlankDocument"
         UiScreenshot="Feature.AllowOneSpellerProofing.png"
-        DocumentationLink="https://wopi.readthedocs.org/en/latest/wopi/files/AllowExternalSpellCheckService.html"
+        DocumentationLink="https://docs.microsoft.com/en-us/microsoft-365/cloud-storage-partner-program/rest/files/checkfileinfo/checkfileinfo-other#allowadditionalmicrosoftservices"
         FailMessage="AllowExternalSpellCheckService is not available."
         Category="WopiCore">
         <Description>Checks the support to AllowExternalSpellCheckService functionality. Currently this service is the Bing proofing service.</Description>
@@ -180,7 +180,7 @@
         Name="Feature.BusinessFlow"
         Document="WordBlankDocument"
         UiScreenshot="Feature.BusinessFlow.png"
-        DocumentationLink="https://wopi.readthedocs.org/en/latest/scenarios/business.html?highlight=business"
+        DocumentationLink="https://docs.microsoft.com/en-us/microsoft-365/cloud-storage-partner-program/online/scenarios/business"
         FailMessage="Document editing for business users not available."
         Category="WopiCore">
         <Description>Checks the support for Document editing for business users.</Description>
@@ -199,7 +199,7 @@
       <TestCase
         Name="Feature.SupportsUserInfo"
         Document="WordBlankDocument"
-        DocumentationLink="https://wopi.readthedocs.org/en/latest/scenarios/business.html?highlight=business#tracking-users-subscription-status"
+        DocumentationLink="https://docs.microsoft.com/en-us/microsoft-365/cloud-storage-partner-program/online/scenarios/business#tracking-users-subscription-status"
         FailMessage="PutUserInfo not available"
         Category="WopiCore">
         <Description>Checks the support PutUserInfo WOPI operations in business documents.</Description>
