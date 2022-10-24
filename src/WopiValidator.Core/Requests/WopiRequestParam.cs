@@ -31,7 +31,6 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		public CoauthLockType? CoauthLockType { get; set; }
 		public string CoauthLockMetadata { get; set; }
 		public CoauthLockMetadataEntity CoauthLockMetadataAsBody { get; set; }
-		//public string CoauthLockMetadataAsBody { get; set; }
 		public string Lock { get; set; }
 		public string CoauthLockId { get; set; }
 		public string Editors { get; set; }
