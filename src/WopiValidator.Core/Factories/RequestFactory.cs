@@ -86,6 +86,17 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 				UploadSessionTokenToCommit = uploadSessionTokenToCommit
 			};
 
+			string coauthLockMetadataAsBody = (string)definition.Attribute("CoauthLockMetadataAsBody");
+			if (coauthLockMetadataAsBody != null)
+			{
+				wopiRequestParams.CoauthLockMetadataAsBody = new CoauthLockMetadataEntity();
+				wopiRequestParams.CoauthLockMetadataAsBody.CoauthLockMetadata = coauthLockMetadataAsBody;
+			}
+			else
+			{
+				wopiRequestParams.CoauthLockMetadataAsBody = null;
+			}
+
 			if (requestBodyDefinition != null && !String.IsNullOrEmpty(requestBodyDefinition.Value))
 			{
 				wopiRequestParams.RequestBody = requestBodyDefinition.Value;

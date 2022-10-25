@@ -374,6 +374,7 @@
     <xs:attribute name="CoauthLockMetadata" type="xs:string" use="optional"/>
     <xs:attribute name="CoauthLockId" type="xs:string" use="required"/>
     <xs:attribute name="CoauthLockExpirationTimeout" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="CoauthLockMetadataAsBody" type="xs:string" />
   </xs:complexType>
 
   <xs:complexType name="GetCoauthTable">
@@ -395,6 +396,7 @@
     <xs:attribute name="CoauthLockMetadata" type="xs:string" use="optional"/>
     <xs:attribute name="CoauthLockId" type="xs:string" use="required"/>
     <xs:attribute name="CoauthLockExpirationTimeout" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="CoauthLockMetadataAsBody" type="xs:string" />
   </xs:complexType>
 
   <xs:complexType name="UnlockCoauthLock">

@@ -114,7 +114,7 @@ namespace Microsoft.Office.WopiValidator.Core.Factories
 			string comparator = (string)definition.Attribute("Comparator");
 			string expectedStateKey = (string)definition.Attribute("ExpectedStateKey");
 			string expectedValue = (string)definition.Attribute("ExpectedValue");
-			bool isRequired = ((bool?)definition.Attribute("IsRequired")) ?? true;
+			bool isRequired = ((bool?)definition.Attribute("IsRequired")) ?? false;
 			bool shouldMatch = ((bool?)definition.Attribute("ShouldMatch")) ?? true;
 
 			return new ResponseHeaderValidator(header, expectedValue, expectedStateKey, comparator, isRequired, shouldMatch);
