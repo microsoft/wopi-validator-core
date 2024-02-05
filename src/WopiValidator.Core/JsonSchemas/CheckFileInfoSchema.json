@@ -256,6 +256,9 @@
     "Version": {
       "type": "string"
     },
+    "WebEditingDisabled": {
+      "type": "boolean"
+    },
     "WorkflowPostMessage": {
       "type": "boolean"
     },
