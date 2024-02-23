@@ -104,7 +104,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 				"\"UserFriendlyName\": \"dummyUserFriendlyName\"," +
 				"\"UserId\": \"dummyUserId\"," +
 				"\"Version\": \"dummyVersion\"," +
-				"\"WebEditingDisabled\": \"false\"}";
+				"\"WebEditingDisabled\": false}";
 
 			IResponseData response = new ResponseDataMock
 			{
@@ -113,7 +113,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 			};
 
 			ValidationResult result = new JsonSchemaValidator("CheckFileInfoSchema").Validate(response, null, null);
-			Assert.IsTrue(result.HasFailures);
+			Assert.IsFalse(result.HasFailures);
 		}
 	}
 }
