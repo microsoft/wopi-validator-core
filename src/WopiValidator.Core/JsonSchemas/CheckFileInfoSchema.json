@@ -1,4 +1,4 @@
-﻿{
+{
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Full WOPI CheckFileInfo JSON Schema",
   "description": "A WOPI CheckFileInfo JSON response",
@@ -6,15 +6,23 @@
   "additionalProperties": false,
   "required": [
     "BaseFileName",
+    "OfficeCollaborationServiceEndpointUrl",
+    "OpenInClientCommandUrl",
+    "OpenInClientPostMessage",
     "OwnerId",
     "Size",
-    "UserFriendlyName",
-    "UserId",
+    "UserPrincipalName",
     "Version"
   ],
   "properties": {
+    "AADUserObjectId": {
+      "type": "string"
+    },
     "AccessTokenExpiry": {
       "type": "number"
+    },
+    "AllowAddActivitiesUserBatching": {
+      "type": "boolean"
     },
     "AllowAdditionalMicrosoftServices": {
       "type": "boolean"
@@ -22,11 +30,18 @@
     "AllowEarlyFeatures": {
       "type": "boolean"
     },
+    "AllowErrorReportPrompt": {
+      "type": "boolean"
+    },
     "AllowExternalMarketplace": {
       "type": "boolean"
     },
-    "AppStateHistoryPostMessage": {
-      "type": "boolean"
+    "AppCatalogUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "AppliedPolicyId": {
+      "type": "string"
     },
     "BaseFileName": {
       "type": "string"
@@ -41,12 +56,23 @@
     "BreadcrumbDocName": {
       "type": "string"
     },
+    "BreadcrumbDocUrl": {
+      "format": "uri",
+      "type": "string"
+    },
     "BreadcrumbFolderName": {
       "type": "string"
     },
     "BreadcrumbFolderUrl": {
       "format": "uri",
       "type": "string"
+    },
+    "ClientUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "CloseButtonClosesWindow": {
+      "type": "boolean"
     },
     "ClosePostMessage": {
       "type": "boolean"
@@ -55,12 +81,12 @@
       "format": "uri",
       "type": "string"
     },
-    "ComplianceDomainPrefix": {
+    "DirectInvokeDAVUrl": {
+      "format": "uri",
       "type": "string"
     },
-    "CopyPasteRestrictions": {
-      "type": "string",
-      "enum": [ "BlockAll", "CurrentDocumentOnly" ]
+    "DisableBrowserCachingOfUserContent": {
+      "type": "boolean"
     },
     "DisablePrint": {
       "type": "boolean"
@@ -69,7 +95,15 @@
       "type": "boolean"
     },
     "DownloadUrl": {
+      "format": "uri",
       "type": "string"
+    },
+    "EditAndReplyUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "EditingCannotSave": {
+      "type": "boolean"
     },
     "EditModePostMessage": {
       "type": "boolean"
@@ -77,10 +111,26 @@
     "EditNotificationPostMessage": {
       "type": "boolean"
     },
-    "FileExtension": {
+    "EmbeddingPageOrigin": {
       "type": "string"
     },
-    "FileGeoLocationCode": {
+    "EmbeddingPageSessionInfo": {
+      "type": "string"
+    },
+    "EnabledApplicationFeatures": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "FileEmbedCommandPostMessage": {
+      "type": "boolean"
+    },
+    "FileEmbedCommandUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "FileExtension": {
       "type": "string"
     },
     "FileNameMaxLength": {
@@ -104,7 +154,21 @@
       "format": "uri",
       "type": "string"
     },
+    "HostAuthenticationId": {
+      "type": "string"
+    },
+    "HostAuthenticationIdType": {
+      "type": "string"
+    },
+    "HostDivSyndicationViewUrl": {
+      "format": "uri",
+      "type": "string"
+    },
     "HostEditUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "HostEmbeddedEditUrl": {
       "format": "uri",
       "type": "string"
     },
@@ -112,14 +176,36 @@
       "format": "uri",
       "type": "string"
     },
+    "HostName": {
+      "type": "string"
+    },
+    "HostNotes": {
+      "type": "string"
+    },
+    "HostRestUrl": {
+      "format": "uri",
+      "type": "string"
+    },
     "HostViewUrl": {
       "format": "uri",
+      "type": "string"
+    },
+    "InsertImagePostMessage": {
+      "type": "boolean"
+    },
+    "IrmPolicyDescription": {
+      "type": "string"
+    },
+    "IrmPolicyTitle": {
       "type": "string"
     },
     "IsAnonymousUser": {
       "type": "boolean"
     },
     "IsEduUser": {
+      "type": "boolean"
+    },
+    "IsYammerEnabled": {
       "type": "boolean"
     },
     "LastModifiedTime": {
@@ -129,39 +215,66 @@
     "LicenseCheckForEditIsEnabled": {
       "type": "boolean"
     },
-    "OwnerId": {
+    "LicensedOrganization": {
       "type": "string"
     },
     "OfficeCollaborationServiceEndpointUrl": {
       "format": "uri",
       "type": "string"
     },
+    "OpenInClientCommandUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "OpenInClientPostMessage": {
+      "type": "boolean"
+    },
+    "OwnerId": {
+      "type": "string"
+    },
+    "PermissionsPostMessage": {
+      "type": "boolean"
+    },
+    "PolicyCheckPostMessage": {
+      "type": "boolean"
+    },
     "PostMessageOrigin": {
       "format": "uri",
       "type": "string"
     },
+    "PresenceProvider": {
+      "type": "string"
+    },
+    "PresenceUserId": {
+      "type": "string"
+    },
+    "PrivacyUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "ProtectedFile": {
+      "type": "boolean"
+    },
+    "ProtectInClient": {
+      "type": "boolean"
+    },
     "ReadOnly": {
       "type": "boolean"
     },
-    "RealTimeChannelEndpointUrl": {
-      "format": "uri",
+    "ReportAbusePostMessage": {
+      "type": "boolean"
+    },
+    "ReportAbuseUrl": {
       "type": "string"
     },
     "RestrictedWebViewOnly": {
       "type": "boolean"
     },
-    "SHA256": {
+    "SafeLinksStatus": {
       "type": "string"
     },
-    "SequenceNumber": {
-      "type": "number"
-    },
-    "ServerTime": {
-      "type": "number"
-    },
-    "SharingStatus": {
-      "type": "string",
-      "enum": [ "Private", "Shared" ]
+    "SHA256": {
+      "type": "string"
     },
     "SignInUrl": {
       "format": "uri",
@@ -184,10 +297,19 @@
     "SupportsAddActivities": {
       "type": "boolean"
     },
+    "SupportsCheckPolicy": {
+      "type": "boolean"
+    },
+    "SupportsCheckUserAccess": {
+      "type": "boolean"
+    },
     "SupportsCoauth": {
       "type": "boolean"
     },
     "SupportsCobalt": {
+      "type": "boolean"
+    },
+    "SupportsContactsResolution": {
       "type": "boolean"
     },
     "SupportsContainers": {
@@ -202,6 +324,12 @@
     "SupportsExtendedLockLength": {
       "type": "boolean"
     },
+    "SupportsFileCreation": {
+      "type": "boolean"
+    },
+    "SupportsFileUserValue": {
+      "type": "boolean"
+    },
     "SupportsFolders": {
       "type": "boolean"
     },
@@ -211,20 +339,42 @@
     "SupportsGetLock": {
       "type": "boolean"
     },
+    "SupportsGrantUserAccess": {
+      "type": "boolean"
+    },
     "SupportsLocks": {
+      "type": "boolean"
+    },
+    "SupportsPolicies": {
       "type": "boolean"
     },
     "SupportsRename": {
       "type": "boolean"
     },
-    "SupportsUpdate": {
+    "SupportsReviewing": {
       "type": "boolean"
     },
-    "SupportsUserAccess": {
+    "SupportsScenarioLinks": {
+      "type": "boolean"
+    },
+    "SupportsSecureStore": {
+      "type": "boolean"
+    },
+    "SupportsUpdate": {
       "type": "boolean"
     },
     "SupportsUserInfo": {
       "type": "boolean"
+    },
+    "TenantId": {
+      "type": "string"
+    },
+    "TermsOfUseUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "TimeZone": {
+      "type": "string"
     },
     "UniqueContentId": {
       "type": "string"
@@ -241,6 +391,9 @@
     "UserCanRename": {
       "type": "boolean"
     },
+    "UserCanReview": {
+      "type": "boolean"
+    },
     "UserCanWrite": {
       "type": "boolean"
     },
@@ -251,6 +404,9 @@
       "type": "string"
     },
     "UserInfo": {
+      "type": "string"
+    },
+    "UserPrincipalName": {
       "type": "string"
     },
     "Version": {
