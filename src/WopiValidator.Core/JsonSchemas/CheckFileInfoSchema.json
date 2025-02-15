@@ -9,19 +9,7 @@
     "OwnerId",
     "Size",
     "UserId",
-    "Version",
-    "SupportsCoauth",
-    "SequenceNumber",
-    "OfficeCollaborationServiceEndpointUrl",
-    "RealTimeChannelEndpointUrl",
-    "AccessTokenExpiry",
-    "ServerTime",
-    "SharingStatus",
-    "ComplianceDomainPrefix",
-    "FileGeoLocationCode",
-    "SupportsLocks",
-    "SupportsUpdate",
-    "SupportsUserInfo"
+    "Version"
   ],
   "properties": {
     "AccessTokenExpiry": {
