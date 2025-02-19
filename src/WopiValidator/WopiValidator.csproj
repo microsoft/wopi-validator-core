@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <TargetFrameworks>net45;net6.0;net8.0</TargetFrameworks>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../WopiValidatorSigningKey.snk</AssemblyOriginatorKeyFile>
@@ -53,7 +53,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WopiValidator.Core\WopiValidator.Core.csproj" PrivateAssets="all" />
-    <!-- <ProjectReference Include="..\ClassLibrary3\ClassLibrary3.csproj" Condition="'$(TargetFramework)' == 'net47'" PrivateAssets="all" /> -->
   </ItemGroup>
 
   <!-- This is a workaround to include files from the WopiValidator.Core project in the Nuget package for this
