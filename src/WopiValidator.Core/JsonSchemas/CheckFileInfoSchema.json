@@ -8,7 +8,6 @@
     "BaseFileName",
     "OwnerId",
     "Size",
-    "UserFriendlyName",
     "UserId",
     "Version"
   ],
@@ -20,6 +19,9 @@
       "type": "boolean"
     },
     "AllowEarlyFeatures": {
+      "type": "boolean"
+    },
+    "AllowErrorReportPrompt": {
       "type": "boolean"
     },
     "AllowExternalMarketplace": {
@@ -48,12 +50,29 @@
       "format": "uri",
       "type": "string"
     },
+    "ClientThrottlingProtection": {
+      "type": "string"
+    },
+    "ClientUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "CloseButtonClosesWindow": {
+      "type": "boolean"
+    },
     "ClosePostMessage": {
       "type": "boolean"
     },
     "CloseUrl": {
       "format": "uri",
       "type": "string"
+    },
+    "CobaltCapabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [ "DownloadStreaming" ]
+      }
     },
     "ComplianceDomainPrefix": {
       "type": "string"
@@ -62,6 +81,9 @@
       "type": "string",
       "enum": [ "BlockAll", "CurrentDocumentOnly" ]
     },
+    "DisableBrowserCachingOfUserContent": {
+      "type": "boolean"
+    },
     "DisablePrint": {
       "type": "boolean"
     },
@@ -69,6 +91,11 @@
       "type": "boolean"
     },
     "DownloadUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "EditAndReplyUrl": {
+      "format": "uri",
       "type": "string"
     },
     "EditModePostMessage": {
@@ -76,6 +103,13 @@
     },
     "EditNotificationPostMessage": {
       "type": "boolean"
+    },
+    "FileEmbedCommandPostMessage": {
+      "type": "boolean"
+    },
+    "FileEmbedCommandUrl": {
+      "format": "uri",
+      "type": "string"
     },
     "FileExtension": {
       "type": "string"
@@ -104,7 +138,14 @@
       "format": "uri",
       "type": "string"
     },
+    "HostAuthenticationId": {
+      "type": "string"
+    },
     "HostEditUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "HostEmbeddedEditUrl": {
       "format": "uri",
       "type": "string"
     },
@@ -112,8 +153,21 @@
       "format": "uri",
       "type": "string"
     },
+    "HostNotes": {
+      "type": "string"
+    },
     "HostViewUrl": {
       "format": "uri",
+      "type": "string"
+    },
+    "HostRestUrl": {
+      "format": "uri",
+      "type": "string"
+    },
+    "IrmPolicyDescription": {
+      "type": "string"
+    },
+    "IrmPolicyTitle": {
       "type": "string"
     },
     "IsAnonymousUser": {
@@ -140,12 +194,25 @@
       "format": "uri",
       "type": "string"
     },
+    "PresenceProvider": {
+      "type": "string"
+    },
+    "PresenceUserId": {
+      "type": "string"
+    },
+    "ProtectInClient": {
+      "type": "boolean"
+    },
     "ReadOnly": {
       "type": "boolean"
     },
     "RealTimeChannelEndpointUrl": {
       "format": "uri",
       "type": "string"
+    },
+    "RequestedCallThrottling": {
+      "type": "string",
+      "enum": [ "Normal", "Minor", "Medium", "Major", "Critical" ]
     },
     "RestrictedWebViewOnly": {
       "type": "boolean"
@@ -202,10 +269,16 @@
     "SupportsExtendedLockLength": {
       "type": "boolean"
     },
+    "SupportsFileCreation": {
+      "type": "boolean"
+    },
     "SupportsFolders": {
       "type": "boolean"
     },
     "SupportsGetActivities": {
+      "type": "boolean"
+    },
+    "SupportsGetFileWopiSrc": {
       "type": "boolean"
     },
     "SupportsGetLock": {
@@ -217,6 +290,12 @@
     "SupportsRename": {
       "type": "boolean"
     },
+    "SupportsScenarioLinks": {
+      "type": "boolean"
+    },
+    "SupportsSecureStore": {
+      "type": "boolean"
+    },
     "SupportsUpdate": {
       "type": "boolean"
     },
@@ -225,6 +304,15 @@
     },
     "SupportsUserInfo": {
       "type": "boolean"
+    },
+    "TemporarilyNotWritable": {
+      "type": "boolean"
+    },
+    "TenantId": {
+      "type": "string"
+    },
+    "TimeZone": {
+      "type": "string"
     },
     "UniqueContentId": {
       "type": "string"
@@ -251,6 +339,9 @@
       "type": "string"
     },
     "UserInfo": {
+      "type": "string"
+    },
+    "UserPrincipalName": {
       "type": "string"
     },
     "Version": {
