@@ -39,10 +39,16 @@
       "type": "boolean"
     },
     "AppCatalogUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "AppliedPolicyId": {
@@ -58,10 +64,16 @@
       "type": [ "string", "null" ]
     },
     "BreadcrumbBrandUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "BreadcrumbDocName": {
@@ -71,20 +83,38 @@
       "type": [ "string", "null" ]
     },
     "BreadcrumbFolderUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "ClientThrottlingProtection": {
-      "type": [ "string", "null" ]
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [ "MostProtected", "Protected", "Normal", "LessProtected", "LeastProtected", "" ]
+        },
+        { "type": "null" }
+      ]
     },
     "ClientUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "CloseButtonClosesWindow": {
@@ -94,25 +124,41 @@
       "type": "boolean"
     },
     "CloseUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "CobaltCapabilities": {
-      "type": [ "array", "null" ],
-      "items": {
-        "type": "string",
-        "enum": [ "DownloadStreaming" ]
-      }
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [ "DownloadStreaming" ]
+          }
+        },
+        { "type": "null" }
+      ]
     },
     "ComplianceDomainPrefix": {
       "type": [ "string", "null" ]
     },
     "CopyPasteRestrictions": {
-      "type": [ "string", "null" ],
-      "enum": [ "BlockAll", "CurrentDocumentOnly", "" ]
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [ "BlockAll", "CurrentDocumentOnly", "" ]
+        },
+        { "type": "null" }
+      ]
     },
     "DecryptSkipReason": {
       "type": [ "string", "null" ]
@@ -130,20 +176,32 @@
       "type": "boolean"
     },
     "DownloadUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "DynamicWatermarkingText": {
       "type": [ "string", "null" ]
     },
     "EditAndReplyUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "EditingCannotSave": {
@@ -162,10 +220,15 @@
       "type": [ "string", "null" ]
     },
     "EnabledApplicationFeatures": {
-      "type": [ "array", "null" ],
-      "items": {
-        "type": "string"
-      }
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        { "type": "null" }
+      ]
     },
     "EnableExportForProtectedFile": {
       "type": "boolean"
@@ -183,10 +246,16 @@
       "type": "boolean"
     },
     "FileEmbedCommandUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "FileExtension": {
@@ -202,30 +271,48 @@
       "type": "boolean"
     },
     "FileSharingUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "FileTenantId": {
       "type": [ "string", "null" ]
     },
     "FileUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "FileVersionPostMessage": {
       "type": "boolean"
     },
     "FileVersionUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "HostAdditionalData": {
@@ -238,31 +325,55 @@
       "type": [ "string", "null" ]
     },
     "HostDivSyndicationViewUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "HostEditUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "HostEmbeddedEditUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "HostEmbeddedViewUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "HostName": {
@@ -272,17 +383,29 @@
       "type": [ "string", "null" ]
     },
     "HostViewUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "HostRestUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "InsertImagePostMessage": {
@@ -307,10 +430,16 @@
       "type": "boolean"
     },
     "LastModifiedTime": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "date-time" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "LicenseCheckForEditIsEnabled": {
@@ -323,26 +452,38 @@
       "type": [ "string", "null" ]
     },
     "OwnerId": {
-      "type": "string",
+      "type": "string"
     },
     "OwnerTenantId": {
       "type": [ "string", "null" ]
     },
     "OfficeCollaborationServiceEndpointUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "OpenInClientPostMessage": {
       "type": "boolean"
     },
     "OpenInClientCommandUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "PermissionsPostMessage": {
@@ -352,10 +493,16 @@
       "type": "boolean"
     },
     "PostMessageOrigin": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "PresenceProvider": {
@@ -365,10 +512,16 @@
       "type": [ "string", "null" ]
     },
     "PrivacyUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "ProtectedFile": {
@@ -381,38 +534,67 @@
       "type": "boolean"
     },
     "RealTimeChannelEndpointUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "ReportAbusePostMessage": {
       "type": "boolean"
     },
     "ReportAbuseUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "RequestedCallThrottling": {
-      "type": [ "string", "null" ],
-      "enum": [ "Normal", "Minor", "Medium", "Major", "Critical", "" ]
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [ "Unknown", "Normal", "Minor", "Medium", "Major", "Critical", "" ]
+        },
+        { "type": "null" }
+      ]
     },
     "RestEndpointUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "RestrictedWebViewOnly": {
       "type": "boolean"
     },
     "SafeLinksStatus": {
-      "type": [ "string", "null" ]
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [ "enabled", "disabled", "unknown", "" ]
+        },
+        { "type": "null" }
+      ]
     },
     "SHA256": {
       "type": [ "string", "null" ]
@@ -426,38 +608,65 @@
       "minimum": 0
     },
     "SharingStatus": {
-      "type": [ "string", "null" ],
-      "enum": [ "Private", "Shared", "" ]
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [ "Private", "Shared", "" ]
+        },
+        { "type": "null" }
+      ]
     },
     "SignInUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "SignoutUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "Size": {
       "type": "integer"
     },
     "SupportedShareUrlTypes": {
-      "type": [ "array", "null" ],
-      "items": {
-        "type": "string",
-        "enum": [ "ReadOnly", "ReadWrite" ]
-      }
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [ "ReadOnly", "ReadWrite" ]
+          }
+        },
+        { "type": "null" }
+      ]
     },
     "SupportedSubscriptionEvents": {
-      "type": [ "array", "null" ],
-      "items": {
-        "type": "string"
-      }
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        { "type": "null" }
+      ]
     },
     "SupportsActivitiesNotification": {
       "type": "boolean"
@@ -565,10 +774,16 @@
       "type": [ "string", "null" ]
     },
     "TermsOfUseUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "TimeZone": {
@@ -611,10 +826,15 @@
       "type": [ "string", "null" ]
     },
     "ValidateAccessTokenOn": {
-      "type": [ "array", "null" ],
-      "items": {
-        "type": "string"
-      }
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        { "type": "null" }
+      ]
     },
     "Version": {
       "type": "string"
@@ -626,17 +846,28 @@
       "type": "boolean"
     },
     "WorkflowType": {
-      "type": [ "array", "null" ],
-      "items": {
-        "type": "string",
-        "enum": [ "Assign", "Submit" ]
-      }
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [ "Assign", "Submit" ]
+          }
+        },
+        { "type": "null" }
+      ]
     },
     "WorkflowUrl": {
-      "type": [ "string", "null" ],
-      "anyOf": [
-        { "format": "uri" },
-        { "maxLength": 0 }
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        { "type": "null" }
       ]
     },
     "ZipItLongLivedMinBlobSize": {
