@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "WopiValidator": {
-      "commandName": "Project",
-      "commandLineArgs": "--token=1|GN=R3Vlc3Q=&SN=OTg1ODg5NDk=&IT=NTI1MDYxNjU4OTMyNzkzMjY5Mg==&PU=OTg1ODg5NDk=&SR=YW5vbnltb3Vz&TZ=MTExOQ==&SA=RmFsc2U=&LE=RmFsc2U=&AG=VHJ1ZQ==&EDU=RmFsc2U=&CTP=Tm9ybWFs&RH=F2uZwyEyZA9pKsqc-HEO95TKYOBzjuOfHM8nY_MZyg8= --wopisrc=http://CPC-longj-OO9CT/th/handler/wopiplus/files/anonymous~foo.wopitest --token_ttl=0 --testgroup=CoauthLocks\r\n"
-    }
-  }
-}
