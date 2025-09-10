@@ -184,6 +184,8 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 		public abstract class JsonPropertyEqualityValidator<T> : JsonPropertyValidator
 			where T : IEquatable<T>
 		{
+			private static readonly HashSet<string> UnixTimestampKeys = new HashSet<string> { "AccessTokenExpiry", "ServerTime", "AccessTokenValidFrom" };
+
 			protected JsonPropertyEqualityValidator(string key, bool isRequired, T expectedValue, bool hasExpectedValue, string expectedStateKey)
 				: base(key, isRequired)
 			{
@@ -232,8 +234,28 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 
 				if (!HasExpectedValue && !hasExpectedStateValue)
 				{
-					errorMessage = "";
-					return true;
+					/**
+					 * Property like below we need to check if it's valid timestamp:
+					 * <LongProperty Name="AccessTokenExpiry" IsRequired="true" />
+					 */
+					if (UnixTimestampKeys.Contains(Key))
+					{
+						if (isUnixTimestampReasonable(actualValue))
+						{
+							errorMessage = "";
+							return true;
+						}
+						else
+						{
+							errorMessage = $"{Key} value isn't reasonable, it's out of [0, currentTime+10 years] boundary";
+							return false;
+						}
+					}
+					else
+					{
+						errorMessage = "";
+						return true;
+					}
 				}
 
 				return Compare(actualValue, expectedValue, out errorMessage);
@@ -258,6 +280,20 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 
 				errorMessage = string.Format(CultureInfo.CurrentCulture, "Expected: '{0}', Actual: '{1}'", FormattedExpectedValue, formattedActualValue);
 				return isValid;
+			}
+
+			private bool isUnixTimestampReasonable(JToken actualValue)
+			{
+				long typedActualValue = actualValue.Value<long>();
+				var lowerbound = 0;
+				var upperbound = ToUnixTimeMilliseconds(DateTime.UtcNow.AddYears(10));
+				return typedActualValue >= lowerbound && typedActualValue <= upperbound;
+			}
+
+			private long ToUnixTimeMilliseconds(DateTime utcDateTime)
+			{
+				var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+				return (long)(utcDateTime - epoch).TotalMilliseconds;
 			}
 
 			public T DefaultExpectedValue { get; private set; }

@@ -34,6 +34,7 @@
       <Requests>
         <CheckFileInfo>
           <Validators>
+            <JsonSchemaValidator Schema="CheckFileInfoSchema" />
             <JsonResponseContentValidator>
               <StringProperty Name="BaseFileName" EndsWith=".wopitest" IsRequired="true" IgnoreCase="true" />
             </JsonResponseContentValidator>
@@ -7600,7 +7601,6 @@
       <PrereqTest>FileEditingPrereq</PrereqTest>
       <PrereqTest>LocksPrereq</PrereqTest>
       <PrereqTest>RenameFilePrereq</PrereqTest>
-      <PrereqTest>WopiValidatorPrereq</PrereqTest>
       <PrereqTest>SupportsCoauthPrereq</PrereqTest>
     </PrereqTests>
     <TestCases>
