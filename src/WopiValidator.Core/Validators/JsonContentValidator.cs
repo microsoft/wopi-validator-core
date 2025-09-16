@@ -247,7 +247,7 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 						}
 						else
 						{
-							errorMessage = $"{Key} value isn't reasonable, it's out of [0, currentTime+10 years] boundary";
+							errorMessage = $"{Key} value isn't reasonable, it's out of [currentTime-10 years, currentTime+10 years] boundary";
 							return false;
 						}
 					}
@@ -285,7 +285,7 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 			private bool isUnixTimestampReasonable(JToken actualValue)
 			{
 				long typedActualValue = actualValue.Value<long>();
-				var lowerbound = 0;
+				var lowerbound = ToUnixTimeMilliseconds(DateTime.UtcNow.AddYears(-10));
 				var upperbound = ToUnixTimeMilliseconds(DateTime.UtcNow.AddYears(10));
 				return typedActualValue >= lowerbound && typedActualValue <= upperbound;
 			}
