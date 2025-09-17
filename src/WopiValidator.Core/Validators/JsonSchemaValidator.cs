@@ -7,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
-using JsonValidation = NJsonSchema.Validation;
 
 namespace Microsoft.Office.WopiValidator.Core.Validators
 {
@@ -59,30 +57,15 @@ namespace Microsoft.Office.WopiValidator.Core.Validators
 
 			foreach (var group in grouped)
 			{
-				var errorKind = ValidationErrorKindString(group.Key);
-				var properties = group.Select(error => error.Property);
-				string propertiesString = String.Join(", ", properties);
-				errorMessages.Add($"{errorKind}: {propertiesString}");
+				string errorMessageForEachKind = string.Empty;
+				foreach (var element in group)
+				{
+					errorMessageForEachKind = errorMessageForEachKind + element.ToString();
+				}
+				errorMessages.Add($"{errorMessageForEachKind}");
 			}
 
 			return new ValidationResult(errorMessages.ToArray());
-		}
-
-		private string ValidationErrorKindString(JsonValidation.ValidationErrorKind kind)
-		{
-			switch (kind)
-			{
-				case JsonValidation.ValidationErrorKind.NoAdditionalPropertiesAllowed:
-					return "Unknown Properties";
-
-				default:
-					return SpaceIntercappedString(kind.ToString());
-			}
-		}
-
-		private string SpaceIntercappedString(string s)
-		{
-			return Regex.Replace(s, "([a-z](?=[A-Z])|[A-Z](?=[A-Z][a-z]))", "$1 ");
 		}
 	}
 }
