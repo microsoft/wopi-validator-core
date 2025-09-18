@@ -176,6 +176,7 @@ namespace Microsoft.Office.WopiValidator.Core
 		public static class JsonSchema
 		{
 			public const string CheckFileInfoSchema = "CheckFileInfoSchema";
+			public const string CheckFileInfoSchemaCsppPlus = "CheckFileInfoSchemaCsppPlus";
 			public const string GetChunkedFileResponseSchema = "GetChunkedFileResponseSchema";
 		}
 

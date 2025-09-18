@@ -1,7 +1,7 @@
-﻿{
+{
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Full WOPI CheckFileInfo JSON Schema",
-  "description": "A WOPI CheckFileInfo JSON response with comprehensive property validation for CSPP and CSPP+",
+  "title": "WOPI CheckFileInfo JSON Schema for CSPP+",
+  "description": "A WOPI CheckFileInfo JSON response with additional requirements for Cloud Storage Partner Program Plus (CSPP+)",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -14,7 +14,7 @@
   "properties": {
     "AccessTokenExpiry": {
       "type": "number",
-      "description": "Unix timestamp when the access token expires"
+      "description": "Required for CSPP+. Unix timestamp when the access token expires"
     },
     "AllowAdditionalMicrosoftServices": {
       "type": "boolean"
@@ -195,7 +195,8 @@
     },
     "OfficeCollaborationServiceEndpointUrl": {
       "format": "uri",
-      "type": "string"
+      "type": "string",
+      "description": "Required for CSPP+ when SupportsCoauth is true"
     },
     "PostMessageOrigin": {
       "format": "uri",
@@ -215,7 +216,8 @@
     },
     "RealTimeChannelEndpointUrl": {
       "format": "uri",
-      "type": "string"
+      "type": "string",
+      "description": "Required for CSPP+ when SupportsCoauth is true"
     },
     "RequestedCallThrottling": {
       "type": "string",
@@ -230,15 +232,17 @@
     },
     "SequenceNumber": {
       "type": "number",
-      "minimum": 0
+      "minimum": 0,
+      "description": "Required for CSPP+ when SupportsCoauth is true"
     },
     "ServerTime": {
       "type": "number",
-      "description": "Unix timestamp representing the current server time"
+      "description": "Required for CSPP+ when SupportsCoauth is true. Unix timestamp representing the current server time"
     },
     "SharingStatus": {
       "type": "string",
-      "enum": [ "Private", "Shared" ]
+      "enum": [ "Private", "Shared" ],
+      "description": "Required for CSPP+ when SupportsCoauth is true"
     },
     "SignInUrl": {
       "format": "uri",
@@ -264,7 +268,8 @@
       "type": "boolean"
     },
     "SupportsCoauth": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "Must be true for CSPP+"
     },
     "SupportsCobalt": {
       "type": "boolean"
@@ -297,7 +302,8 @@
       "type": "boolean"
     },
     "SupportsLocks": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "Required for CSPP+ when SupportsCoauth is true"
     },
     "SupportsRename": {
       "type": "boolean"
@@ -309,13 +315,15 @@
       "type": "boolean"
     },
     "SupportsUpdate": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "Required for CSPP+ when SupportsCoauth is true"
     },
     "SupportsUserAccess": {
       "type": "boolean"
     },
     "SupportsUserInfo": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "Required for CSPP+ when SupportsCoauth is true"
     },
     "SupportsChunkedFileTransfer": {
       "type": "boolean"
@@ -349,7 +357,7 @@
     },
     "UserFriendlyName": {
       "type": "string",
-      "description": "Display name for the user. For CSPP+ this is required when SupportsCoauth is true."
+      "description": "Required for CSPP+ when SupportsCoauth is true. Display name for the user."
     },
     "UserId": {
       "type": "string",
@@ -385,5 +393,29 @@
       "format": "uri",
       "type": "string"
     }
+  },
+  "if": {
+    "properties": {
+      "SupportsCoauth": { "const": true }
+    }
+  },
+  "then": {
+    "required": [
+      "BaseFileName",
+      "OwnerId", 
+      "Size",
+      "UserId",
+      "Version",
+      "AccessTokenExpiry",
+      "OfficeCollaborationServiceEndpointUrl",
+      "RealTimeChannelEndpointUrl",
+      "SequenceNumber",
+      "ServerTime",
+      "SharingStatus",
+      "SupportsLocks",
+      "SupportsUpdate",
+      "SupportsUserInfo",
+      "UserFriendlyName"
+    ]
   }
 }
