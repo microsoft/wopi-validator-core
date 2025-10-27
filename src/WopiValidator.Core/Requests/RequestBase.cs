@@ -67,6 +67,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 
 			HttpWebRequest request = WebRequest.CreateHttp(executionData.TargetUri);
 			request.UserAgent = userAgent;
+			request.AllowAutoRedirect = false;
 
 			// apply custom headers
 			foreach (KeyValuePair<string, string> header in RequestHeaders)
