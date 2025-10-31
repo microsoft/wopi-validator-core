@@ -500,6 +500,34 @@
             },
             { "type": "null" }
           ]
+        },
+        "AppStateHistoryPostMessage": {
+          "type": "boolean"
+        },
+        "ClosePostMessage": {
+          "type": "boolean"
+        },
+        "EditModePostMessage": {
+          "type": "boolean"
+        },
+        "EditNotificationPostMessage": {
+          "type": "boolean"
+        },
+        "FileEmbedCommandPostMessage": {
+          "type": "boolean"
+        },
+        "FileSharingPostMessage": {
+          "type": "boolean"
+        },
+        "FileVersionPostMessage": {
+          "type": "boolean"
+        },
+        "PostMessageOrigin": {
+          "type": "string",
+          "format": "uri"
+        },
+        "WorkflowPostMessage": {
+          "type": "boolean"
         }
       }
     },
@@ -1060,6 +1088,34 @@
             },
             { "type": "null" }
           ]
+        },
+        "AppStateHistoryPostMessage": {
+          "type": "boolean"
+        },
+        "ClosePostMessage": {
+          "type": "boolean"
+        },
+        "EditModePostMessage": {
+          "type": "boolean"
+        },
+        "EditNotificationPostMessage": {
+          "type": "boolean"
+        },
+        "FileEmbedCommandPostMessage": {
+          "type": "boolean"
+        },
+        "FileSharingPostMessage": {
+          "type": "boolean"
+        },
+        "FileVersionPostMessage": {
+          "type": "boolean"
+        },
+        "PostMessageOrigin": {
+          "type": "string",
+          "format": "uri"
+        },
+        "WorkflowPostMessage": {
+          "type": "boolean"
         }
       }
     }
