@@ -17,14 +17,20 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Company>Microsoft</Company>
     <Authors>Microsoft</Authors>
-    <Description>Validates WOPI server implementations</Description>
-    <PackageTags>wopi</PackageTags>
+    <Description>Runs an XML test suite and outputs pass/fail diagnostics.
+Targets .NET 4.5/6.0/8.0. For validation only.
+    </Description>
+    <PackageTags>wopi;wopiplus;cspp;csppplus</PackageTags>
     <PackageId>WopiValidator</PackageId>
-    <PackageVersion>1.0.0-local</PackageVersion>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
-    <InformationalVersion>1.0.0-local</InformationalVersion>
+    <PackageVersion>2.0.0</PackageVersion>
     <Product>WopiValidator</Product>
     <Copyright>Microsoft</Copyright>
+    <Version>2.0.0</Version>
+    <Title>WOPI host compliance CLI</Title>
+    <PackageProjectUrl>https://github.com/microsoft/wopi-validator-core/tree/main/src/WopiValidator</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/microsoft/wopi-validator-core/tree/main</RepositoryUrl>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
@@ -49,6 +55,13 @@
     <Content Include="..\..\TestCases.xsd" Link="TestCases.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
