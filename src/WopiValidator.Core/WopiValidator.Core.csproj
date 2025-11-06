@@ -10,8 +10,21 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <IsPackable>false</IsPackable>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Company>Microsoft</Company>
+    <Authors>Microsoft</Authors>
+    <Description>Core library for WOPI validation: parses XML tests, executes WOPI requests, signs proofs, mutates tokens, captures state, runs validators, handles chunked (full/zip) transfer. Targets .NET 4.5/6.0/8.0. For testing only.</Description>
+    <PackageTags>wopi;wopiplus;cspp;csppplus</PackageTags>
+    <PackageId>WopiValidator.Core</PackageId>
+    <PackageVersion>2.0.0</PackageVersion>
+    <Product>WopiValidator.Core</Product>
+    <Copyright>Microsoft</Copyright>
+    <Version>2.0.0</Version>
+    <Title>WOPI Validator Core Engine</Title>
+    <PackageProjectUrl>https://github.com/microsoft/wopi-validator-core/tree/main/src/WopiValidator.Core</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/microsoft/wopi-validator-core/tree/main</RepositoryUrl>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
@@ -63,6 +76,13 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
