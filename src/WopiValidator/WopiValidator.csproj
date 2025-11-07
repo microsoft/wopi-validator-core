@@ -22,10 +22,10 @@ Targets .NET 4.5/6.0/8.0. For validation only.
     </Description>
     <PackageTags>wopi;wopiplus;cspp;csppplus</PackageTags>
     <PackageId>WopiValidator</PackageId>
-    <PackageVersion>2.0.0</PackageVersion>
+    <PackageVersion>2.0.1</PackageVersion>
     <Product>WopiValidator</Product>
     <Copyright>Microsoft</Copyright>
-    <Version>2.0.0</Version>
+    <Version>2.0.1</Version>
     <Title>WOPI host compliance CLI</Title>
     <PackageProjectUrl>https://github.com/microsoft/wopi-validator-core/tree/main/src/WopiValidator</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -42,18 +42,20 @@ Targets .NET 4.5/6.0/8.0. For validation only.
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../WopiValidator.Core/WopiValidator.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="..\..\FeatureTestCases.xml" Link="FeatureTestCases.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>True</Pack>
+      <PackagePath>content</PackagePath>
     </Content>
     <Content Include="..\..\TestCases.xml" Link="TestCases.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>True</Pack>
+      <PackagePath>content</PackagePath>
     </Content>
     <Content Include="..\..\TestCases.xsd" Link="TestCases.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>True</Pack>
+      <PackagePath>content</PackagePath>
     </Content>
   </ItemGroup>
 
@@ -65,7 +67,7 @@ Targets .NET 4.5/6.0/8.0. For validation only.
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WopiValidator.Core\WopiValidator.Core.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\WopiValidator.Core\WopiValidator.Core.csproj" />
   </ItemGroup>
 
   <!-- This is a workaround to include files from the WopiValidator.Core project in the Nuget package for this

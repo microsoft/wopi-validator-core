@@ -16,10 +16,10 @@
     <Description>Core library for WOPI validation: parses XML tests, executes WOPI requests, signs proofs, mutates tokens, captures state, runs validators, handles chunked (full/zip) transfer. Targets .NET 4.5/6.0/8.0. For testing only.</Description>
     <PackageTags>wopi;wopiplus;cspp;csppplus</PackageTags>
     <PackageId>WopiValidator.Core</PackageId>
-    <PackageVersion>2.0.0</PackageVersion>
+    <PackageVersion>2.0.1</PackageVersion>
     <Product>WopiValidator.Core</Product>
     <Copyright>Microsoft</Copyright>
-    <Version>2.0.0</Version>
+    <Version>2.0.1</Version>
     <Title>WOPI Validator Core Engine</Title>
     <PackageProjectUrl>https://github.com/microsoft/wopi-validator-core/tree/main/src/WopiValidator.Core</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -76,6 +76,24 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\FeatureTestCases.xml" Link="FeatureTestCases.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>True</Pack>
+      <PackagePath>content</PackagePath>
+    </Content>
+    <Content Include="..\..\TestCases.xml" Link="TestCases.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>True</Pack>
+      <PackagePath>content</PackagePath>
+    </Content>
+    <Content Include="..\..\TestCases.xsd" Link="TestCases.xsd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>True</Pack>
+      <PackagePath>content</PackagePath>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
