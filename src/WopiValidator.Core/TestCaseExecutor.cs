@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Microsoft.Office.WopiValidator.Core
 {
@@ -59,6 +60,20 @@ namespace Microsoft.Office.WopiValidator.Core
 				return new TestCaseResult(TestCase.Name, failure.RequestDetails, "Prerequisites failed", failure.Errors, ResultStatus.Skipped);
 
 			return ExecuteTestCase(TestCase);
+		}
+
+		public async Task<TestCaseResult> ExecuteAsync()
+		{
+			foreach (var prereqCase in PrereqCases)
+			{
+				TestCaseResult prereqCaseResult = await ExecuteTestCaseAsync(prereqCase);
+				if (prereqCaseResult.Status != ResultStatus.Pass)
+				{
+					return new TestCaseResult(TestCase.Name, prereqCaseResult.RequestDetails, "Prerequisites failed", prereqCaseResult.Errors, ResultStatus.Skipped);
+				}
+			}
+
+			return await ExecuteTestCaseAsync(TestCase);
 		}
 
 		/// <summary>
@@ -146,7 +161,7 @@ namespace Microsoft.Office.WopiValidator.Core
 					// Save any state that was requested
 					foreach (IStateEntry stateSaver in request.State)
 					{
-						savedState[stateSaver.Name] = stateSaver.GetValue(responseData);
+						savedState[ stateSaver.Name ] = stateSaver.GetValue(responseData);
 					}
 				}
 			}
@@ -154,6 +169,110 @@ namespace Microsoft.Office.WopiValidator.Core
 			{
 				// run the cleanup cases if there were any
 				RunCleanupRequests(testCase, savedState, requestDetails);
+			}
+
+			if (finalTestResult == null)
+			{
+				// if we're here, there were no errors.
+				finalTestResult = new TestCaseResult(testCase.Name, requestDetails, ResultStatus.Pass);
+			}
+
+			return finalTestResult;
+		}
+
+		/// <summary>
+		/// Executes single TestCase:
+		/// - for each of the WOPI requests defined for that test case
+		/// --- executes the requests
+		/// --- runs the validations
+		/// </summary>
+		private async Task<TestCaseResult> ExecuteTestCaseAsync(ITestCase testCase)
+		{
+			IList<RequestInfo> requestDetails = new List<RequestInfo>();
+			Dictionary<string, string> savedState = new Dictionary<string, string>()
+			{
+				{ Constants.StateOverrides.OriginalAccessToken, AccessToken },
+				{ Constants.StateOverrides.OriginalWopiSrc, WopiEndpoint },
+			};
+
+			TestCaseResult finalTestResult = null;
+
+			try
+			{
+				foreach (IRequest request in testCase.Requests)
+				{
+					if (request is DelayRequest delayRequest)
+					{
+						await Task.Delay(TimeSpan.FromSeconds((int)delayRequest.DelayTimeInSeconds));
+						continue;
+					}
+
+					IResponseData responseData;
+
+					try
+					{
+						responseData = await request.ExecuteAsync(WopiEndpoint,
+							AccessToken,
+							AccessTokenTtl,
+							testCase,
+							savedState,
+							ResourceManager,
+							UserAgent,
+							ProofKeyProviderNew,
+							ProofKeyProviderOld);
+					}
+					catch (ProofKeySigningException ex)
+					{
+						responseData = ExceptionHelper.WrapExceptionInResponseData(ex);
+					}
+
+					IEnumerable<IValidator> validators = MandatoryValidators.Concat(request.Validators);
+					List<ValidationResult> validationResults = validators.Select(validator => validator.Validate(responseData, ResourceManager, savedState)).ToList();
+					List<ValidationResult> validationFailures = validationResults.Where(r => r.HasFailures).ToList();
+
+					string responseContent = GetResponseContentForClient(responseData);
+
+					RequestInfo requestInfo = new RequestInfo(
+						request.Name,
+						request.TargetUrl,
+						request.RequestHeaders,
+						responseData.StatusCode,
+						responseData.Headers,
+						responseContent,
+						validationFailures,
+						responseData.Elapsed,
+						request.CurrentProofData,
+						request.OldProofData);
+
+					requestDetails.Add(requestInfo);
+
+					// return on the first request that fails
+					if (validationFailures.Any())
+					{
+						string testCaseResultMessage = !String.IsNullOrWhiteSpace(testCase.FailMessage)
+							? testCase.FailMessage
+							: string.Format("{0} request failed.", request.Name);
+
+						finalTestResult = new TestCaseResult(
+							testCase.Name,
+							requestDetails,
+							testCaseResultMessage,
+							validationFailures.SelectMany(x => x.Errors),
+							ResultStatus.Fail);
+						break;
+					}
+
+					// Save any state that was requested
+					foreach (IStateEntry stateSaver in request.State)
+					{
+						savedState[ stateSaver.Name ] = stateSaver.GetValue(responseData);
+					}
+				}
+			}
+			finally
+			{
+				// run the cleanup cases if there were any
+				await RunCleanupRequestsAsync(testCase, savedState, requestDetails);
 			}
 
 			if (finalTestResult == null)
@@ -215,6 +334,65 @@ namespace Microsoft.Office.WopiValidator.Core
 				try
 				{
 					IResponseData responseData = request.Execute(WopiEndpoint,
+						AccessToken,
+						AccessTokenTtl,
+						testCase,
+						savedState,
+						ResourceManager,
+						UserAgent,
+						ProofKeyProviderNew,
+						ProofKeyProviderOld);
+
+					// No validators needed, they're just cleanup and we don't care if they worked or not.
+
+					string responseContent = GetResponseContentForClient(responseData);
+
+					RequestInfo requestInfo = new RequestInfo(
+						request.Name,
+						request.TargetUrl,
+						request.RequestHeaders,
+						responseData.StatusCode,
+						responseData.Headers,
+						responseContent,
+						Enumerable.Empty<ValidationResult>().ToList(),
+						responseData.Elapsed,
+						request.CurrentProofData,
+						request.OldProofData);
+
+					requestDetails.Add(requestInfo);
+				}
+				catch (Exception)
+				{
+					// Swallow all exceptions from the cleanup requests - we don't care if they work and
+					// some will fail by design if the test's requests failed.
+
+					RequestInfo requestInfo = new RequestInfo(
+						request.Name,
+						request.TargetUrl,
+						request.RequestHeaders,
+						0,
+						Enumerable.Empty<KeyValuePair<string, string>>(),
+						"no content: request failed",
+						Enumerable.Empty<ValidationResult>().ToList(),
+						TimeSpan.Zero,
+						request.CurrentProofData,
+						request.OldProofData);
+
+					requestDetails.Add(requestInfo);
+				}
+			}
+		}
+
+		private async Task RunCleanupRequestsAsync(ITestCase testCase, Dictionary<string, string> savedState, IList<RequestInfo> requestDetails)
+		{
+			if (testCase.CleanupRequests == null)
+				return;
+
+			foreach (IRequest request in testCase.CleanupRequests)
+			{
+				try
+				{
+					IResponseData responseData = await request.ExecuteAsync(WopiEndpoint,
 						AccessToken,
 						AccessTokenTtl,
 						testCase,

@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Microsoft.Office.WopiValidator
 {
@@ -34,17 +35,28 @@ namespace Microsoft.Office.WopiValidator
 			return new TestCaseExecutor(testExecutionData, options.WopiEndpoint, options.AccessToken, options.AccessTokenTtl, userAgent);
 		}
 
-		private static int Main(string[] args)
+		private static async Task<int> Main(string[] args)
 		{
 			// Wrapping all logic in a top-level Exception handler to ensure that exceptions are
 			// logged to the console and don't cause Windows Error Reporting to kick in.
 			ExitCode exitCode = ExitCode.Success;
 			try
 			{
-				exitCode = Parser.Default.ParseArguments<Options>(args)
-					.MapResult(
-						(Options options) => Execute(options),
-						parseErrors => ExitCode.Failure);
+				bool wasSuccessful = false;
+				Options options = Parser.Default.ParseArguments<Options>(args)
+					.MapResult<Options, Options>(option =>
+					{
+						wasSuccessful = true;
+						return option;
+					}, errors =>
+					{
+						wasSuccessful = false;
+						return null;
+					});
+
+				exitCode = wasSuccessful
+					? await ExecuteAsync(options)
+					: ExitCode.Failure;
 			}
 			catch (Exception ex)
 			{
@@ -60,7 +72,7 @@ namespace Microsoft.Office.WopiValidator
 			return (int)exitCode;
 		}
 
-		private static ExitCode Execute(Options options)
+		private static async Task<ExitCode> ExecuteAsync(Options options)
 		{
 			// get run configuration from XML
 			IEnumerable<TestExecutionData> testData = ConfigParser.ParseExecutionData(options.RunConfigurationFilePath, options.TestCategory);
@@ -107,13 +119,13 @@ namespace Microsoft.Office.WopiValidator
 					continue;
 				}
 
-				// define execution query - evaluation is lazy; test cases are executed one at a time
-				// as you iterate over returned collection
-				var results = group.Executors.Select(x => x.Execute());
-
-				// iterate over results and print success/failure indicators into console
-				foreach (TestCaseResult testCaseResult in results)
+				// iterate over executors. Compute each result and print success/failure indicators into console
+				foreach (TestCaseExecutor testCaseExecutor in group.Executors)
 				{
+					TestCaseResult testCaseResult = options.RunAsynchronously
+						? await testCaseExecutor.ExecuteAsync()
+						: testCaseExecutor.Execute();
+
 					resultStatuses.Add(testCaseResult.Status);
 					switch (testCaseResult.Status)
 					{
