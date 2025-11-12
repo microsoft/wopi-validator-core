@@ -103,17 +103,16 @@ namespace Microsoft.Office.WopiValidator
 
 			// Create executor groups
 			var executorGroups = executionData.GroupBy(d => new
-			{
-				d.TestGroupName,
-				d.TestGroupHasDelay
-			})
+				{
+					d.TestGroupName,
+					d.TestGroupHasDelay
+				})
 				.Select(g => new
 				{
 					Name = g.Key.TestGroupName,
 					HasDelay = g.Key.TestGroupHasDelay,
 					Executors = g.Select(x => GetTestCaseExecutor(x, options, options.TestCategory))
 				});
-			;
 
 			ConsoleColor baseColor = ConsoleColor.White;
 			HashSet<ResultStatus> resultStatuses = new HashSet<ResultStatus>();
