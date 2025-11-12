@@ -54,9 +54,18 @@ namespace Microsoft.Office.WopiValidator
 						return null;
 					});
 
-				exitCode = wasSuccessful
-					? await ExecuteAsync(options)
-					: ExitCode.Failure;
+				if (!wasSuccessful)
+				{
+					exitCode = ExitCode.Failure;
+				}
+				else if (options.RunAsynchronously)
+				{
+					exitCode = await ExecuteAsync(options);
+				}
+				else
+				{
+					exitCode = Execute(options);
+				}
 			}
 			catch (Exception ex)
 			{
@@ -70,6 +79,126 @@ namespace Microsoft.Office.WopiValidator
 				Console.ReadLine();
 			}
 			return (int)exitCode;
+		}
+
+		private static ExitCode Execute(Options options)
+		{
+			// get run configuration from XML
+			IEnumerable<TestExecutionData> testData = ConfigParser.ParseExecutionData(options.RunConfigurationFilePath, options.TestCategory);
+
+			if (!String.IsNullOrEmpty(options.TestGroup))
+			{
+				testData = testData.Where(d => d.TestGroupName == options.TestGroup);
+			}
+
+			IEnumerable<TestExecutionData> executionData;
+			if (!String.IsNullOrWhiteSpace(options.TestName))
+			{
+				executionData = new TestExecutionData[] { TestExecutionData.GetDataForSpecificTest(testData, options.TestName) };
+			}
+			else
+			{
+				executionData = testData;
+			}
+
+			// Create executor groups
+			var executorGroups = executionData.GroupBy(d => new
+			{
+				d.TestGroupName,
+				d.TestGroupHasDelay
+			})
+				.Select(g => new
+				{
+					Name = g.Key.TestGroupName,
+					HasDelay = g.Key.TestGroupHasDelay,
+					Executors = g.Select(x => GetTestCaseExecutor(x, options, options.TestCategory))
+				});
+			;
+
+			ConsoleColor baseColor = ConsoleColor.White;
+			HashSet<ResultStatus> resultStatuses = new HashSet<ResultStatus>();
+			foreach (var group in executorGroups)
+			{
+				WriteToConsole($"\nTest group: {group.Name}\n", ConsoleColor.White);
+
+				// skip test groups using delay
+				if (group.HasDelay && !options.IncludeTestCasesWithDelay)
+				{
+					baseColor = ConsoleColor.Yellow;
+					WriteToConsole($"All tests skipped: {group.Name} uses delay.\n", baseColor, 1);
+					continue;
+				}
+
+				// define execution query - evaluation is lazy; test cases are executed one at a time
+				// as you iterate over returned collection
+				var results = group.Executors.Select(x => x.Execute());
+
+				// iterate over results and print success/failure indicators into console
+				foreach (TestCaseResult testCaseResult in results)
+				{
+					resultStatuses.Add(testCaseResult.Status);
+					switch (testCaseResult.Status)
+					{
+						case ResultStatus.Pass:
+							baseColor = ConsoleColor.Green;
+							WriteToConsole($"Pass: {testCaseResult.Name}\n", baseColor, 1);
+							break;
+
+						case ResultStatus.Skipped:
+							baseColor = ConsoleColor.Yellow;
+							if (!options.IgnoreSkipped)
+							{
+								WriteToConsole($"Skipped: {testCaseResult.Name}\n", baseColor, 1);
+							}
+							break;
+
+						case ResultStatus.Fail:
+						default:
+							baseColor = ConsoleColor.Red;
+							WriteToConsole($"Fail: {testCaseResult.Name}\n", baseColor, 1);
+							break;
+					}
+
+					if (testCaseResult.Status == ResultStatus.Fail ||
+						(testCaseResult.Status == ResultStatus.Skipped && !options.IgnoreSkipped))
+					{
+						foreach (var request in testCaseResult.RequestDetails)
+						{
+							var responseStatus = (HttpStatusCode)request.ResponseStatusCode;
+							var color = request.ValidationFailures.Count == 0 ? ConsoleColor.DarkGreen : baseColor;
+							WriteToConsole($"{request.Name}, response code: {request.ResponseStatusCode} {responseStatus}\n", color, 2);
+							foreach (var failure in request.ValidationFailures)
+							{
+								foreach (var error in failure.Errors)
+									WriteToConsole($"{error.StripNewLines()}\n", baseColor, 3);
+							}
+						}
+
+						WriteToConsole($"Re-run command: .\\wopivalidator.exe -n {testCaseResult.Name} -w {options.WopiEndpoint} -t {options.AccessToken} -l {options.AccessTokenTtl}\n", baseColor, 2);
+						Console.WriteLine();
+					}
+				}
+
+				if (options.IgnoreSkipped && !resultStatuses.ContainsAny(ResultStatus.Pass, ResultStatus.Fail))
+				{
+					WriteToConsole($"All tests skipped.\n", baseColor, 1);
+				}
+			}
+
+			// If skipped tests are ignored, don't consider them when determining whether the test run passed or failed
+			if (options.IgnoreSkipped)
+			{
+				if (resultStatuses.Contains(ResultStatus.Fail))
+				{
+					return ExitCode.Failure;
+				}
+			}
+			// Otherwise consider skipped tests as failures
+			else if (resultStatuses.ContainsAny(ResultStatus.Skipped, ResultStatus.Fail))
+			{
+				return ExitCode.Failure;
+			}
+			return ExitCode.Success;
 		}
 
 		private static async Task<ExitCode> ExecuteAsync(Options options)
@@ -122,9 +251,7 @@ namespace Microsoft.Office.WopiValidator
 				// iterate over executors. Compute each result and print success/failure indicators into console
 				foreach (TestCaseExecutor testCaseExecutor in group.Executors)
 				{
-					TestCaseResult testCaseResult = options.RunAsynchronously
-						? await testCaseExecutor.ExecuteAsync()
-						: testCaseExecutor.Execute();
+					TestCaseResult testCaseResult = await testCaseExecutor.ExecuteAsync();
 
 					resultStatuses.Add(testCaseResult.Status);
 					switch (testCaseResult.Status)
