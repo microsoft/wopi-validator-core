@@ -66,14 +66,14 @@ namespace Microsoft.Office.WopiValidator.Core
 		{
 			foreach (var prereqCase in PrereqCases)
 			{
-				TestCaseResult prereqCaseResult = await ExecuteTestCaseAsync(prereqCase);
+				TestCaseResult prereqCaseResult = await ExecuteTestCaseAsync(prereqCase).ConfigureAwait(false);
 				if (prereqCaseResult.Status != ResultStatus.Pass)
 				{
 					return new TestCaseResult(TestCase.Name, prereqCaseResult.RequestDetails, "Prerequisites failed", prereqCaseResult.Errors, ResultStatus.Skipped);
 				}
 			}
 
-			return await ExecuteTestCaseAsync(TestCase);
+			return await ExecuteTestCaseAsync(TestCase).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -203,7 +203,7 @@ namespace Microsoft.Office.WopiValidator.Core
 				{
 					if (request is DelayRequest delayRequest)
 					{
-						await Task.Delay(TimeSpan.FromSeconds((int)delayRequest.DelayTimeInSeconds));
+						await Task.Delay(TimeSpan.FromSeconds((int)delayRequest.DelayTimeInSeconds)).ConfigureAwait(false);
 						continue;
 					}
 
@@ -219,7 +219,7 @@ namespace Microsoft.Office.WopiValidator.Core
 							ResourceManager,
 							UserAgent,
 							ProofKeyProviderNew,
-							ProofKeyProviderOld);
+							ProofKeyProviderOld).ConfigureAwait(false);
 					}
 					catch (ProofKeySigningException ex)
 					{
@@ -272,7 +272,7 @@ namespace Microsoft.Office.WopiValidator.Core
 			finally
 			{
 				// run the cleanup cases if there were any
-				await RunCleanupRequestsAsync(testCase, savedState, requestDetails);
+				await RunCleanupRequestsAsync(testCase, savedState, requestDetails).ConfigureAwait(false);
 			}
 
 			if (finalTestResult == null)
@@ -400,7 +400,7 @@ namespace Microsoft.Office.WopiValidator.Core
 						ResourceManager,
 						UserAgent,
 						ProofKeyProviderNew,
-						ProofKeyProviderOld);
+						ProofKeyProviderOld).ConfigureAwait(false);
 
 					// No validators needed, they're just cleanup and we don't care if they worked or not.
 

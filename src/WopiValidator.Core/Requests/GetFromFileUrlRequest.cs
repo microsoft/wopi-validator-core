@@ -45,7 +45,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			return ExecuteRequest(executionData);
 		}
 
-		public override async Task<IResponseData> ExecuteAsync(
+		public async override Task<IResponseData> ExecuteAsync(
 			string endpointAddress,
 			string accessToken,
 			long accessTokenTtl,
@@ -61,7 +61,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 				Enumerable.Empty<KeyValuePair<string, string>>(),
 				null);
 
-			return await ExecuteRequestAsync(executionData);
+			return await ExecuteRequestAsync(executionData).ConfigureAwait(false);
 		}
 	}
 }

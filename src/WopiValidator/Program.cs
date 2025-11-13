@@ -60,7 +60,7 @@ namespace Microsoft.Office.WopiValidator
 				}
 				else if (options.RunAsynchronously)
 				{
-					exitCode = await ExecuteAsync(options);
+					exitCode = await ExecuteAsync(options).ConfigureAwait(false);
 				}
 				else
 				{
@@ -250,7 +250,7 @@ namespace Microsoft.Office.WopiValidator
 				// iterate over executors. Compute each result and print success/failure indicators into console
 				foreach (TestCaseExecutor testCaseExecutor in group.Executors)
 				{
-					TestCaseResult testCaseResult = await testCaseExecutor.ExecuteAsync();
+					TestCaseResult testCaseResult = await testCaseExecutor.ExecuteAsync().ConfigureAwait(false);
 
 					resultStatuses.Add(testCaseResult.Status);
 					switch (testCaseResult.Status)

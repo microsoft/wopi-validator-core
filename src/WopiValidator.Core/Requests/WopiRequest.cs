@@ -79,7 +79,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		/// <summary>
 		/// Executes WOPI request at given WOPI endpoint address against provided wopi FileRep.
 		/// </summary>
-		public override async Task<IResponseData> ExecuteAsync(string endpointAddress,
+		public async override Task<IResponseData> ExecuteAsync(string endpointAddress,
 			string accessToken,
 			long accessTokenTtl,
 			ITestCase testCase,
@@ -90,7 +90,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			RSACryptoServiceProvider proofKeyProviderOld)
 		{
 			RequestExecutionData executionData = CreateExecutionData(endpointAddress, ref accessToken, accessTokenTtl, savedState, resourceManager, proofKeyProviderNew, proofKeyProviderOld);
-			return await ExecuteRequestAsync(executionData, userAgent);
+			return await ExecuteRequestAsync(executionData, userAgent).ConfigureAwait(false);
 		}
 
 		private RequestExecutionData CreateExecutionData(string endpointAddress, ref string accessToken, long accessTokenTtl, Dictionary<string, string> savedState, IResourceManager resourceManager, RSACryptoServiceProvider proofKeyProviderNew, RSACryptoServiceProvider proofKeyProviderOld)

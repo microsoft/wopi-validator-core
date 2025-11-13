@@ -131,10 +131,10 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			if (content != null)
 			{
 				request.ContentLength = content.Length;
-				using (Stream requestStream = await request.GetRequestStreamAsync())
+				using (Stream requestStream = await request.GetRequestStreamAsync().ConfigureAwait(false))
 				{
 					content.Seek(0, SeekOrigin.Begin);
-					await content.CopyToAsync(requestStream);
+					await content.CopyToAsync(requestStream).ConfigureAwait(false);
 				}
 			}
 			else
@@ -145,10 +145,10 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			try
 			{
 				timer.Start();
-				using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
+				using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync().ConfigureAwait(false))
 				{
 					timer.Stop();
-					return await GetResponseDataAsync(response, IsTextResponseExpected, timer.Elapsed);
+					return await GetResponseDataAsync(response, IsTextResponseExpected, timer.Elapsed).ConfigureAwait(false);
 				}
 			}
 			// ProtocolErrors will have a non-null Response object so we can still get response details
@@ -157,7 +157,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 				using (HttpWebResponse response = (HttpWebResponse)ex.Response)
 				{
 					timer.Stop();
-					return await GetResponseDataAsync(response, IsTextResponseExpected, timer.Elapsed);
+					return await GetResponseDataAsync(response, IsTextResponseExpected, timer.Elapsed).ConfigureAwait(false);
 				}
 			}
 			// no response, so we wrap the exception details so they can be included in a validation failure
@@ -250,7 +250,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			using (Stream responseStream = response.GetResponseStream())
 			{
 				if (responseStream != null)
-					await responseStream.CopyToAsync(content);
+					await responseStream.CopyToAsync(content).ConfigureAwait(false);
 			}
 
 			// just to be sure
