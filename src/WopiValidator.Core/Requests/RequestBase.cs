@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace Microsoft.Office.WopiValidator.Core.Requests
 {
@@ -65,15 +66,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			TargetUrl = executionData.TargetUri.AbsoluteUri;
 			RequestHeaders = executionData.Headers.ToArray();
 
-			HttpWebRequest request = WebRequest.CreateHttp(executionData.TargetUri);
-			request.UserAgent = userAgent;
-			request.AllowAutoRedirect = false;
-
-			// apply custom headers
-			foreach (KeyValuePair<string, string> header in RequestHeaders)
-				request.Headers.Add(header.Key, header.Value);
-
-			request.Method = RequestMethod;
+			HttpWebRequest request = CreateHttpWebRequest(executionData, userAgent);
 
 			MemoryStream content = executionData.ContentStream;
 			// set proper ContentLength and content stream
@@ -116,6 +109,77 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			}
 		}
 
+		/// <summary>
+		/// Executes request and gathers response data.
+		/// </summary>
+		/// <param name="targetUri">URI request should be made against</param>
+		/// <param name="headers">Set of custom headers that should be added to the request</param>
+		/// <param name="content">Request content stream</param>
+		/// <returns>IResponseData instance with information takes from response.</returns>
+		protected async Task<IResponseData> ExecuteRequestAsync(
+			RequestExecutionData executionData,
+			string userAgent = null
+			)
+		{
+			TargetUrl = executionData.TargetUri.AbsoluteUri;
+			RequestHeaders = executionData.Headers.ToArray();
+
+			HttpWebRequest request = CreateHttpWebRequest(executionData, userAgent);
+
+			MemoryStream content = executionData.ContentStream;
+			// set proper ContentLength and content stream
+			if (content != null)
+			{
+				request.ContentLength = content.Length;
+				using (Stream requestStream = await request.GetRequestStreamAsync().ConfigureAwait(false))
+				{
+					content.Seek(0, SeekOrigin.Begin);
+					await content.CopyToAsync(requestStream).ConfigureAwait(false);
+				}
+			}
+			else
+			{
+				request.ContentLength = 0;
+			}
+			Stopwatch timer = new Stopwatch();
+			try
+			{
+				timer.Start();
+				using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync().ConfigureAwait(false))
+				{
+					timer.Stop();
+					return await GetResponseDataAsync(response, IsTextResponseExpected, timer.Elapsed).ConfigureAwait(false);
+				}
+			}
+			// ProtocolErrors will have a non-null Response object so we can still get response details
+			catch (WebException ex) when (ex.Status == WebExceptionStatus.ProtocolError)
+			{
+				using (HttpWebResponse response = (HttpWebResponse)ex.Response)
+				{
+					timer.Stop();
+					return await GetResponseDataAsync(response, IsTextResponseExpected, timer.Elapsed).ConfigureAwait(false);
+				}
+			}
+			// no response, so we wrap the exception details so they can be included in a validation failure
+			catch (WebException ex)
+			{
+				return ExceptionHelper.WrapExceptionInResponseData(ex);
+			}
+		}
+
+		private HttpWebRequest CreateHttpWebRequest(RequestExecutionData executionData, string userAgent)
+		{
+			HttpWebRequest request = WebRequest.CreateHttp(executionData.TargetUri);
+			request.UserAgent = userAgent;
+			request.AllowAutoRedirect = false;
+
+			// apply custom headers
+			foreach (KeyValuePair<string, string> header in RequestHeaders)
+				request.Headers.Add(header.Key, header.Value);
+
+			request.Method = RequestMethod;
+			return request;
+		}
 
 		/// <summary>
 		/// Replaces EndpointAddress if set
@@ -176,7 +240,41 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			return new ResponseData(content, (int)response.StatusCode, headers, isTextResponseExpected, elapsed);
 		}
 
+		/// <summary>
+		/// Gets information from the response.
+		/// </summary>
+		/// <returns>IResponseData instance with information from the response.</returns>
+		private static async Task<IResponseData> GetResponseDataAsync(HttpWebResponse response, bool isTextResponseExpected, TimeSpan elapsed)
+		{
+			MemoryStream content = new MemoryStream();
+			using (Stream responseStream = response.GetResponseStream())
+			{
+				if (responseStream != null)
+					await responseStream.CopyToAsync(content).ConfigureAwait(false);
+			}
+
+			// just to be sure
+			content.Seek(0, SeekOrigin.Begin);
+
+			Dictionary<string, string> headers = response.Headers
+				.Cast<string>()
+				.Select(k => new { Key = k, Value = response.Headers[ k ] })
+				.ToDictionary(x => x.Key, x => x.Value, StringComparer.OrdinalIgnoreCase);
+
+			return new ResponseData(content, (int)response.StatusCode, headers, isTextResponseExpected, elapsed);
+		}
+
 		public abstract IResponseData Execute(string endpointAddress,
+			string accessToken,
+			long accessTokenTtl,
+			ITestCase testCase,
+			Dictionary<string, string> savedState,
+			IResourceManager resourceManager,
+			string userAgent,
+			RSACryptoServiceProvider proofKeyProviderNew,
+			RSACryptoServiceProvider proofKeyProviderOld);
+
+		public abstract Task<IResponseData> ExecuteAsync(string endpointAddress,
 			string accessToken,
 			long accessTokenTtl,
 			ITestCase testCase,

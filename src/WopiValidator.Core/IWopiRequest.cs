@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace Microsoft.Office.WopiValidator.Core
 {
@@ -18,6 +19,16 @@ namespace Microsoft.Office.WopiValidator.Core
 		IEnumerable<IStateEntry> State { get; }
 
 		IResponseData Execute(string endpointAddress,
+			string accessToken,
+			long accessTokenTtl,
+			ITestCase testCase,
+			Dictionary<string, string> savedState,
+			IResourceManager resourceManager,
+			string userAgent,
+			RSACryptoServiceProvider proofKeyProviderNew,
+			RSACryptoServiceProvider proofKeyProviderOld);
+
+		Task<IResponseData> ExecuteAsync(string endpointAddress,
 			string accessToken,
 			long accessTokenTtl,
 			ITestCase testCase,
