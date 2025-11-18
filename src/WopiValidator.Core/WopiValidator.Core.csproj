@@ -16,10 +16,10 @@
     <Description>Core library for WOPI validation: parses XML tests, executes WOPI requests, signs proofs, mutates tokens, captures state, runs validators, handles chunked (full/zip) transfer. Targets .NET 4.5/6.0/8.0. For testing only.</Description>
     <PackageTags>wopi;wopiplus;cspp;csppplus</PackageTags>
     <PackageId>WopiValidator.Core</PackageId>
-    <PackageVersion>2.0.4</PackageVersion>
+    <PackageVersion>2.0.5</PackageVersion>
     <Product>WopiValidator.Core</Product>
     <Copyright>Microsoft</Copyright>
-    <Version>2.0.4</Version>
+    <Version>2.0.5</Version>
     <Title>WOPI Validator Core Engine</Title>
     <PackageProjectUrl>https://github.com/microsoft/wopi-validator-core/tree/main/src/WopiValidator.Core</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -28,13 +28,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="JsonSchemas\CheckFileInfoSchema.json" />
+    <None Remove="JsonSchemas\CsppCheckFileInfoSchema.json" />
+    <None Remove="JsonSchemas\CsppPlusCheckFileInfoSchema.json" />
     <None Remove="JsonSchemas\CoauthTableSchema.json" />
     <None Remove="JsonSchemas\GetChunkedFileResponseSchema.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="JsonSchemas\CheckFileInfoSchema.json" />
+    <EmbeddedResource Include="JsonSchemas\CsppPlusCheckFileInfoSchema.json" />
+    <EmbeddedResource Include="JsonSchemas\CsppCheckFileInfoSchema.json" />
     <EmbeddedResource Include="JsonSchemas\CoauthTableSchema.json" />
     <EmbeddedResource Include="JsonSchemas\GetChunkedFileResponseSchema.json" />
     <!-- Excel Zip Chunking Resources -->

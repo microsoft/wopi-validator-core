@@ -4,68 +4,46 @@
   "description": "A WOPI CheckFileInfo JSON response",
   "type": "object",
   "additionalProperties": true,
+  "required": [
+    "BaseFileName",
+    "OwnerId",
+    "Size",
+    "UserId",
+    "Version"
+  ],
   "properties": {
+    "SupportsCoauth": {
+      "not": {}
+    },
+    "SequenceNumber": {
+      "not": {}
+    },
+    "OfficeCollaborationServiceEndpointUrl": {
+      "not": {}
+    },
+    "RealTimeChannelEndpointUrl": {
+      "not": {}
+    },
     "AccessTokenExpiry": {
-      "type": "integer",
-      "minimum": 0
+      "not": {}
+    },
+    "ServerTime": {
+      "not": {}
+    },
+    "SharingStatus": {
+      "not": {}
+    },
+    "FileGeoLocationCode": {
+      "not": {}
     },
     "BaseFileName": {
       "type": "string"
     },
-    "FileGeoLocationCode": {
-      "type": [ "string", "null" ]
-    },
     "OwnerId": {
       "type": "string"
     },
-    "OfficeCollaborationServiceEndpointUrl": {
-      "oneOf": [
-        {
-          "type": "string",
-          "format": "uri"
-        },
-        {
-          "type": "string",
-          "maxLength": 0
-        },
-        { "type": "null" }
-      ]
-    },
-    "RealTimeChannelEndpointUrl": {
-      "oneOf": [
-        {
-          "type": "string",
-          "format": "uri"
-        },
-        {
-          "type": "string",
-          "maxLength": 0
-        },
-        { "type": "null" }
-      ]
-    },
-    "SequenceNumber": {
-      "type": "integer",
-      "minimum": 0
-    },
-    "ServerTime": {
-      "type": "integer",
-      "minimum": 0
-    },
-    "SharingStatus": {
-      "oneOf": [
-        {
-          "type": "string",
-          "enum": [ "Private", "Shared", "" ]
-        },
-        { "type": "null" }
-      ]
-    },
     "Size": {
       "type": "integer"
-    },
-    "SupportsCoauth": {
-      "type": "boolean"
     },
     "UserId": {
       "type": "string"
@@ -791,47 +769,5 @@
     "UserCanReview": {
       "type": "boolean"
     }
-  },
-  "oneOf": [
-    {
-      "description": "Basic (CSPP) response: only the base 5 required.",
-      "required": [
-        "BaseFileName",
-        "OwnerId",
-        "Size",
-        "UserId",
-        "Version"
-      ],
-      "not": {
-        "anyOf": [
-          { "required": [ "SupportsCoauth" ] },
-          { "required": [ "SequenceNumber" ] },
-          { "required": [ "OfficeCollaborationServiceEndpointUrl" ] },
-          { "required": [ "RealTimeChannelEndpointUrl" ] },
-          { "required": [ "AccessTokenExpiry" ] },
-          { "required": [ "ServerTime" ] },
-          { "required": [ "SharingStatus" ] },
-          { "required": [ "FileGeoLocationCode" ] }
-        ]
-      }
-    },
-    {
-      "description": "Extended (CSPP+) response: base 5 plus all extended fields required.",
-      "required": [
-        "BaseFileName",
-        "OwnerId",
-        "Size",
-        "UserId",
-        "Version",
-        "SupportsCoauth",
-        "SequenceNumber",
-        "OfficeCollaborationServiceEndpointUrl",
-        "RealTimeChannelEndpointUrl",
-        "AccessTokenExpiry",
-        "ServerTime",
-        "SharingStatus",
-        "FileGeoLocationCode"
-      ]
-    }
-  ]
+  }
 }
