@@ -11,7 +11,7 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 	public class JsonSchemaValidatorUnitTests
 	{
 		[TestMethod]
-		public void Validate_CheckFileInfoSchema_Succeeds()
+		public void Validate_CsppCheckFileInfoSchema_Succeeds()
 		{
 			string jsonInput =
 				"{\"BaseFileName\": \"dummyFileName\"," +
@@ -27,12 +27,63 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 				ResponseContentText = jsonInput,
 			};
 
-			ValidationResult result = new JsonSchemaValidator("CheckFileInfoSchema").Validate(response, null, null);
+			ValidationResult result = new JsonSchemaValidator("CsppCheckFileInfoSchema").Validate(response, null, null);
 			Assert.IsFalse(result.HasFailures);
 		}
 
 		[TestMethod]
-		public void Validate_CheckFileInfoSchema_MissingRequiredFields_Fails()
+		public void Validate_CsppCheckFileInfoSchema_FailsIfIncludingCsppPlusProperties()
+		{
+			string jsonInput =
+				"{\"BaseFileName\": \"dummyFileName\"," +
+				"\"OwnerId\": \"dummyOwnerId\"," +
+				"\"Size\": 100," +
+				"\"UserFriendlyName\": \"dummyUserFriendlyName\"," +
+				"\"UserId\": \"dummyUserId\"," +
+				"\"Version\": \"dummyVersion\"," +
+				"\"OfficeCollaborationServiceEndpointUrl\": \"http:\\/\\/localhost\\/ocs\\/join.ashx?app=wopitest\"}";
+
+			IResponseData response = new ResponseDataMock
+			{
+				IsTextResponse = true,
+				ResponseContentText = jsonInput,
+			};
+
+			ValidationResult result = new JsonSchemaValidator("CsppCheckFileInfoSchema").Validate(response, null, null);
+			Assert.IsTrue(result.HasFailures);
+		}
+
+		[TestMethod]
+		public void Validate_CsppPlusCheckFileInfoSchema_Succeeds()
+		{
+			string jsonInput =
+				"{\"BaseFileName\": \"dummyFileName\"," +
+				"\"OwnerId\": \"dummyOwnerId\"," +
+				"\"Size\": 100," +
+				"\"UserFriendlyName\": \"dummyUserFriendlyName\"," +
+				"\"UserId\": \"dummyUserId\"," +
+				"\"Version\": \"dummyVersion\"," +
+				"\"SupportsCoauth\": true," +
+				"\"SequenceNumber\": 10," +
+				"\"OfficeCollaborationServiceEndpointUrl\": \"http:\\/\\/localhost\\/ocs\\/join.ashx?app=wopitest\"," +
+				"\"RealTimeChannelEndpointUrl\": \"http:\\/\\/localhost\\/rtc2\\/\"," +
+				"\"AccessTokenExpiry\": 0," +
+				"\"ServerTime\": 100," +
+				"\"SharingStatus\": \"Shared\"," +
+				"\"FileGeoLocationCode\": \"\",}";
+
+			IResponseData response = new ResponseDataMock
+			{
+				IsTextResponse = true,
+				ResponseContentText = jsonInput,
+			};
+
+			ValidationResult result = new JsonSchemaValidator("CsppPlusCheckFileInfoSchema").Validate(response, null, null);
+			Assert.IsFalse(result.HasFailures);
+		}
+
+		[TestMethod]
+		public void Validate_CsppCheckFileInfoSchema_MissingRequiredFields_Fails()
 		{
 			string jsonInput =
 				"{\"BaseFileName\": \"dummyFileName\"," +
@@ -47,12 +98,41 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 				ResponseContentText = jsonInput,
 			};
 
-			ValidationResult result = new JsonSchemaValidator("CheckFileInfoSchema").Validate(response, null, null);
+			ValidationResult result = new JsonSchemaValidator("CsppCheckFileInfoSchema").Validate(response, null, null);
 			Assert.IsTrue(result.HasFailures);
 		}
 
 		[TestMethod]
-		public void Validate_CheckFileInfoSchema_WrongRequiredFields_Fails()
+		public void Validate_CsppPlusCheckFileInfoSchema_MissingRequiredFields_Fails()
+		{
+			string jsonInput =
+				"{\"BaseFileName\": \"dummyFileName\"," +
+				"\"OwnerId\": \"dummyOwnerId\"," +
+				"\"Size\": 100," +
+				"\"UserFriendlyName\": \"dummyUserFriendlyName\"," +
+				"\"UserId\": \"dummyUserId\"," +
+				"\"Version\": \"dummyVersion\"," +
+				"\"SupportsCoauth\": true," +
+				"\"SequenceNumber\": 10," +
+				//"\"OfficeCollaborationServiceEndpointUrl\": \"http:\\/\\/localhost\\/ocs\\/join.ashx?app=wopitest\"," +
+				"\"RealTimeChannelEndpointUrl\": \"http:\\/\\/localhost\\/rtc2\\/\"," +
+				"\"AccessTokenExpiry\": 0," +
+				"\"ServerTime\": 100," +
+				"\"SharingStatus\": \"Shared\"," +
+				"\"FileGeoLocationCode\": \"\",}";
+
+			IResponseData response = new ResponseDataMock
+			{
+				IsTextResponse = true,
+				ResponseContentText = jsonInput,
+			};
+
+			ValidationResult result = new JsonSchemaValidator("CsppPlusCheckFileInfoSchema").Validate(response, null, null);
+			Assert.IsTrue(result.HasFailures);
+		}
+
+		[TestMethod]
+		public void Validate_CsppCheckFileInfoSchema_WrongRequiredFields_Fails()
 		{
 			string jsonInput =
 				"{\"BaseFileNameppppppp\": \"dummyFileName\"," +
@@ -68,12 +148,41 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 				ResponseContentText = jsonInput,
 			};
 
-			ValidationResult result = new JsonSchemaValidator("CheckFileInfoSchema").Validate(response, null, null);
+			ValidationResult result = new JsonSchemaValidator("CsppCheckFileInfoSchema").Validate(response, null, null);
 			Assert.IsTrue(result.HasFailures);
 		}
 
 		[TestMethod]
-		public void Validate_CheckFileInfoSchema_UndefinedOptionalFields_Fails()
+		public void Validate_CsppPlusCheckFileInfoSchema_WrongRequiredFields_Fails()
+		{
+			string jsonInput =
+				"{\"BaseFileName\": \"dummyFileName\"," +
+				"\"OwnerId\": \"dummyOwnerId\"," +
+				"\"Size\": 100," +
+				"\"UserFriendlyName\": \"dummyUserFriendlyName\"," +
+				"\"UserId\": \"dummyUserId\"," +
+				"\"Version\": \"dummyVersion\"," +
+				"\"SupportsCoauth\": true," +
+				"\"SequenceNumber\": 10," +
+				"\"OfficeCollaborationServiceEndpointUrlxxxxxxxxxxxxxxxxxxxxxxxx\": \"http:\\/\\/localhost\\/ocs\\/join.ashx?app=wopitest\"," +
+				"\"RealTimeChannelEndpointUrl\": \"http:\\/\\/localhost\\/rtc2\\/\"," +
+				"\"AccessTokenExpiry\": 0," +
+				"\"ServerTime\": 100," +
+				"\"SharingStatus\": \"Shared\"," +
+				"\"FileGeoLocationCode\": \"\",}";
+
+			IResponseData response = new ResponseDataMock
+			{
+				IsTextResponse = true,
+				ResponseContentText = jsonInput,
+			};
+
+			ValidationResult result = new JsonSchemaValidator("CsppPlusCheckFileInfoSchema").Validate(response, null, null);
+			Assert.IsTrue(result.HasFailures);
+		}
+
+		[TestMethod]
+		public void Validate_CsppCheckFileInfoSchema_UndefinedOptionalFields_Succeeds()
 		{
 			string jsonInput =
 				"{\"BaseFileName\": \"dummyFileName\"," +
@@ -90,12 +199,42 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 				ResponseContentText = jsonInput,
 			};
 
-			ValidationResult result = new JsonSchemaValidator("CheckFileInfoSchema").Validate(response, null, null);
-			Assert.IsTrue(result.HasFailures);
+			ValidationResult result = new JsonSchemaValidator("CsppCheckFileInfoSchema").Validate(response, null, null);
+			Assert.IsFalse(result.HasFailures);
 		}
 
 		[TestMethod]
-		public void Validate_CheckFileInfoSchema_DefinedOptionalFields_Succeeds()
+		public void Validate_CsppPlusCheckFileInfoSchema_UndefinedOptionalFields_Succeeds()
+		{
+			string jsonInput =
+				"{\"BaseFileName\": \"dummyFileName\"," +
+				"\"OwnerId\": \"dummyOwnerId\"," +
+				"\"Size\": 100," +
+				"\"UserFriendlyName\": \"dummyUserFriendlyName\"," +
+				"\"UserId\": \"dummyUserId\"," +
+				"\"Version\": \"dummyVersion\"," +
+				"\"SupportsCoauth\": true," +
+				"\"SequenceNumber\": 10," +
+				"\"OfficeCollaborationServiceEndpointUrl\": \"http:\\/\\/localhost\\/ocs\\/join.ashx?app=wopitest\"," +
+				"\"RealTimeChannelEndpointUrl\": \"http:\\/\\/localhost\\/rtc2\\/\"," +
+				"\"AccessTokenExpiry\": 0," +
+				"\"ServerTime\": 100," +
+				"\"SharingStatus\": \"Shared\"," +
+				"\"FileGeoLocationCode\": \"\"," +
+				"\"xxx\":\"xxx\"}";
+
+			IResponseData response = new ResponseDataMock
+			{
+				IsTextResponse = true,
+				ResponseContentText = jsonInput,
+			};
+
+			ValidationResult result = new JsonSchemaValidator("CsppPlusCheckFileInfoSchema").Validate(response, null, null);
+			Assert.IsFalse(result.HasFailures);
+		}
+
+		[TestMethod]
+		public void Validate_CsppCheckFileInfoSchema_DefinedOptionalFields_Succeeds()
 		{
 			string jsonInput =
 				"{\"BaseFileName\": \"dummyFileName\"," +
@@ -112,7 +251,37 @@ namespace Microsoft.Office.WopiValidator.UnitTests.Validators
 				ResponseContentText = jsonInput,
 			};
 
-			ValidationResult result = new JsonSchemaValidator("CheckFileInfoSchema").Validate(response, null, null);
+			ValidationResult result = new JsonSchemaValidator("CsppCheckFileInfoSchema").Validate(response, null, null);
+			Assert.IsFalse(result.HasFailures);
+		}
+
+		[TestMethod]
+		public void Validate_CsppPlusCheckFileInfoSchema_DefinedOptionalFields_Succeeds()
+		{
+			string jsonInput =
+				"{\"BaseFileName\": \"dummyFileName\"," +
+				"\"OwnerId\": \"dummyOwnerId\"," +
+				"\"Size\": 100," +
+				"\"UserFriendlyName\": \"dummyUserFriendlyName\"," +
+				"\"UserId\": \"dummyUserId\"," +
+				"\"Version\": \"dummyVersion\"," +
+				"\"SupportsCoauth\": true," +
+				"\"SequenceNumber\": 10," +
+				"\"OfficeCollaborationServiceEndpointUrl\": \"http:\\/\\/localhost\\/ocs\\/join.ashx?app=wopitest\"," +
+				"\"RealTimeChannelEndpointUrl\": \"http:\\/\\/localhost\\/rtc2\\/\"," +
+				"\"AccessTokenExpiry\": 0," +
+				"\"ServerTime\": 100," +
+				"\"SharingStatus\": \"Shared\"," +
+				"\"FileGeoLocationCode\": \"\"," +
+				"\"AllowAdditionalMicrosoftServices\":true}";
+
+			IResponseData response = new ResponseDataMock
+			{
+				IsTextResponse = true,
+				ResponseContentText = jsonInput,
+			};
+
+			ValidationResult result = new JsonSchemaValidator("CsppPlusCheckFileInfoSchema").Validate(response, null, null);
 			Assert.IsFalse(result.HasFailures);
 		}
 	}
