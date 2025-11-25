@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Microsoft.Office.WopiValidator
 {
@@ -34,17 +35,37 @@ namespace Microsoft.Office.WopiValidator
 			return new TestCaseExecutor(testExecutionData, options.WopiEndpoint, options.AccessToken, options.AccessTokenTtl, userAgent);
 		}
 
-		private static int Main(string[] args)
+		private static async Task<int> Main(string[] args)
 		{
 			// Wrapping all logic in a top-level Exception handler to ensure that exceptions are
 			// logged to the console and don't cause Windows Error Reporting to kick in.
 			ExitCode exitCode = ExitCode.Success;
 			try
 			{
-				exitCode = Parser.Default.ParseArguments<Options>(args)
-					.MapResult(
-						(Options options) => Execute(options),
-						parseErrors => ExitCode.Failure);
+				bool wasSuccessful = false;
+				Options options = Parser.Default.ParseArguments<Options>(args)
+					.MapResult<Options, Options>(option =>
+					{
+						wasSuccessful = true;
+						return option;
+					}, errors =>
+					{
+						wasSuccessful = false;
+						return null;
+					});
+
+				if (!wasSuccessful)
+				{
+					exitCode = ExitCode.Failure;
+				}
+				else if (options.RunAsynchronously)
+				{
+					exitCode = await ExecuteAsync(options).ConfigureAwait(false);
+				}
+				else
+				{
+					exitCode = Execute(options);
+				}
 			}
 			catch (Exception ex)
 			{
@@ -91,7 +112,7 @@ namespace Microsoft.Office.WopiValidator
 					Name = g.Key.TestGroupName,
 					HasDelay = g.Key.TestGroupHasDelay,
 					Executors = g.Select(x => GetTestCaseExecutor(x, options, options.TestCategory))
-				}); ;
+				});
 
 			ConsoleColor baseColor = ConsoleColor.White;
 			HashSet<ResultStatus> resultStatuses = new HashSet<ResultStatus>();
@@ -114,6 +135,123 @@ namespace Microsoft.Office.WopiValidator
 				// iterate over results and print success/failure indicators into console
 				foreach (TestCaseResult testCaseResult in results)
 				{
+					resultStatuses.Add(testCaseResult.Status);
+					switch (testCaseResult.Status)
+					{
+						case ResultStatus.Pass:
+							baseColor = ConsoleColor.Green;
+							WriteToConsole($"Pass: {testCaseResult.Name}\n", baseColor, 1);
+							break;
+
+						case ResultStatus.Skipped:
+							baseColor = ConsoleColor.Yellow;
+							if (!options.IgnoreSkipped)
+							{
+								WriteToConsole($"Skipped: {testCaseResult.Name}\n", baseColor, 1);
+							}
+							break;
+
+						case ResultStatus.Fail:
+						default:
+							baseColor = ConsoleColor.Red;
+							WriteToConsole($"Fail: {testCaseResult.Name}\n", baseColor, 1);
+							break;
+					}
+
+					if (testCaseResult.Status == ResultStatus.Fail ||
+						(testCaseResult.Status == ResultStatus.Skipped && !options.IgnoreSkipped))
+					{
+						foreach (var request in testCaseResult.RequestDetails)
+						{
+							var responseStatus = (HttpStatusCode)request.ResponseStatusCode;
+							var color = request.ValidationFailures.Count == 0 ? ConsoleColor.DarkGreen : baseColor;
+							WriteToConsole($"{request.Name}, response code: {request.ResponseStatusCode} {responseStatus}\n", color, 2);
+							foreach (var failure in request.ValidationFailures)
+							{
+								foreach (var error in failure.Errors)
+									WriteToConsole($"{error.StripNewLines()}\n", baseColor, 3);
+							}
+						}
+
+						WriteToConsole($"Re-run command: .\\wopivalidator.exe -n {testCaseResult.Name} -w {options.WopiEndpoint} -t {options.AccessToken} -l {options.AccessTokenTtl}\n", baseColor, 2);
+						Console.WriteLine();
+					}
+				}
+
+				if (options.IgnoreSkipped && !resultStatuses.ContainsAny(ResultStatus.Pass, ResultStatus.Fail))
+				{
+					WriteToConsole($"All tests skipped.\n", baseColor, 1);
+				}
+			}
+
+			// If skipped tests are ignored, don't consider them when determining whether the test run passed or failed
+			if (options.IgnoreSkipped)
+			{
+				if (resultStatuses.Contains(ResultStatus.Fail))
+				{
+					return ExitCode.Failure;
+				}
+			}
+			// Otherwise consider skipped tests as failures
+			else if (resultStatuses.ContainsAny(ResultStatus.Skipped, ResultStatus.Fail))
+			{
+				return ExitCode.Failure;
+			}
+			return ExitCode.Success;
+		}
+
+		private static async Task<ExitCode> ExecuteAsync(Options options)
+		{
+			// get run configuration from XML
+			IEnumerable<TestExecutionData> testData = ConfigParser.ParseExecutionData(options.RunConfigurationFilePath, options.TestCategory);
+
+			if (!String.IsNullOrEmpty(options.TestGroup))
+			{
+				testData = testData.Where(d => d.TestGroupName == options.TestGroup);
+			}
+
+			IEnumerable<TestExecutionData> executionData;
+			if (!String.IsNullOrWhiteSpace(options.TestName))
+			{
+				executionData = new TestExecutionData[] { TestExecutionData.GetDataForSpecificTest(testData, options.TestName) };
+			}
+			else
+			{
+				executionData = testData;
+			}
+
+			// Create executor groups
+			var executorGroups = executionData.GroupBy(d => new
+				{
+					d.TestGroupName,
+					d.TestGroupHasDelay
+				})
+				.Select(g => new
+				{
+					Name = g.Key.TestGroupName,
+					HasDelay = g.Key.TestGroupHasDelay,
+					Executors = g.Select(x => GetTestCaseExecutor(x, options, options.TestCategory))
+				}); ;
+
+			ConsoleColor baseColor = ConsoleColor.White;
+			HashSet<ResultStatus> resultStatuses = new HashSet<ResultStatus>();
+			foreach (var group in executorGroups)
+			{
+				WriteToConsole($"\nTest group: {group.Name}\n", ConsoleColor.White);
+
+				// skip test groups using delay
+				if (group.HasDelay && !options.IncludeTestCasesWithDelay)
+				{
+					baseColor = ConsoleColor.Yellow;
+					WriteToConsole($"All tests skipped: {group.Name} uses delay.\n", baseColor, 1);
+					continue;
+				}
+
+				// iterate over executors. Compute each result and print success/failure indicators into console
+				foreach (TestCaseExecutor testCaseExecutor in group.Executors)
+				{
+					TestCaseResult testCaseResult = await testCaseExecutor.ExecuteAsync().ConfigureAwait(false);
+
 					resultStatuses.Add(testCaseResult.Status);
 					switch (testCaseResult.Status)
 					{

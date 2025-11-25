@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Microsoft.Office.WopiValidator.Core.Requests
 {
@@ -71,6 +72,29 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			RSACryptoServiceProvider proofKeyProviderNew,
 			RSACryptoServiceProvider proofKeyProviderOld)
 		{
+			RequestExecutionData executionData = CreateExecutionData(endpointAddress, ref accessToken, accessTokenTtl, savedState, resourceManager, proofKeyProviderNew, proofKeyProviderOld);
+			return ExecuteRequest(executionData, userAgent);
+		}
+
+		/// <summary>
+		/// Executes WOPI request at given WOPI endpoint address against provided wopi FileRep.
+		/// </summary>
+		public async override Task<IResponseData> ExecuteAsync(string endpointAddress,
+			string accessToken,
+			long accessTokenTtl,
+			ITestCase testCase,
+			Dictionary<string, string> savedState,
+			IResourceManager resourceManager,
+			string userAgent,
+			RSACryptoServiceProvider proofKeyProviderNew,
+			RSACryptoServiceProvider proofKeyProviderOld)
+		{
+			RequestExecutionData executionData = CreateExecutionData(endpointAddress, ref accessToken, accessTokenTtl, savedState, resourceManager, proofKeyProviderNew, proofKeyProviderOld);
+			return await ExecuteRequestAsync(executionData, userAgent).ConfigureAwait(false);
+		}
+
+		private RequestExecutionData CreateExecutionData(string endpointAddress, ref string accessToken, long accessTokenTtl, Dictionary<string, string> savedState, IResourceManager resourceManager, RSACryptoServiceProvider proofKeyProviderNew, RSACryptoServiceProvider proofKeyProviderOld)
+		{
 			// Get the url of the WOPI endpoint that we'll call - either the normal endpoint, or a SavedState override.
 			// If it's an override it might change the accessToken that we're using because it probably already has a token on it.
 			Uri uri = GetRequestUri(endpointAddress, ref accessToken, accessTokenTtl, savedState);
@@ -105,7 +129,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 
 			MemoryStream contentStream = HasRequestContent ? GetRequestContent(resourceManager) : null;
 			RequestExecutionData executionData = new RequestExecutionData(uri, headers, contentStream);
-			return ExecuteRequest(executionData, userAgent);
+			return executionData;
 		}
 
 		protected Uri GetRequestUri(string endpointAddress, ref string accessToken, long accessTokenTtl, Dictionary<string, string> savedState)
