@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wopi-discovery>
+  <net-zone name="external-https">
+    <app name="WopiTest" favIconUrl="https://FFC-onenote.officeapps.live.com" checkLicense="true">
+      <action name="view" ext="wopitest" urlsrc="https://FFC-onenote.officeapps.live.com/hosting/WopiTestFrame.aspx?&lt;ui=UI_LLCC&amp;&gt;&lt;rs=DC_LLCC&amp;&gt;&lt;dchat=DISABLE_CHAT&amp;&gt;&lt;hid=HOST_SESSION_ID&amp;&gt;&lt;sc=SESSION_CONTEXT&amp;&gt;&lt;wopisrc=WOPI_SOURCE&amp;&gt;&lt;IsLicensedUser=BUSINESS_USER&amp;&gt;&lt;testcategory=VALIDATOR_TEST_CATEGORY&gt;" />
+      <action name="view" ext="wopitestx" urlsrc="https://FFC-onenote.officeapps.live.com/hosting/WopiTestFrame.aspx?&lt;ui=UI_LLCC&amp;&gt;&lt;rs=DC_LLCC&amp;&gt;&lt;dchat=DISABLE_CHAT&amp;&gt;&lt;hid=HOST_SESSION_ID&amp;&gt;&lt;sc=SESSION_CONTEXT&amp;&gt;&lt;wopisrc=WOPI_SOURCE&amp;&gt;&lt;IsLicensedUser=BUSINESS_USER&amp;&gt;&lt;testcategory=VALIDATOR_TEST_CATEGORY&gt;" />
+      <action name="edit" ext="wopitest" urlsrc="https://FFC-onenote.officeapps.live.com/hosting/WopiTestFrame.aspx?&lt;ui=UI_LLCC&amp;&gt;&lt;rs=DC_LLCC&amp;&gt;&lt;dchat=DISABLE_CHAT&amp;&gt;&lt;hid=HOST_SESSION_ID&amp;&gt;&lt;sc=SESSION_CONTEXT&amp;&gt;&lt;wopisrc=WOPI_SOURCE&amp;&gt;&lt;IsLicensedUser=BUSINESS_USER&amp;&gt;&lt;testcategory=VALIDATOR_TEST_CATEGORY&gt;" />
+      <action name="edit" ext="wopitestx" urlsrc="https://FFC-onenote.officeapps.live.com/hosting/WopiTestFrame.aspx?&lt;ui=UI_LLCC&amp;&gt;&lt;rs=DC_LLCC&amp;&gt;&lt;dchat=DISABLE_CHAT&amp;&gt;&lt;hid=HOST_SESSION_ID&amp;&gt;&lt;sc=SESSION_CONTEXT&amp;&gt;&lt;wopisrc=WOPI_SOURCE&amp;&gt;&lt;IsLicensedUser=BUSINESS_USER&amp;&gt;&lt;testcategory=VALIDATOR_TEST_CATEGORY&gt;" />
+      <action name="getinfo" ext="wopitest" urlsrc="https://FFC-onenote.officeapps.live.com/hosting/GetWopiTestInfo.ashx?&lt;ui=UI_LLCC&amp;&gt;&lt;rs=DC_LLCC&amp;&gt;&lt;dchat=DISABLE_CHAT&amp;&gt;&lt;hid=HOST_SESSION_ID&amp;&gt;&lt;sc=SESSION_CONTEXT&amp;&gt;&lt;wopisrc=WOPI_SOURCE&amp;&gt;&lt;IsLicensedUser=BUSINESS_USER&amp;&gt;&lt;testcategory=VALIDATOR_TEST_CATEGORY&gt;" />
+      <action name="getinfo" ext="wopitestx" urlsrc="https://FFC-onenote.officeapps.live.com/hosting/GetWopiTestInfo.ashx?&lt;ui=UI_LLCC&amp;&gt;&lt;rs=DC_LLCC&amp;&gt;&lt;dchat=DISABLE_CHAT&amp;&gt;&lt;hid=HOST_SESSION_ID&amp;&gt;&lt;sc=SESSION_CONTEXT&amp;&gt;&lt;wopisrc=WOPI_SOURCE&amp;&gt;&lt;IsLicensedUser=BUSINESS_USER&amp;&gt;&lt;testcategory=VALIDATOR_TEST_CATEGORY&gt;" />
+      <action name="open" ext="wopitest" urlsrc="https://FFC-onenote.officeapps.live.com/hosting/WopiTestFrame.aspx?&lt;ui=UI_LLCC&amp;&gt;&lt;rs=DC_LLCC&amp;&gt;&lt;dchat=DISABLE_CHAT&amp;&gt;&lt;hid=HOST_SESSION_ID&amp;&gt;&lt;sc=SESSION_CONTEXT&amp;&gt;&lt;wopisrc=WOPI_SOURCE&amp;&gt;&lt;IsLicensedUser=BUSINESS_USER&amp;&gt;&lt;testcategory=VALIDATOR_TEST_CATEGORY&gt;" />
+      <action name="open" ext="wopitestx" urlsrc="https://FFC-onenote.officeapps.live.com/hosting/WopiTestFrame.aspx?&lt;ui=UI_LLCC&amp;&gt;&lt;rs=DC_LLCC&amp;&gt;&lt;dchat=DISABLE_CHAT&amp;&gt;&lt;hid=HOST_SESSION_ID&amp;&gt;&lt;sc=SESSION_CONTEXT&amp;&gt;&lt;wopisrc=WOPI_SOURCE&amp;&gt;&lt;IsLicensedUser=BUSINESS_USER&amp;&gt;&lt;testcategory=VALIDATOR_TEST_CATEGORY&gt;" />
+    </app>
+  </net-zone>
+  <proof-key value="BgIAAACkAABSU0ExAAQAAAEAAQABRJHMlsxTIVj3qONMyeHflswnGmw/kI4Kiwuxk5HJPVwdixhAv/W8D7giYdoH+TQmMLU5THeZU7j88KQ7tDr3YXgwRFVVE23LdCLa/LVQg2Xhng2L61Q5xMknxCs/oNKZ99ymysbnAmNFz+QcIpMPpxEBEpWm6ASirieuWwNatg=="
+             exponent="AQAB"
+             modulus="tloDW64nrqIE6KaVEgERpw+TIhzkz0VjAufGyqbc95nSoD8rxCfJxDlU64sNnuFlg1C1/NoidMttE1VVRDB4Yfc6tDuk8Py4U5l3TDm1MCY0+QfaYSK4D7z1v0AYix1cPcmRk7ELiwqOkD9sGifMlt/hyUzjqPdYIVPMlsyRRAE="
+             oldvalue="BgIAAACkAABSU0ExAAQAAAEAAQCdu+YTwKD1hZFOmcEnFT8KJwmr+Zujnz5fSMGVhbx+FI2M9Lw3bP+K4TvjNC9CuW67AhbdLpzBGlcmvnGlIdSzEQKA7LPCA4LnJ5f6Yab2RkVBawgBYRvNNpcBeOzzTiKnaAIEsh3OqoSbM9YgydAHLLEkOWc7/PLKHS1EcAJv0Q=="
+             oldexponent="AQAB"
+             oldmodulus="0W8CcEQtHcry/DtnOSSxLAfQySDWM5uEqs4dsgQCaKciTvPseAGXNs0bYQEIa0FFRvamYfqXJ+eCA8Kz7IACEbPUIaVxviZXGsGcLt0WArtuuUIvNOM74Yr/bDe89IyNFH68hZXBSF8+n6Ob+asJJwo/FSfBmU6RhfWgwBPmu50=" />
+</wopi-discovery>
