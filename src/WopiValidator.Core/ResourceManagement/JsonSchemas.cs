@@ -23,9 +23,11 @@ namespace Microsoft.Office.WopiValidator.Core.ResourceManagement
 
 		private static IDictionary<string, JsonSchema4> LoadAllSchemas()
 		{
-			var schemaIds = Assembly.GetExecutingAssembly().GetManifestResourceNames()
+			string[] resourceNames = Assembly.GetExecutingAssembly().GetManifestResourceNames();
+			var schemaIds = resourceNames
 				.Where(name => name.StartsWith(SchemasPath))
 				.Select(name => ParseSchemaIdFromEmbeddedResourceName(name));
+
 			return schemaIds.ToDictionary(x => x, x => LoadJsonSchema(x));
 		}
 
