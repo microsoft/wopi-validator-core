@@ -98,7 +98,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 				Dictionary<string, string> originalProofKeyHeaders =
 					GetProofKeyHeaders(accessTokenToUse, uri, proofKeyProviderNew, proofKeyProviderOld, hideSensitiveInfo);
 				Dictionary<string, string> proofKeyHeadersToUse =
-					GetMutatedProofKeyHeaders(originalProofKeyHeaders, timestamp => GetProofKeyHeaders(accessTokenToUse, uri, proofKeyProviderNew, proofKeyProviderOld, hideSensitiveInfo));
+					GetMutatedProofKeyHeaders(originalProofKeyHeaders, timestamp => GetProofKeyHeaders(accessTokenToUse, uri, proofKeyProviderNew, proofKeyProviderOld, timestamp, hideSensitiveInfo));
 				headers.AddRange(proofKeyHeadersToUse);
 			}
 
@@ -201,8 +201,8 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			// save the proof key output to help partners investigate proof key implementation bugs
 			if (hideSensitiveInfo)
 			{
-				currentProof.SignedBase64ProofKey = "*** SENSITIVE INFO HIDDEN IN WOPIVALIDATOR ***";
-				oldProof.SignedBase64ProofKey = "*** SENSITIVE INFO HIDDEN IN WOPIVALIDATOR ***";
+				currentProof.SignedBase64ProofKey = Constants.HideSensitiveInfoNotice;
+				oldProof.SignedBase64ProofKey = Constants.HideSensitiveInfoNotice;
 			}
 
 			this.CurrentProofData = currentProof;
