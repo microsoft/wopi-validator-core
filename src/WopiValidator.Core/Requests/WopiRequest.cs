@@ -69,7 +69,8 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			IResourceManager resourceManager,
 			string userAgent,
 			RSACryptoServiceProvider proofKeyProviderNew,
-			RSACryptoServiceProvider proofKeyProviderOld)
+			RSACryptoServiceProvider proofKeyProviderOld,
+			bool hideSensitiveInfo)
 		{
 			// Get the url of the WOPI endpoint that we'll call - either the normal endpoint, or a SavedState override.
 			// If it's an override it might change the accessToken that we're using because it probably already has a token on it.
@@ -95,9 +96,9 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			if (proofKeyProviderNew != null && proofKeyProviderOld != null)
 			{
 				Dictionary<string, string> originalProofKeyHeaders =
-					GetProofKeyHeaders(accessTokenToUse, uri, proofKeyProviderNew, proofKeyProviderOld);
+					GetProofKeyHeaders(accessTokenToUse, uri, proofKeyProviderNew, proofKeyProviderOld, hideSensitiveInfo);
 				Dictionary<string, string> proofKeyHeadersToUse =
-					GetMutatedProofKeyHeaders(originalProofKeyHeaders, timestamp => GetProofKeyHeaders(accessTokenToUse, uri, proofKeyProviderNew, proofKeyProviderOld, timestamp));
+					GetMutatedProofKeyHeaders(originalProofKeyHeaders, timestamp => GetProofKeyHeaders(accessTokenToUse, uri, proofKeyProviderNew, proofKeyProviderOld, hideSensitiveInfo));
 				headers.AddRange(proofKeyHeadersToUse);
 			}
 
@@ -179,7 +180,8 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			Uri endpointUri,
 			RSACryptoServiceProvider proofKeyProviderNew,
 			RSACryptoServiceProvider proofKeyProviderOld,
-			long timestamp)
+			long timestamp,
+			bool hideSensitiveInfo)
 		{
 			Dictionary<string, string> proofKeyHeaders = new Dictionary<string, string>();
 
@@ -197,6 +199,12 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			proofKeyHeaders.Add(Constants.Headers.WopiTimestamp, timestamp.ToString(System.Globalization.CultureInfo.InvariantCulture));
 
 			// save the proof key output to help partners investigate proof key implementation bugs
+			if (hideSensitiveInfo)
+			{
+				currentProof.SignedBase64ProofKey = "*** SENSITIVE INFO HIDDEN IN WOPIVALIDATOR ***";
+				oldProof.SignedBase64ProofKey = "*** SENSITIVE INFO HIDDEN IN WOPIVALIDATOR ***";
+			}
+
 			this.CurrentProofData = currentProof;
 			this.OldProofData = oldProof;
 
@@ -206,9 +214,10 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 		private Dictionary<string, string> GetProofKeyHeaders(string accessToken,
 			Uri endpointUri,
 			RSACryptoServiceProvider proofKeyProviderNew,
-			RSACryptoServiceProvider proofKeyProviderOld)
+			RSACryptoServiceProvider proofKeyProviderOld,
+			bool hideSensitiveInfo)
 		{
-			return GetProofKeyHeaders(accessToken, endpointUri, proofKeyProviderNew, proofKeyProviderOld, DateTime.UtcNow.Ticks);
+			return GetProofKeyHeaders(accessToken, endpointUri, proofKeyProviderNew, proofKeyProviderOld, DateTime.UtcNow.Ticks, hideSensitiveInfo);
 		}
 
 		private string GetMutatedAccessToken(string original)

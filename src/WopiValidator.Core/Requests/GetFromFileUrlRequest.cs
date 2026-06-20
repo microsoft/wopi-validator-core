@@ -34,7 +34,8 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			IResourceManager resourceManager,
 			string userAgent,
 			RSACryptoServiceProvider proofKeyProviderNew,
-			RSACryptoServiceProvider proofKeyProviderOld)
+			RSACryptoServiceProvider proofKeyProviderOld,
+			bool hideSensitiveInfo)
 		{
 			RequestExecutionData executionData = new RequestExecutionData(
 				new Uri(GetEndpointAddressOverride(savedState)),

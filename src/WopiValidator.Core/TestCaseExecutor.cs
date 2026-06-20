@@ -25,7 +25,8 @@ namespace Microsoft.Office.WopiValidator.Core
 			long accessTokenTtl,
 			string userAgent,
 			RSACryptoServiceProvider proofKeyProviderNew = null,
-			RSACryptoServiceProvider proofKeyProviderOld = null)
+			RSACryptoServiceProvider proofKeyProviderOld = null,
+			bool hideSensitiveInfo = false)
 		{
 			TestCase = executionData.TestCase;
 			PrereqCases = executionData.PrereqCases;
@@ -36,6 +37,7 @@ namespace Microsoft.Office.WopiValidator.Core
 			UserAgent = userAgent;
 			ProofKeyProviderNew = proofKeyProviderNew;
 			ProofKeyProviderOld = proofKeyProviderOld;
+			HideSensitiveInfo = hideSensitiveInfo;
 		}
 
 		public ITestCase TestCase { get; private set; }
@@ -47,6 +49,7 @@ namespace Microsoft.Office.WopiValidator.Core
 		public string UserAgent { get; private set; }
 		public RSACryptoServiceProvider ProofKeyProviderNew { get; private set; }
 		public RSACryptoServiceProvider ProofKeyProviderOld { get; private set; }
+		public bool HideSensitiveInfo { get; private set; }
 
 		public TestCaseResult Execute()
 		{
@@ -100,7 +103,8 @@ namespace Microsoft.Office.WopiValidator.Core
 							ResourceManager,
 							UserAgent,
 							ProofKeyProviderNew,
-							ProofKeyProviderOld);
+							ProofKeyProviderOld,
+							HideSensitiveInfo);
 					}
 					catch (ProofKeySigningException ex)
 					{
@@ -222,7 +226,8 @@ namespace Microsoft.Office.WopiValidator.Core
 						ResourceManager,
 						UserAgent,
 						ProofKeyProviderNew,
-						ProofKeyProviderOld);
+						ProofKeyProviderOld,
+						HideSensitiveInfo);
 
 					// No validators needed, they're just cleanup and we don't care if they worked or not.
 

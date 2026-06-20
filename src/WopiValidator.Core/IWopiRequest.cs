@@ -25,6 +25,7 @@ namespace Microsoft.Office.WopiValidator.Core
 			IResourceManager resourceManager,
 			string userAgent,
 			RSACryptoServiceProvider proofKeyProviderNew,
-			RSACryptoServiceProvider proofKeyProviderOld);
+			RSACryptoServiceProvider proofKeyProviderOld,
+			bool hideSensitiveInfo);
 	}
 }
