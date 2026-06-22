@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace Microsoft.Office.WopiValidator.Core.Requests
 {
@@ -42,6 +43,25 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 				null);
 
 			return ExecuteRequest(executionData);
+		}
+
+		public async override Task<IResponseData> ExecuteAsync(
+			string endpointAddress,
+			string accessToken,
+			long accessTokenTtl,
+			ITestCase testCase,
+			Dictionary<string, string> savedState,
+			IResourceManager resourceManager,
+			string userAgent,
+			RSACryptoServiceProvider proofKeyProviderNew,
+			RSACryptoServiceProvider proofKeyProviderOld)
+		{
+			RequestExecutionData executionData = new RequestExecutionData(
+				new Uri(GetEndpointAddressOverride(savedState)),
+				Enumerable.Empty<KeyValuePair<string, string>>(),
+				null);
+
+			return await ExecuteRequestAsync(executionData).ConfigureAwait(false);
 		}
 	}
 }

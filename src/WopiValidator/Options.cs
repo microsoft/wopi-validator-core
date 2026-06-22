@@ -37,5 +37,8 @@ namespace Microsoft.Office.WopiValidator
 
 		[Option('d', "include-delaytests", Required = false, HelpText = "Run test cases with delay")]
 		public bool IncludeTestCasesWithDelay { get; set; }
+
+		[Option('a', "run-asynchronously-using-tasks", Required = false, Default = false, HelpText = "(Temporary) Run the tests using the .NET Async/Await APIs instead of the synchronously (defaults to false)")]
+		public bool RunAsynchronously { get; set; }
 	}
 }
