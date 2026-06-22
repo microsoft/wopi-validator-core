@@ -18,7 +18,7 @@
     <Company>Microsoft</Company>
     <Authors>Microsoft</Authors>
     <Description>Runs an XML test suite and outputs pass/fail diagnostics.
-Targets .NET 4.5/6.0/8.0. For validation only.
+Targets .NET 45/6.0/8.0/10.0. For validation only.
     </Description>
     <PackageTags>wopi;wopiplus;cspp;csppplus</PackageTags>
     <PackageId>WopiValidator</PackageId>

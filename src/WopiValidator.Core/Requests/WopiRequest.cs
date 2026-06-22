@@ -73,7 +73,16 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			RSACryptoServiceProvider proofKeyProviderOld,
 			bool hideSensitiveInfo)
 		{
-			RequestExecutionData executionData = CreateExecutionData(endpointAddress, ref accessToken, accessTokenTtl, savedState, resourceManager, proofKeyProviderNew, proofKeyProviderOld);
+			RequestExecutionData executionData = CreateExecutionData(
+				endpointAddress,
+				ref accessToken,
+				accessTokenTtl,
+				savedState,
+				resourceManager,
+				proofKeyProviderNew,
+				proofKeyProviderOld,
+				hideSensitiveInfo);
+
 			return ExecuteRequest(executionData, userAgent);
 		}
 
@@ -88,13 +97,31 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			IResourceManager resourceManager,
 			string userAgent,
 			RSACryptoServiceProvider proofKeyProviderNew,
-			RSACryptoServiceProvider proofKeyProviderOld)
+			RSACryptoServiceProvider proofKeyProviderOld,
+			bool hideSensitiveInfo)
 		{
-			RequestExecutionData executionData = CreateExecutionData(endpointAddress, ref accessToken, accessTokenTtl, savedState, resourceManager, proofKeyProviderNew, proofKeyProviderOld);
+			RequestExecutionData executionData = CreateExecutionData(
+				endpointAddress,
+				ref accessToken,
+				accessTokenTtl,
+				savedState,
+				resourceManager,
+				proofKeyProviderNew,
+				proofKeyProviderOld,
+				hideSensitiveInfo);
+
 			return await ExecuteRequestAsync(executionData, userAgent).ConfigureAwait(false);
 		}
 
-		private RequestExecutionData CreateExecutionData(string endpointAddress, ref string accessToken, long accessTokenTtl, Dictionary<string, string> savedState, IResourceManager resourceManager, RSACryptoServiceProvider proofKeyProviderNew, RSACryptoServiceProvider proofKeyProviderOld)
+		private RequestExecutionData CreateExecutionData(
+			string endpointAddress,
+			ref string accessToken,
+			long accessTokenTtl,
+			Dictionary<string, string> savedState,
+			IResourceManager resourceManager,
+			RSACryptoServiceProvider proofKeyProviderNew,
+			RSACryptoServiceProvider proofKeyProviderOld,
+			bool hideSensitiveInfo)
 		{
 			// Get the url of the WOPI endpoint that we'll call - either the normal endpoint, or a SavedState override.
 			// If it's an override it might change the accessToken that we're using because it probably already has a token on it.

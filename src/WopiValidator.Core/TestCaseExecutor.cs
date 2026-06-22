@@ -223,7 +223,8 @@ namespace Microsoft.Office.WopiValidator.Core
 							ResourceManager,
 							UserAgent,
 							ProofKeyProviderNew,
-							ProofKeyProviderOld).ConfigureAwait(false);
+							ProofKeyProviderOld,
+							HideSensitiveInfo).ConfigureAwait(false);
 					}
 					catch (ProofKeySigningException ex)
 					{
@@ -269,7 +270,7 @@ namespace Microsoft.Office.WopiValidator.Core
 					// Save any state that was requested
 					foreach (IStateEntry stateSaver in request.State)
 					{
-						savedState[ stateSaver.Name ] = stateSaver.GetValue(responseData);
+						savedState[stateSaver.Name] = stateSaver.GetValue(responseData);
 					}
 				}
 			}
@@ -405,7 +406,8 @@ namespace Microsoft.Office.WopiValidator.Core
 						ResourceManager,
 						UserAgent,
 						ProofKeyProviderNew,
-						ProofKeyProviderOld).ConfigureAwait(false);
+						ProofKeyProviderOld,
+						HideSensitiveInfo).ConfigureAwait(false);
 
 					// No validators needed, they're just cleanup and we don't care if they worked or not.
 
