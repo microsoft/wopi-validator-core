@@ -209,5 +209,7 @@ namespace Microsoft.Office.WopiValidator.Core
 			public const string FileStream = "FileStream";
 			public const string ZeroByteOfficeDocumentResourceId = "ZeroByteOfficeDocument";
 		}
+
+		public static string HideSensitiveInfoNotice = "*** SENSITIVE INFO HIDDEN IN WOPIVALIDATOR ***";
 	}
 }

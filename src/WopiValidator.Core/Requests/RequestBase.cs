@@ -272,7 +272,8 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			IResourceManager resourceManager,
 			string userAgent,
 			RSACryptoServiceProvider proofKeyProviderNew,
-			RSACryptoServiceProvider proofKeyProviderOld);
+			RSACryptoServiceProvider proofKeyProviderOld,
+			bool hideSensitiveInfo);
 
 		public abstract Task<IResponseData> ExecuteAsync(string endpointAddress,
 			string accessToken,
@@ -282,6 +283,7 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			IResourceManager resourceManager,
 			string userAgent,
 			RSACryptoServiceProvider proofKeyProviderNew,
-			RSACryptoServiceProvider proofKeyProviderOld);
+			RSACryptoServiceProvider proofKeyProviderOld,
+			bool hideSensitiveInfo);
 	}
 }

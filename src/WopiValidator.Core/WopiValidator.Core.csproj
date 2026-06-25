@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net45;net6.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net45;net6.0;net8.0;net10.0</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../WopiValidatorSigningKey.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
@@ -13,13 +13,14 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Company>Microsoft</Company>
     <Authors>Microsoft</Authors>
-    <Description>Core library for WOPI validation: parses XML tests, executes WOPI requests, signs proofs, mutates tokens, captures state, runs validators, handles chunked (full/zip) transfer. Targets .NET 4.5/6.0/8.0. For testing only.</Description>
+    <Description>Core library for WOPI validation: parses XML tests, executes WOPI requests, signs proofs, mutates tokens, captures state, runs validators, handles chunked (full/zip) transfer.
+    Targets .NET 45/6.0/8.0/10.0. For testing only.</Description>
     <PackageTags>wopi;wopiplus;cspp;csppplus</PackageTags>
     <PackageId>WopiValidator.Core</PackageId>
-    <PackageVersion>2.0.5</PackageVersion>
+    <PackageVersion>2.0.6</PackageVersion>
     <Product>WopiValidator.Core</Product>
     <Copyright>Microsoft</Copyright>
-    <Version>2.0.5</Version>
+    <Version>2.0.6</Version>
     <Title>WOPI Validator Core Engine</Title>
     <PackageProjectUrl>https://github.com/microsoft/wopi-validator-core/tree/main/src/WopiValidator.Core</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
