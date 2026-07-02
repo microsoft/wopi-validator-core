@@ -137,6 +137,13 @@ namespace Microsoft.Office.WopiValidator.Core.Requests
 			// At this point we have the final uri and accessTokenToUse values.  We'll use them later in proof key signing
 
 			List<KeyValuePair<string, string>> headers = DefaultHeaders.ToList();
+
+			// Add a unique correlation id to every request so hosts can find this exact request in
+			// their logs. This mirrors the "X-Request-ID" header that WAC's production code path
+			// sends on every WOPI request. The value is surfaced back to the operator via
+			// RequestInfo.RequestHeaders so it can be shared with the host owner for diagnostics.
+			headers.Add(new KeyValuePair<string, string>(Constants.Headers.RequestId, Guid.NewGuid().ToString()));
+
 			IEnumerable<KeyValuePair<string, string>> customHeaders = GetCustomHeaders(savedState, resourceManager);
 			if (customHeaders != null)
 				headers.AddRange(customHeaders);
