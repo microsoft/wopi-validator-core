@@ -21,6 +21,11 @@ namespace Microsoft.Office.WopiValidator.Core
 		{
 			public const string Authorization = "Authorization";
 
+			// Standard WOPI request correlation header. WAC's production code path stamps this on
+			// every request (see HttpRequestAsyncHeaders.RequestIdHeader); the validator adds it too
+			// so hosts can correlate a validator request with entries in their own logs.
+			public const string RequestId = "X-Request-ID";
+
 			public const string Override = "X-WOPI-Override";
 			public const string Lock = "X-WOPI-Lock";
 			public const string OldLock = "X-WOPI-OldLock";

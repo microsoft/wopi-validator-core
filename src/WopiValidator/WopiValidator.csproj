@@ -22,10 +22,10 @@ Targets .NET 45/6.0/8.0/10.0. For validation only.
     </Description>
     <PackageTags>wopi;wopiplus;cspp;csppplus</PackageTags>
     <PackageId>WopiValidator</PackageId>
-    <PackageVersion>2.0.6</PackageVersion>
+    <PackageVersion>2.0.7</PackageVersion>
     <Product>WopiValidator</Product>
     <Copyright>Microsoft</Copyright>
-    <Version>2.0.6</Version>
+    <Version>2.0.7</Version>
     <Title>WOPI host compliance CLI</Title>
     <PackageProjectUrl>https://github.com/microsoft/wopi-validator-core/tree/main/src/WopiValidator</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
