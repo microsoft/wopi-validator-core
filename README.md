@@ -71,7 +71,7 @@ There are several ways to run the validator.
 After building the projects as described above, you can run the resulting `Microsoft.Office.WopiValidator.dll`
 using the `dotnet` command. For example:
 
-`dotnet Microsoft.Office.WopiValidator.dll --token MyAccessToken --token_ttl 0 --wopisrc http://localhost:5000/wopi/files/<id> --testcategory OfficeOnline --ignore-skipped`
+`dotnet Microsoft.Office.WopiValidator.dll --token MyAccessToken --token_ttl 0 --wopisrc http://localhost:5000/wopi/files/<id> --testcategory All --ignore-skipped`
 
 Note: the Microsoft.Office.WopiValidator.dll file can be found in `src\WopiValidator\bin\Release\netcoreapp2.0\`.
 
@@ -81,7 +81,7 @@ You can also use the `dotnet run` command, passing the path to the `WopiValidato
 option. Arguments to the validator itself can be passed in by separating them from the `dotnet run` arguments with
 a `--`. For example:
 
-`dotnet run --project ./src/WopiValidator/WopiValidator.csproj --framework net6.0 -- -t MyAccessToken -l 0 -w http://localhost:5000/wopi/files/<id> -e OfficeOnline -s`
+`dotnet run --project ./src/WopiValidator/WopiValidator.csproj --framework net6.0 -- -t MyAccessToken -l 0 -w http://localhost:5000/wopi/files/<id> -e All -s`
 
 ### Option 3: self-contained package
 
@@ -89,7 +89,7 @@ Another option is to build a self-contained package for your OS (see above) and 
 file, which be called `Microsoft.Office.Validator.exe` on Windows and `Microsoft.Office.Validator` on Linux and macOS.
 Arguments to the validator can be passed in directly. For example:
 
-`Microsoft.Office.Validator.exe -t MyAccessToken -l 0 -w http://localhost:5000/wopi/files/<id> -e OfficeOnline -s`
+`Microsoft.Office.Validator.exe -t MyAccessToken -l 0 -w http://localhost:5000/wopi/files/<id> -e All -s`
 
 ### Full usage options
 
@@ -119,6 +119,21 @@ Copyright (C) 2018 Microsoft
 
   --version               Display version information.
 ```
+
+### Test category workaround
+
+Use `--testcategory All` (or `-e All`) with the bundled `TestCases.xml`.
+`All` is also the default when the option is omitted. When calling the core API,
+pass `TestCategory.All`.
+
+Selecting individual categories can trigger a prerequisite-resolution bug with
+this configuration. The parser filters out prerequisite definitions but still
+resolves references to them in excluded test groups, causing initialization to
+fail with a missing-prerequisite error. Selecting `All` keeps those definitions
+available and avoids this initialization failure.
+
+This is a workaround, not a fix for category filtering. `All` selects every test
+category, so it runs a broader suite than selecting an individual category.
 
 ## Contributing
 
